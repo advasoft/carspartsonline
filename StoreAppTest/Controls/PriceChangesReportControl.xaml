@@ -1,0 +1,114 @@
+﻿<sdk:ChildWindow
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:sdk="http://schemas.microsoft.com/winfx/2006/xaml/presentation/sdk"
+    xmlns:dxg="http://schemas.devexpress.com/winfx/2008/xaml/grid" xmlns:dxe="http://schemas.devexpress.com/winfx/2008/xaml/editors"
+    xmlns:convertors="clr-namespace:StoreAppTest.Convertors"
+    x:Class="StoreAppTest.Controls.PriceChangesReportControl"
+    mc:Ignorable="d" Height="600" Width="1148">
+    <sdk:ChildWindow.Resources>
+        <convertors:BoolToStarConverter x:Key="BoolToStarConverter"/>
+        <convertors:PriceChangeToImageConverter x:Key="PriceChangeToImageConverter"/>
+
+    </sdk:ChildWindow.Resources>
+    <Grid x:Name="LayoutRoot" Background="White">
+        <Grid.RowDefinitions>
+            <RowDefinition/>
+            <RowDefinition Height="122"/>
+            <RowDefinition Height="52"/>
+        </Grid.RowDefinitions>
+        <Grid Background="#FFBBCAD6" Grid.Row="2">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition/>
+                <ColumnDefinition Width="130"/>
+                <ColumnDefinition Width="130"/>
+                <ColumnDefinition Width="50"/>
+            </Grid.ColumnDefinitions>
+            <Button  x:Name="CancelButton" Grid.Column="2" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" Width="110" Height="32" Click="CancelButton_OnClick">
+                <Grid HorizontalAlignment="Left" VerticalAlignment="Stretch">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="32"/>
+                        <ColumnDefinition/>
+                    </Grid.ColumnDefinitions>
+                    <Image Width="24" Height="24" Source="/StoreAppTest;component/Assets/Images/1431716532_678075-sign-ban-48.png"/>
+                    <TextBlock Width="70" Grid.Column="1" Text="Закрыть" FontSize="14" Margin="4,2,0,0"/>
+                </Grid>
+            </Button>
+        </Grid>
+
+        <dxg:GridControl x:Name="PricesGridControl" AutoGenerateColumns="None" SelectionMode="Row" ItemsSource="{Binding PriceChanges}" ShowLoadingPanel="{Binding IsLoading}"  >
+            <dxg:GridControl.Resources>
+                <Style TargetType="dxg:TableView">
+                    <Setter Property="ColumnHeaderTemplate">
+                        <Setter.Value>
+                            <DataTemplate>
+                                <TextBlock TextWrapping="Wrap" Text="{Binding}"/>
+                            </DataTemplate>
+                        </Setter.Value>
+                    </Setter>
+                </Style>
+            </dxg:GridControl.Resources>
+            <dxg:GridControl.Columns>
+                <!--<dxg:GridColumn FieldName="Number" Header="№" ReadOnly="True" Width="50"/>-->
+                <dxg:GridColumn FieldName="Number" Header="№" ReadOnly="True" Width="40"/>
+                <!--<dxg:GridColumn FieldName="Articul" Header="Артикул" ReadOnly="True" Width="100"/>-->
+                <dxg:GridColumn FieldName="CatalogNumber" Header="Каталожный номер" ReadOnly="True" Width="100"/>
+                <dxg:GridColumn FieldName="IsDuplicate" Header="*" ReadOnly="True" Width="20">
+                    <dxg:GridColumn.DisplayTemplate>
+                        <ControlTemplate>
+                            <TextBlock Text="{Binding IsChecked, Converter={StaticResource BoolToStarConverter}}"></TextBlock>
+                            <!--, Converter={StaticResource BoolToStarConverter}-->
+                        </ControlTemplate>
+                    </dxg:GridColumn.DisplayTemplate>
+                </dxg:GridColumn>
+                <dxg:GridColumn FieldName="Gear_Name" Header="Название" ReadOnly="True" Width="200"/>
+                <dxg:GridColumn FieldName="Uom" Header="Единица изм." ReadOnly="True" Width="60"/>
+                <dxg:GridColumn FieldName="PreviewsPrice" Header="Оптовая цена" ReadOnly="True" Width="80">
+                </dxg:GridColumn>
+                <dxg:GridColumn FieldName="NewPrice" Header="Новая цена" ReadOnly="True" Width="80">
+                    <dxg:GridColumn.DisplayTemplate>
+                        <ControlTemplate>
+                            <Border>
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition/>
+                                        <ColumnDefinition Width="16"/>
+                                    </Grid.ColumnDefinitions>
+                                    <TextBlock Margin="0,0,4,0" HorizontalAlignment="Right" Text="{Binding DataContext.RowData.Row.NewPrice, RelativeSource={RelativeSource TemplatedParent}, StringFormat=N2}"/>
+                                    <Image  Grid.Column="1" Width="16" Height="16" Source="{Binding DataContext.RowData.Row, RelativeSource={RelativeSource TemplatedParent}, Converter={StaticResource PriceChangeToImageConverter}}">
+                                    </Image>
+                                </Grid>
+                            </Border>
+                        </ControlTemplate>
+                    </dxg:GridColumn.DisplayTemplate>
+                </dxg:GridColumn>
+            </dxg:GridControl.Columns>
+            <dxg:GridControl.View>
+                <dxg:TableView AllowGrouping="False" ShowGroupPanel="False" ShowAutoFilterRow="True" ShowTotalSummary="False" ShowSearchPanelMode="Always" AllowEditing="False" NavigationStyle="Row" SearchPanelHighlightResults="True" SearchPanelFindFilter="Contains"  SearchPanelCriteriaOperatorType="And" KeyDown="TableView_KeyDown" RowDoubleClick="TableView_RowDoubleClick"/>
+            </dxg:GridControl.View>
+        </dxg:GridControl>
+        <Grid HorizontalAlignment="Right" Width="310" Background="#FFFFF0D5" VerticalAlignment="Bottom" Height="122" Grid.Row="1">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="143"/>
+                <ColumnDefinition/>
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="16"/>
+                <RowDefinition Height="30"/>
+                <RowDefinition Height="37"/>
+                <RowDefinition Height="39"/>
+                <RowDefinition Height="0"/>
+            </Grid.RowDefinitions>
+            <TextBlock HorizontalAlignment="Left" Margin="10,6,0,0" Grid.Row="1" Grid.Column="0" TextWrapping="Wrap" Text="ПОДОРОЖАЛО:" VerticalAlignment="Top" FontSize="14" Height="20" Width="133"/>
+            <TextBlock HorizontalAlignment="Left" Margin="10,7,0,0" Grid.Row="2" Grid.Column="0" TextWrapping="Wrap" Text="ПОДЕШЕВЕЛО:" VerticalAlignment="Top" FontSize="14" Height="26" Width="117"/>
+            <TextBlock HorizontalAlignment="Left" Margin="10,6,0,0" Grid.Row="3" Grid.Column="0" TextWrapping="Wrap" Text="ИТОГО:" VerticalAlignment="Top" FontSize="14" Height="20" Width="94"/>
+            <TextBlock Grid.Column="1" HorizontalAlignment="Left" Margin="10,6,0,0" Grid.Row="1" TextWrapping="Wrap" Text="{Binding TotalUp, StringFormat=₸\{0:n2\}}" VerticalAlignment="Top" FontSize="14" Width="130" Height="20" FontWeight="Bold"/>
+            <TextBlock Grid.Column="1" HorizontalAlignment="Left" Margin="10,7,0,0" Grid.Row="2" TextWrapping="Wrap" Text="{Binding TotalDown, StringFormat=₸\{0:n2\}}" VerticalAlignment="Top" FontSize="14" Width="130" Height="26" FontWeight="Bold"/>
+            <TextBlock Grid.Column="1" HorizontalAlignment="Left" Margin="10,6,0,0" Grid.Row="3" TextWrapping="Wrap" Text="{Binding Total, StringFormat=₸\{0:n2\}}" VerticalAlignment="Top" FontSize="14" Width="130" Height="20" FontWeight="Bold"/>
+            <Path Grid.Column="1" Data="M187.333,87.6667 L295.671,87.6667" HorizontalAlignment="Left" Height="1.5" Margin="10,2.5,0,0" Grid.Row="3" Stretch="Fill" Stroke="Black" UseLayoutRounding="False" VerticalAlignment="Top" Width="130"/>
+        </Grid>
+
+    </Grid>
+</sdk:ChildWindow>

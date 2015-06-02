@@ -1,0 +1,72 @@
+﻿<navigation:Page 
+           xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" 
+           xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" 
+           xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+           xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+           xmlns:navigation="clr-namespace:System.Windows.Controls;assembly=System.Windows.Controls.Navigation"
+           xmlns:dxg="http://schemas.devexpress.com/winfx/2008/xaml/grid"
+           xmlns:dxe="http://schemas.devexpress.com/winfx/2008/xaml/editors"
+           xmlns:dxlc="http://schemas.devexpress.com/winfx/2008/xaml/layoutcontrol"
+           xmlns:sdk="http://schemas.microsoft.com/winfx/2006/xaml/presentation/sdk"
+           x:Class="StoreAppTest.Views.Debtors"
+           mc:Ignorable="d"
+           d:DesignWidth="1040" d:DesignHeight="480"
+           Title="DebtorsList Page" Loaded="Debtors_OnLoaded">
+    <Grid x:Name="LayoutRoot">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="204"/>
+            <ColumnDefinition/>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="40"/>
+            <RowDefinition/>
+        </Grid.RowDefinitions>
+        <dxg:LookUpEdit x:Name="CustomerLookUpEdit" Margin="517,0,10,0" VerticalAlignment="Top" AutoPopulateColumns="False" NullText="Поиск клиента" ItemsSource="{Binding CustomerList}" DisplayMember="Name" ValueMember="Name" Height="32" CausesValidation="True" SelectedItem="{Binding SelectedCustomer, Mode=TwoWay}" Grid.Column="1" FontSize="14">
+            <dxg:LookUpEdit.PopupContentTemplate>
+                <ControlTemplate>
+                    <dxg:GridControl x:Name="PART_GridControl" ItemsSource="{Binding CustomerList}" >
+                        <dxg:GridControl.Columns>
+                            <dxg:GridColumn FieldName="Name" Header="Название"/>
+                        </dxg:GridControl.Columns>
+                        <dxg:GridControl.View>
+                            <dxg:TableView AutoWidth="True"/>
+                        </dxg:GridControl.View>
+                    </dxg:GridControl>
+                </ControlTemplate>
+            </dxg:LookUpEdit.PopupContentTemplate>
+            <dxe:ButtonInfo GlyphKind="Cancel" Command="{Binding ClearCustomerCommand}"/>
+        </dxg:LookUpEdit>
+        <navigation:Frame x:Name="DebtorsFrame" Grid.Column="1" Grid.Row="1">
+        </navigation:Frame>
+
+        <dxlc:GroupBox Header="Операции" VerticalAlignment="Top" Height="208" Margin="0,0,8,0" Grid.Row="1">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="36"/>
+                    <RowDefinition Height="10"/>
+                    <RowDefinition Height="36"/>
+                    <RowDefinition Height="10"/>
+                    <RowDefinition Height="36"/>
+                    <RowDefinition Height="10"/>
+                    <RowDefinition Height="36"/>
+                    <RowDefinition Height="10"/>
+                    <RowDefinition Height="36"/>
+                    <RowDefinition Height="10"/>
+                    <RowDefinition Height="36"/>
+                    <RowDefinition Height="10"/>
+                    <RowDefinition/>
+                </Grid.RowDefinitions>
+                <Button VerticalAlignment="Top" Height="32" Command="{Binding ActListCommand}" Grid.Row="2" FontSize="14">
+                    <TextBlock Text="Акт сверки" TextWrapping="Wrap"/>
+                </Button>
+                <Button VerticalAlignment="Top" Height="32" Grid.Row="4" Command="{Binding AmortizationDebtorsListCommand}" Visibility="Collapsed">
+                    <TextBlock Text="Погашение долга" TextWrapping="Wrap"/>
+                </Button>
+                <Button Content="Список долгов" HorizontalAlignment="Left" VerticalAlignment="Top" Width="169" Height="32" Command="{Binding ShowDebtorsListCommand}" FontSize="14" >
+                </Button>
+
+            </Grid>
+        </dxlc:GroupBox>
+
+    </Grid>
+</navigation:Page>

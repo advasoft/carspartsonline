@@ -1,0 +1,661 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>9.0.30729</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{7F41B08E-73E1-4FD4-B10F-8941C38D33C8}</ProjectGuid>
+    <ProjectTypeGuids>{A1591282-1198-4647-A2B1-27E5FF5F6F3B};{fae04ec0-301f-11d3-bf4b-00c04f79efbc}</ProjectTypeGuids>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>StoreAppTest</RootNamespace>
+    <AssemblyName>StoreAppTest</AssemblyName>
+    <TargetFrameworkIdentifier>Silverlight</TargetFrameworkIdentifier>
+    <TargetFrameworkVersion>v5.0</TargetFrameworkVersion>
+    <SilverlightVersion>$(TargetFrameworkVersion)</SilverlightVersion>
+    <SilverlightApplication>true</SilverlightApplication>
+    <SupportedCultures>
+    </SupportedCultures>
+    <XapOutputs>true</XapOutputs>
+    <GenerateSilverlightManifest>true</GenerateSilverlightManifest>
+    <XapFilename>StoreAppTest.xap</XapFilename>
+    <SilverlightManifestTemplate>Properties\AppManifest.xml</SilverlightManifestTemplate>
+    <SilverlightAppEntry>StoreAppTest.App</SilverlightAppEntry>
+    <TestPageFileName>StoreAppTestTestPage.html</TestPageFileName>
+    <CreateTestPage>true</CreateTestPage>
+    <ValidateXaml>true</ValidateXaml>
+    <EnableOutOfBrowser>true</EnableOutOfBrowser>
+    <OutOfBrowserSettingsFile>Properties\OutOfBrowserSettings.xml</OutOfBrowserSettingsFile>
+    <UsePlatformExtensions>false</UsePlatformExtensions>
+    <ThrowErrorsInValidation>true</ThrowErrorsInValidation>
+    <LinkedOpenRiaServerProject>..\StoreAppTest.Web\StoreAppTest.Web.csproj</LinkedOpenRiaServerProject>
+    <ExpressionBlendVersion>12.0.51020.0</ExpressionBlendVersion>
+    <LinkedOpenRiaServerProject>..\StoreAppTest.Web\StoreAppTest.Web.csproj</LinkedOpenRiaServerProject>
+    <NuGetPackageImportStamp>7d437b45</NuGetPackageImportStamp>
+    <InBrowserSettingsFile>Properties\InBrowserSettings.xml</InBrowserSettingsFile>
+    <RequireInBrowserElevation>true</RequireInBrowserElevation>
+  </PropertyGroup>
+  <!-- This property group is only here to support building this project using the 
+       MSBuild 3.5 toolset. In order to work correctly with this older toolset, it needs 
+       to set the TargetFrameworkVersion to v3.5 -->
+  <PropertyGroup Condition="'$(MSBuildToolsVersion)' == '3.5'">
+    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>Bin\Debug</OutputPath>
+    <DefineConstants>DEBUG;TRACE;SILVERLIGHT</DefineConstants>
+    <NoStdLib>true</NoStdLib>
+    <NoConfig>true</NoConfig>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>Bin\Release</OutputPath>
+    <DefineConstants>TRACE;SILVERLIGHT</DefineConstants>
+    <NoStdLib>true</NoStdLib>
+    <NoConfig>true</NoConfig>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup>
+    <SignManifests>false</SignManifests>
+  </PropertyGroup>
+  <PropertyGroup>
+    <SignAssembly>false</SignAssembly>
+  </PropertyGroup>
+  <PropertyGroup>
+    <AssemblyOriginatorKeyFile>StoreAppKey.snk</AssemblyOriginatorKeyFile>
+  </PropertyGroup>
+  <PropertyGroup>
+    <ManifestCertificateThumbprint>FFE25A6BCB46F051F12A6154E07F95878F1213DF</ManifestCertificateThumbprint>
+  </PropertyGroup>
+  <PropertyGroup>
+    <ManifestKeyFile>StoreAppTest_TemporaryKey.pfx</ManifestKeyFile>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="advasoft.sltools.menu">
+      <HintPath>..\..\advasoft.sltools\advasoft.sltools.menu\Bin\Release\advasoft.sltools.menu.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.Charts.v13.1.Core, Version=13.1.4.5, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL" />
+    <Reference Include="DevExpress.Data.v13.1, Version=13.1.4.5, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL" />
+    <Reference Include="DevExpress.Printing.v13.1.Core, Version=13.1.4.5, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL" />
+    <Reference Include="DevExpress.Xpf.Charts.v13.1, Version=13.1.4.5, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL" />
+    <Reference Include="DevExpress.Xpf.Controls.v13.1, Version=13.1.4.5, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL" />
+    <Reference Include="DevExpress.Xpf.Core.v13.1, Version=13.1.4.5, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL" />
+    <Reference Include="DevExpress.Xpf.Grid.v13.1, Version=13.1.4.5, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL" />
+    <Reference Include="DevExpress.Xpf.Grid.v13.1.Core, Version=13.1.4.5, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL" />
+    <Reference Include="DevExpress.Xpf.LayoutControl.v13.1, Version=13.1.4.5, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL" />
+    <Reference Include="DevExpress.Xpf.Printing.v13.1, Version=13.1.4.5, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL" />
+    <Reference Include="GalaSoft.MvvmLight">
+      <HintPath>..\packages\MvvmLightLibs.5.1.1.0\lib\SL5\GalaSoft.MvvmLight.dll</HintPath>
+    </Reference>
+    <Reference Include="GalaSoft.MvvmLight.Extras">
+      <HintPath>..\packages\MvvmLightLibs.5.1.1.0\lib\SL5\GalaSoft.MvvmLight.Extras.dll</HintPath>
+    </Reference>
+    <Reference Include="Kent.Boogaart.HelperTrinity">
+      <HintPath>..\packages\Kent.Boogaart.HelperTrinity.1.5.3\lib\sl50\Kent.Boogaart.HelperTrinity.dll</HintPath>
+    </Reference>
+    <Reference Include="Kent.Boogaart.KBCsv">
+      <HintPath>..\packages\Kent.Boogaart.KBCsv.2.0.2\lib\sl50\Kent.Boogaart.KBCsv.dll</HintPath>
+    </Reference>
+    <Reference Include="Kent.Boogaart.KBCsv.Extensions">
+      <HintPath>..\packages\Kent.Boogaart.KBCsv.Extensions.2.0.2\lib\sl50\Kent.Boogaart.KBCsv.Extensions.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.CSharp, Version=5.0.5.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
+    <Reference Include="Microsoft.Data.Edm.SL">
+      <HintPath>..\packages\Microsoft.Data.Edm.5.6.0\lib\sl4\Microsoft.Data.Edm.SL.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Data.OData.SL">
+      <HintPath>..\packages\Microsoft.Data.OData.5.6.0\lib\sl4\Microsoft.Data.OData.SL.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Data.Services.Client.SL">
+      <HintPath>..\packages\Microsoft.Data.Services.Client.5.6.0\lib\sl4\Microsoft.Data.Services.Client.SL.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Practices.Prism.PubSubEvents">
+      <HintPath>..\packages\Prism.PubSubEvents.1.1.2\lib\portable-sl5+windowsphone8+windows8+net40+wpa81\Microsoft.Practices.Prism.PubSubEvents.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Practices.ServiceLocation, Version=1.3.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\CommonServiceLocator.1.3\lib\portable-net4+sl5+netcore45+wpa81+wp8\Microsoft.Practices.ServiceLocation.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Practices.Unity.Silverlight, Version=2.1.505.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Unity.2.1.505.2\lib\SL30\Microsoft.Practices.Unity.Silverlight.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Threading.Tasks">
+      <HintPath>..\packages\Microsoft.Bcl.Async.1.0.16\lib\sl4\Microsoft.Threading.Tasks.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Threading.Tasks.Extensions">
+      <HintPath>..\packages\Microsoft.Bcl.Async.1.0.16\lib\sl4\Microsoft.Threading.Tasks.Extensions.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Threading.Tasks.Extensions.Silverlight">
+      <HintPath>..\packages\Microsoft.Bcl.Async.1.0.16\lib\sl4\Microsoft.Threading.Tasks.Extensions.Silverlight.dll</HintPath>
+    </Reference>
+    <Reference Include="mscorlib" />
+    <Reference Include="MSPToolkit, Version=2.6.7.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>Libs\MSPToolkit.dll</HintPath>
+    </Reference>
+    <Reference Include="Newtonsoft.Json">
+      <HintPath>..\packages\Newtonsoft.Json.6.0.8\lib\portable-net40+sl5+wp80+win8+wpa81\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="System.ComponentModel.DataAnnotations, Version=5.0.5.0, Culture=neutral, PublicKeyToken=ddd0da4d3e678217, processorArchitecture=MSIL" />
+    <Reference Include="System.IO">
+      <HintPath>..\packages\Microsoft.Bcl.1.1.7\lib\sl5\System.IO.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Runtime">
+      <HintPath>..\packages\Microsoft.Bcl.1.1.7\lib\sl5\System.Runtime.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.ServiceModel" />
+    <Reference Include="System.ServiceModel.Web" />
+    <Reference Include="System.ServiceModel.Web.Extensions, Version=5.0.5.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
+    <Reference Include="System.Spatial.SL">
+      <HintPath>..\packages\System.Spatial.5.6.0\lib\sl4\System.Spatial.SL.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Threading.Tasks">
+      <HintPath>..\packages\Microsoft.Bcl.1.1.7\lib\sl5\System.Threading.Tasks.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Windows" />
+    <Reference Include="system" />
+    <Reference Include="System.Core">
+      <HintPath>$(TargetFrameworkDirectory)System.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Net" />
+    <Reference Include="System.Windows.Controls.Data" />
+    <Reference Include="System.Windows.Controls.Data.Input" />
+    <Reference Include="System.Windows.Controls.DataVisualization.Toolkit">
+      <HintPath>..\packages\SilverlightToolkit-DataViz.4.2010.4\lib\sl4\System.Windows.Controls.DataVisualization.Toolkit.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Windows.Controls.Toolkit">
+      <HintPath>..\packages\SilverlightToolkit-Core.4.2010.4\lib\sl4\System.Windows.Controls.Toolkit.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Windows.Data" />
+    <Reference Include="System.Windows.Interactivity, Version=5.0.5.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\MvvmLightLibs.5.1.1.0\lib\SL5\System.Windows.Interactivity.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Xml" />
+    <Reference Include="System.Windows.Browser" />
+    <Reference Include="System.Windows.Controls" />
+    <Reference Include="System.Windows.Controls.Navigation" />
+    <Reference Include="System.Xml.Linq, Version=5.0.5.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="App.xaml.cs">
+      <DependentUpon>App.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Client\RemaindersClient.cs" />
+    <Compile Include="Controls\AcceptIncomeControl.xaml.cs">
+      <DependentUpon>AcceptIncomeControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\ExtendedGrid.cs" />
+    <Compile Include="Controls\InputDebtDischarge.xaml.cs">
+      <DependentUpon>InputDebtDischarge.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\MessageChildWindow.xaml.cs">
+      <DependentUpon>MessageChildWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\AskChildWindow.xaml.cs">
+      <DependentUpon>AskChildWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\ClosableTabItem.xaml.cs">
+      <DependentUpon>ClosableTabItem.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\PriceItemEditControl.xaml.cs">
+      <DependentUpon>PriceItemEditControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\PriceLoadingControl.xaml.cs">
+      <DependentUpon>PriceLoadingControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\RemaindersEditControl.xaml.cs">
+      <DependentUpon>RemaindersEditControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\PriceChangesReportControl.xaml.cs">
+      <DependentUpon>PriceChangesReportControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\SelectPriceControl.xaml.cs">
+      <DependentUpon>SelectPriceControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\UserChangePasswordControl.xaml.cs">
+      <DependentUpon>UserChangePasswordControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\WarehouseEditControl.xaml.cs">
+      <DependentUpon>WarehouseEditControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\UserEditControl.xaml.cs">
+      <DependentUpon>UserEditControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Convertors\BoolToBoolReverseConverter.cs" />
+    <Compile Include="Convertors\BoolToVisibilityReverseConverter.cs" />
+    <Compile Include="Convertors\DebtStatusToColorConverter.cs" />
+    <Compile Include="Event\NewWarehouseTransferRequestAdded.cs" />
+    <Compile Include="Event\NewWarehouseTransferRequestNeedEvent.cs" />
+    <Compile Include="Event\WarehouseTransferReceivedRequestEvent.cs" />
+    <Compile Include="Event\WarehouseTransferRequestItemChangedEvent.cs" />
+    <Compile Include="Event\WarehouseTransferSendedRequestEvent.cs" />
+    <Compile Include="Print\RealizationPerDayReportControl.xaml.cs">
+      <DependentUpon>RealizationPerDayReportControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Print\SalesDocumentReportControl.xaml.cs">
+      <DependentUpon>SalesDocumentReportControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Print\RefundDocumentReportControl.xaml.cs">
+      <DependentUpon>RefundDocumentReportControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Print\IncomeDocumentReportControl.xaml.cs">
+      <DependentUpon>IncomeDocumentReportControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Print\PriceChangeReportControl.xaml.cs">
+      <DependentUpon>PriceChangeReportControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Print\WarehouseRequestReportControl.xaml.cs">
+      <DependentUpon>WarehouseRequestReportControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Utilities\DateTimeHelper.cs" />
+    <Compile Include="ViewModels\Tasks\RemaindersWarehouseAmountViewModel.cs" />
+    <Compile Include="ViewModels\Tasks\WarehouseTransferRequestViewModel.cs" />
+    <Compile Include="Views\Tasks\RemaindersWarehouseAmountView.xaml.cs">
+      <DependentUpon>RemaindersWarehouseAmountView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Tasks\WarehouseTransferRequestPage.xaml.cs">
+      <DependentUpon>WarehouseTransferRequestPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Convertors\AdminVisibilityConverter.cs" />
+    <Compile Include="Convertors\BoolToStarConverter.cs" />
+    <Compile Include="Convertors\BoolToVisibilityConverter.cs" />
+    <Compile Include="Convertors\IncomeStatusToColorConverter.cs" />
+    <Compile Include="Convertors\PriceChangeToImageConverter.cs" />
+    <Compile Include="Convertors\ReceiptNameConverter.cs" />
+    <Compile Include="Event\ChangeRemaindersEvent.cs" />
+    <Compile Include="Event\CloseViewNeedEvent.cs" />
+    <Compile Include="Event\DebtorSelectedCustomerEvent.cs" />
+    <Compile Include="Event\EditPriceItemEvent.cs" />
+    <Compile Include="Event\NewIncomeAddedEvent.cs" />
+    <Compile Include="Event\NewIncomeNeedEvent.cs" />
+    <Compile Include="Event\NewPriceChangeReportNeedEvent.cs" />
+    <Compile Include="Event\NewPriceItemAddEvent.cs" />
+    <Compile Include="Event\NewPriceListLoadedEvent.cs" />
+    <Compile Include="Event\NewReceiptNeedEvent.cs" />
+    <Compile Include="Event\NewRealizationNeedEvent.cs" />
+    <Compile Include="Event\NewRefundNeedEvent.cs" />
+    <Compile Include="Event\RemovePriceItemEvent.cs" />
+    <Compile Include="Event\RequestCloseTabEvent.cs" />
+    <Compile Include="Event\ShowDebtorsEvent.cs" />
+    <Compile Include="LoginPage.xaml.cs">
+      <DependentUpon>LoginPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Model\AcceptIncomeModel.cs" />
+    <Compile Include="Model\DebtItem.cs" />
+    <Compile Include="Model\DebtRemainderItem.cs" />
+    <Compile Include="Model\EditRemainders.cs" />
+    <Compile Include="Model\LookupSalesDocumentModel.cs" />
+    <Compile Include="Model\Notified.cs" />
+    <Compile Include="Model\Price.cs" />
+    <Compile Include="Model\PriceChangeReportItem.cs" />
+    <Compile Include="Model\PriceItem.cs" />
+    <Compile Include="Model\PriceItemEditModel.cs" />
+    <Compile Include="Model\Receipt.cs" />
+    <Compile Include="Model\IncomeItem.cs" />
+    <Compile Include="Model\Refund.cs" />
+    <Compile Include="Model\RefundItem.cs" />
+    <Compile Include="Model\ReceiptItem.cs" />
+    <Compile Include="Model\RealizationItem.cs" />
+    <Compile Include="Model\RemaindersItem.cs" />
+    <Compile Include="Model\SalesDayChartItem.cs" />
+    <Compile Include="Model\SelectPriceControlViewModel.cs" />
+    <Compile Include="Model\UserModel.cs" />
+    <Compile Include="Properties\Annotations.cs" />
+    <Compile Include="Service References\StoreAppDataService\Reference.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Reference.datasvcmap</DependentUpon>
+    </Compile>
+    <Compile Include="Utilities\BindingUtil.cs" />
+    <Compile Include="Utilities\CustomTypeHelperT.cs" />
+    <Compile Include="Utilities\DataServiceUtility.cs" />
+    <Compile Include="Utilities\MultiBinding.cs" />
+    <Compile Include="Utilities\MultiBindings.cs" />
+    <Compile Include="Utilities\PriceListLoader.cs" />
+    <Compile Include="Utilities\UICommand.cs" />
+    <Compile Include="Utilities\UnZipper.cs" />
+    <Compile Include="Utilities\XLSXReader.cs" />
+    <Compile Include="ViewModels\TasksViewModel.cs" />
+    <Compile Include="ViewModels\Tasks\ActDebtorsViewModel.cs" />
+    <Compile Include="ViewModels\Tasks\AdminPanelViewModel.cs" />
+    <Compile Include="ViewModels\Tasks\DebtorListViewModel.cs" />
+    <Compile Include="ViewModels\Tasks\DebtorsViewModel.cs" />
+    <Compile Include="ViewModels\Tasks\IncomesViewModel.cs" />
+    <Compile Include="ViewModels\Tasks\IncomeViewModell.cs" />
+    <Compile Include="ViewModels\Tasks\PriceChangeReportsViewModel.cs" />
+    <Compile Include="ViewModels\Tasks\PriceChangeReportViewModel.cs" />
+    <Compile Include="ViewModels\Tasks\PriceChangesReportsItemViewModel.cs" />
+    <Compile Include="ViewModels\Tasks\PricesViewModel.cs" />
+    <Compile Include="ViewModels\Tasks\RefundViewModel.cs" />
+    <Compile Include="ViewModels\Tasks\ReceiptViewModel.cs" />
+    <Compile Include="ViewModels\Tasks\RealizationPerDayViewModel.cs" />
+    <Compile Include="ViewModels\Tasks\RemaindersViewModel.cs" />
+    <Compile Include="ViewModels\Tasks\WarehouseTransferRequestsViewModel.cs" />
+    <Compile Include="ViewModels\ViewModelBase.cs" />
+    <Compile Include="Views\ErrorWindow.xaml.cs">
+      <DependentUpon>ErrorWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Tasks.xaml.cs">
+      <DependentUpon>Tasks.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Home.xaml.cs">
+      <DependentUpon>Home.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="MainPage.xaml.cs">
+      <DependentUpon>MainPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Views\Tasks\ActDeborsPage.xaml.cs">
+      <DependentUpon>ActDeborsPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Tasks\AdminPanelPage.xaml.cs">
+      <DependentUpon>AdminPanelPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Tasks\PriceChangeReport.xaml.cs">
+      <DependentUpon>PriceChangeReport.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Tasks\PriceChangeReportsPage.xaml.cs">
+      <DependentUpon>PriceChangeReportsPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Tasks\SupplierDetails.xaml.cs">
+      <DependentUpon>SupplierDetails.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Tasks\CustomerDetails.xaml.cs">
+      <DependentUpon>CustomerDetails.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Tasks\Debtors.xaml.cs">
+      <DependentUpon>Debtors.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Tasks\DebtorsListPage.xaml.cs">
+      <DependentUpon>DebtorsListPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Tasks\IncomesPage.xaml.cs">
+      <DependentUpon>IncomesPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Tasks\IncomPage.xaml.cs">
+      <DependentUpon>IncomPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Tasks\Prices.xaml.cs">
+      <DependentUpon>Prices.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Tasks\Refund.xaml.cs">
+      <DependentUpon>Refund.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Tasks\Receipt.xaml.cs">
+      <DependentUpon>Receipt.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Tasks\RealizationPerDay.xaml.cs">
+      <DependentUpon>RealizationPerDay.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Tasks\Remainders.xaml.cs">
+      <DependentUpon>Remainders.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Tasks\WarehouseTransferRequestsPage.xaml.cs">
+      <DependentUpon>WarehouseTransferRequestsPage.xaml</DependentUpon>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <ApplicationDefinition Include="App.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </ApplicationDefinition>
+    <Page Include="Controls\AcceptIncomeControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\InputDebtDischarge.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\MessageChildWindow.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Controls\AskChildWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\ClosableTabItem.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\PriceItemEditControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\PriceLoadingControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\RemaindersEditControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\PriceChangesReportControl.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Controls\SelectPriceControl.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Controls\UserChangePasswordControl.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Controls\WarehouseEditControl.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Controls\UserEditControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Print\RealizationPerDayReportControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Print\SalesDocumentReportControl.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Print\RefundDocumentReportControl.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Print\IncomeDocumentReportControl.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Print\PriceChangeReportControl.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Print\WarehouseRequestReportControl.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Views\Tasks\RemaindersWarehouseAmountView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\Tasks\WarehouseTransferRequestPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="LoginPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\Tasks\ActDeborsPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\Tasks\AdminPanelPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\Tasks\PriceChangeReport.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Views\Tasks\PriceChangeReportsPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\Tasks\SupplierDetails.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Views\Tasks\CustomerDetails.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\Tasks\Debtors.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\Tasks\DebtorsListPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\Tasks\IncomesPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\Tasks\IncomPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\Tasks\Prices.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\Tasks\Refund.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Views\Tasks\Receipt.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Views\Tasks\RealizationPerDay.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\Tasks\Remainders.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\Tasks\WarehouseTransferRequestsPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Resource Include="Assets\Styles.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Resource>
+    <Page Include="Views\ErrorWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\Tasks.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\Home.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="MainPage.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="App.config" />
+    <None Include="packages.config" />
+    <None Include="Properties\AppManifest.xml" />
+    <None Include="Service References\StoreAppDataService\service.edmx" />
+    <None Include="StoreAppKey.snk" />
+    <None Include="StoreAppTest_TemporaryKey.pfx" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Assets\Images\1430908788_cross-button.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Assets\Images\1430908782_list-remove.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <WCFMetadata Include="Service References\" />
+  </ItemGroup>
+  <ItemGroup>
+    <ServiceReferenceMetadataStorage Include="Service References\StoreAppDataService\">
+      <Type>datasvcmap</Type>
+    </ServiceReferenceMetadataStorage>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Service References\StoreAppDataService\Reference.datasvcmap">
+      <Generator>DataServicesCoreClientGenerator</Generator>
+      <LastGenOutput>Reference.cs</LastGenOutput>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Properties\OutOfBrowserSettings.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Properties\InBrowserSettings.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Assets\Images\1431340086_TowTruckYellow.png" />
+    <Resource Include="Assets\Images\1431340105_car.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Assets\Images\1431713160_678092-sign-add-48.png" />
+    <Resource Include="Assets\Images\1431713171_678134-sign-check-48.png" />
+    <Resource Include="Assets\Images\1431713178_678069-sign-error-48.png" />
+    <Resource Include="Assets\Images\1431713213_floppy-48.png" />
+    <Resource Include="Assets\Images\1431713238_pencil-48.png" />
+    <Resource Include="Assets\Images\1431716532_678075-sign-ban-48.png" />
+    <Resource Include="Assets\Images\1431716761_file-excel-alt-48.png" />
+    <Resource Include="Assets\Images\1431716900_678115-lock-open-48.png" />
+    <Resource Include="Assets\Images\1431801196_search-48.png" />
+    <Resource Include="Assets\Images\1431889161_Down.png" />
+    <Resource Include="Assets\Images\1431889171_Up.png" />
+    <Resource Include="Assets\Images\1431924800_floppy-48.png" />
+    <Resource Include="Assets\Images\1431932023_647403-email-48.png" />
+    <Content Include="Libs\MSPToolkit.dll">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+  <ItemGroup />
+  <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Silverlight\$(SilverlightVersion)\Microsoft.Silverlight.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+  <ProjectExtensions>
+    <VisualStudio>
+      <FlavorProperties GUID="{A1591282-1198-4647-A2B1-27E5FF5F6F3B}">
+        <SilverlightProjectProperties />
+      </FlavorProperties>
+    </VisualStudio>
+  </ProjectExtensions>
+  <Import Project="..\packages\Microsoft.Bcl.Build.1.0.14\tools\Microsoft.Bcl.Build.targets" Condition="Exists('..\packages\Microsoft.Bcl.Build.1.0.14\tools\Microsoft.Bcl.Build.targets')" />
+  <Target Name="EnsureBclBuildImported" BeforeTargets="BeforeBuild" Condition="'$(BclBuildImported)' == ''">
+    <Error Condition="!Exists('..\packages\Microsoft.Bcl.Build.1.0.14\tools\Microsoft.Bcl.Build.targets')" Text="This project references NuGet package(s) that are missing on this computer. Enable NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=317567." HelpKeyword="BCLBUILD2001" />
+    <Error Condition="Exists('..\packages\Microsoft.Bcl.Build.1.0.14\tools\Microsoft.Bcl.Build.targets')" Text="The build restored NuGet packages. Build the project again to include these packages in the build. For more information, see http://go.microsoft.com/fwlink/?LinkID=317568." HelpKeyword="BCLBUILD2002" />
+  </Target>
+</Project>

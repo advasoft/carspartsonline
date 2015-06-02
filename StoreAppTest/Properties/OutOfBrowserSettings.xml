@@ -1,0 +1,15 @@
+<OutOfBrowserSettings ShortName="Автозапчасти ONLINE" EnableGPUAcceleration="True" ShowInstallMenuItem="True">
+  <OutOfBrowserSettings.Blurb>Учет продаж автозапчастей</OutOfBrowserSettings.Blurb>
+  <OutOfBrowserSettings.WindowSettings>
+    <WindowSettings Title="Автозапчасти ONLINE" />
+  </OutOfBrowserSettings.WindowSettings>
+  <OutOfBrowserSettings.SecuritySettings>
+    <SecuritySettings ElevatedPermissions="Required" />
+  </OutOfBrowserSettings.SecuritySettings>
+  <OutOfBrowserSettings.Icons>
+    <Icon Size="16,16">Assets/Images/1431340105_car.png</Icon>
+    <Icon Size="32,32">Assets/Images/1431340105_car.png</Icon>
+    <Icon Size="48,48">Assets/Images/1431340105_car.png</Icon>
+    <Icon Size="128,128">Assets/Images/1431340105_car.png</Icon>
+  </OutOfBrowserSettings.Icons>
+</OutOfBrowserSettings>

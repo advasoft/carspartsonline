@@ -1,0 +1,1292 @@
+﻿<edmx:Edmx Version="1.0" xmlns:edmx="http://schemas.microsoft.com/ado/2007/06/edmx">
+  <edmx:DataServices m:DataServiceVersion="1.0" m:MaxDataServiceVersion="3.0" xmlns:m="http://schemas.microsoft.com/ado/2007/08/dataservices/metadata">
+    <Schema Namespace="StoreAppTest.Web.DataModel" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+      <EntityType Name="Customer">
+        <Key>
+          <PropertyRef Name="Name" />
+        </Key>
+        <Property Name="Name" Type="Edm.String" Nullable="false" MaxLength="255" FixedLength="false" Unicode="true" />
+        <Property Name="Creator_Id" Type="Edm.String" Nullable="false" MaxLength="255" FixedLength="false" Unicode="true" />
+        <NavigationProperty Name="Creator" Relationship="StoreAppTest.Web.DataModel.Customer_Creator" ToRole="Customer_Creator_Target" FromRole="Customer_Creator_Source" />
+      </EntityType>
+      <EntityType Name="User">
+        <Key>
+          <PropertyRef Name="UserName" />
+        </Key>
+        <Property Name="UserName" Type="Edm.String" Nullable="false" MaxLength="255" FixedLength="false" Unicode="true" />
+        <Property Name="DisplayName" Type="Edm.String" MaxLength="255" FixedLength="false" Unicode="true" />
+        <Property Name="Warehouse_Id" Type="Edm.String" MaxLength="255" FixedLength="false" Unicode="true" />
+        <Property Name="PasswordHash" Type="Edm.Binary" MaxLength="Max" FixedLength="false" />
+        <Property Name="IsSupplierVisible" Type="Edm.Boolean" Nullable="false" />
+        <NavigationProperty Name="Roles" Relationship="StoreAppTest.Web.DataModel.User_Roles" ToRole="User_Roles_Target" FromRole="User_Roles_Source" />
+        <NavigationProperty Name="Warehouse" Relationship="StoreAppTest.Web.DataModel.User_Warehouse" ToRole="User_Warehouse_Target" FromRole="User_Warehouse_Source" />
+      </EntityType>
+      <EntityType Name="Role">
+        <Key>
+          <PropertyRef Name="RoleName" />
+        </Key>
+        <Property Name="RoleName" Type="Edm.String" Nullable="false" MaxLength="255" FixedLength="false" Unicode="true" />
+        <NavigationProperty Name="Users" Relationship="StoreAppTest.Web.DataModel.User_Roles" ToRole="User_Roles_Source" FromRole="User_Roles_Target" />
+      </EntityType>
+      <EntityType Name="Warehouse">
+        <Key>
+          <PropertyRef Name="Name" />
+        </Key>
+        <Property Name="Name" Type="Edm.String" Nullable="false" MaxLength="255" FixedLength="false" Unicode="true" />
+      </EntityType>
+      <EntityType Name="DebtDischargeDocument">
+        <Key>
+          <PropertyRef Name="Id" />
+        </Key>
+        <Property Name="Id" Type="Edm.Int64" Nullable="false" p6:StoreGeneratedPattern="Identity" xmlns:p6="http://schemas.microsoft.com/ado/2009/02/edm/annotation" />
+        <Property Name="DischargeDate" Type="Edm.DateTime" Nullable="false" />
+        <Property Name="Debtor_Id" Type="Edm.String" Nullable="false" MaxLength="255" FixedLength="false" Unicode="true" />
+        <Property Name="Amount" Type="Edm.Decimal" Nullable="false" Precision="18" Scale="2" />
+        <Property Name="Creator_Id" Type="Edm.String" Nullable="false" MaxLength="255" FixedLength="false" Unicode="true" />
+        <Property Name="IsDischarge" Type="Edm.Boolean" Nullable="false" />
+        <NavigationProperty Name="Creator" Relationship="StoreAppTest.Web.DataModel.DebtDischargeDocument_Creator" ToRole="DebtDischargeDocument_Creator_Target" FromRole="DebtDischargeDocument_Creator_Source" />
+        <NavigationProperty Name="Debtor" Relationship="StoreAppTest.Web.DataModel.DebtDischargeDocument_Debtor" ToRole="DebtDischargeDocument_Debtor_Target" FromRole="DebtDischargeDocument_Debtor_Source" />
+      </EntityType>
+      <EntityType Name="GearCategory">
+        <Key>
+          <PropertyRef Name="Name" />
+        </Key>
+        <Property Name="Name" Type="Edm.String" Nullable="false" MaxLength="255" FixedLength="false" Unicode="true" />
+        <NavigationProperty Name="Gears" Relationship="StoreAppTest.Web.DataModel.GearCategory_Gears" ToRole="GearCategory_Gears_Target" FromRole="GearCategory_Gears_Source" />
+      </EntityType>
+      <EntityType Name="Gear">
+        <Key>
+          <PropertyRef Name="Id" />
+        </Key>
+        <Property Name="Id" Type="Edm.Int64" Nullable="false" p6:StoreGeneratedPattern="Identity" xmlns:p6="http://schemas.microsoft.com/ado/2009/02/edm/annotation" />
+        <Property Name="CatalogNumber" Type="Edm.String" MaxLength="255" FixedLength="false" Unicode="true" />
+        <Property Name="Name" Type="Edm.String" Nullable="false" MaxLength="500" FixedLength="false" Unicode="true" />
+        <Property Name="Articul" Type="Edm.String" MaxLength="255" FixedLength="false" Unicode="true" />
+        <Property Name="IsDuplicate" Type="Edm.Boolean" Nullable="false" />
+        <Property Name="Category_Id" Type="Edm.String" Nullable="false" MaxLength="255" FixedLength="false" Unicode="true" />
+        <Property Name="RecommendedRemainder" Type="Edm.Decimal" Nullable="false" Precision="18" Scale="2" />
+        <Property Name="LowerLimitRemainder" Type="Edm.Decimal" Nullable="false" Precision="18" Scale="2" />
+        <Property Name="Image_Id" Type="Edm.Int64" />
+        <NavigationProperty Name="GearCategory" Relationship="StoreAppTest.Web.DataModel.GearCategory_Gears" ToRole="GearCategory_Gears_Source" FromRole="GearCategory_Gears_Target" />
+        <NavigationProperty Name="Image" Relationship="StoreAppTest.Web.DataModel.Gear_Image" ToRole="Gear_Image_Target" FromRole="Gear_Image_Source" />
+      </EntityType>
+      <EntityType Name="Resource">
+        <Key>
+          <PropertyRef Name="Id" />
+        </Key>
+        <Property Name="Id" Type="Edm.Int64" Nullable="false" p6:StoreGeneratedPattern="Identity" xmlns:p6="http://schemas.microsoft.com/ado/2009/02/edm/annotation" />
+        <Property Name="ResourceData" Type="Edm.Binary" MaxLength="Max" FixedLength="false" />
+      </EntityType>
+      <EntityType Name="GearNew">
+        <Key>
+          <PropertyRef Name="Id" />
+        </Key>
+        <Property Name="Id" Type="Edm.Int64" Nullable="false" p6:StoreGeneratedPattern="Identity" xmlns:p6="http://schemas.microsoft.com/ado/2009/02/edm/annotation" />
+        <Property Name="CreatedDate" Type="Edm.DateTime" Nullable="false" />
+        <Property Name="Gear_Id" Type="Edm.Int64" Nullable="false" />
+        <NavigationProperty Name="Gear" Relationship="StoreAppTest.Web.DataModel.GearNew_Gear" ToRole="GearNew_Gear_Target" FromRole="GearNew_Gear_Source" />
+      </EntityType>
+      <EntityType Name="IncomeItem">
+        <Key>
+          <PropertyRef Name="Id" />
+        </Key>
+        <Property Name="Id" Type="Edm.Int64" Nullable="false" p6:StoreGeneratedPattern="Identity" xmlns:p6="http://schemas.microsoft.com/ado/2009/02/edm/annotation" />
+        <Property Name="PriceItem_Id" Type="Edm.Int64" Nullable="false" />
+        <Property Name="Amount" Type="Edm.Decimal" Nullable="false" Precision="18" Scale="2" />
+        <Property Name="NewPrice" Type="Edm.Decimal" Nullable="false" Precision="18" Scale="2" />
+        <Property Name="BuyPriceRur" Type="Edm.Decimal" Nullable="false" Precision="18" Scale="2" />
+        <Property Name="BuyPriceTng" Type="Edm.Decimal" Nullable="false" Precision="18" Scale="2" />
+        <Property Name="Income_Id" Type="Edm.Int64" Nullable="false" />
+        <NavigationProperty Name="Income" Relationship="StoreAppTest.Web.DataModel.Income_IncomeItems" ToRole="Income_IncomeItems_Source" FromRole="Income_IncomeItems_Target" />
+        <NavigationProperty Name="PriceItem" Relationship="StoreAppTest.Web.DataModel.IncomeItem_PriceItem" ToRole="IncomeItem_PriceItem_Target" FromRole="IncomeItem_PriceItem_Source" />
+      </EntityType>
+      <EntityType Name="Income">
+        <Key>
+          <PropertyRef Name="Id" />
+        </Key>
+        <Property Name="Id" Type="Edm.Int64" Nullable="false" p6:StoreGeneratedPattern="Identity" xmlns:p6="http://schemas.microsoft.com/ado/2009/02/edm/annotation" />
+        <Property Name="IncomeNumber" Type="Edm.String" Nullable="false" MaxLength="255" FixedLength="false" Unicode="true" />
+        <Property Name="IncomeDate" Type="Edm.DateTime" Nullable="false" />
+        <Property Name="IsAccept" Type="Edm.Boolean" Nullable="false" />
+        <Property Name="AcceptedDate" Type="Edm.DateTime" />
+        <Property Name="Supplier_Id" Type="Edm.String" Nullable="false" MaxLength="255" FixedLength="false" Unicode="true" />
+        <Property Name="Creator_Id" Type="Edm.String" Nullable="false" MaxLength="255" FixedLength="false" Unicode="true" />
+        <Property Name="Accepter_Id" Type="Edm.String" MaxLength="255" FixedLength="false" Unicode="true" />
+        <NavigationProperty Name="Accepter" Relationship="StoreAppTest.Web.DataModel.Income_Accepter" ToRole="Income_Accepter_Target" FromRole="Income_Accepter_Source" />
+        <NavigationProperty Name="Creator" Relationship="StoreAppTest.Web.DataModel.Income_Creator" ToRole="Income_Creator_Target" FromRole="Income_Creator_Source" />
+        <NavigationProperty Name="IncomeItems" Relationship="StoreAppTest.Web.DataModel.Income_IncomeItems" ToRole="Income_IncomeItems_Target" FromRole="Income_IncomeItems_Source" />
+        <NavigationProperty Name="Supplier" Relationship="StoreAppTest.Web.DataModel.Income_Supplier" ToRole="Income_Supplier_Target" FromRole="Income_Supplier_Source" />
+      </EntityType>
+      <EntityType Name="Supplier">
+        <Key>
+          <PropertyRef Name="Name" />
+        </Key>
+        <Property Name="Name" Type="Edm.String" Nullable="false" MaxLength="255" FixedLength="false" Unicode="true" />
+        <Property Name="City" Type="Edm.String" MaxLength="255" FixedLength="false" Unicode="true" />
+        <Property Name="Phone" Type="Edm.String" MaxLength="255" FixedLength="false" Unicode="true" />
+        <Property Name="Email" Type="Edm.String" MaxLength="255" FixedLength="false" Unicode="true" />
+        <Property Name="Manager" Type="Edm.String" MaxLength="255" FixedLength="false" Unicode="true" />
+      </EntityType>
+      <EntityType Name="PriceItem">
+        <Key>
+          <PropertyRef Name="Id" />
+        </Key>
+        <Property Name="Id" Type="Edm.Int64" Nullable="false" p6:StoreGeneratedPattern="Identity" xmlns:p6="http://schemas.microsoft.com/ado/2009/02/edm/annotation" />
+        <Property Name="Gear_Id" Type="Edm.Int64" Nullable="false" />
+        <Property Name="BuyPriceRur" Type="Edm.Decimal" Nullable="false" Precision="18" Scale="2" />
+        <Property Name="BuyPriceTng" Type="Edm.Decimal" Nullable="false" Precision="18" Scale="2" />
+        <Property Name="Uom_Id" Type="Edm.String" Nullable="false" MaxLength="255" FixedLength="false" Unicode="true" />
+        <NavigationProperty Name="Gear" Relationship="StoreAppTest.Web.DataModel.PriceItem_Gear" ToRole="PriceItem_Gear_Target" FromRole="PriceItem_Gear_Source" />
+        <NavigationProperty Name="PriceLists" Relationship="StoreAppTest.Web.DataModel.PriceList_PriceItems" ToRole="PriceList_PriceItems_Source" FromRole="PriceList_PriceItems_Target" />
+        <NavigationProperty Name="Prices" Relationship="StoreAppTest.Web.DataModel.PriceItem_Prices" ToRole="PriceItem_Prices_Target" FromRole="PriceItem_Prices_Source" />
+        <NavigationProperty Name="Remainders" Relationship="StoreAppTest.Web.DataModel.PriceItem_Remainders" ToRole="PriceItem_Remainders_Target" FromRole="PriceItem_Remainders_Source" />
+        <NavigationProperty Name="UnitOfMeasure" Relationship="StoreAppTest.Web.DataModel.PriceItem_UnitOfMeasure" ToRole="PriceItem_UnitOfMeasure_Target" FromRole="PriceItem_UnitOfMeasure_Source" />
+      </EntityType>
+      <EntityType Name="PriceList">
+        <Key>
+          <PropertyRef Name="Name" />
+        </Key>
+        <Property Name="Name" Type="Edm.String" Nullable="false" MaxLength="255" FixedLength="false" Unicode="true" />
+        <Property Name="UploadUser_Id" Type="Edm.String" Nullable="false" MaxLength="255" FixedLength="false" Unicode="true" />
+        <Property Name="UploadDate" Type="Edm.DateTime" Nullable="false" />
+        <NavigationProperty Name="PriceItems" Relationship="StoreAppTest.Web.DataModel.PriceList_PriceItems" ToRole="PriceList_PriceItems_Target" FromRole="PriceList_PriceItems_Source" />
+        <NavigationProperty Name="UploadUser" Relationship="StoreAppTest.Web.DataModel.PriceList_UploadUser" ToRole="PriceList_UploadUser_Target" FromRole="PriceList_UploadUser_Source" />
+      </EntityType>
+      <EntityType Name="WholesalePrice">
+        <Key>
+          <PropertyRef Name="Id" />
+        </Key>
+        <Property Name="Id" Type="Edm.Int64" Nullable="false" p6:StoreGeneratedPattern="Identity" xmlns:p6="http://schemas.microsoft.com/ado/2009/02/edm/annotation" />
+        <Property Name="PriceDate" Type="Edm.DateTime" Nullable="false" />
+        <Property Name="PriceItem_Id" Type="Edm.Int64" Nullable="false" />
+        <Property Name="Price" Type="Edm.Decimal" Nullable="false" Precision="18" Scale="2" />
+        <NavigationProperty Name="PriceItem" Relationship="StoreAppTest.Web.DataModel.PriceItem_Prices" ToRole="PriceItem_Prices_Source" FromRole="PriceItem_Prices_Target" />
+      </EntityType>
+      <EntityType Name="Remainder">
+        <Key>
+          <PropertyRef Name="Id" />
+        </Key>
+        <Property Name="Id" Type="Edm.Int64" Nullable="false" p6:StoreGeneratedPattern="Identity" xmlns:p6="http://schemas.microsoft.com/ado/2009/02/edm/annotation" />
+        <Property Name="RemainderDate" Type="Edm.DateTime" Nullable="false" />
+        <Property Name="PriceItem_Id" Type="Edm.Int64" Nullable="false" />
+        <Property Name="Warehouse_Id" Type="Edm.String" Nullable="false" MaxLength="255" FixedLength="false" Unicode="true" />
+        <Property Name="Amount" Type="Edm.Decimal" Nullable="false" Precision="18" Scale="2" />
+        <NavigationProperty Name="PriceItem" Relationship="StoreAppTest.Web.DataModel.PriceItem_Remainders" ToRole="PriceItem_Remainders_Source" FromRole="PriceItem_Remainders_Target" />
+        <NavigationProperty Name="RemaindersUserChanges" Relationship="StoreAppTest.Web.DataModel.Remainder_RemaindersUserChanges" ToRole="Remainder_RemaindersUserChanges_Target" FromRole="Remainder_RemaindersUserChanges_Source" />
+        <NavigationProperty Name="Warehouse" Relationship="StoreAppTest.Web.DataModel.Remainder_Warehouse" ToRole="Remainder_Warehouse_Target" FromRole="Remainder_Warehouse_Source" />
+      </EntityType>
+      <EntityType Name="RemaindersUserChange">
+        <Key>
+          <PropertyRef Name="Id" />
+        </Key>
+        <Property Name="Id" Type="Edm.Int64" Nullable="false" p6:StoreGeneratedPattern="Identity" xmlns:p6="http://schemas.microsoft.com/ado/2009/02/edm/annotation" />
+        <Property Name="Date" Type="Edm.DateTime" Nullable="false" />
+        <Property Name="User_Id" Type="Edm.String" Nullable="false" MaxLength="255" FixedLength="false" Unicode="true" />
+        <Property Name="Remainder_Id" Type="Edm.Int64" Nullable="false" />
+        <Property Name="Amound" Type="Edm.Decimal" Nullable="false" Precision="18" Scale="2" />
+        <NavigationProperty Name="Remainder" Relationship="StoreAppTest.Web.DataModel.Remainder_RemaindersUserChanges" ToRole="Remainder_RemaindersUserChanges_Source" FromRole="Remainder_RemaindersUserChanges_Target" />
+        <NavigationProperty Name="User" Relationship="StoreAppTest.Web.DataModel.RemaindersUserChange_User" ToRole="RemaindersUserChange_User_Target" FromRole="RemaindersUserChange_User_Source" />
+      </EntityType>
+      <EntityType Name="UnitOfMeasure">
+        <Key>
+          <PropertyRef Name="Name" />
+        </Key>
+        <Property Name="Name" Type="Edm.String" Nullable="false" MaxLength="255" FixedLength="false" Unicode="true" />
+      </EntityType>
+      <EntityType Name="PriceChangeReportItem">
+        <Key>
+          <PropertyRef Name="Id" />
+        </Key>
+        <Property Name="Id" Type="Edm.Int64" Nullable="false" p6:StoreGeneratedPattern="Identity" xmlns:p6="http://schemas.microsoft.com/ado/2009/02/edm/annotation" />
+        <Property Name="PriceItem_Id" Type="Edm.Int64" Nullable="false" />
+        <Property Name="PreviousPrice_Id" Type="Edm.Int64" Nullable="false" />
+        <Property Name="NewPrice_Id" Type="Edm.Int64" Nullable="false" />
+        <Property Name="PriceChangeReport_Id" Type="Edm.Int64" Nullable="false" />
+        <NavigationProperty Name="NewPrice" Relationship="StoreAppTest.Web.DataModel.PriceChangeReportItem_NewPrice" ToRole="PriceChangeReportItem_NewPrice_Target" FromRole="PriceChangeReportItem_NewPrice_Source" />
+        <NavigationProperty Name="PreviousPrice" Relationship="StoreAppTest.Web.DataModel.PriceChangeReportItem_PreviousPrice" ToRole="PriceChangeReportItem_PreviousPrice_Target" FromRole="PriceChangeReportItem_PreviousPrice_Source" />
+        <NavigationProperty Name="PriceChangeReport" Relationship="StoreAppTest.Web.DataModel.PriceChangeReport_PriceChangeReportItems" ToRole="PriceChangeReport_PriceChangeReportItems_Source" FromRole="PriceChangeReport_PriceChangeReportItems_Target" />
+        <NavigationProperty Name="PriceItem" Relationship="StoreAppTest.Web.DataModel.PriceChangeReportItem_PriceItem" ToRole="PriceChangeReportItem_PriceItem_Target" FromRole="PriceChangeReportItem_PriceItem_Source" />
+      </EntityType>
+      <EntityType Name="PriceChangeReport">
+        <Key>
+          <PropertyRef Name="Id" />
+        </Key>
+        <Property Name="Id" Type="Edm.Int64" Nullable="false" p6:StoreGeneratedPattern="Identity" xmlns:p6="http://schemas.microsoft.com/ado/2009/02/edm/annotation" />
+        <Property Name="ReportNumber" Type="Edm.String" Nullable="false" MaxLength="255" FixedLength="false" Unicode="true" />
+        <Property Name="ReportDate" Type="Edm.DateTime" Nullable="false" />
+        <Property Name="Creator_Id" Type="Edm.String" Nullable="false" MaxLength="255" FixedLength="false" Unicode="true" />
+        <NavigationProperty Name="Creator" Relationship="StoreAppTest.Web.DataModel.PriceChangeReport_Creator" ToRole="PriceChangeReport_Creator_Target" FromRole="PriceChangeReport_Creator_Source" />
+        <NavigationProperty Name="PriceChangeReportItems" Relationship="StoreAppTest.Web.DataModel.PriceChangeReport_PriceChangeReportItems" ToRole="PriceChangeReport_PriceChangeReportItems_Target" FromRole="PriceChangeReport_PriceChangeReportItems_Source" />
+      </EntityType>
+      <EntityType Name="RefundDocument">
+        <Key>
+          <PropertyRef Name="Id" />
+        </Key>
+        <Property Name="Id" Type="Edm.Int64" Nullable="false" p6:StoreGeneratedPattern="Identity" xmlns:p6="http://schemas.microsoft.com/ado/2009/02/edm/annotation" />
+        <Property Name="RefundNumber" Type="Edm.String" Nullable="false" MaxLength="255" FixedLength="false" Unicode="true" />
+        <Property Name="RefundDate" Type="Edm.DateTime" Nullable="false" />
+        <Property Name="SaleDocument_Id" Type="Edm.Int64" Nullable="false" />
+        <Property Name="Creator_Id" Type="Edm.String" Nullable="false" MaxLength="255" FixedLength="false" Unicode="true" />
+        <Property Name="LastChanger_Id" Type="Edm.String" Nullable="false" MaxLength="255" FixedLength="false" Unicode="true" />
+        <NavigationProperty Name="Creator" Relationship="StoreAppTest.Web.DataModel.RefundDocument_Creator" ToRole="RefundDocument_Creator_Target" FromRole="RefundDocument_Creator_Source" />
+        <NavigationProperty Name="LastChanger" Relationship="StoreAppTest.Web.DataModel.RefundDocument_LastChanger" ToRole="RefundDocument_LastChanger_Target" FromRole="RefundDocument_LastChanger_Source" />
+        <NavigationProperty Name="RefundItems" Relationship="StoreAppTest.Web.DataModel.RefundDocument_RefundItems" ToRole="RefundDocument_RefundItems_Target" FromRole="RefundDocument_RefundItems_Source" />
+        <NavigationProperty Name="SaleDocument" Relationship="StoreAppTest.Web.DataModel.RefundDocument_SaleDocument" ToRole="RefundDocument_SaleDocument_Target" FromRole="RefundDocument_SaleDocument_Source" />
+      </EntityType>
+      <EntityType Name="RefundItem">
+        <Key>
+          <PropertyRef Name="Id" />
+        </Key>
+        <Property Name="Id" Type="Edm.Int64" Nullable="false" p6:StoreGeneratedPattern="Identity" xmlns:p6="http://schemas.microsoft.com/ado/2009/02/edm/annotation" />
+        <Property Name="PriceItem_Id" Type="Edm.Int64" Nullable="false" />
+        <Property Name="SaleItem_Id" Type="Edm.Int64" Nullable="false" />
+        <Property Name="Price" Type="Edm.Decimal" Nullable="false" Precision="18" Scale="2" />
+        <Property Name="Discount" Type="Edm.Decimal" Nullable="false" Precision="18" Scale="2" />
+        <Property Name="Count" Type="Edm.Decimal" Nullable="false" Precision="18" Scale="2" />
+        <Property Name="Amount" Type="Edm.Decimal" Nullable="false" Precision="18" Scale="2" />
+        <Property Name="RefundDocument_Id" Type="Edm.Int64" Nullable="false" />
+        <NavigationProperty Name="PriceItem" Relationship="StoreAppTest.Web.DataModel.RefundItem_PriceItem" ToRole="RefundItem_PriceItem_Target" FromRole="RefundItem_PriceItem_Source" />
+        <NavigationProperty Name="RefundDocument" Relationship="StoreAppTest.Web.DataModel.RefundDocument_RefundItems" ToRole="RefundDocument_RefundItems_Source" FromRole="RefundDocument_RefundItems_Target" />
+        <NavigationProperty Name="SaleItem" Relationship="StoreAppTest.Web.DataModel.RefundItem_SaleItem" ToRole="RefundItem_SaleItem_Target" FromRole="RefundItem_SaleItem_Source" />
+      </EntityType>
+      <EntityType Name="SaleItem">
+        <Key>
+          <PropertyRef Name="Id" />
+        </Key>
+        <Property Name="Id" Type="Edm.Int64" Nullable="false" p6:StoreGeneratedPattern="Identity" xmlns:p6="http://schemas.microsoft.com/ado/2009/02/edm/annotation" />
+        <Property Name="PriceItem_Id" Type="Edm.Int64" Nullable="false" />
+        <Property Name="Price" Type="Edm.Decimal" Nullable="false" Precision="18" Scale="2" />
+        <Property Name="Discount" Type="Edm.Decimal" Nullable="false" Precision="18" Scale="2" />
+        <Property Name="Count" Type="Edm.Decimal" Nullable="false" Precision="18" Scale="2" />
+        <Property Name="Amount" Type="Edm.Decimal" Nullable="false" Precision="18" Scale="2" />
+        <Property Name="SaleDocument_Id" Type="Edm.Int64" Nullable="false" />
+        <NavigationProperty Name="PriceItem" Relationship="StoreAppTest.Web.DataModel.SaleItem_PriceItem" ToRole="SaleItem_PriceItem_Target" FromRole="SaleItem_PriceItem_Source" />
+        <NavigationProperty Name="SaleDocument" Relationship="StoreAppTest.Web.DataModel.SaleDocument_SaleItems" ToRole="SaleDocument_SaleItems_Source" FromRole="SaleDocument_SaleItems_Target" />
+      </EntityType>
+      <EntityType Name="SaleDocument">
+        <Key>
+          <PropertyRef Name="Id" />
+        </Key>
+        <Property Name="Id" Type="Edm.Int64" Nullable="false" p6:StoreGeneratedPattern="Identity" xmlns:p6="http://schemas.microsoft.com/ado/2009/02/edm/annotation" />
+        <Property Name="SaleDate" Type="Edm.DateTime" Nullable="false" />
+        <Property Name="Customer_Name" Type="Edm.String" Nullable="false" MaxLength="255" FixedLength="false" Unicode="true" />
+        <Property Name="Number" Type="Edm.String" Nullable="false" MaxLength="255" FixedLength="false" Unicode="true" />
+        <Property Name="Creator_Id" Type="Edm.String" Nullable="false" MaxLength="255" FixedLength="false" Unicode="true" />
+        <Property Name="LastChanger_Id" Type="Edm.String" Nullable="false" MaxLength="255" FixedLength="false" Unicode="true" />
+        <Property Name="IsReceiptPrinted" Type="Edm.Boolean" Nullable="false" />
+        <Property Name="IsOrder" Type="Edm.Boolean" Nullable="false" />
+        <Property Name="IsInDebt" Type="Edm.Boolean" Nullable="false" />
+        <Property Name="IsInvoice" Type="Edm.Boolean" Nullable="false" />
+        <Property Name="Barcode" Type="Edm.String" MaxLength="Max" FixedLength="false" Unicode="true" />
+        <NavigationProperty Name="Creator" Relationship="StoreAppTest.Web.DataModel.SaleDocument_Creator" ToRole="SaleDocument_Creator_Target" FromRole="SaleDocument_Creator_Source" />
+        <NavigationProperty Name="Customer" Relationship="StoreAppTest.Web.DataModel.SaleDocument_Customer" ToRole="SaleDocument_Customer_Target" FromRole="SaleDocument_Customer_Source" />
+        <NavigationProperty Name="LastChanger" Relationship="StoreAppTest.Web.DataModel.SaleDocument_LastChanger" ToRole="SaleDocument_LastChanger_Target" FromRole="SaleDocument_LastChanger_Source" />
+        <NavigationProperty Name="SaleItems" Relationship="StoreAppTest.Web.DataModel.SaleDocument_SaleItems" ToRole="SaleDocument_SaleItems_Target" FromRole="SaleDocument_SaleItems_Source" />
+      </EntityType>
+      <EntityType Name="RefundsPerDayItem">
+        <Key>
+          <PropertyRef Name="Id" />
+        </Key>
+        <Property Name="Id" Type="Edm.Int64" Nullable="false" p6:StoreGeneratedPattern="Identity" xmlns:p6="http://schemas.microsoft.com/ado/2009/02/edm/annotation" />
+        <Property Name="RefundItem_Id" Type="Edm.Int64" Nullable="false" />
+        <Property Name="SaleDocumentsPerDay_Id" Type="Edm.Int64" Nullable="false" />
+        <NavigationProperty Name="RefundItem" Relationship="StoreAppTest.Web.DataModel.RefundsPerDayItem_RefundItem" ToRole="RefundsPerDayItem_RefundItem_Target" FromRole="RefundsPerDayItem_RefundItem_Source" />
+        <NavigationProperty Name="SaleDocumentsPerDay" Relationship="StoreAppTest.Web.DataModel.SaleDocumentsPerDay_RefundsPerDayItems" ToRole="SaleDocumentsPerDay_RefundsPerDayItems_Source" FromRole="SaleDocumentsPerDay_RefundsPerDayItems_Target" />
+      </EntityType>
+      <EntityType Name="SaleDocumentsPerDay">
+        <Key>
+          <PropertyRef Name="Id" />
+        </Key>
+        <Property Name="Id" Type="Edm.Int64" Nullable="false" p6:StoreGeneratedPattern="Identity" xmlns:p6="http://schemas.microsoft.com/ado/2009/02/edm/annotation" />
+        <Property Name="SaleDocumentsDate" Type="Edm.DateTime" Nullable="false" />
+        <Property Name="Barcode" Type="Edm.String" MaxLength="Max" FixedLength="false" Unicode="true" />
+        <Property Name="Number" Type="Edm.String" Nullable="false" MaxLength="255" FixedLength="false" Unicode="true" />
+        <Property Name="Creator_Id" Type="Edm.String" Nullable="false" MaxLength="255" FixedLength="false" Unicode="true" />
+        <Property Name="IsClosed" Type="Edm.Boolean" Nullable="false" />
+        <NavigationProperty Name="Creator" Relationship="StoreAppTest.Web.DataModel.SaleDocumentsPerDay_Creator" ToRole="SaleDocumentsPerDay_Creator_Target" FromRole="SaleDocumentsPerDay_Creator_Source" />
+        <NavigationProperty Name="RefundsPerDayItems" Relationship="StoreAppTest.Web.DataModel.SaleDocumentsPerDay_RefundsPerDayItems" ToRole="SaleDocumentsPerDay_RefundsPerDayItems_Target" FromRole="SaleDocumentsPerDay_RefundsPerDayItems_Source" />
+        <NavigationProperty Name="SalesPerDayItems" Relationship="StoreAppTest.Web.DataModel.SaleDocumentsPerDay_SalesPerDayItems" ToRole="SaleDocumentsPerDay_SalesPerDayItems_Target" FromRole="SaleDocumentsPerDay_SalesPerDayItems_Source" />
+      </EntityType>
+      <EntityType Name="SalesPerDayItem">
+        <Key>
+          <PropertyRef Name="Id" />
+        </Key>
+        <Property Name="Id" Type="Edm.Int64" Nullable="false" p6:StoreGeneratedPattern="Identity" xmlns:p6="http://schemas.microsoft.com/ado/2009/02/edm/annotation" />
+        <Property Name="SaleItem_Id" Type="Edm.Int64" Nullable="false" />
+        <Property Name="SaleDocumentsPerDay_Id" Type="Edm.Int64" Nullable="false" />
+        <NavigationProperty Name="SaleDocumentsPerDay" Relationship="StoreAppTest.Web.DataModel.SaleDocumentsPerDay_SalesPerDayItems" ToRole="SaleDocumentsPerDay_SalesPerDayItems_Source" FromRole="SaleDocumentsPerDay_SalesPerDayItems_Target" />
+        <NavigationProperty Name="SaleItem" Relationship="StoreAppTest.Web.DataModel.SalesPerDayItem_SaleItem" ToRole="SalesPerDayItem_SaleItem_Target" FromRole="SalesPerDayItem_SaleItem_Source" />
+      </EntityType>
+      <EntityType Name="WarehouseTransferRequestItem">
+        <Key>
+          <PropertyRef Name="Id" />
+        </Key>
+        <Property Name="Id" Type="Edm.Int64" Nullable="false" p6:StoreGeneratedPattern="Identity" xmlns:p6="http://schemas.microsoft.com/ado/2009/02/edm/annotation" />
+        <Property Name="PriceItem_Id" Type="Edm.Int64" Nullable="false" />
+        <Property Name="Count" Type="Edm.Decimal" Nullable="false" Precision="18" Scale="2" />
+        <Property Name="CountAccepted" Type="Edm.Decimal" Nullable="false" Precision="18" Scale="2" />
+        <Property Name="WholesalePrice" Type="Edm.Decimal" Nullable="false" Precision="18" Scale="2" />
+        <Property Name="AcceptedAmount" Type="Edm.Decimal" Nullable="false" Precision="18" Scale="2" />
+        <Property Name="WarehouseTransferRequest_Id" Type="Edm.Int64" Nullable="false" />
+        <NavigationProperty Name="PriceItem" Relationship="StoreAppTest.Web.DataModel.WarehouseTransferRequestItem_PriceItem" ToRole="WarehouseTransferRequestItem_PriceItem_Target" FromRole="WarehouseTransferRequestItem_PriceItem_Source" />
+        <NavigationProperty Name="WarehouseTransferRequest" Relationship="StoreAppTest.Web.DataModel.WarehouseTransferRequest_WarehouseTransferRequestItemItems" ToRole="WarehouseTransferRequest_WarehouseTransferRequestItemItems_Source" FromRole="WarehouseTransferRequest_WarehouseTransferRequestItemItems_Target" />
+      </EntityType>
+      <EntityType Name="WarehouseTransferRequest">
+        <Key>
+          <PropertyRef Name="Id" />
+        </Key>
+        <Property Name="Id" Type="Edm.Int64" Nullable="false" p6:StoreGeneratedPattern="Identity" xmlns:p6="http://schemas.microsoft.com/ado/2009/02/edm/annotation" />
+        <Property Name="RequestNumber" Type="Edm.String" Nullable="false" MaxLength="255" FixedLength="false" Unicode="true" />
+        <Property Name="RequestDate" Type="Edm.DateTime" Nullable="false" />
+        <Property Name="IsAccept" Type="Edm.Boolean" Nullable="false" />
+        <Property Name="IsReserve" Type="Edm.Boolean" Nullable="false" />
+        <Property Name="StateChangedDate" Type="Edm.DateTime" />
+        <Property Name="Status" Type="Edm.String" MaxLength="255" FixedLength="false" Unicode="true" />
+        <Property Name="Customer_Id" Type="Edm.String" Nullable="false" MaxLength="255" FixedLength="false" Unicode="true" />
+        <Property Name="Supplier_Id" Type="Edm.String" Nullable="false" MaxLength="255" FixedLength="false" Unicode="true" />
+        <Property Name="Creator_Id" Type="Edm.String" Nullable="false" MaxLength="255" FixedLength="false" Unicode="true" />
+        <Property Name="LastChanged_Id" Type="Edm.String" MaxLength="255" FixedLength="false" Unicode="true" />
+        <Property Name="Description" Type="Edm.String" MaxLength="500" FixedLength="false" Unicode="true" />
+        <NavigationProperty Name="Creator" Relationship="StoreAppTest.Web.DataModel.WarehouseTransferRequest_Creator" ToRole="WarehouseTransferRequest_Creator_Target" FromRole="WarehouseTransferRequest_Creator_Source" />
+        <NavigationProperty Name="Customer" Relationship="StoreAppTest.Web.DataModel.WarehouseTransferRequest_Customer" ToRole="WarehouseTransferRequest_Customer_Target" FromRole="WarehouseTransferRequest_Customer_Source" />
+        <NavigationProperty Name="LastChanged" Relationship="StoreAppTest.Web.DataModel.WarehouseTransferRequest_LastChanged" ToRole="WarehouseTransferRequest_LastChanged_Target" FromRole="WarehouseTransferRequest_LastChanged_Source" />
+        <NavigationProperty Name="Supplier" Relationship="StoreAppTest.Web.DataModel.WarehouseTransferRequest_Supplier" ToRole="WarehouseTransferRequest_Supplier_Target" FromRole="WarehouseTransferRequest_Supplier_Source" />
+        <NavigationProperty Name="WarehouseTransferRequestItemItems" Relationship="StoreAppTest.Web.DataModel.WarehouseTransferRequest_WarehouseTransferRequestItemItems" ToRole="WarehouseTransferRequest_WarehouseTransferRequestItemItems_Target" FromRole="WarehouseTransferRequest_WarehouseTransferRequestItemItems_Source" />
+      </EntityType>
+      <EntityType Name="PriceItemRemainderView">
+        <Key>
+          <PropertyRef Name="PriceItem_Id" />
+        </Key>
+        <Property Name="PriceItem_Id" Type="Edm.Int64" Nullable="false" p6:StoreGeneratedPattern="None" xmlns:p6="http://schemas.microsoft.com/ado/2009/02/edm/annotation" />
+        <Property Name="BuyPriceRur" Type="Edm.Decimal" Nullable="false" Precision="18" Scale="2" />
+        <Property Name="BuyPriceTng" Type="Edm.Decimal" Nullable="false" Precision="18" Scale="2" />
+        <Property Name="WholesalePrice" Type="Edm.Decimal" Nullable="false" Precision="18" Scale="2" />
+        <Property Name="Supplier" Type="Edm.String" MaxLength="Max" FixedLength="false" Unicode="true" />
+        <Property Name="Uom" Type="Edm.String" MaxLength="Max" FixedLength="false" Unicode="true" />
+        <Property Name="Gear_Id" Type="Edm.Int64" Nullable="false" />
+        <Property Name="CatalogNumber" Type="Edm.String" MaxLength="Max" FixedLength="false" Unicode="true" />
+        <Property Name="Articul" Type="Edm.String" MaxLength="Max" FixedLength="false" Unicode="true" />
+        <Property Name="IsDuplicate" Type="Edm.Boolean" Nullable="false" />
+        <Property Name="Gear_Name" Type="Edm.String" MaxLength="Max" FixedLength="false" Unicode="true" />
+        <Property Name="RecommendedRemainder" Type="Edm.Decimal" Nullable="false" Precision="18" Scale="2" />
+        <Property Name="LowerLimitRemainder" Type="Edm.Decimal" Nullable="false" Precision="18" Scale="2" />
+        <Property Name="Remainder_Id" Type="Edm.Int64" Nullable="false" />
+        <Property Name="Warehouse" Type="Edm.String" MaxLength="Max" FixedLength="false" Unicode="true" />
+        <Property Name="RemainderDate" Type="Edm.DateTime" Nullable="false" />
+        <Property Name="Remainders" Type="Edm.Decimal" Nullable="false" Precision="18" Scale="2" />
+      </EntityType>
+      <EntityType Name="PriceIncomeItemView">
+        <Key>
+          <PropertyRef Name="PriceItem_Id" />
+        </Key>
+        <Property Name="PriceItem_Id" Type="Edm.Int64" Nullable="false" p6:StoreGeneratedPattern="None" xmlns:p6="http://schemas.microsoft.com/ado/2009/02/edm/annotation" />
+        <Property Name="BuyPriceRur" Type="Edm.Decimal" Nullable="false" Precision="18" Scale="2" />
+        <Property Name="BuyPriceTng" Type="Edm.Decimal" Nullable="false" Precision="18" Scale="2" />
+        <Property Name="WholesalePrice" Type="Edm.Decimal" Nullable="false" Precision="18" Scale="2" />
+        <Property Name="Uom" Type="Edm.String" MaxLength="Max" FixedLength="false" Unicode="true" />
+        <Property Name="Gear_Id" Type="Edm.Int64" Nullable="false" />
+        <Property Name="CatalogNumber" Type="Edm.String" MaxLength="Max" FixedLength="false" Unicode="true" />
+        <Property Name="Articul" Type="Edm.String" MaxLength="Max" FixedLength="false" Unicode="true" />
+        <Property Name="IsDuplicate" Type="Edm.Boolean" Nullable="false" />
+        <Property Name="Gear_Name" Type="Edm.String" MaxLength="Max" FixedLength="false" Unicode="true" />
+        <Property Name="RecommendedRemainder" Type="Edm.Decimal" Nullable="false" Precision="18" Scale="2" />
+        <Property Name="LowerLimitRemainder" Type="Edm.Decimal" Nullable="false" Precision="18" Scale="2" />
+        <Property Name="Remainders" Type="Edm.Decimal" Nullable="false" Precision="18" Scale="2" />
+        <Property Name="Incomes" Type="Edm.Decimal" Nullable="false" Precision="18" Scale="2" />
+      </EntityType>
+      <EntityType Name="PriceIncomeTotalItemView">
+        <Key>
+          <PropertyRef Name="PriceItem_Id" />
+        </Key>
+        <Property Name="PriceItem_Id" Type="Edm.Int64" Nullable="false" p6:StoreGeneratedPattern="None" xmlns:p6="http://schemas.microsoft.com/ado/2009/02/edm/annotation" />
+        <Property Name="BuyPriceRur" Type="Edm.Decimal" Nullable="false" Precision="18" Scale="2" />
+        <Property Name="BuyPriceTng" Type="Edm.Decimal" Nullable="false" Precision="18" Scale="2" />
+        <Property Name="WholesalePrice" Type="Edm.Decimal" Nullable="false" Precision="18" Scale="2" />
+        <Property Name="Uom" Type="Edm.String" MaxLength="Max" FixedLength="false" Unicode="true" />
+        <Property Name="Gear_Id" Type="Edm.Int64" Nullable="false" />
+        <Property Name="CatalogNumber" Type="Edm.String" MaxLength="Max" FixedLength="false" Unicode="true" />
+        <Property Name="Articul" Type="Edm.String" MaxLength="Max" FixedLength="false" Unicode="true" />
+        <Property Name="IsDuplicate" Type="Edm.Boolean" Nullable="false" />
+        <Property Name="Gear_Name" Type="Edm.String" MaxLength="Max" FixedLength="false" Unicode="true" />
+        <Property Name="RecommendedRemainder" Type="Edm.Decimal" Nullable="false" Precision="18" Scale="2" />
+        <Property Name="LowerLimitRemainder" Type="Edm.Decimal" Nullable="false" Precision="18" Scale="2" />
+        <Property Name="Remainders" Type="Edm.Decimal" Nullable="false" Precision="18" Scale="2" />
+        <Property Name="Incomes" Type="Edm.Decimal" Nullable="false" Precision="18" Scale="2" />
+        <Property Name="Income_Id" Type="Edm.Int64" Nullable="false" />
+        <Property Name="IsAccept" Type="Edm.Boolean" Nullable="false" />
+        <Property Name="NewPrice" Type="Edm.Decimal" Nullable="false" Precision="18" Scale="2" />
+      </EntityType>
+      <EntityType Name="PriceItemView">
+        <Key>
+          <PropertyRef Name="PriceItem_Id" />
+        </Key>
+        <Property Name="PriceItem_Id" Type="Edm.Int64" Nullable="false" p6:StoreGeneratedPattern="None" xmlns:p6="http://schemas.microsoft.com/ado/2009/02/edm/annotation" />
+        <Property Name="BuyPriceRur" Type="Edm.Decimal" Nullable="false" Precision="18" Scale="2" />
+        <Property Name="BuyPriceTng" Type="Edm.Decimal" Nullable="false" Precision="18" Scale="2" />
+        <Property Name="Uom" Type="Edm.String" MaxLength="Max" FixedLength="false" Unicode="true" />
+        <Property Name="Gear_Id" Type="Edm.Int64" Nullable="false" />
+        <Property Name="CatalogNumber" Type="Edm.String" MaxLength="Max" FixedLength="false" Unicode="true" />
+        <Property Name="Articul" Type="Edm.String" MaxLength="Max" FixedLength="false" Unicode="true" />
+        <Property Name="IsDuplicate" Type="Edm.Boolean" Nullable="false" />
+        <Property Name="Gear_Name" Type="Edm.String" MaxLength="Max" FixedLength="false" Unicode="true" />
+        <Property Name="WholesalePrice" Type="Edm.Decimal" Nullable="false" Precision="18" Scale="2" />
+        <Property Name="WholesalePriceDate" Type="Edm.DateTime" Nullable="false" />
+      </EntityType>
+      <EntityType Name="PriceListItemRemainderView">
+        <Key>
+          <PropertyRef Name="PriceItem_Id" />
+        </Key>
+        <Property Name="PriceItem_Id" Type="Edm.Int64" Nullable="false" p6:StoreGeneratedPattern="None" xmlns:p6="http://schemas.microsoft.com/ado/2009/02/edm/annotation" />
+        <Property Name="BuyPriceRur" Type="Edm.Decimal" Nullable="false" Precision="18" Scale="2" />
+        <Property Name="BuyPriceTng" Type="Edm.Decimal" Nullable="false" Precision="18" Scale="2" />
+        <Property Name="WholesalePrice" Type="Edm.Decimal" Nullable="false" Precision="18" Scale="2" />
+        <Property Name="PriceList_Name" Type="Edm.String" MaxLength="Max" FixedLength="false" Unicode="true" />
+        <Property Name="Supplier" Type="Edm.String" MaxLength="Max" FixedLength="false" Unicode="true" />
+        <Property Name="Uom" Type="Edm.String" MaxLength="Max" FixedLength="false" Unicode="true" />
+        <Property Name="Gear_Id" Type="Edm.Int64" Nullable="false" />
+        <Property Name="CatalogNumber" Type="Edm.String" MaxLength="Max" FixedLength="false" Unicode="true" />
+        <Property Name="Articul" Type="Edm.String" MaxLength="Max" FixedLength="false" Unicode="true" />
+        <Property Name="IsDuplicate" Type="Edm.Boolean" Nullable="false" />
+        <Property Name="Gear_Name" Type="Edm.String" MaxLength="Max" FixedLength="false" Unicode="true" />
+        <Property Name="RecommendedRemainder" Type="Edm.Decimal" Nullable="false" Precision="18" Scale="2" />
+        <Property Name="LowerLimitRemainder" Type="Edm.Decimal" Nullable="false" Precision="18" Scale="2" />
+        <Property Name="Remainder_Id" Type="Edm.Int64" Nullable="false" />
+        <Property Name="Warehouse" Type="Edm.String" MaxLength="Max" FixedLength="false" Unicode="true" />
+        <Property Name="RemainderDate" Type="Edm.DateTime" Nullable="false" />
+        <Property Name="Remainders" Type="Edm.Decimal" Nullable="false" Precision="18" Scale="2" />
+      </EntityType>
+      <Association Name="Customer_Creator">
+        <End Type="StoreAppTest.Web.DataModel.User" Role="Customer_Creator_Target" Multiplicity="1" />
+        <End Type="StoreAppTest.Web.DataModel.Customer" Role="Customer_Creator_Source" Multiplicity="*" />
+        <ReferentialConstraint>
+          <Principal Role="Customer_Creator_Target">
+            <PropertyRef Name="UserName" />
+          </Principal>
+          <Dependent Role="Customer_Creator_Source">
+            <PropertyRef Name="Creator_Id" />
+          </Dependent>
+        </ReferentialConstraint>
+      </Association>
+      <Association Name="User_Roles">
+        <End Type="StoreAppTest.Web.DataModel.Role" Role="User_Roles_Target" Multiplicity="*" />
+        <End Type="StoreAppTest.Web.DataModel.User" Role="User_Roles_Source" Multiplicity="*" />
+      </Association>
+      <Association Name="User_Warehouse">
+        <End Type="StoreAppTest.Web.DataModel.Warehouse" Role="User_Warehouse_Target" Multiplicity="0..1" />
+        <End Type="StoreAppTest.Web.DataModel.User" Role="User_Warehouse_Source" Multiplicity="*" />
+        <ReferentialConstraint>
+          <Principal Role="User_Warehouse_Target">
+            <PropertyRef Name="Name" />
+          </Principal>
+          <Dependent Role="User_Warehouse_Source">
+            <PropertyRef Name="Warehouse_Id" />
+          </Dependent>
+        </ReferentialConstraint>
+      </Association>
+      <Association Name="DebtDischargeDocument_Creator">
+        <End Type="StoreAppTest.Web.DataModel.User" Role="DebtDischargeDocument_Creator_Target" Multiplicity="1" />
+        <End Type="StoreAppTest.Web.DataModel.DebtDischargeDocument" Role="DebtDischargeDocument_Creator_Source" Multiplicity="*" />
+        <ReferentialConstraint>
+          <Principal Role="DebtDischargeDocument_Creator_Target">
+            <PropertyRef Name="UserName" />
+          </Principal>
+          <Dependent Role="DebtDischargeDocument_Creator_Source">
+            <PropertyRef Name="Creator_Id" />
+          </Dependent>
+        </ReferentialConstraint>
+      </Association>
+      <Association Name="DebtDischargeDocument_Debtor">
+        <End Type="StoreAppTest.Web.DataModel.Customer" Role="DebtDischargeDocument_Debtor_Target" Multiplicity="1" />
+        <End Type="StoreAppTest.Web.DataModel.DebtDischargeDocument" Role="DebtDischargeDocument_Debtor_Source" Multiplicity="*" />
+        <ReferentialConstraint>
+          <Principal Role="DebtDischargeDocument_Debtor_Target">
+            <PropertyRef Name="Name" />
+          </Principal>
+          <Dependent Role="DebtDischargeDocument_Debtor_Source">
+            <PropertyRef Name="Debtor_Id" />
+          </Dependent>
+        </ReferentialConstraint>
+      </Association>
+      <Association Name="GearCategory_Gears">
+        <End Type="StoreAppTest.Web.DataModel.GearCategory" Role="GearCategory_Gears_Source" Multiplicity="1" />
+        <End Type="StoreAppTest.Web.DataModel.Gear" Role="GearCategory_Gears_Target" Multiplicity="*" />
+        <ReferentialConstraint>
+          <Principal Role="GearCategory_Gears_Source">
+            <PropertyRef Name="Name" />
+          </Principal>
+          <Dependent Role="GearCategory_Gears_Target">
+            <PropertyRef Name="Category_Id" />
+          </Dependent>
+        </ReferentialConstraint>
+      </Association>
+      <Association Name="Gear_Image">
+        <End Type="StoreAppTest.Web.DataModel.Resource" Role="Gear_Image_Target" Multiplicity="0..1" />
+        <End Type="StoreAppTest.Web.DataModel.Gear" Role="Gear_Image_Source" Multiplicity="*" />
+        <ReferentialConstraint>
+          <Principal Role="Gear_Image_Target">
+            <PropertyRef Name="Id" />
+          </Principal>
+          <Dependent Role="Gear_Image_Source">
+            <PropertyRef Name="Image_Id" />
+          </Dependent>
+        </ReferentialConstraint>
+      </Association>
+      <Association Name="GearNew_Gear">
+        <End Type="StoreAppTest.Web.DataModel.Gear" Role="GearNew_Gear_Target" Multiplicity="1" />
+        <End Type="StoreAppTest.Web.DataModel.GearNew" Role="GearNew_Gear_Source" Multiplicity="*" />
+        <ReferentialConstraint>
+          <Principal Role="GearNew_Gear_Target">
+            <PropertyRef Name="Id" />
+          </Principal>
+          <Dependent Role="GearNew_Gear_Source">
+            <PropertyRef Name="Gear_Id" />
+          </Dependent>
+        </ReferentialConstraint>
+      </Association>
+      <Association Name="Income_IncomeItems">
+        <End Type="StoreAppTest.Web.DataModel.Income" Role="Income_IncomeItems_Source" Multiplicity="1" />
+        <End Type="StoreAppTest.Web.DataModel.IncomeItem" Role="Income_IncomeItems_Target" Multiplicity="*" />
+        <ReferentialConstraint>
+          <Principal Role="Income_IncomeItems_Source">
+            <PropertyRef Name="Id" />
+          </Principal>
+          <Dependent Role="Income_IncomeItems_Target">
+            <PropertyRef Name="Income_Id" />
+          </Dependent>
+        </ReferentialConstraint>
+      </Association>
+      <Association Name="IncomeItem_PriceItem">
+        <End Type="StoreAppTest.Web.DataModel.PriceItem" Role="IncomeItem_PriceItem_Target" Multiplicity="1" />
+        <End Type="StoreAppTest.Web.DataModel.IncomeItem" Role="IncomeItem_PriceItem_Source" Multiplicity="*" />
+        <ReferentialConstraint>
+          <Principal Role="IncomeItem_PriceItem_Target">
+            <PropertyRef Name="Id" />
+          </Principal>
+          <Dependent Role="IncomeItem_PriceItem_Source">
+            <PropertyRef Name="PriceItem_Id" />
+          </Dependent>
+        </ReferentialConstraint>
+      </Association>
+      <Association Name="Income_Accepter">
+        <End Type="StoreAppTest.Web.DataModel.User" Role="Income_Accepter_Target" Multiplicity="0..1" />
+        <End Type="StoreAppTest.Web.DataModel.Income" Role="Income_Accepter_Source" Multiplicity="*" />
+        <ReferentialConstraint>
+          <Principal Role="Income_Accepter_Target">
+            <PropertyRef Name="UserName" />
+          </Principal>
+          <Dependent Role="Income_Accepter_Source">
+            <PropertyRef Name="Accepter_Id" />
+          </Dependent>
+        </ReferentialConstraint>
+      </Association>
+      <Association Name="Income_Creator">
+        <End Type="StoreAppTest.Web.DataModel.User" Role="Income_Creator_Target" Multiplicity="1" />
+        <End Type="StoreAppTest.Web.DataModel.Income" Role="Income_Creator_Source" Multiplicity="*" />
+        <ReferentialConstraint>
+          <Principal Role="Income_Creator_Target">
+            <PropertyRef Name="UserName" />
+          </Principal>
+          <Dependent Role="Income_Creator_Source">
+            <PropertyRef Name="Creator_Id" />
+          </Dependent>
+        </ReferentialConstraint>
+      </Association>
+      <Association Name="Income_Supplier">
+        <End Type="StoreAppTest.Web.DataModel.Supplier" Role="Income_Supplier_Target" Multiplicity="1" />
+        <End Type="StoreAppTest.Web.DataModel.Income" Role="Income_Supplier_Source" Multiplicity="*" />
+        <ReferentialConstraint>
+          <Principal Role="Income_Supplier_Target">
+            <PropertyRef Name="Name" />
+          </Principal>
+          <Dependent Role="Income_Supplier_Source">
+            <PropertyRef Name="Supplier_Id" />
+          </Dependent>
+        </ReferentialConstraint>
+      </Association>
+      <Association Name="PriceItem_Gear">
+        <End Type="StoreAppTest.Web.DataModel.Gear" Role="PriceItem_Gear_Target" Multiplicity="1" />
+        <End Type="StoreAppTest.Web.DataModel.PriceItem" Role="PriceItem_Gear_Source" Multiplicity="*" />
+        <ReferentialConstraint>
+          <Principal Role="PriceItem_Gear_Target">
+            <PropertyRef Name="Id" />
+          </Principal>
+          <Dependent Role="PriceItem_Gear_Source">
+            <PropertyRef Name="Gear_Id" />
+          </Dependent>
+        </ReferentialConstraint>
+      </Association>
+      <Association Name="PriceList_PriceItems">
+        <End Type="StoreAppTest.Web.DataModel.PriceList" Role="PriceList_PriceItems_Source" Multiplicity="*" />
+        <End Type="StoreAppTest.Web.DataModel.PriceItem" Role="PriceList_PriceItems_Target" Multiplicity="*" />
+      </Association>
+      <Association Name="PriceItem_Prices">
+        <End Type="StoreAppTest.Web.DataModel.PriceItem" Role="PriceItem_Prices_Source" Multiplicity="1" />
+        <End Type="StoreAppTest.Web.DataModel.WholesalePrice" Role="PriceItem_Prices_Target" Multiplicity="*" />
+        <ReferentialConstraint>
+          <Principal Role="PriceItem_Prices_Source">
+            <PropertyRef Name="Id" />
+          </Principal>
+          <Dependent Role="PriceItem_Prices_Target">
+            <PropertyRef Name="PriceItem_Id" />
+          </Dependent>
+        </ReferentialConstraint>
+      </Association>
+      <Association Name="PriceItem_Remainders">
+        <End Type="StoreAppTest.Web.DataModel.PriceItem" Role="PriceItem_Remainders_Source" Multiplicity="1" />
+        <End Type="StoreAppTest.Web.DataModel.Remainder" Role="PriceItem_Remainders_Target" Multiplicity="*" />
+        <ReferentialConstraint>
+          <Principal Role="PriceItem_Remainders_Source">
+            <PropertyRef Name="Id" />
+          </Principal>
+          <Dependent Role="PriceItem_Remainders_Target">
+            <PropertyRef Name="PriceItem_Id" />
+          </Dependent>
+        </ReferentialConstraint>
+      </Association>
+      <Association Name="PriceItem_UnitOfMeasure">
+        <End Type="StoreAppTest.Web.DataModel.UnitOfMeasure" Role="PriceItem_UnitOfMeasure_Target" Multiplicity="1" />
+        <End Type="StoreAppTest.Web.DataModel.PriceItem" Role="PriceItem_UnitOfMeasure_Source" Multiplicity="*" />
+        <ReferentialConstraint>
+          <Principal Role="PriceItem_UnitOfMeasure_Target">
+            <PropertyRef Name="Name" />
+          </Principal>
+          <Dependent Role="PriceItem_UnitOfMeasure_Source">
+            <PropertyRef Name="Uom_Id" />
+          </Dependent>
+        </ReferentialConstraint>
+      </Association>
+      <Association Name="PriceList_UploadUser">
+        <End Type="StoreAppTest.Web.DataModel.User" Role="PriceList_UploadUser_Target" Multiplicity="1" />
+        <End Type="StoreAppTest.Web.DataModel.PriceList" Role="PriceList_UploadUser_Source" Multiplicity="*" />
+        <ReferentialConstraint>
+          <Principal Role="PriceList_UploadUser_Target">
+            <PropertyRef Name="UserName" />
+          </Principal>
+          <Dependent Role="PriceList_UploadUser_Source">
+            <PropertyRef Name="UploadUser_Id" />
+          </Dependent>
+        </ReferentialConstraint>
+      </Association>
+      <Association Name="Remainder_RemaindersUserChanges">
+        <End Type="StoreAppTest.Web.DataModel.Remainder" Role="Remainder_RemaindersUserChanges_Source" Multiplicity="1" />
+        <End Type="StoreAppTest.Web.DataModel.RemaindersUserChange" Role="Remainder_RemaindersUserChanges_Target" Multiplicity="*" />
+        <ReferentialConstraint>
+          <Principal Role="Remainder_RemaindersUserChanges_Source">
+            <PropertyRef Name="Id" />
+          </Principal>
+          <Dependent Role="Remainder_RemaindersUserChanges_Target">
+            <PropertyRef Name="Remainder_Id" />
+          </Dependent>
+        </ReferentialConstraint>
+      </Association>
+      <Association Name="Remainder_Warehouse">
+        <End Type="StoreAppTest.Web.DataModel.Warehouse" Role="Remainder_Warehouse_Target" Multiplicity="1" />
+        <End Type="StoreAppTest.Web.DataModel.Remainder" Role="Remainder_Warehouse_Source" Multiplicity="*" />
+        <ReferentialConstraint>
+          <Principal Role="Remainder_Warehouse_Target">
+            <PropertyRef Name="Name" />
+          </Principal>
+          <Dependent Role="Remainder_Warehouse_Source">
+            <PropertyRef Name="Warehouse_Id" />
+          </Dependent>
+        </ReferentialConstraint>
+      </Association>
+      <Association Name="RemaindersUserChange_User">
+        <End Type="StoreAppTest.Web.DataModel.User" Role="RemaindersUserChange_User_Target" Multiplicity="1" />
+        <End Type="StoreAppTest.Web.DataModel.RemaindersUserChange" Role="RemaindersUserChange_User_Source" Multiplicity="*" />
+        <ReferentialConstraint>
+          <Principal Role="RemaindersUserChange_User_Target">
+            <PropertyRef Name="UserName" />
+          </Principal>
+          <Dependent Role="RemaindersUserChange_User_Source">
+            <PropertyRef Name="User_Id" />
+          </Dependent>
+        </ReferentialConstraint>
+      </Association>
+      <Association Name="PriceChangeReportItem_NewPrice">
+        <End Type="StoreAppTest.Web.DataModel.WholesalePrice" Role="PriceChangeReportItem_NewPrice_Target" Multiplicity="1" />
+        <End Type="StoreAppTest.Web.DataModel.PriceChangeReportItem" Role="PriceChangeReportItem_NewPrice_Source" Multiplicity="*" />
+        <ReferentialConstraint>
+          <Principal Role="PriceChangeReportItem_NewPrice_Target">
+            <PropertyRef Name="Id" />
+          </Principal>
+          <Dependent Role="PriceChangeReportItem_NewPrice_Source">
+            <PropertyRef Name="NewPrice_Id" />
+          </Dependent>
+        </ReferentialConstraint>
+      </Association>
+      <Association Name="PriceChangeReportItem_PreviousPrice">
+        <End Type="StoreAppTest.Web.DataModel.WholesalePrice" Role="PriceChangeReportItem_PreviousPrice_Target" Multiplicity="1" />
+        <End Type="StoreAppTest.Web.DataModel.PriceChangeReportItem" Role="PriceChangeReportItem_PreviousPrice_Source" Multiplicity="*" />
+        <ReferentialConstraint>
+          <Principal Role="PriceChangeReportItem_PreviousPrice_Target">
+            <PropertyRef Name="Id" />
+          </Principal>
+          <Dependent Role="PriceChangeReportItem_PreviousPrice_Source">
+            <PropertyRef Name="PreviousPrice_Id" />
+          </Dependent>
+        </ReferentialConstraint>
+      </Association>
+      <Association Name="PriceChangeReport_PriceChangeReportItems">
+        <End Type="StoreAppTest.Web.DataModel.PriceChangeReport" Role="PriceChangeReport_PriceChangeReportItems_Source" Multiplicity="1" />
+        <End Type="StoreAppTest.Web.DataModel.PriceChangeReportItem" Role="PriceChangeReport_PriceChangeReportItems_Target" Multiplicity="*" />
+        <ReferentialConstraint>
+          <Principal Role="PriceChangeReport_PriceChangeReportItems_Source">
+            <PropertyRef Name="Id" />
+          </Principal>
+          <Dependent Role="PriceChangeReport_PriceChangeReportItems_Target">
+            <PropertyRef Name="PriceChangeReport_Id" />
+          </Dependent>
+        </ReferentialConstraint>
+      </Association>
+      <Association Name="PriceChangeReportItem_PriceItem">
+        <End Type="StoreAppTest.Web.DataModel.PriceItem" Role="PriceChangeReportItem_PriceItem_Target" Multiplicity="1" />
+        <End Type="StoreAppTest.Web.DataModel.PriceChangeReportItem" Role="PriceChangeReportItem_PriceItem_Source" Multiplicity="*" />
+        <ReferentialConstraint>
+          <Principal Role="PriceChangeReportItem_PriceItem_Target">
+            <PropertyRef Name="Id" />
+          </Principal>
+          <Dependent Role="PriceChangeReportItem_PriceItem_Source">
+            <PropertyRef Name="PriceItem_Id" />
+          </Dependent>
+        </ReferentialConstraint>
+      </Association>
+      <Association Name="PriceChangeReport_Creator">
+        <End Type="StoreAppTest.Web.DataModel.User" Role="PriceChangeReport_Creator_Target" Multiplicity="1" />
+        <End Type="StoreAppTest.Web.DataModel.PriceChangeReport" Role="PriceChangeReport_Creator_Source" Multiplicity="*" />
+        <ReferentialConstraint>
+          <Principal Role="PriceChangeReport_Creator_Target">
+            <PropertyRef Name="UserName" />
+          </Principal>
+          <Dependent Role="PriceChangeReport_Creator_Source">
+            <PropertyRef Name="Creator_Id" />
+          </Dependent>
+        </ReferentialConstraint>
+      </Association>
+      <Association Name="RefundDocument_Creator">
+        <End Type="StoreAppTest.Web.DataModel.User" Role="RefundDocument_Creator_Target" Multiplicity="1" />
+        <End Type="StoreAppTest.Web.DataModel.RefundDocument" Role="RefundDocument_Creator_Source" Multiplicity="*" />
+        <ReferentialConstraint>
+          <Principal Role="RefundDocument_Creator_Target">
+            <PropertyRef Name="UserName" />
+          </Principal>
+          <Dependent Role="RefundDocument_Creator_Source">
+            <PropertyRef Name="Creator_Id" />
+          </Dependent>
+        </ReferentialConstraint>
+      </Association>
+      <Association Name="RefundDocument_LastChanger">
+        <End Type="StoreAppTest.Web.DataModel.User" Role="RefundDocument_LastChanger_Target" Multiplicity="1" />
+        <End Type="StoreAppTest.Web.DataModel.RefundDocument" Role="RefundDocument_LastChanger_Source" Multiplicity="*" />
+        <ReferentialConstraint>
+          <Principal Role="RefundDocument_LastChanger_Target">
+            <PropertyRef Name="UserName" />
+          </Principal>
+          <Dependent Role="RefundDocument_LastChanger_Source">
+            <PropertyRef Name="LastChanger_Id" />
+          </Dependent>
+        </ReferentialConstraint>
+      </Association>
+      <Association Name="RefundDocument_RefundItems">
+        <End Type="StoreAppTest.Web.DataModel.RefundDocument" Role="RefundDocument_RefundItems_Source" Multiplicity="1" />
+        <End Type="StoreAppTest.Web.DataModel.RefundItem" Role="RefundDocument_RefundItems_Target" Multiplicity="*" />
+        <ReferentialConstraint>
+          <Principal Role="RefundDocument_RefundItems_Source">
+            <PropertyRef Name="Id" />
+          </Principal>
+          <Dependent Role="RefundDocument_RefundItems_Target">
+            <PropertyRef Name="RefundDocument_Id" />
+          </Dependent>
+        </ReferentialConstraint>
+      </Association>
+      <Association Name="RefundDocument_SaleDocument">
+        <End Type="StoreAppTest.Web.DataModel.SaleDocument" Role="RefundDocument_SaleDocument_Target" Multiplicity="1" />
+        <End Type="StoreAppTest.Web.DataModel.RefundDocument" Role="RefundDocument_SaleDocument_Source" Multiplicity="*" />
+        <ReferentialConstraint>
+          <Principal Role="RefundDocument_SaleDocument_Target">
+            <PropertyRef Name="Id" />
+          </Principal>
+          <Dependent Role="RefundDocument_SaleDocument_Source">
+            <PropertyRef Name="SaleDocument_Id" />
+          </Dependent>
+        </ReferentialConstraint>
+      </Association>
+      <Association Name="RefundItem_PriceItem">
+        <End Type="StoreAppTest.Web.DataModel.PriceItem" Role="RefundItem_PriceItem_Target" Multiplicity="1" />
+        <End Type="StoreAppTest.Web.DataModel.RefundItem" Role="RefundItem_PriceItem_Source" Multiplicity="*" />
+        <ReferentialConstraint>
+          <Principal Role="RefundItem_PriceItem_Target">
+            <PropertyRef Name="Id" />
+          </Principal>
+          <Dependent Role="RefundItem_PriceItem_Source">
+            <PropertyRef Name="PriceItem_Id" />
+          </Dependent>
+        </ReferentialConstraint>
+      </Association>
+      <Association Name="RefundItem_SaleItem">
+        <End Type="StoreAppTest.Web.DataModel.SaleItem" Role="RefundItem_SaleItem_Target" Multiplicity="1" />
+        <End Type="StoreAppTest.Web.DataModel.RefundItem" Role="RefundItem_SaleItem_Source" Multiplicity="*" />
+        <ReferentialConstraint>
+          <Principal Role="RefundItem_SaleItem_Target">
+            <PropertyRef Name="Id" />
+          </Principal>
+          <Dependent Role="RefundItem_SaleItem_Source">
+            <PropertyRef Name="SaleItem_Id" />
+          </Dependent>
+        </ReferentialConstraint>
+      </Association>
+      <Association Name="SaleItem_PriceItem">
+        <End Type="StoreAppTest.Web.DataModel.PriceItem" Role="SaleItem_PriceItem_Target" Multiplicity="1" />
+        <End Type="StoreAppTest.Web.DataModel.SaleItem" Role="SaleItem_PriceItem_Source" Multiplicity="*" />
+        <ReferentialConstraint>
+          <Principal Role="SaleItem_PriceItem_Target">
+            <PropertyRef Name="Id" />
+          </Principal>
+          <Dependent Role="SaleItem_PriceItem_Source">
+            <PropertyRef Name="PriceItem_Id" />
+          </Dependent>
+        </ReferentialConstraint>
+      </Association>
+      <Association Name="SaleDocument_SaleItems">
+        <End Type="StoreAppTest.Web.DataModel.SaleDocument" Role="SaleDocument_SaleItems_Source" Multiplicity="1" />
+        <End Type="StoreAppTest.Web.DataModel.SaleItem" Role="SaleDocument_SaleItems_Target" Multiplicity="*" />
+        <ReferentialConstraint>
+          <Principal Role="SaleDocument_SaleItems_Source">
+            <PropertyRef Name="Id" />
+          </Principal>
+          <Dependent Role="SaleDocument_SaleItems_Target">
+            <PropertyRef Name="SaleDocument_Id" />
+          </Dependent>
+        </ReferentialConstraint>
+      </Association>
+      <Association Name="SaleDocument_Creator">
+        <End Type="StoreAppTest.Web.DataModel.User" Role="SaleDocument_Creator_Target" Multiplicity="1" />
+        <End Type="StoreAppTest.Web.DataModel.SaleDocument" Role="SaleDocument_Creator_Source" Multiplicity="*" />
+        <ReferentialConstraint>
+          <Principal Role="SaleDocument_Creator_Target">
+            <PropertyRef Name="UserName" />
+          </Principal>
+          <Dependent Role="SaleDocument_Creator_Source">
+            <PropertyRef Name="Creator_Id" />
+          </Dependent>
+        </ReferentialConstraint>
+      </Association>
+      <Association Name="SaleDocument_Customer">
+        <End Type="StoreAppTest.Web.DataModel.Customer" Role="SaleDocument_Customer_Target" Multiplicity="1" />
+        <End Type="StoreAppTest.Web.DataModel.SaleDocument" Role="SaleDocument_Customer_Source" Multiplicity="*" />
+        <ReferentialConstraint>
+          <Principal Role="SaleDocument_Customer_Target">
+            <PropertyRef Name="Name" />
+          </Principal>
+          <Dependent Role="SaleDocument_Customer_Source">
+            <PropertyRef Name="Customer_Name" />
+          </Dependent>
+        </ReferentialConstraint>
+      </Association>
+      <Association Name="SaleDocument_LastChanger">
+        <End Type="StoreAppTest.Web.DataModel.User" Role="SaleDocument_LastChanger_Target" Multiplicity="1" />
+        <End Type="StoreAppTest.Web.DataModel.SaleDocument" Role="SaleDocument_LastChanger_Source" Multiplicity="*" />
+        <ReferentialConstraint>
+          <Principal Role="SaleDocument_LastChanger_Target">
+            <PropertyRef Name="UserName" />
+          </Principal>
+          <Dependent Role="SaleDocument_LastChanger_Source">
+            <PropertyRef Name="LastChanger_Id" />
+          </Dependent>
+        </ReferentialConstraint>
+      </Association>
+      <Association Name="RefundsPerDayItem_RefundItem">
+        <End Type="StoreAppTest.Web.DataModel.RefundItem" Role="RefundsPerDayItem_RefundItem_Target" Multiplicity="1" />
+        <End Type="StoreAppTest.Web.DataModel.RefundsPerDayItem" Role="RefundsPerDayItem_RefundItem_Source" Multiplicity="*" />
+        <ReferentialConstraint>
+          <Principal Role="RefundsPerDayItem_RefundItem_Target">
+            <PropertyRef Name="Id" />
+          </Principal>
+          <Dependent Role="RefundsPerDayItem_RefundItem_Source">
+            <PropertyRef Name="RefundItem_Id" />
+          </Dependent>
+        </ReferentialConstraint>
+      </Association>
+      <Association Name="SaleDocumentsPerDay_RefundsPerDayItems">
+        <End Type="StoreAppTest.Web.DataModel.SaleDocumentsPerDay" Role="SaleDocumentsPerDay_RefundsPerDayItems_Source" Multiplicity="1" />
+        <End Type="StoreAppTest.Web.DataModel.RefundsPerDayItem" Role="SaleDocumentsPerDay_RefundsPerDayItems_Target" Multiplicity="*" />
+        <ReferentialConstraint>
+          <Principal Role="SaleDocumentsPerDay_RefundsPerDayItems_Source">
+            <PropertyRef Name="Id" />
+          </Principal>
+          <Dependent Role="SaleDocumentsPerDay_RefundsPerDayItems_Target">
+            <PropertyRef Name="SaleDocumentsPerDay_Id" />
+          </Dependent>
+        </ReferentialConstraint>
+      </Association>
+      <Association Name="SaleDocumentsPerDay_Creator">
+        <End Type="StoreAppTest.Web.DataModel.User" Role="SaleDocumentsPerDay_Creator_Target" Multiplicity="1" />
+        <End Type="StoreAppTest.Web.DataModel.SaleDocumentsPerDay" Role="SaleDocumentsPerDay_Creator_Source" Multiplicity="*" />
+        <ReferentialConstraint>
+          <Principal Role="SaleDocumentsPerDay_Creator_Target">
+            <PropertyRef Name="UserName" />
+          </Principal>
+          <Dependent Role="SaleDocumentsPerDay_Creator_Source">
+            <PropertyRef Name="Creator_Id" />
+          </Dependent>
+        </ReferentialConstraint>
+      </Association>
+      <Association Name="SaleDocumentsPerDay_SalesPerDayItems">
+        <End Type="StoreAppTest.Web.DataModel.SaleDocumentsPerDay" Role="SaleDocumentsPerDay_SalesPerDayItems_Source" Multiplicity="1" />
+        <End Type="StoreAppTest.Web.DataModel.SalesPerDayItem" Role="SaleDocumentsPerDay_SalesPerDayItems_Target" Multiplicity="*" />
+        <ReferentialConstraint>
+          <Principal Role="SaleDocumentsPerDay_SalesPerDayItems_Source">
+            <PropertyRef Name="Id" />
+          </Principal>
+          <Dependent Role="SaleDocumentsPerDay_SalesPerDayItems_Target">
+            <PropertyRef Name="SaleDocumentsPerDay_Id" />
+          </Dependent>
+        </ReferentialConstraint>
+      </Association>
+      <Association Name="SalesPerDayItem_SaleItem">
+        <End Type="StoreAppTest.Web.DataModel.SaleItem" Role="SalesPerDayItem_SaleItem_Target" Multiplicity="1" />
+        <End Type="StoreAppTest.Web.DataModel.SalesPerDayItem" Role="SalesPerDayItem_SaleItem_Source" Multiplicity="*" />
+        <ReferentialConstraint>
+          <Principal Role="SalesPerDayItem_SaleItem_Target">
+            <PropertyRef Name="Id" />
+          </Principal>
+          <Dependent Role="SalesPerDayItem_SaleItem_Source">
+            <PropertyRef Name="SaleItem_Id" />
+          </Dependent>
+        </ReferentialConstraint>
+      </Association>
+      <Association Name="WarehouseTransferRequestItem_PriceItem">
+        <End Type="StoreAppTest.Web.DataModel.PriceItem" Role="WarehouseTransferRequestItem_PriceItem_Target" Multiplicity="1" />
+        <End Type="StoreAppTest.Web.DataModel.WarehouseTransferRequestItem" Role="WarehouseTransferRequestItem_PriceItem_Source" Multiplicity="*" />
+        <ReferentialConstraint>
+          <Principal Role="WarehouseTransferRequestItem_PriceItem_Target">
+            <PropertyRef Name="Id" />
+          </Principal>
+          <Dependent Role="WarehouseTransferRequestItem_PriceItem_Source">
+            <PropertyRef Name="PriceItem_Id" />
+          </Dependent>
+        </ReferentialConstraint>
+      </Association>
+      <Association Name="WarehouseTransferRequest_WarehouseTransferRequestItemItems">
+        <End Type="StoreAppTest.Web.DataModel.WarehouseTransferRequest" Role="WarehouseTransferRequest_WarehouseTransferRequestItemItems_Source" Multiplicity="1" />
+        <End Type="StoreAppTest.Web.DataModel.WarehouseTransferRequestItem" Role="WarehouseTransferRequest_WarehouseTransferRequestItemItems_Target" Multiplicity="*" />
+        <ReferentialConstraint>
+          <Principal Role="WarehouseTransferRequest_WarehouseTransferRequestItemItems_Source">
+            <PropertyRef Name="Id" />
+          </Principal>
+          <Dependent Role="WarehouseTransferRequest_WarehouseTransferRequestItemItems_Target">
+            <PropertyRef Name="WarehouseTransferRequest_Id" />
+          </Dependent>
+        </ReferentialConstraint>
+      </Association>
+      <Association Name="WarehouseTransferRequest_Creator">
+        <End Type="StoreAppTest.Web.DataModel.User" Role="WarehouseTransferRequest_Creator_Target" Multiplicity="1" />
+        <End Type="StoreAppTest.Web.DataModel.WarehouseTransferRequest" Role="WarehouseTransferRequest_Creator_Source" Multiplicity="*" />
+        <ReferentialConstraint>
+          <Principal Role="WarehouseTransferRequest_Creator_Target">
+            <PropertyRef Name="UserName" />
+          </Principal>
+          <Dependent Role="WarehouseTransferRequest_Creator_Source">
+            <PropertyRef Name="Creator_Id" />
+          </Dependent>
+        </ReferentialConstraint>
+      </Association>
+      <Association Name="WarehouseTransferRequest_Customer">
+        <End Type="StoreAppTest.Web.DataModel.Warehouse" Role="WarehouseTransferRequest_Customer_Target" Multiplicity="1" />
+        <End Type="StoreAppTest.Web.DataModel.WarehouseTransferRequest" Role="WarehouseTransferRequest_Customer_Source" Multiplicity="*" />
+        <ReferentialConstraint>
+          <Principal Role="WarehouseTransferRequest_Customer_Target">
+            <PropertyRef Name="Name" />
+          </Principal>
+          <Dependent Role="WarehouseTransferRequest_Customer_Source">
+            <PropertyRef Name="Customer_Id" />
+          </Dependent>
+        </ReferentialConstraint>
+      </Association>
+      <Association Name="WarehouseTransferRequest_LastChanged">
+        <End Type="StoreAppTest.Web.DataModel.User" Role="WarehouseTransferRequest_LastChanged_Target" Multiplicity="0..1" />
+        <End Type="StoreAppTest.Web.DataModel.WarehouseTransferRequest" Role="WarehouseTransferRequest_LastChanged_Source" Multiplicity="*" />
+        <ReferentialConstraint>
+          <Principal Role="WarehouseTransferRequest_LastChanged_Target">
+            <PropertyRef Name="UserName" />
+          </Principal>
+          <Dependent Role="WarehouseTransferRequest_LastChanged_Source">
+            <PropertyRef Name="LastChanged_Id" />
+          </Dependent>
+        </ReferentialConstraint>
+      </Association>
+      <Association Name="WarehouseTransferRequest_Supplier">
+        <End Type="StoreAppTest.Web.DataModel.Warehouse" Role="WarehouseTransferRequest_Supplier_Target" Multiplicity="1" />
+        <End Type="StoreAppTest.Web.DataModel.WarehouseTransferRequest" Role="WarehouseTransferRequest_Supplier_Source" Multiplicity="*" />
+        <ReferentialConstraint>
+          <Principal Role="WarehouseTransferRequest_Supplier_Target">
+            <PropertyRef Name="Name" />
+          </Principal>
+          <Dependent Role="WarehouseTransferRequest_Supplier_Source">
+            <PropertyRef Name="Supplier_Id" />
+          </Dependent>
+        </ReferentialConstraint>
+      </Association>
+      <EntityContainer Name="StoreDbContext" m:IsDefaultEntityContainer="true">
+        <EntitySet Name="Customers" EntityType="StoreAppTest.Web.DataModel.Customer" />
+        <EntitySet Name="Users" EntityType="StoreAppTest.Web.DataModel.User" />
+        <EntitySet Name="Roles" EntityType="StoreAppTest.Web.DataModel.Role" />
+        <EntitySet Name="Warehouses" EntityType="StoreAppTest.Web.DataModel.Warehouse" />
+        <EntitySet Name="DebtDischargeDocuments" EntityType="StoreAppTest.Web.DataModel.DebtDischargeDocument" />
+        <EntitySet Name="GearCategories" EntityType="StoreAppTest.Web.DataModel.GearCategory" />
+        <EntitySet Name="Gears" EntityType="StoreAppTest.Web.DataModel.Gear" />
+        <EntitySet Name="Resources" EntityType="StoreAppTest.Web.DataModel.Resource" />
+        <EntitySet Name="GearNews" EntityType="StoreAppTest.Web.DataModel.GearNew" />
+        <EntitySet Name="IncomeItems" EntityType="StoreAppTest.Web.DataModel.IncomeItem" />
+        <EntitySet Name="Incomes" EntityType="StoreAppTest.Web.DataModel.Income" />
+        <EntitySet Name="Suppliers" EntityType="StoreAppTest.Web.DataModel.Supplier" />
+        <EntitySet Name="PriceItems" EntityType="StoreAppTest.Web.DataModel.PriceItem" />
+        <EntitySet Name="PriceLists" EntityType="StoreAppTest.Web.DataModel.PriceList" />
+        <EntitySet Name="WholesalePrices" EntityType="StoreAppTest.Web.DataModel.WholesalePrice" />
+        <EntitySet Name="Remainders" EntityType="StoreAppTest.Web.DataModel.Remainder" />
+        <EntitySet Name="RemaindersUserChanges" EntityType="StoreAppTest.Web.DataModel.RemaindersUserChange" />
+        <EntitySet Name="UnitOfMeasures" EntityType="StoreAppTest.Web.DataModel.UnitOfMeasure" />
+        <EntitySet Name="PriceChangeReportItems" EntityType="StoreAppTest.Web.DataModel.PriceChangeReportItem" />
+        <EntitySet Name="PriceChangeReports" EntityType="StoreAppTest.Web.DataModel.PriceChangeReport" />
+        <EntitySet Name="RefundDocuments" EntityType="StoreAppTest.Web.DataModel.RefundDocument" />
+        <EntitySet Name="RefundItems" EntityType="StoreAppTest.Web.DataModel.RefundItem" />
+        <EntitySet Name="SaleItems" EntityType="StoreAppTest.Web.DataModel.SaleItem" />
+        <EntitySet Name="SaleDocuments" EntityType="StoreAppTest.Web.DataModel.SaleDocument" />
+        <EntitySet Name="RefundsPerDayItems" EntityType="StoreAppTest.Web.DataModel.RefundsPerDayItem" />
+        <EntitySet Name="SaleDocumentsPerDays" EntityType="StoreAppTest.Web.DataModel.SaleDocumentsPerDay" />
+        <EntitySet Name="SalesPerDayItems" EntityType="StoreAppTest.Web.DataModel.SalesPerDayItem" />
+        <EntitySet Name="WarehouseTransferRequestItems" EntityType="StoreAppTest.Web.DataModel.WarehouseTransferRequestItem" />
+        <EntitySet Name="WarehouseTransferRequests" EntityType="StoreAppTest.Web.DataModel.WarehouseTransferRequest" />
+        <EntitySet Name="PriceItemRemainderViews" EntityType="StoreAppTest.Web.DataModel.PriceItemRemainderView" />
+        <EntitySet Name="PriceIncomeItemViews" EntityType="StoreAppTest.Web.DataModel.PriceIncomeItemView" />
+        <EntitySet Name="PriceIncomeTotalItemViews" EntityType="StoreAppTest.Web.DataModel.PriceIncomeTotalItemView" />
+        <EntitySet Name="PriceItemViews" EntityType="StoreAppTest.Web.DataModel.PriceItemView" />
+        <EntitySet Name="PriceListItemRemainderViews" EntityType="StoreAppTest.Web.DataModel.PriceListItemRemainderView" />
+        <FunctionImport Name="GetLowerLimitPriceItems" ReturnType="Collection(StoreAppTest.Web.DataModel.PriceItemRemainderView)" EntitySet="PriceItemRemainderViews" m:HttpMethod="GET">
+          <Parameter Name="priceListName" Type="Edm.String" />
+        </FunctionImport>
+        <FunctionImport Name="GetNewsPriceItems" ReturnType="Collection(StoreAppTest.Web.DataModel.PriceItemRemainderView)" EntitySet="PriceItemRemainderViews" m:HttpMethod="GET">
+          <Parameter Name="priceListName" Type="Edm.String" />
+        </FunctionImport>
+        <FunctionImport Name="GetSucksPriceItems" ReturnType="Collection(StoreAppTest.Web.DataModel.PriceItemRemainderView)" EntitySet="PriceItemRemainderViews" m:HttpMethod="GET">
+          <Parameter Name="priceListName" Type="Edm.String" />
+        </FunctionImport>
+        <FunctionImport Name="GetIncomesPriceItems" ReturnType="Collection(StoreAppTest.Web.DataModel.PriceItemRemainderView)" EntitySet="PriceItemRemainderViews" m:HttpMethod="GET">
+          <Parameter Name="priceListName" Type="Edm.String" />
+        </FunctionImport>
+        <FunctionImport Name="GetAllPriceItems" ReturnType="Collection(StoreAppTest.Web.DataModel.PriceItemRemainderView)" EntitySet="PriceItemRemainderViews" m:HttpMethod="GET">
+          <Parameter Name="priceListName" Type="Edm.String" />
+        </FunctionImport>
+        <FunctionImport Name="GetLightPriceItemList" ReturnType="Collection(StoreAppTest.Web.DataModel.PriceItemRemainderView)" EntitySet="PriceItemRemainderViews" m:HttpMethod="GET">
+          <Parameter Name="priceListName" Type="Edm.String" />
+          <Parameter Name="warehouse" Type="Edm.String" />
+        </FunctionImport>
+        <FunctionImport Name="GetNotAcceptedIncomes" ReturnType="Collection(StoreAppTest.Web.DataModel.PriceIncomeItemView)" EntitySet="PriceIncomeItemViews" m:HttpMethod="GET">
+          <Parameter Name="priceListName" Type="Edm.String" />
+        </FunctionImport>
+        <FunctionImport Name="GetTotalIncomes" ReturnType="Collection(StoreAppTest.Web.DataModel.PriceIncomeTotalItemView)" EntitySet="PriceIncomeTotalItemViews" m:HttpMethod="GET">
+          <Parameter Name="priceListName" Type="Edm.String" />
+        </FunctionImport>
+        <FunctionImport Name="GetLightAllPriceItemList" ReturnType="Collection(StoreAppTest.Web.DataModel.PriceItemRemainderView)" EntitySet="PriceItemRemainderViews" m:HttpMethod="GET">
+          <Parameter Name="warehouse" Type="Edm.String" />
+        </FunctionImport>
+        <AssociationSet Name="Customer_Creator" Association="StoreAppTest.Web.DataModel.Customer_Creator">
+          <End Role="Customer_Creator_Source" EntitySet="Customers" />
+          <End Role="Customer_Creator_Target" EntitySet="Users" />
+        </AssociationSet>
+        <AssociationSet Name="User_Roles" Association="StoreAppTest.Web.DataModel.User_Roles">
+          <End Role="User_Roles_Source" EntitySet="Users" />
+          <End Role="User_Roles_Target" EntitySet="Roles" />
+        </AssociationSet>
+        <AssociationSet Name="User_Warehouse" Association="StoreAppTest.Web.DataModel.User_Warehouse">
+          <End Role="User_Warehouse_Source" EntitySet="Users" />
+          <End Role="User_Warehouse_Target" EntitySet="Warehouses" />
+        </AssociationSet>
+        <AssociationSet Name="DebtDischargeDocument_Creator" Association="StoreAppTest.Web.DataModel.DebtDischargeDocument_Creator">
+          <End Role="DebtDischargeDocument_Creator_Source" EntitySet="DebtDischargeDocuments" />
+          <End Role="DebtDischargeDocument_Creator_Target" EntitySet="Users" />
+        </AssociationSet>
+        <AssociationSet Name="DebtDischargeDocument_Debtor" Association="StoreAppTest.Web.DataModel.DebtDischargeDocument_Debtor">
+          <End Role="DebtDischargeDocument_Debtor_Source" EntitySet="DebtDischargeDocuments" />
+          <End Role="DebtDischargeDocument_Debtor_Target" EntitySet="Customers" />
+        </AssociationSet>
+        <AssociationSet Name="GearCategory_Gears" Association="StoreAppTest.Web.DataModel.GearCategory_Gears">
+          <End Role="GearCategory_Gears_Source" EntitySet="GearCategories" />
+          <End Role="GearCategory_Gears_Target" EntitySet="Gears" />
+        </AssociationSet>
+        <AssociationSet Name="Gear_Image" Association="StoreAppTest.Web.DataModel.Gear_Image">
+          <End Role="Gear_Image_Source" EntitySet="Gears" />
+          <End Role="Gear_Image_Target" EntitySet="Resources" />
+        </AssociationSet>
+        <AssociationSet Name="GearNew_Gear" Association="StoreAppTest.Web.DataModel.GearNew_Gear">
+          <End Role="GearNew_Gear_Source" EntitySet="GearNews" />
+          <End Role="GearNew_Gear_Target" EntitySet="Gears" />
+        </AssociationSet>
+        <AssociationSet Name="Income_IncomeItems" Association="StoreAppTest.Web.DataModel.Income_IncomeItems">
+          <End Role="Income_IncomeItems_Target" EntitySet="IncomeItems" />
+          <End Role="Income_IncomeItems_Source" EntitySet="Incomes" />
+        </AssociationSet>
+        <AssociationSet Name="IncomeItem_PriceItem" Association="StoreAppTest.Web.DataModel.IncomeItem_PriceItem">
+          <End Role="IncomeItem_PriceItem_Source" EntitySet="IncomeItems" />
+          <End Role="IncomeItem_PriceItem_Target" EntitySet="PriceItems" />
+        </AssociationSet>
+        <AssociationSet Name="Income_Accepter" Association="StoreAppTest.Web.DataModel.Income_Accepter">
+          <End Role="Income_Accepter_Source" EntitySet="Incomes" />
+          <End Role="Income_Accepter_Target" EntitySet="Users" />
+        </AssociationSet>
+        <AssociationSet Name="Income_Creator" Association="StoreAppTest.Web.DataModel.Income_Creator">
+          <End Role="Income_Creator_Source" EntitySet="Incomes" />
+          <End Role="Income_Creator_Target" EntitySet="Users" />
+        </AssociationSet>
+        <AssociationSet Name="Income_Supplier" Association="StoreAppTest.Web.DataModel.Income_Supplier">
+          <End Role="Income_Supplier_Source" EntitySet="Incomes" />
+          <End Role="Income_Supplier_Target" EntitySet="Suppliers" />
+        </AssociationSet>
+        <AssociationSet Name="PriceItem_Gear" Association="StoreAppTest.Web.DataModel.PriceItem_Gear">
+          <End Role="PriceItem_Gear_Source" EntitySet="PriceItems" />
+          <End Role="PriceItem_Gear_Target" EntitySet="Gears" />
+        </AssociationSet>
+        <AssociationSet Name="PriceList_PriceItems" Association="StoreAppTest.Web.DataModel.PriceList_PriceItems">
+          <End Role="PriceList_PriceItems_Target" EntitySet="PriceItems" />
+          <End Role="PriceList_PriceItems_Source" EntitySet="PriceLists" />
+        </AssociationSet>
+        <AssociationSet Name="PriceItem_Prices" Association="StoreAppTest.Web.DataModel.PriceItem_Prices">
+          <End Role="PriceItem_Prices_Source" EntitySet="PriceItems" />
+          <End Role="PriceItem_Prices_Target" EntitySet="WholesalePrices" />
+        </AssociationSet>
+        <AssociationSet Name="PriceItem_Remainders" Association="StoreAppTest.Web.DataModel.PriceItem_Remainders">
+          <End Role="PriceItem_Remainders_Source" EntitySet="PriceItems" />
+          <End Role="PriceItem_Remainders_Target" EntitySet="Remainders" />
+        </AssociationSet>
+        <AssociationSet Name="PriceItem_UnitOfMeasure" Association="StoreAppTest.Web.DataModel.PriceItem_UnitOfMeasure">
+          <End Role="PriceItem_UnitOfMeasure_Source" EntitySet="PriceItems" />
+          <End Role="PriceItem_UnitOfMeasure_Target" EntitySet="UnitOfMeasures" />
+        </AssociationSet>
+        <AssociationSet Name="PriceList_UploadUser" Association="StoreAppTest.Web.DataModel.PriceList_UploadUser">
+          <End Role="PriceList_UploadUser_Source" EntitySet="PriceLists" />
+          <End Role="PriceList_UploadUser_Target" EntitySet="Users" />
+        </AssociationSet>
+        <AssociationSet Name="Remainder_RemaindersUserChanges" Association="StoreAppTest.Web.DataModel.Remainder_RemaindersUserChanges">
+          <End Role="Remainder_RemaindersUserChanges_Source" EntitySet="Remainders" />
+          <End Role="Remainder_RemaindersUserChanges_Target" EntitySet="RemaindersUserChanges" />
+        </AssociationSet>
+        <AssociationSet Name="Remainder_Warehouse" Association="StoreAppTest.Web.DataModel.Remainder_Warehouse">
+          <End Role="Remainder_Warehouse_Source" EntitySet="Remainders" />
+          <End Role="Remainder_Warehouse_Target" EntitySet="Warehouses" />
+        </AssociationSet>
+        <AssociationSet Name="RemaindersUserChange_User" Association="StoreAppTest.Web.DataModel.RemaindersUserChange_User">
+          <End Role="RemaindersUserChange_User_Source" EntitySet="RemaindersUserChanges" />
+          <End Role="RemaindersUserChange_User_Target" EntitySet="Users" />
+        </AssociationSet>
+        <AssociationSet Name="PriceChangeReportItem_NewPrice" Association="StoreAppTest.Web.DataModel.PriceChangeReportItem_NewPrice">
+          <End Role="PriceChangeReportItem_NewPrice_Source" EntitySet="PriceChangeReportItems" />
+          <End Role="PriceChangeReportItem_NewPrice_Target" EntitySet="WholesalePrices" />
+        </AssociationSet>
+        <AssociationSet Name="PriceChangeReportItem_PreviousPrice" Association="StoreAppTest.Web.DataModel.PriceChangeReportItem_PreviousPrice">
+          <End Role="PriceChangeReportItem_PreviousPrice_Source" EntitySet="PriceChangeReportItems" />
+          <End Role="PriceChangeReportItem_PreviousPrice_Target" EntitySet="WholesalePrices" />
+        </AssociationSet>
+        <AssociationSet Name="PriceChangeReport_PriceChangeReportItems" Association="StoreAppTest.Web.DataModel.PriceChangeReport_PriceChangeReportItems">
+          <End Role="PriceChangeReport_PriceChangeReportItems_Target" EntitySet="PriceChangeReportItems" />
+          <End Role="PriceChangeReport_PriceChangeReportItems_Source" EntitySet="PriceChangeReports" />
+        </AssociationSet>
+        <AssociationSet Name="PriceChangeReportItem_PriceItem" Association="StoreAppTest.Web.DataModel.PriceChangeReportItem_PriceItem">
+          <End Role="PriceChangeReportItem_PriceItem_Source" EntitySet="PriceChangeReportItems" />
+          <End Role="PriceChangeReportItem_PriceItem_Target" EntitySet="PriceItems" />
+        </AssociationSet>
+        <AssociationSet Name="PriceChangeReport_Creator" Association="StoreAppTest.Web.DataModel.PriceChangeReport_Creator">
+          <End Role="PriceChangeReport_Creator_Source" EntitySet="PriceChangeReports" />
+          <End Role="PriceChangeReport_Creator_Target" EntitySet="Users" />
+        </AssociationSet>
+        <AssociationSet Name="RefundDocument_Creator" Association="StoreAppTest.Web.DataModel.RefundDocument_Creator">
+          <End Role="RefundDocument_Creator_Source" EntitySet="RefundDocuments" />
+          <End Role="RefundDocument_Creator_Target" EntitySet="Users" />
+        </AssociationSet>
+        <AssociationSet Name="RefundDocument_LastChanger" Association="StoreAppTest.Web.DataModel.RefundDocument_LastChanger">
+          <End Role="RefundDocument_LastChanger_Source" EntitySet="RefundDocuments" />
+          <End Role="RefundDocument_LastChanger_Target" EntitySet="Users" />
+        </AssociationSet>
+        <AssociationSet Name="RefundDocument_RefundItems" Association="StoreAppTest.Web.DataModel.RefundDocument_RefundItems">
+          <End Role="RefundDocument_RefundItems_Source" EntitySet="RefundDocuments" />
+          <End Role="RefundDocument_RefundItems_Target" EntitySet="RefundItems" />
+        </AssociationSet>
+        <AssociationSet Name="RefundDocument_SaleDocument" Association="StoreAppTest.Web.DataModel.RefundDocument_SaleDocument">
+          <End Role="RefundDocument_SaleDocument_Source" EntitySet="RefundDocuments" />
+          <End Role="RefundDocument_SaleDocument_Target" EntitySet="SaleDocuments" />
+        </AssociationSet>
+        <AssociationSet Name="RefundItem_PriceItem" Association="StoreAppTest.Web.DataModel.RefundItem_PriceItem">
+          <End Role="RefundItem_PriceItem_Source" EntitySet="RefundItems" />
+          <End Role="RefundItem_PriceItem_Target" EntitySet="PriceItems" />
+        </AssociationSet>
+        <AssociationSet Name="RefundItem_SaleItem" Association="StoreAppTest.Web.DataModel.RefundItem_SaleItem">
+          <End Role="RefundItem_SaleItem_Source" EntitySet="RefundItems" />
+          <End Role="RefundItem_SaleItem_Target" EntitySet="SaleItems" />
+        </AssociationSet>
+        <AssociationSet Name="SaleItem_PriceItem" Association="StoreAppTest.Web.DataModel.SaleItem_PriceItem">
+          <End Role="SaleItem_PriceItem_Source" EntitySet="SaleItems" />
+          <End Role="SaleItem_PriceItem_Target" EntitySet="PriceItems" />
+        </AssociationSet>
+        <AssociationSet Name="SaleDocument_SaleItems" Association="StoreAppTest.Web.DataModel.SaleDocument_SaleItems">
+          <End Role="SaleDocument_SaleItems_Target" EntitySet="SaleItems" />
+          <End Role="SaleDocument_SaleItems_Source" EntitySet="SaleDocuments" />
+        </AssociationSet>
+        <AssociationSet Name="SaleDocument_Creator" Association="StoreAppTest.Web.DataModel.SaleDocument_Creator">
+          <End Role="SaleDocument_Creator_Source" EntitySet="SaleDocuments" />
+          <End Role="SaleDocument_Creator_Target" EntitySet="Users" />
+        </AssociationSet>
+        <AssociationSet Name="SaleDocument_Customer" Association="StoreAppTest.Web.DataModel.SaleDocument_Customer">
+          <End Role="SaleDocument_Customer_Source" EntitySet="SaleDocuments" />
+          <End Role="SaleDocument_Customer_Target" EntitySet="Customers" />
+        </AssociationSet>
+        <AssociationSet Name="SaleDocument_LastChanger" Association="StoreAppTest.Web.DataModel.SaleDocument_LastChanger">
+          <End Role="SaleDocument_LastChanger_Source" EntitySet="SaleDocuments" />
+          <End Role="SaleDocument_LastChanger_Target" EntitySet="Users" />
+        </AssociationSet>
+        <AssociationSet Name="RefundsPerDayItem_RefundItem" Association="StoreAppTest.Web.DataModel.RefundsPerDayItem_RefundItem">
+          <End Role="RefundsPerDayItem_RefundItem_Source" EntitySet="RefundsPerDayItems" />
+          <End Role="RefundsPerDayItem_RefundItem_Target" EntitySet="RefundItems" />
+        </AssociationSet>
+        <AssociationSet Name="SaleDocumentsPerDay_RefundsPerDayItems" Association="StoreAppTest.Web.DataModel.SaleDocumentsPerDay_RefundsPerDayItems">
+          <End Role="SaleDocumentsPerDay_RefundsPerDayItems_Target" EntitySet="RefundsPerDayItems" />
+          <End Role="SaleDocumentsPerDay_RefundsPerDayItems_Source" EntitySet="SaleDocumentsPerDays" />
+        </AssociationSet>
+        <AssociationSet Name="SaleDocumentsPerDay_Creator" Association="StoreAppTest.Web.DataModel.SaleDocumentsPerDay_Creator">
+          <End Role="SaleDocumentsPerDay_Creator_Source" EntitySet="SaleDocumentsPerDays" />
+          <End Role="SaleDocumentsPerDay_Creator_Target" EntitySet="Users" />
+        </AssociationSet>
+        <AssociationSet Name="SaleDocumentsPerDay_SalesPerDayItems" Association="StoreAppTest.Web.DataModel.SaleDocumentsPerDay_SalesPerDayItems">
+          <End Role="SaleDocumentsPerDay_SalesPerDayItems_Source" EntitySet="SaleDocumentsPerDays" />
+          <End Role="SaleDocumentsPerDay_SalesPerDayItems_Target" EntitySet="SalesPerDayItems" />
+        </AssociationSet>
+        <AssociationSet Name="SalesPerDayItem_SaleItem" Association="StoreAppTest.Web.DataModel.SalesPerDayItem_SaleItem">
+          <End Role="SalesPerDayItem_SaleItem_Source" EntitySet="SalesPerDayItems" />
+          <End Role="SalesPerDayItem_SaleItem_Target" EntitySet="SaleItems" />
+        </AssociationSet>
+        <AssociationSet Name="WarehouseTransferRequestItem_PriceItem" Association="StoreAppTest.Web.DataModel.WarehouseTransferRequestItem_PriceItem">
+          <End Role="WarehouseTransferRequestItem_PriceItem_Source" EntitySet="WarehouseTransferRequestItems" />
+          <End Role="WarehouseTransferRequestItem_PriceItem_Target" EntitySet="PriceItems" />
+        </AssociationSet>
+        <AssociationSet Name="WarehouseTransferRequest_WarehouseTransferRequestItemItems" Association="StoreAppTest.Web.DataModel.WarehouseTransferRequest_WarehouseTransferRequestItemItems">
+          <End Role="WarehouseTransferRequest_WarehouseTransferRequestItemItems_Target" EntitySet="WarehouseTransferRequestItems" />
+          <End Role="WarehouseTransferRequest_WarehouseTransferRequestItemItems_Source" EntitySet="WarehouseTransferRequests" />
+        </AssociationSet>
+        <AssociationSet Name="WarehouseTransferRequest_Creator" Association="StoreAppTest.Web.DataModel.WarehouseTransferRequest_Creator">
+          <End Role="WarehouseTransferRequest_Creator_Source" EntitySet="WarehouseTransferRequests" />
+          <End Role="WarehouseTransferRequest_Creator_Target" EntitySet="Users" />
+        </AssociationSet>
+        <AssociationSet Name="WarehouseTransferRequest_Customer" Association="StoreAppTest.Web.DataModel.WarehouseTransferRequest_Customer">
+          <End Role="WarehouseTransferRequest_Customer_Source" EntitySet="WarehouseTransferRequests" />
+          <End Role="WarehouseTransferRequest_Customer_Target" EntitySet="Warehouses" />
+        </AssociationSet>
+        <AssociationSet Name="WarehouseTransferRequest_LastChanged" Association="StoreAppTest.Web.DataModel.WarehouseTransferRequest_LastChanged">
+          <End Role="WarehouseTransferRequest_LastChanged_Source" EntitySet="WarehouseTransferRequests" />
+          <End Role="WarehouseTransferRequest_LastChanged_Target" EntitySet="Users" />
+        </AssociationSet>
+        <AssociationSet Name="WarehouseTransferRequest_Supplier" Association="StoreAppTest.Web.DataModel.WarehouseTransferRequest_Supplier">
+          <End Role="WarehouseTransferRequest_Supplier_Source" EntitySet="WarehouseTransferRequests" />
+          <End Role="WarehouseTransferRequest_Supplier_Target" EntitySet="Warehouses" />
+        </AssociationSet>
+      </EntityContainer>
+    </Schema>
+  </edmx:DataServices>
+</edmx:Edmx>

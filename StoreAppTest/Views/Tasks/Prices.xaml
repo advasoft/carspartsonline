@@ -1,0 +1,164 @@
+﻿<sdk:Page 
+           xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" 
+           xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" 
+           xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+           xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+           xmlns:navigation="clr-namespace:System.Windows.Controls;assembly=System.Windows.Controls.Navigation"
+           xmlns:sdk="http://schemas.microsoft.com/winfx/2006/xaml/presentation/sdk"
+           xmlns:convertors="clr-namespace:StoreAppTest.Convertors"
+           xmlns:dxg="http://schemas.devexpress.com/winfx/2008/xaml/grid"
+           xmlns:dxe="http://schemas.devexpress.com/winfx/2008/xaml/editors"
+           xmlns:dxlc="http://schemas.devexpress.com/winfx/2008/xaml/layoutcontrol"
+           x:Class="StoreAppTest.Views.Prices"
+           mc:Ignorable="d"
+           d:DesignWidth="1600" d:DesignHeight="480"
+           Title="Prices Page">
+    <Grid x:Name="LayoutRoot">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="224"/>
+            <ColumnDefinition/>
+        </Grid.ColumnDefinitions>
+
+        <Grid.RowDefinitions>
+            <RowDefinition Height="48"/>
+            <RowDefinition/>
+        </Grid.RowDefinitions>
+        <Grid Grid.ColumnSpan="2">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="0"/>
+                <ColumnDefinition Width="0"/>
+                <ColumnDefinition Width="225"/>
+                <ColumnDefinition Width="159*"/>
+                <ColumnDefinition Width="127*"/>
+                <ColumnDefinition Width="88*"/>
+                <ColumnDefinition Width="97*"/>
+                <ColumnDefinition Width="45"/>
+                <ColumnDefinition Width="859*"/>
+            </Grid.ColumnDefinitions>
+            <dxe:CheckEdit Grid.Column="4" HorizontalContentAlignment="Stretch" IsChecked="{Binding IsInvoice, Mode=TwoWay}" FontSize="14">
+                <TextBlock  Text="Продать С/Ф" TextWrapping="Wrap" />
+            </dxe:CheckEdit>
+            <dxe:CheckEdit Grid.Column="5" HorizontalContentAlignment="Stretch" IsChecked="{Binding IsOrder, Mode=TwoWay}" FontSize="14">
+                <TextBlock Text="Счет" TextWrapping="Wrap" />
+            </dxe:CheckEdit>
+            <dxe:CheckEdit x:Name="InDebtCheckEdit" Grid.Column="6" HorizontalContentAlignment="Stretch" IsChecked="{Binding InDebt, Mode=TwoWay}"  EditValueChanged="InDebtCheckEdit_EditValueChanged" FontSize="14" >
+                <TextBlock Text="Товар в долг" TextWrapping="Wrap" />
+            </dxe:CheckEdit>
+            <dxg:LookUpEdit x:Name="CustomerLookUpEdit" Margin="221,6,0,0" VerticalAlignment="Top" AutoPopulateColumns="False" NullText="Поиск клиента" ItemsSource="{Binding CustomerList}" DisplayMember="Name" ValueMember="Name" Grid.Column="8" Height="32" CausesValidation="True" Validate="CustomerLookUpEdit_Validate" SelectedItem="{Binding SelectedCustomer, Mode=TwoWay}" FontSize="14">
+                <dxg:LookUpEdit.PopupContentTemplate>
+                    <ControlTemplate>
+                        <dxg:GridControl x:Name="PART_GridControl" ItemsSource="{Binding CustomerList}" >
+                            <dxg:GridControl.Columns>
+                                <dxg:GridColumn FieldName="Name" Header="Название"/>
+                            </dxg:GridControl.Columns>
+                            <dxg:GridControl.View>
+                                <dxg:TableView AutoWidth="True"/>
+                            </dxg:GridControl.View>
+                        </dxg:GridControl>
+                    </ControlTemplate>
+                </dxg:LookUpEdit.PopupContentTemplate>
+                <dxe:ButtonInfo GlyphKind="Plus" Command="{Binding AddNewCustomerCommand}"/>
+            </dxg:LookUpEdit>
+            <dxe:CheckEdit Grid.Column="3" IsChecked="{Binding IsECommerceCustomer, Mode=TwoWay}" FontSize="14">
+                <TextBlock TextWrapping="Wrap" Text="Клиент интернет-магазина" HorizontalAlignment="Stretch" Width="146"></TextBlock>
+            </dxe:CheckEdit>
+        </Grid>
+        <Grid Grid.Row="1" Grid.Column="0">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="10"/>
+                <RowDefinition Height="52"/>
+                <RowDefinition Height="52"/>
+                <RowDefinition Height="52"/>
+                <RowDefinition Height="52"/>
+                <RowDefinition Height="52"/>
+                <RowDefinition Height="52"/>
+                <RowDefinition Height="178*"/>
+            </Grid.RowDefinitions>
+            <dxlc:GroupBox Header="Операции" VerticalAlignment="Top" Height="386" Grid.RowSpan="8" Margin="0,0,10,0">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="36"/>
+                        <RowDefinition Height="10"/>
+                        <RowDefinition Height="36"/>
+                        <RowDefinition Height="0"/>
+                        <RowDefinition Height="0"/>
+                        <RowDefinition Height="0"/>
+                        <RowDefinition Height="0"/>
+                        <RowDefinition Height="0"/>
+                        <RowDefinition Height="0"/>
+                        <RowDefinition Height="10"/>
+                        <RowDefinition Height="36"/>
+                        <RowDefinition Height="10"/>
+                        <RowDefinition/>
+                    </Grid.RowDefinitions>
+                    <Button VerticalAlignment="Top" Height="32" Command="{Binding OpenNewRealizationCommand}" Grid.Row="2" FontSize="14">
+                        <TextBlock Text="Реализация за день" TextWrapping="Wrap"/>
+                    </Button>
+                    <Button VerticalAlignment="Top" Height="32" Grid.Row="10" Command="{Binding OpenNewRefundCommand}" FontSize="14">
+                        <TextBlock Text="Возврат покупателя" TextWrapping="Wrap"/>
+                    </Button>
+                    <Button Content="Сформировать продажу" VerticalAlignment="Top" Height="32" Command="{Binding OpenNewReceiptCommand}" Background="#FF0089FF" FontSize="14">
+                        <Button.BorderBrush>
+                            <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                                <GradientStop Color="#FF2C96FF" Offset="0"/>
+                                <GradientStop Color="#FF8399A9" Offset="0.375"/>
+                                <GradientStop Color="#FF0086FF" Offset="0.375"/>
+                                <GradientStop Color="#FF299BF0" Offset="1"/>
+                            </LinearGradientBrush>
+                        </Button.BorderBrush>
+                    </Button>
+                    <Button Grid.Row="12" VerticalAlignment="Top" Height="32" Content="Должники" Command="{Binding ShowDebtorsCommand}" FontSize="14"/>
+
+                </Grid>
+            </dxlc:GroupBox>
+        </Grid>
+        <dxg:GridControl x:Name="PricesGridControl" AutoGenerateColumns="None" Grid.Column="1" Grid.Row="1" SelectionMode="Cell" ItemsSource="{Binding PriceItems}" ShowLoadingPanel="{Binding IsLoading}">
+            <dxg:GridControl.Resources>
+                <Style TargetType="dxg:TableView">
+                    <Setter Property="ColumnHeaderTemplate">
+                        <Setter.Value>
+                            <DataTemplate>
+                                <TextBlock TextWrapping="Wrap" Text="{Binding}"/>
+                            </DataTemplate>
+                        </Setter.Value>
+                    </Setter>
+                </Style>
+            </dxg:GridControl.Resources>
+            <dxg:GridControl.Columns>
+                <dxg:GridColumn FieldName="Number" Header="№" ReadOnly="True" Width="40"/>
+                <!--<dxg:GridColumn FieldName="Articul" Header="Артикул" ReadOnly="True"/>-->
+                <dxg:GridColumn FieldName="CatalogNumber" Header="Каталожный номер" ReadOnly="True"/>
+                <dxg:GridColumn FieldName="IsDuplicate" Header="*" ReadOnly="True" Width="20"/>
+                <dxg:GridColumn FieldName="Name" Header="Название" ReadOnly="True" Width="200"/>
+                <!--<dxg:GridColumn FieldName="BuyPriceRur" Header="Закупочная цена (руб.)">
+                    <dxg:GridColumn.EditSettings>
+                        <dxe:TextEditSettings Mask="Numeric"
+							DisplayFormat="C"/>
+                    </dxg:GridColumn.EditSettings>
+                </dxg:GridColumn>
+                <dxg:GridColumn FieldName="BuyPriceTng" Header="Закупочная цена (тг.)">
+                    <dxg:GridColumn.EditSettings>
+                        <dxe:TextEditSettings Mask="Numeric"
+							DisplayFormat="₸{0:n2}"/>
+                    </dxg:GridColumn.EditSettings>
+                </dxg:GridColumn>-->
+                <dxg:GridColumn FieldName="Uom" Header="Единица изм." ReadOnly="True" Width="50"/>
+                <dxg:GridColumn FieldName="WholesalePrice" Header="Оптовая цена"  ReadOnly="True" Width="70" >
+                </dxg:GridColumn>
+                <dxg:GridColumn FieldName="Remainders" Header="Остатки" ReadOnly="True" Width="70"/>
+                <dxg:GridColumn FieldName="SoldCount" Header="Кол-во продано" Width="70">
+                    <dxg:GridColumn.EditSettings>
+                        <dxe:SpinEditSettings MaskType="Numeric" 
+							Mask="n0" 
+							MaskUseAsDisplayFormat="True"/>
+                    </dxg:GridColumn.EditSettings>
+                </dxg:GridColumn>
+                <dxg:GridColumn FieldName="TwonyPercent" Header="20%" ReadOnly="True" Width="70" >
+                </dxg:GridColumn>
+            </dxg:GridControl.Columns>
+            <dxg:GridControl.View>
+                <dxg:TableView AllowGrouping="False" ShowGroupPanel="False" ShowAutoFilterRow="True" ShowTotalSummary="True" ShowSearchPanelMode="Always" SearchPanelHighlightResults="True" SearchPanelFindFilter="Contains"  SearchPanelCriteriaOperatorType="And"/>
+            </dxg:GridControl.View>
+        </dxg:GridControl>
+    </Grid>
+</sdk:Page>

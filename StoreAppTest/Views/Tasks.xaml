@@ -1,0 +1,56 @@
+﻿<navigation:Page x:Class="StoreAppTest.Views.TasksView" 
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" 
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" 
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:navigation="clr-namespace:System.Windows.Controls;assembly=System.Windows.Controls.Navigation"
+    xmlns:menu="clr-namespace:advasoft.sltools.menu;assembly=advasoft.sltools.menu"
+    xmlns:sdk="http://schemas.microsoft.com/winfx/2006/xaml/presentation/sdk"
+    xmlns:controls="clr-namespace:StoreAppTest.Controls"
+    xmlns:convertors="clr-namespace:StoreAppTest.Convertors"
+    xmlns:extensions="clr-namespace:DevExpress.Xpf.Extensions;assembly=DevExpress.Data.v13.1"
+    xmlns:storeAppTest="clr-namespace:StoreAppTest"
+    mc:Ignorable="d" d:DesignWidth="1600" d:DesignHeight="480"
+    Title="Задачи" 
+    Style="{StaticResource PageStyle}">
+    <sdk:Page.Resources>
+        <Style x:Key="MainMenuItemsStyle"  TargetType="menu:MenuItem">
+            <Setter Property="Background" Value="#FF5F5F5F"></Setter>
+            <Setter Property="Margin" Value="0,0.5,0,0"></Setter>
+        </Style>
+        <convertors:AdminVisibilityConverter x:Key="AdminVisibilityConverter"/>
+    </sdk:Page.Resources>
+    <Grid x:Name="LayoutRoot">
+
+        <Grid Margin="0,0,0,0">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="32"/>
+                <RowDefinition/>
+                <RowDefinition Height="0"/>
+            </Grid.RowDefinitions>
+            <!-- MENU -->
+            <menu:Menu  Height="32" Background="#FFEEEEEE" HorizontalAlignment="Stretch" VerticalAlignment="Top" Foreground="#FFEEEEEE">
+                <menu:MenuItem Width="150" Background="#FF5F5F5F" MenuText="Прайс" ItemsSource="{Binding PriceListsTabs}">
+                </menu:MenuItem>
+                <menu:MenuItem Width="150" Background="#FF5F5F5F" MenuText="Остатки" ItemsSource="{Binding RemaindersTabs}" ></menu:MenuItem>
+                <menu:MenuItem Width="150" Background="#FF5F5F5F" MenuText="Приход" ItemsSource="{Binding IncomesTabs}"></menu:MenuItem>
+                <menu:MenuItem Width="150" Background="#FF5F5F5F" MenuText="Моя компания" Visibility="{Binding  '', Converter={StaticResource AdminVisibilityConverter}}">
+                    <menu:MenuItem Width="150" Background="#FF5F5F5F" MenuText="Изменения цен" Command="{Binding ShowPriceChangesCommands}"></menu:MenuItem>
+                    <menu:MenuItem Width="150" Background="#FF5F5F5F" MenuText="Стоимость остатков" Command="{Binding ShowRemaindersAmountCommands}"></menu:MenuItem>
+                </menu:MenuItem>
+                <menu:MenuItem Width="250" Background="#FF5F5F5F" MenuText="Межскладские перемещения" Command="{Binding ShowWarehouseTransfersCommands}"></menu:MenuItem>
+                <menu:MenuItem Width="150" Background="#FF5F5F5F" MenuText="Мой контейнер" >
+                    <menu:MenuItem Width="150" Background="#FF5F5F5F" MenuText="Изменения цен" Command="{Binding ShowPriceChangesCommands}"></menu:MenuItem>
+                    <menu:MenuItem Width="150" Background="#FF5F5F5F" MenuText="Стоимость остатков" Command="{Binding ShowRemaindersAmountCommands}"></menu:MenuItem>
+                </menu:MenuItem>
+            </menu:Menu>
+
+            <!-- FRAME -->
+            <!--<navigation:Frame Grid.Row="1" x:Name="TasksFrame">
+                    
+                </navigation:Frame>-->
+            <sdk:TabControl Grid.Row="1" x:Name="TasksTabControl" Margin="0,6,0,0" />
+        </Grid>
+
+    </Grid>
+
+</navigation:Page>
