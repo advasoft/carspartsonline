@@ -45,10 +45,10 @@
 
 				<Run Text="{Binding IsOrder, Converter={StaticResource ReceiptNameConverter}}"/>
             </TextBlock>
-            <TextBox Grid.Column="5" Height="32" Margin="0,0,10,0" TextWrapping="Wrap" Text="{Binding ReceiptNumber}" VerticalAlignment="Top" HorizontalContentAlignment="Right" FontSize="14" IsEnabled="{Binding Saved, Mode=TwoWay, Converter={StaticResource BoolToBoolReverseConverter}}"/>
+            <TextBox Grid.Column="5" Height="32" Margin="0,0,10,0" TextWrapping="Wrap" Text="{Binding ReceiptNumber}" VerticalAlignment="Top" HorizontalContentAlignment="Right" FontSize="14" IsEnabled="{Binding Saving, Mode=TwoWay, Converter={StaticResource BoolToBoolReverseConverter}}"/>
             <TextBlock Grid.Column="7" Margin="0,7,0,0" TextWrapping="Wrap" Text="Скидка:                        " VerticalAlignment="Top" FontSize="14" Height="20"/>
-            <Button Content="Применить" Grid.Column="9" Margin="0,1,0,0" VerticalAlignment="Top" Height="32" Command="{Binding ApplyDiscountCommand}" FontSize="14" IsEnabled="{Binding Saved, Mode=TwoWay, Converter={StaticResource BoolToBoolReverseConverter}}"/>
-            <dxe:SpinEdit Grid.Column="8" Margin="5,1,10,0" VerticalAlignment="Top" EditValue="{Binding AppliedDiscount, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" DisplayFormatString=" {0:n2}%" Height="32" FontSize="14" IsEnabled="{Binding Saved, Mode=TwoWay, Converter={StaticResource BoolToBoolReverseConverter}}"/>
+            <Button Content="Применить" Grid.Column="9" Margin="0,1,0,0" VerticalAlignment="Top" Height="32" Command="{Binding ApplyDiscountCommand}" FontSize="14" IsEnabled="{Binding Saving, Mode=TwoWay, Converter={StaticResource BoolToBoolReverseConverter}}"/>
+            <dxe:SpinEdit Grid.Column="8" Margin="5,1,10,0" VerticalAlignment="Top" EditValue="{Binding AppliedDiscount, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" DisplayFormatString=" {0:n2}%" Height="32" FontSize="14" IsEnabled="{Binding Saving, Mode=TwoWay, Converter={StaticResource BoolToBoolReverseConverter}}"/>
             <Button  x:Name="CancelButton" HorizontalAlignment="Left" VerticalAlignment="Top" Width="110" Height="32"  Margin="0,1,0,0" Grid.Column="2" IsEnabled="{Binding Saved, Mode=TwoWay}" Command="{Binding PrintReportCommand}" Grid.ColumnSpan="2">
                 <Grid HorizontalAlignment="Left" VerticalAlignment="Stretch">
                     <Grid.ColumnDefinitions>
@@ -59,7 +59,7 @@
                     <TextBlock Width="70" Grid.Column="1" Text="Печать" FontSize="14" Margin="4,2,0,0"/>
                 </Grid>
             </Button>
-            <Button  x:Name="CancelButton_Copy" Grid.Column="13" HorizontalAlignment="Left" Margin="5,1,0,0" VerticalAlignment="Top" Width="110" Height="32" Command="{Binding SaveReceiptCommand}" IsEnabled="{Binding Saved, Mode=TwoWay, Converter={StaticResource BoolToBoolReverseConverter}}">
+            <Button  x:Name="CancelButton_Copy" Grid.Column="13" HorizontalAlignment="Left" Margin="5,1,0,0" VerticalAlignment="Top" Width="110" Height="32" Command="{Binding SaveReceiptCommand}" IsEnabled="{Binding Saving, Mode=TwoWay, Converter={StaticResource BoolToBoolReverseConverter}}">
                 <Grid HorizontalAlignment="Left" VerticalAlignment="Stretch">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="32"/>
@@ -69,14 +69,14 @@
                     <TextBlock Width="72" Grid.Column="1" Text="Продать" FontSize="14" Margin="2,2,0,0" FontWeight="Bold"/>
                 </Grid>
             </Button>
-            <dxe:CheckEdit Grid.Column="1" HorizontalAlignment="Left" Margin="4,17,0,0" VerticalAlignment="Top" Width="18" IsChecked="{Binding SelectAll, Mode=TwoWay}" Height="19" IsEnabled="{Binding Saved, Mode=TwoWay, Converter={StaticResource BoolToBoolReverseConverter}}"/>
-            <Button HorizontalAlignment="Left" Margin="5,1,0,0" VerticalAlignment="Top" Width="32" Height="32" Command="{Binding AddPriceItemCommand}" Grid.Column="3" IsEnabled="{Binding Saved, Mode=TwoWay, Converter={StaticResource BoolToBoolReverseConverter}}">
+            <dxe:CheckEdit Grid.Column="1" HorizontalAlignment="Left" Margin="4,17,0,0" VerticalAlignment="Top" Width="18" IsChecked="{Binding SelectAll, Mode=TwoWay}" Height="19" IsEnabled="{Binding Saving, Mode=TwoWay, Converter={StaticResource BoolToBoolReverseConverter}}"/>
+            <Button HorizontalAlignment="Left" Margin="5,1,0,0" VerticalAlignment="Top" Width="32" Height="32" Command="{Binding AddPriceItemCommand}" Grid.Column="3" IsEnabled="{Binding Saving, Mode=TwoWay, Converter={StaticResource BoolToBoolReverseConverter}}">
                 <Image Height="24" Width="24" Source="/StoreAppTest;component/Assets/Images/1431713160_678092-sign-add-48.png"/>
             </Button>
-            <Button HorizontalAlignment="Left" Margin="42,1,0,0" VerticalAlignment="Top" Width="32" Height="32" Command="{Binding RemovePriceItemCommand}" Grid.Column="3" IsEnabled="{Binding Saved, Mode=TwoWay, Converter={StaticResource BoolToBoolReverseConverter}}">
+            <Button HorizontalAlignment="Left" Margin="42,1,0,0" VerticalAlignment="Top" Width="32" Height="32" Command="{Binding RemovePriceItemCommand}" Grid.Column="3" IsEnabled="{Binding Saving, Mode=TwoWay, Converter={StaticResource BoolToBoolReverseConverter}}">
                 <Image Height="24" Width="24" Source="/StoreAppTest;component/Assets/Images/1431713178_678069-sign-error-48.png"/>
             </Button>
-            <dxe:TextEdit Grid.Column="12" Margin="0,1,3,0" VerticalAlignment="Top" Height="32" EditValue="{Binding Barcode}" FontSize="12" IsEnabled="{Binding Saved, Mode=TwoWay, Converter={StaticResource BoolToBoolReverseConverter}}"/>
+            <dxe:TextEdit Grid.Column="12" Margin="0,1,3,0" VerticalAlignment="Top" Height="32" EditValue="{Binding Barcode}" FontSize="12" IsEnabled="{Binding Saving, Mode=TwoWay, Converter={StaticResource BoolToBoolReverseConverter}}"/>
             <TextBlock Grid.Column="11" HorizontalAlignment="Left" Margin="19,7,0,0" TextWrapping="Wrap" Text="Штрихкод" VerticalAlignment="Top" FontSize="14" Height="20" Width="73"/>
         </Grid>
         <Grid Grid.Row="3" HorizontalAlignment="Right" Width="310" Background="#FFFFF0D5" Margin="0,0,0,0" VerticalAlignment="Bottom">
@@ -161,7 +161,7 @@
                 <RowDefinition Height="95*"/>
             </Grid.RowDefinitions>
             <TextBlock Text="В долг" HorizontalAlignment="Left" Height="29" Margin="10,10,0,0" VerticalAlignment="Top" Width="205" FontSize="18"/>
-            <dxg:LookUpEdit x:Name="CustomerLookUpEdit" Margin="10,5,10,0" VerticalAlignment="Top" AutoPopulateColumns="False" NullText="Поиск клиента" ItemsSource="{Binding CustomerList}" DisplayMember="Name" ValueMember="Name" Height="32" CausesValidation="True"  SelectedItem="{Binding Customer, Mode=TwoWay}" Grid.Row="1" FontSize="14" IsEnabled="{Binding Saved, Mode=TwoWay, Converter={StaticResource BoolToBoolReverseConverter}}">
+            <dxg:LookUpEdit x:Name="CustomerLookUpEdit" Margin="10,5,10,0" VerticalAlignment="Top" AutoPopulateColumns="False" NullText="Поиск клиента" ItemsSource="{Binding CustomerList}" DisplayMember="Name" ValueMember="Name" Height="32" CausesValidation="True"  SelectedItem="{Binding Customer, Mode=TwoWay}" Grid.Row="1" FontSize="14" IsEnabled="{Binding Saving, Mode=TwoWay, Converter={StaticResource BoolToBoolReverseConverter}}">
                 <dxg:LookUpEdit.PopupContentTemplate>
                     <ControlTemplate>
                         <dxg:GridControl x:Name="PART_GridControl" ItemsSource="{Binding CustomerList}" >

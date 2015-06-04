@@ -563,7 +563,7 @@ namespace StoreAppTest.ViewModels
                         IncomeItems.ForEach(f =>
                         {
                             f.Income_ID = inc.Id;
-                            f.Income = string.Format("Оприходование № {0} от {1:yyyy mmmm dd}",
+                            f.Income = string.Format("Оприходование № {0} от {1:dd.MM.yyyy}",
                                 inc.IncomeNumber, inc.IncomeDate);
                         });
 

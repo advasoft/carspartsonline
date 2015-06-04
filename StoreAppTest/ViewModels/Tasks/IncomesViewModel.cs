@@ -219,7 +219,7 @@ namespace StoreAppTest.ViewModels
                         var inc = ctx.ExecuteSyncronous(ctx.Incomes.Where(w => w.Id == grp1.Key)).FirstOrDefault();
                         foreach (var incomeItem in grp1)
                         {
-                            incomeItem.Income = string.Format("Оприходование № {0} от {1:yyyy mmmm dd}",
+                            incomeItem.Income = string.Format("Оприходование № {0} от {1:dd.MM.yyyy}",
                                 inc.IncomeNumber, inc.IncomeDate);
                         }
                     }

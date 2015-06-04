@@ -264,6 +264,12 @@ namespace StoreAppTest.ViewModels
                         //    debtor = findedDebtor.Debtor_Id;
                         //    debtDisc = (int)findedDebtor.Amount;
                         //}
+                        var remainders = 0;
+                        var rems =
+                            s.PriceItem.Remainders.Where(w => w.Warehouse_Id == App.CurrentUser.Warehouse_Id)
+                                .FirstOrDefault();
+                        if (rems != null)
+                            remainders = (int)rems.Amount;
 
                         realization.Add(new RealizationItem()
                         {
@@ -272,8 +278,7 @@ namespace StoreAppTest.ViewModels
                             IsDuplicate = s.PriceItem.Gear.IsDuplicate? "*" : "",
                             Name = s.PriceItem.Gear.Name,
                             Price = (int)s.Price,
-                            Remainders =
-                                (int)s.PriceItem.Remainders.First().Amount,
+                            Remainders = remainders,
                             SoldCount = (int)s.Count,
                             Uom = s.PriceItem.UnitOfMeasure.Name,
                             WholePrice = (int)s.PriceItem.Prices.OrderByDescending(o => o.PriceDate).First().Price,

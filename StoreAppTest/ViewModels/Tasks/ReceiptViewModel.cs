@@ -195,6 +195,20 @@ namespace StoreAppTest.ViewModels
         }
         private bool _Saved;
 
+        public bool Saving
+        {
+            get
+            {
+                return _IsSaving;
+            }
+            set
+            {
+                _IsSaving = value;
+                OnPropertyChanged("Saving");
+            }
+        }
+        private bool _IsSaving;
+
 
         public string Barcode
         {
@@ -261,8 +275,7 @@ namespace StoreAppTest.ViewModels
             #region SaveReceiptCommand
             SaveReceiptCommand = new UICommand(o =>
             {
-
-
+                Saving = true;
 
                 string uri = string.Concat(
                     Application.Current.Host.Source.Scheme, "://",
@@ -302,6 +315,9 @@ namespace StoreAppTest.ViewModels
                                     string.Format(
                                         "Не у всех позиций указано количество");
                                 msch.Show();
+
+                                Saving = false;
+
                             });           
                             return;
                         }
@@ -418,6 +434,8 @@ namespace StoreAppTest.ViewModels
                             MessageChildWindow msch = new MessageChildWindow();
                             msch.Message = e.Message;
                             msch.Show();
+
+                            Saving = false;
                         });           
                     }
 

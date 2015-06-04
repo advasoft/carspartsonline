@@ -15,6 +15,7 @@ namespace StoreAppTest.Web.Controllers
     using DataModel;
     using System.Web.Http;
     using Kent.Boogaart.KBCsv;
+    using NLog;
     using Utilities;
     using StoreAppTest.Utilities;
 
@@ -457,12 +458,8 @@ namespace StoreAppTest.Web.Controllers
         [HttpPost]
         public HttpResponseMessage LogIn([FromUri]string userName, [FromUri]string passwordHash)
         {
-            //var securePwd = SecUtility.Encrypt("store_app_test", passwordHash);
-            //var pwdBytes = Encoding.Unicode.GetBytes(securePwd);
-            //string hex = BitConverter.ToString(pwdBytes).Replace("-", string.Empty);
-            //string base64 = Convert.ToBase64String(pwdBytes);
-
             var context = new StoreDbContext();
+
             var user = context.Users.Where(w => w.UserName == userName).FirstOrDefault();
             if(user == null)
                 return Request.CreateResponse(HttpStatusCode.Unauthorized);//new StatusCodeResult(HttpStatusCode.Unauthorized, this);

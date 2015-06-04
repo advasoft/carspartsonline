@@ -60,6 +60,7 @@ namespace StoreAppTest.Views
                 e.Column.Width = 40;
                 e.Column.VisibleIndex = 1;
                 e.Column.ReadOnly = true;
+                e.Column.AllowSorting = DefaultBoolean.True;
             }
             else if (e.Column.FieldName == "Articul")
                 e.Column.Visible = false;
@@ -69,6 +70,7 @@ namespace StoreAppTest.Views
                 e.Column.Width = 20;
                 e.Column.VisibleIndex = 0;
                 e.Column.AllowEditing = DefaultBoolean.True;
+                e.Column.AllowSorting = DefaultBoolean.True;
             }
             else if (e.Column.FieldName == "CatalogNumber")
             {
@@ -76,6 +78,7 @@ namespace StoreAppTest.Views
                 e.Column.Width = 100;
                 e.Column.VisibleIndex = 2;
                 e.Column.ReadOnly = true;
+                e.Column.AllowSorting = DefaultBoolean.True;
             }
             else if (e.Column.FieldName == "Name")
             {
@@ -83,6 +86,7 @@ namespace StoreAppTest.Views
                 e.Column.Width = 200;
                 e.Column.VisibleIndex = 3;
                 e.Column.ReadOnly = true;
+                e.Column.AllowSorting = DefaultBoolean.True;
             }
             else if (e.Column.FieldName == "IsDuplicate")
             {
@@ -90,6 +94,7 @@ namespace StoreAppTest.Views
                 e.Column.Width = 20;
                 e.Column.VisibleIndex = 4;
                 e.Column.ReadOnly = true;
+                e.Column.AllowSorting = DefaultBoolean.True;
             }
             else if (e.Column.FieldName == "Uom")
             {
@@ -97,6 +102,7 @@ namespace StoreAppTest.Views
                 e.Column.Width = 60;
                 e.Column.VisibleIndex = 5;
                 e.Column.ReadOnly = true;
+                e.Column.AllowSorting = DefaultBoolean.True;
             }
             else if (e.Column.FieldName == "WholesalePrice")
             {
@@ -104,6 +110,7 @@ namespace StoreAppTest.Views
                 e.Column.Width = 80;
                 e.Column.VisibleIndex = 6;
                 e.Column.ReadOnly = true;
+                e.Column.AllowSorting = DefaultBoolean.True;
             }
             else if (e.Column.FieldName == "BuyPriceRur")
                 e.Column.Visible = false;
@@ -123,6 +130,7 @@ namespace StoreAppTest.Views
                     e.Column.Width = 150;
                     e.Column.VisibleIndex = 6;
                     e.Column.ReadOnly = true;
+                    e.Column.AllowSorting = DefaultBoolean.True;
                 }
                 else
                 {
