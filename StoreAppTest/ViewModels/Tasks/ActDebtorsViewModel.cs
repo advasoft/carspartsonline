@@ -105,6 +105,35 @@ namespace StoreAppTest.ViewModels
         {
             UpDebtCommand = new UICommand(o =>
             {
+                #region check
+                if (_customer == null)
+                {
+                    DispatcherHelper.CheckBeginInvokeOnUI(() =>
+                    {
+                        MessageChildWindow msch = new MessageChildWindow();
+                        msch.Title = "Важно";
+                        msch.Message =
+                            string.Format(
+                                "Не выбран должник");
+                        msch.Show();
+                    });
+                    return;
+                }
+                if (DebtChangeAmount <= 0)
+                {
+                    DispatcherHelper.CheckBeginInvokeOnUI(() =>
+                    {
+                        MessageChildWindow msch = new MessageChildWindow();
+                        msch.Title = "Важно";
+                        msch.Message =
+                            string.Format(
+                                "Сумма увеличения долга не может быть 0");
+                        msch.Show();
+                    });
+                    return;
+                }
+                #endregion
+
                 InputDebtDischarge w = new InputDebtDischarge();
                 w.DebtDirectionTextBlock.Text = "Увеличение";
                 w.CustomerTextBlock.Text = _customer.Name;
@@ -162,6 +191,35 @@ namespace StoreAppTest.ViewModels
 
             DownDebtCommand = new UICommand(o =>
             {
+                #region check
+                if (_customer == null)
+                {
+                    DispatcherHelper.CheckBeginInvokeOnUI(() =>
+                    {
+                        MessageChildWindow msch = new MessageChildWindow();
+                        msch.Title = "Важно";
+                        msch.Message =
+                            string.Format(
+                                "Не выбран должник");
+                        msch.Show();
+                    });
+                    return;
+                }
+                if (DebtChangeAmount <= 0)
+                {
+                    DispatcherHelper.CheckBeginInvokeOnUI(() =>
+                    {
+                        MessageChildWindow msch = new MessageChildWindow();
+                        msch.Title = "Важно";
+                        msch.Message =
+                            string.Format(
+                                "Сумма уменьшения долга не может быть 0");
+                        msch.Show();
+                    });
+                    return;
+                }
+                #endregion
+
                 InputDebtDischarge w = new InputDebtDischarge();
                 w.DebtDirectionTextBlock.Text = "Уменьшение";
                 w.CustomerTextBlock.Text = _customer.Name;//SelectedSaleDocument.Customer;

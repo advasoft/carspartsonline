@@ -892,7 +892,10 @@ namespace StoreAppTest.ViewModels
                 }
                 catch (Exception exception)
                 {
-                    MessageBox.Show(exception.Message);
+                    DispatcherHelper.CheckBeginInvokeOnUI(() =>
+                    {
+                        MessageBox.Show(exception.Message);
+                    });
                 }
 
 

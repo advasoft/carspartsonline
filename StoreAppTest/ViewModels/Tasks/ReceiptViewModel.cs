@@ -322,110 +322,176 @@ namespace StoreAppTest.ViewModels
                             return;
                         }
 
-                        ReceiptItems.ForEach(i =>
+                        IList<ReceiptItem> lowerPrices = ReceiptItems.Where(rm => rm.Price < rm.WholesalePrice).ToList();
+                        if (lowerPrices.Count > 0)
                         {
-                            i.ReceiptItemChanged -= i_ReceiptItemChanged;
-                        });
-                        var receipt = new SaleDocument();
-                        //receipt.Creator = App.CurrentUser;
-                        receipt.Creator_Id = App.CurrentUser.UserName;
-                        receipt.Customer = Customer;
-                        receipt.Customer_Name = Customer.Name;
-                        receipt.IsInDebt = InDebt;
-                        receipt.IsInvoice = IsInvoice;
-                        receipt.IsOrder = IsOrder;
-                        //receipt.LastChanger = App.CurrentUser;
-                        receipt.LastChanger_Id = App.CurrentUser.UserName;
-                        receipt.Number = ReceiptNumber;
-                        receipt.SaleDate = DateTimeHelper.GetNowKz();
-                        receipt.Barcode = GetBarcode();
-
-                        ctx.AddToSaleDocuments(receipt);
-                        ctx.SaveChangesSynchronous();
-
-                        foreach (var receiptItem in ReceiptItems)
-                        {
-                            var item = new SaleItem()
+                            DispatcherHelper.CheckBeginInvokeOnUI(() =>
                             {
-                                Amount = receiptItem.Amount,
-                                Count = receiptItem.SoldCount,
-                                Discount = receiptItem.Discount,
-                                Price = receiptItem.Price,
-                                PriceItem_Id = receiptItem.PriceItem_Id,
-                                //PriceItem = receiptItem.PriceItemData,
-                                SaleDocument = receipt,
-                                SaleDocument_Id = receipt.Id
-
-                            };
-                            var rem =
-                                ctx.ExecuteSyncronous(ctx.Remainders.Where(w => w.Warehouse_Id == App.CurrentUser.Warehouse_Id && w.PriceItem_Id == item.PriceItem_Id))
-                                    .FirstOrDefault();
-
-                            if (!receipt.IsOrder)
-                            {
-                                if (rem == null)
+                                AskChildWindow window = new AskChildWindow();
+                                window.Title = "Подтверждение";
+                                StringBuilder builder = new StringBuilder();
+                                builder.AppendLine("Для следующих позиций цена реализации ниже оптовой цены:");
+                                foreach (var receiptItem in lowerPrices)
                                 {
-                                    rem = new Remainder();
-                                    rem.PriceItem_Id = receiptItem.PriceItem_Id;
-                                    rem.RemainderDate = DateTimeHelper.GetNowKz();
-                                    rem.Warehouse_Id = App.CurrentUser.Warehouse_Id;
-                                    rem.Amount -= item.Count;
-                                    ctx.AddToRemainders(rem);
+                                    builder.AppendFormat(" {0}\r\n",
+                                        receiptItem.Name);
                                 }
-                                else
+                                builder.AppendLine("Продолжить сохранение товарного чека?");
+                                window.Message = builder.ToString();
+                                window.Closed += (sender, args) =>
                                 {
-                                    //var rem =
-                                    //    item.PriceItem.Remainders.Where(w => w.Warehouse_Id == App.CurrentUser.Warehouse_Id)
-                                    //        .FirstOrDefault();
-                                    rem.Amount -= item.Count;
-                                    rem.RemainderDate = DateTimeHelper.GetNowKz();
-                                    ctx.ChangeState(rem, EntityStates.Modified);
-                                }
-                                //ctx.AttachTo("Remainders", rem);
-                                
-                            }
-                            if (receiptItem.PriceItemData == null)
-                            {
-                                receiptItem.PriceItemData = new StoreAppDataService.PriceItem()
-                                {
-                                    Id = receiptItem.PriceItem_Id
+                                    if (window.DialogResult == true)
+                                    {
+                                        Task.Factory.StartNew(() =>
+                                        {
+                                            SaveReceipt(ctx);
+                                        });
+                                    }
+                                    else
+                                    {
+                                        Saving = false;
+                                    }
                                 };
-                            }
-                            receiptItem.PriceItemData.Remainders.Add(rem);
-
-                            receipt.SaleItems.Add(item);
-                            ctx.AddToSaleItems(item);
-
-                            if (rem.PriceItem == null)
-                            {
-                                rem.PriceItem = receiptItem.PriceItemData;
-                            }
-                        }
-
-                        ctx.SaveChangesSynchronous();
-
-
-                        var receiptItems = new List<PriceItem>();
-                        foreach (var receiptItem in ReceiptItems)
-                        {
-                            var rems = receiptItem.PriceItemData.Remainders.FirstOrDefault();
-                            receiptItems.Add(new PriceItem()
-                            {
-                                PriceItemData = rems.PriceItem,
-                                Remainders = (int)(rems == null ? 0 : rems.Amount)
+                                window.Show();
                             });
                         }
-
-                        _changeRemaindersEvent.Publish(receiptItems);
-
-                        DispatcherHelper.CheckBeginInvokeOnUI(() =>
+                        else
                         {
-                            //_closeViewNeedEvent.Publish(ViewId);
-                            SavedDocumentId = receipt.Id;
-                            Barcode = receipt.Barcode;
-                            Saved = true;
+                            SaveReceipt(ctx);
+                            #region old
+                            //foreach (var receiptItem in ReceiptItems)
+                            //{
 
-                        });
+                            //    if (receiptItem.SoldCount > receiptItem.Remainders)
+                            //    {
+                            //        var item = receiptItem;
+                            //        DispatcherHelper.CheckBeginInvokeOnUI(() =>
+                            //        {
+                            //            MessageChildWindow msch = new MessageChildWindow();
+                            //            msch.Title = "Важно";
+                            //            msch.Message =
+                            //                string.Format(
+                            //                    "Продаваемое количество {0} {1}{2} больше количества остатков {3}{2}",
+                            //                    item.Name, item.SoldCount, item.Uom, item.Remainders);
+                            //            msch.Show();
+
+                            //            Saving = false;
+
+                            //        });
+                            //        return;
+                            //    }
+                            //}
+
+                            //ReceiptItems.ForEach(i =>
+                            //{
+                            //    i.ReceiptItemChanged -= i_ReceiptItemChanged;
+                            //});
+                            //var receipt = new SaleDocument();
+                            ////receipt.Creator = App.CurrentUser;
+                            //receipt.Creator_Id = App.CurrentUser.UserName;
+                            //receipt.Customer = Customer;
+                            //receipt.Customer_Name = Customer.Name;
+                            //receipt.IsInDebt = InDebt;
+                            //receipt.IsInvoice = IsInvoice;
+                            //receipt.IsOrder = IsOrder;
+                            ////receipt.LastChanger = App.CurrentUser;
+                            //receipt.LastChanger_Id = App.CurrentUser.UserName;
+                            //receipt.Number = ReceiptNumber;
+                            //receipt.SaleDate = DateTimeHelper.GetNowKz();
+                            //receipt.Barcode = GetBarcode();
+
+                            //ctx.AddToSaleDocuments(receipt);
+                            //ctx.SaveChangesSynchronous();
+
+                            //foreach (var receiptItem in ReceiptItems)
+                            //{
+                            //    var item = new SaleItem()
+                            //    {
+                            //        Amount = receiptItem.Amount,
+                            //        Count = receiptItem.SoldCount,
+                            //        Discount = receiptItem.Discount,
+                            //        Price = receiptItem.Price,
+                            //        PriceItem_Id = receiptItem.PriceItem_Id,
+                            //        //PriceItem = receiptItem.PriceItemData,
+                            //        SaleDocument = receipt,
+                            //        SaleDocument_Id = receipt.Id
+
+                            //    };
+                            //    var rem =
+                            //        ctx.ExecuteSyncronous(
+                            //            ctx.Remainders.Where(
+                            //                w =>
+                            //                    w.Warehouse_Id == App.CurrentUser.Warehouse_Id &&
+                            //                    w.PriceItem_Id == item.PriceItem_Id))
+                            //            .FirstOrDefault();
+
+                            //    if (!receipt.IsOrder)
+                            //    {
+                            //        if (rem == null)
+                            //        {
+                            //            rem = new Remainder();
+                            //            rem.PriceItem_Id = receiptItem.PriceItem_Id;
+                            //            rem.RemainderDate = DateTimeHelper.GetNowKz();
+                            //            rem.Warehouse_Id = App.CurrentUser.Warehouse_Id;
+                            //            rem.Amount -= item.Count;
+                            //            ctx.AddToRemainders(rem);
+                            //        }
+                            //        else
+                            //        {
+                            //            //var rem =
+                            //            //    item.PriceItem.Remainders.Where(w => w.Warehouse_Id == App.CurrentUser.Warehouse_Id)
+                            //            //        .FirstOrDefault();
+                            //            rem.Amount -= item.Count;
+                            //            rem.RemainderDate = DateTimeHelper.GetNowKz();
+                            //            ctx.ChangeState(rem, EntityStates.Modified);
+                            //        }
+                            //        //ctx.AttachTo("Remainders", rem);
+
+                            //    }
+                            //    if (receiptItem.PriceItemData == null)
+                            //    {
+                            //        receiptItem.PriceItemData = new StoreAppDataService.PriceItem()
+                            //        {
+                            //            Id = receiptItem.PriceItem_Id
+                            //        };
+                            //    }
+                            //    receiptItem.PriceItemData.Remainders.Add(rem);
+
+                            //    receipt.SaleItems.Add(item);
+                            //    ctx.AddToSaleItems(item);
+
+                            //    if (rem.PriceItem == null)
+                            //    {
+                            //        rem.PriceItem = receiptItem.PriceItemData;
+                            //    }
+                            //}
+
+                            //ctx.SaveChangesSynchronous();
+
+
+                            //var receiptItems = new List<PriceItem>();
+                            //foreach (var receiptItem in ReceiptItems)
+                            //{
+                            //    var rems = receiptItem.PriceItemData.Remainders.FirstOrDefault();
+                            //    receiptItems.Add(new PriceItem()
+                            //    {
+                            //        PriceItemData = rems.PriceItem,
+                            //        Remainders = (int) (rems == null ? 0 : rems.Amount)
+                            //    });
+                            //}
+
+                            //_changeRemaindersEvent.Publish(receiptItems);
+
+                            //DispatcherHelper.CheckBeginInvokeOnUI(() =>
+                            //{
+                            //    //_closeViewNeedEvent.Publish(ViewId);
+                            //    SavedDocumentId = receipt.Id;
+                            //    Barcode = receipt.Barcode;
+                            //    Saved = true;
+
+                            //});
+                            #endregion
+                        }
                     }
                     catch (Exception e)
                     {
@@ -513,9 +579,11 @@ namespace StoreAppTest.ViewModels
                                     IsDuplicate = source.IsDuplicate ? "*" : "",
                                     Name = source.Gear_Name,
                                     Price = (int)source.WholesalePrice,
+                                    WholesalePrice = (int)source.WholesalePrice,
                                     SoldCount = 0,
                                     Uom = source.Uom,
                                     PriceItem_Id = source.PriceItem_Id,
+                                    Remainders = source.Remainders
                                     //PriceItemData = source.PriceItemData,
 
                                 };
@@ -534,6 +602,7 @@ namespace StoreAppTest.ViewModels
                                 IsDuplicate = vm.SelectedPriceItem.IsDuplicate ? "*" : "",
                                 Name = vm.SelectedPriceItem.Gear_Name,
                                 Price = (int)vm.SelectedPriceItem.WholesalePrice,
+                                WholesalePrice = (int)vm.SelectedPriceItem.WholesalePrice,
                                 SoldCount = 0,
                                 Uom = vm.SelectedPriceItem.Uom,
                                 PriceItem_Id = vm.SelectedPriceItem.PriceItem_Id
@@ -647,6 +716,137 @@ namespace StoreAppTest.ViewModels
             return builder.ToString();
         }
 
+        private void SaveReceipt(StoreDbContext ctx)
+        {
+            foreach (var receiptItem in ReceiptItems)
+            {
+
+                if (receiptItem.SoldCount > receiptItem.Remainders)
+                {
+                    var item = receiptItem;
+                    DispatcherHelper.CheckBeginInvokeOnUI(() =>
+                    {
+                        MessageChildWindow msch = new MessageChildWindow();
+                        msch.Title = "Важно";
+                        msch.Message =
+                            string.Format(
+                                "Продаваемое количество {0} {1}{2} больше количества остатков {3}{2}",
+                                item.Name, item.SoldCount, item.Uom, item.Remainders);
+                        msch.Show();
+
+                        Saving = false;
+
+                    });
+                    return;
+                }
+            }
+
+            ReceiptItems.ForEach(i =>
+            {
+                i.ReceiptItemChanged -= i_ReceiptItemChanged;
+            });
+            var receipt = new SaleDocument();
+            //receipt.Creator = App.CurrentUser;
+            receipt.Creator_Id = App.CurrentUser.UserName;
+            receipt.Customer = Customer;
+            receipt.Customer_Name = Customer.Name;
+            receipt.IsInDebt = InDebt;
+            receipt.IsInvoice = IsInvoice;
+            receipt.IsOrder = IsOrder;
+            //receipt.LastChanger = App.CurrentUser;
+            receipt.LastChanger_Id = App.CurrentUser.UserName;
+            receipt.Number = ReceiptNumber;
+            receipt.SaleDate = DateTimeHelper.GetNowKz();
+            receipt.Barcode = GetBarcode();
+
+            ctx.AddToSaleDocuments(receipt);
+            ctx.SaveChangesSynchronous();
+
+            foreach (var receiptItem in ReceiptItems)
+            {
+                var item = new SaleItem()
+                {
+                    Amount = receiptItem.Amount,
+                    Count = receiptItem.SoldCount,
+                    Discount = receiptItem.Discount,
+                    Price = receiptItem.Price,
+                    PriceItem_Id = receiptItem.PriceItem_Id,
+                    //PriceItem = receiptItem.PriceItemData,
+                    SaleDocument = receipt,
+                    SaleDocument_Id = receipt.Id
+
+                };
+                var rem =
+                    ctx.ExecuteSyncronous(
+                        ctx.Remainders.Where(
+                            w =>
+                                w.Warehouse_Id == App.CurrentUser.Warehouse_Id &&
+                                w.PriceItem_Id == item.PriceItem_Id))
+                        .FirstOrDefault();
+
+                if (!receipt.IsOrder)
+                {
+                    if (rem == null)
+                    {
+                        rem = new Remainder();
+                        rem.PriceItem_Id = receiptItem.PriceItem_Id;
+                        rem.RemainderDate = DateTimeHelper.GetNowKz();
+                        rem.Warehouse_Id = App.CurrentUser.Warehouse_Id;
+                        rem.Amount -= item.Count;
+                        ctx.AddToRemainders(rem);
+                    }
+                    else
+                    {
+                        //var rem =
+                        //    item.PriceItem.Remainders.Where(w => w.Warehouse_Id == App.CurrentUser.Warehouse_Id)
+                        //        .FirstOrDefault();
+                        rem.Amount -= item.Count;
+                        rem.RemainderDate = DateTimeHelper.GetNowKz();
+                        ctx.ChangeState(rem, EntityStates.Modified);
+                    }
+                    //ctx.AttachTo("Remainders", rem);
+
+                }
+                if (receiptItem.PriceItemData == null)
+                {
+                    receiptItem.PriceItemData = new StoreAppDataService.PriceItem()
+                    {
+                        Id = receiptItem.PriceItem_Id
+                    };
+                }
+                receiptItem.PriceItemData.Remainders.Add(rem);
+
+                receipt.SaleItems.Add(item);
+                ctx.AddToSaleItems(item);
+
+                if (rem.PriceItem == null)
+                {
+                    rem.PriceItem = receiptItem.PriceItemData;
+                }
+            }
+
+            ctx.SaveChangesSynchronous();
+
+            var receiptItems = new List<PriceItem>();
+            foreach (var receiptItem in ReceiptItems)
+            {
+                var rems = receiptItem.PriceItemData.Remainders.FirstOrDefault();
+                receiptItems.Add(new PriceItem()
+                {
+                    PriceItemData = rems.PriceItem,
+                    Remainders = (int)(rems == null ? 0 : rems.Amount)
+                });
+            }
+            DispatcherHelper.CheckBeginInvokeOnUI(() =>
+            {
+                //_closeViewNeedEvent.Publish(ViewId);
+                SavedDocumentId = receipt.Id;
+                Barcode = receipt.Barcode;
+                Saved = true;
+
+            });
+            _changeRemaindersEvent.Publish(receiptItems);
+        }
 
     }
 }

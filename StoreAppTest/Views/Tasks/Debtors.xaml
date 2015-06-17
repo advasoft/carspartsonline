@@ -21,7 +21,7 @@
             <RowDefinition Height="40"/>
             <RowDefinition/>
         </Grid.RowDefinitions>
-        <dxg:LookUpEdit x:Name="CustomerLookUpEdit" Margin="517,0,10,0" VerticalAlignment="Top" AutoPopulateColumns="False" NullText="Поиск клиента" ItemsSource="{Binding CustomerList}" DisplayMember="Name" ValueMember="Name" Height="32" CausesValidation="True" SelectedItem="{Binding SelectedCustomer, Mode=TwoWay}" Grid.Column="1" FontSize="14">
+        <dxg:LookUpEdit x:Name="CustomerLookUpEdit" Margin="517,0,10,0" VerticalAlignment="Top" AutoPopulateColumns="False" NullText="Поиск клиента" ItemsSource="{Binding CustomerList}" DisplayMember="Name" ValueMember="Name" Height="32" CausesValidation="True" SelectedItem="{Binding SelectedCustomer, Mode=TwoWay}" Grid.Column="1" FontSize="14" Validate="CustomerLookUpEdit_Validate">
             <dxg:LookUpEdit.PopupContentTemplate>
                 <ControlTemplate>
                     <dxg:GridControl x:Name="PART_GridControl" ItemsSource="{Binding CustomerList}" >

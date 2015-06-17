@@ -965,6 +965,64 @@ sb.Append("LEFT JOIN  (  ");
         }
 
 
+        [HttpGet]
+        public IEnumerable<PriceIncomeTotalItemView> GetIncomes(string priceListName, string from, string to)
+        {
+
+            StringBuilder sb = new StringBuilder();
+
+
+            sb.Append("SELECT  ");
+
+            sb.Append("PR.Id AS PriceItem_Id, ");
+            sb.Append("PR.BuyPriceRur AS BuyPriceRur, ");
+            sb.Append("PR.BuyPriceTng AS BuyPriceTng, ");
+            //sb.Append("PR.WholesalePrice AS WholesalePrice, ");
+            sb.Append("PR.Uom_Id AS Uom, ");
+            sb.Append("GR.Id AS Gear_Id, ");
+            sb.Append("GR.CatalogNumber AS CatalogNumber, ");
+            sb.Append("GR.Articul AS Articul, ");
+            sb.Append("GR.IsDuplicate AS IsDuplicate, ");
+            sb.Append("GR.Name AS Gear_Name, ");
+            sb.Append("GR.RecommendedRemainder AS RecommendedRemainder, ");
+            sb.Append("GR.LowerLimitRemainder AS LowerLimitRemainder, ");
+            sb.Append("RM.Amount AS Remainders ");
+            sb.Append(",INCI.Amount AS Incomes ");
+            sb.Append(",INCI.Income_Id AS Income_Id ");
+            sb.Append(",INC.IsAccept ");
+            sb.Append(",INCI.NewPrice AS NewPrice, ");
+            sb.Append("PRS.Price AS WholesalePrice ");
+
+
+            sb.Append("FROM [IncomeItems] AS INCI ");
+            sb.Append("JOIN [Incomes] AS INC ON INCI.Income_Id = INC.Id ");
+            sb.Append("JOIN [PriceItems] AS PR ON INCI.PriceItem_Id = PR.Id ");
+            sb.Append("LEFT JOIN [PriceListPriceItems] AS PRPRL ON PR.Id = PRPRL.PriceItem_Id ");
+            sb.Append("LEFT JOIN [PriceLists] AS PRL ON PRPRL.PriceList_Name = PRL.Name ");
+            sb.Append("LEFT JOIN ( ");
+            sb.Append("SELECT PriceItem_Id, SUM(Amount) AS Amount ");
+            sb.Append("FROM [Remainders] ");
+            sb.Append("GROUP BY PriceItem_Id ");
+            sb.Append(") AS RM ON PR.Id = RM.PriceItem_Id ");
+            sb.Append("LEFT JOIN [Gears] AS GR ON PR.Gear_Id = GR.Id ");
+            sb.Append("LEFT JOIN  ");
+            sb.Append("( ");
+            sb.Append("SELECT MAX(PriceDate) AS PriceDate, PriceItem_Id ");
+            sb.Append("FROM [WholesalePrices] ");
+            sb.Append("GROUP BY PriceItem_Id ");
+            sb.Append(") AS PRSD ON PR.Id = PRSD.PriceItem_Id ");
+            sb.Append("LEFT JOIN [WholesalePrices] AS PRS ON PRSD.PriceDate = PRS.PriceDate AND PRSD.PriceItem_Id = PRS.PriceItem_Id ");
+
+            sb.Append("WHERE PRPRL.PriceList_Name = @p0 AND INC.IncomeDate BETWEEN @p1 AND @p2");
+            sb.Append(" ORDER BY INC.IncomeDate DESC ");
+
+            var context = new StoreDbContext();
+            var query = context.Set<PriceIncomeTotalItemView>()
+                .SqlQuery(sb.ToString(), priceListName, DateTime.Parse(from), DateTime.Parse(to));
+
+
+            return query.AsNoTracking().ToList();
+        }
 
         [HttpGet]
         public IEnumerable<PriceListItemRemainderView> GetAllPriceListItems(string warehouse = "")

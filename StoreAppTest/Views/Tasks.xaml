@@ -36,11 +36,17 @@
                 <menu:MenuItem Width="150" Background="#FF5F5F5F" MenuText="Моя компания" Visibility="{Binding  '', Converter={StaticResource AdminVisibilityConverter}}">
                     <menu:MenuItem Width="150" Background="#FF5F5F5F" MenuText="Изменения цен" Command="{Binding ShowPriceChangesCommands}"></menu:MenuItem>
                     <menu:MenuItem Width="150" Background="#FF5F5F5F" MenuText="Стоимость остатков" Command="{Binding ShowRemaindersAmountCommands}"></menu:MenuItem>
+                    <menu:MenuItem Width="150" Background="#FF5F5F5F" MenuText="Отчет по денежным средствам" Command="{Binding ShowCashFlowCommands}"></menu:MenuItem>
+                    <menu:MenuItem Width="150" Background="#FF5F5F5F" MenuText="Реализации за день" Command="{Binding ShowRealizationPerDayListCommands}"></menu:MenuItem>
+
                 </menu:MenuItem>
                 <menu:MenuItem Width="250" Background="#FF5F5F5F" MenuText="Межскладские перемещения" Command="{Binding ShowWarehouseTransfersCommands}"></menu:MenuItem>
                 <menu:MenuItem Width="150" Background="#FF5F5F5F" MenuText="Мой контейнер" >
                     <menu:MenuItem Width="150" Background="#FF5F5F5F" MenuText="Изменения цен" Command="{Binding ShowPriceChangesCommands}"></menu:MenuItem>
                     <menu:MenuItem Width="150" Background="#FF5F5F5F" MenuText="Стоимость остатков" Command="{Binding ShowRemaindersAmountCommands}"></menu:MenuItem>
+                    <menu:MenuItem Width="150" Background="#FF5F5F5F" MenuText="Отчет по денежным средствам" Command="{Binding ShowCashByCashierFlowCommands}"></menu:MenuItem>
+                    <menu:MenuItem Width="150" Background="#FF5F5F5F" MenuText="Реализации за день" Command="{Binding ShowRealizationPerDayListByCashierCommands}"></menu:MenuItem>
+
                 </menu:MenuItem>
             </menu:Menu>
 

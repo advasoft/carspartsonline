@@ -27,6 +27,8 @@
         private NewWarehouseTransferRequestAdded _newWarehouseTransferRequestAdded;
         private CloseViewNeedEvent _closeViewNeedEvent;
         private WarehouseTransferRequestItemChangedEvent _requestItemChangedEvent;
+        private WarehouseTransferReceivedRequestChangedEvent _receivedRequestChangedEvent;
+        private WarehouseTransferSendedRequestChangedEvent _sendedRequestChangedEvent;
 
         
         public WarehouseTransferRequestViewModel(WarehouseTransferRequestModel requestModel)
@@ -37,6 +39,10 @@
             _requestItemChangedEvent =
                 _agregator.GetEvent<WarehouseTransferRequestItemChangedEvent>();
             _requestItemChangedEvent.Subscribe(WarehouseTransferRequestModelItemChangedEventHandler);_requestModel = requestModel;
+
+            _receivedRequestChangedEvent = _agregator.GetEvent<WarehouseTransferReceivedRequestChangedEvent>();
+            _sendedRequestChangedEvent = _agregator.GetEvent<WarehouseTransferSendedRequestChangedEvent>();
+
             WarehouseTransferRequestItems = new ObservableCollection<WarehouseTransferRequestModelItem>();
 
             SupplierRemainders= new Dictionary<long, Remainder>();
@@ -135,15 +141,14 @@
             }
         }
 
-
-        private DateTime _requestDate;
         public DateTime RequestDate
         {
-            get { return _requestDate; }
-            set
+            get
             {
-                _requestDate = value;
-                OnPropertyChanged("RequestDate");
+                if (_requestModel != null)
+                    return _requestModel.RequestDate;
+
+                return DateTime.MinValue;
             }
         }
 
@@ -163,7 +168,6 @@
             }
         }
         private string _Warehouse_Id;
-
 
 
         public bool Saved
@@ -190,6 +194,7 @@
         protected override void LoadViewHandler()
         {
             //UpdateSupplierRems();
+
         }
 
         #endregion
@@ -295,8 +300,9 @@
                                 MessageChildWindow msch = new MessageChildWindow();
                                 msch.Message = "Невозможно подтвердить перемещение с 0 количеством";
                                 msch.Show();
-                                return;
+                                IsAccepted = false;
                             });
+                            return;
                         }
                         else
                         {
@@ -327,7 +333,7 @@
 
                             if (sourceRem != null)
                             {
-                                if (sourceRem.Amount < warehouseTransferRequestModelItem.Count)
+                                if (sourceRem.Amount < warehouseTransferRequestModelItem.CountAccepted)
                                 {
                                     DispatcherHelper.CheckBeginInvokeOnUI(() =>
                                     {
@@ -340,6 +346,7 @@
                                                 warehouseTransferRequestModelItem.Name,
                                                 Warehouse_Id, sourceRem.Amount);
                                         msch.Show();
+                                        IsAccepted = false;
                                     });           
                                     return;
                                     
@@ -384,28 +391,29 @@
                                             warehouseTransferRequestModelItem.Name,
                                             Warehouse_Id);
                                     msch.Show();
-                                    return;
                                 });
+                                return;
                             }
                         }
 
                         ctx.SaveChangesSynchronous();
+                        _receivedRequestChangedEvent.Publish(request);
 
                         DispatcherHelper.CheckBeginInvokeOnUI(() =>
                         {
-                            if (_requestModel != null)
-                            {
-                                _requestModel.IsAccept = request.IsAccept;
-                                _requestModel.IsReserve = request.IsReserve;
-                                _requestModel.Description = request.Description;
-                                _requestModel.Status = request.Status;
+                            //if (_requestModel != null)
+                            //{
+                            //    _requestModel.IsAccept = request.IsAccept;
+                            //    _requestModel.IsReserve = request.IsReserve;
+                            //    _requestModel.Description = request.Description;
+                            //    _requestModel.Status = request.Status;
 
-                                _requestModel.ReserveAmount = (int)
-                                    request.WarehouseTransferRequestItemItems.Sum(s => s.Count * s.WholesalePrice);
-                                _requestModel.Customer_Id = request.Customer_Id;
-                                _requestModel.CompletedAmount = (int)
-                                    request.WarehouseTransferRequestItemItems.Sum(s => s.AcceptedAmount);
-                            }
+                            //    _requestModel.ReserveAmount = (int)
+                            //        request.WarehouseTransferRequestItemItems.Sum(s => s.Count * s.WholesalePrice);
+                            //    _requestModel.Customer_Id = request.Customer_Id;
+                            //    _requestModel.CompletedAmount = (int)
+                            //        request.WarehouseTransferRequestItemItems.Sum(s => s.AcceptedAmount);
+                            //}
 
                             IsAccepted = true;
                         });
@@ -414,7 +422,12 @@
                     }
                     catch (Exception exception)
                     {
-
+                        DispatcherHelper.CheckBeginInvokeOnUI(() =>
+                        {
+                            MessageChildWindow msch = new MessageChildWindow();
+                            msch.Message = exception.Message;
+                            msch.Show();
+                        });
                     }
                 });
             });
@@ -466,24 +479,24 @@
                         }
 
                         ctx.SaveChangesSynchronous();
-
+                        _receivedRequestChangedEvent.Publish(request);
 
 
                         DispatcherHelper.CheckBeginInvokeOnUI(() =>
                         {
-                            if (_requestModel != null)
-                            {
-                                _requestModel.IsAccept = request.IsAccept;
-                                _requestModel.IsReserve = request.IsReserve;
-                                _requestModel.Description = request.Description;
-                                _requestModel.Status = request.Status;
+                            //if (_requestModel != null)
+                            //{
+                            //    _requestModel.IsAccept = request.IsAccept;
+                            //    _requestModel.IsReserve = request.IsReserve;
+                            //    _requestModel.Description = request.Description;
+                            //    _requestModel.Status = request.Status;
 
-                                _requestModel.ReserveAmount = (int)
-                                    request.WarehouseTransferRequestItemItems.Sum(s => s.Count*s.WholesalePrice);
-                                _requestModel.Customer_Id = request.Customer_Id;
-                                _requestModel.CompletedAmount = (int)
-                                    request.WarehouseTransferRequestItemItems.Sum(s => s.AcceptedAmount);
-                            }
+                            //    _requestModel.ReserveAmount = (int)
+                            //        request.WarehouseTransferRequestItemItems.Sum(s => s.Count*s.WholesalePrice);
+                            //    _requestModel.Customer_Id = request.Customer_Id;
+                            //    _requestModel.CompletedAmount = (int)
+                            //        request.WarehouseTransferRequestItemItems.Sum(s => s.AcceptedAmount);
+                            //}
 
                             IsAccepted = true;
                         });
@@ -648,6 +661,36 @@
                                 request.WarehouseTransferRequestItemItems.Add(requstItem);
                             }
                             ctx.SaveChangesSynchronous();
+                            
+                            _newWarehouseTransferRequestAdded.Publish(request);
+                            DispatcherHelper.CheckBeginInvokeOnUI(() =>
+                            {
+                                MessageChildWindow msch = new MessageChildWindow();
+                                msch.Title = "Создание";
+                                msch.Message =
+                                    string.Format(
+                                        "Запрос на перемещение создан");
+                                msch.Show();
+
+                                IsNew = false;
+                                SavedDocumentId = request.Id;
+                                Saved = true;
+                            });
+
+                            _requestModel = new WarehouseTransferRequestModel();
+                            _requestModel.Id = request.Id;
+
+                            foreach (var warehouseTransferRequestItemItem in request.WarehouseTransferRequestItemItems)
+                            {
+                                var findedItem = WarehouseTransferRequestItems.Where(i =>
+                                    i.AcceptedAmount == warehouseTransferRequestItemItem.AcceptedAmount
+                                    && i.Count == warehouseTransferRequestItemItem.Count
+                                    && i.CountAccepted == warehouseTransferRequestItemItem.CountAccepted
+                                    && i.PriceItem_Id == warehouseTransferRequestItemItem.PriceItem_Id
+                                    && i.WholesalePrice == warehouseTransferRequestItemItem.WholesalePrice)
+                                    .FirstOrDefault();
+                                findedItem.Id = warehouseTransferRequestItemItem.Id;
+                            }
                         }
                         else
                         {
@@ -675,22 +718,21 @@
                             }
 
                             ctx.SaveChangesSynchronous();
+                            _sendedRequestChangedEvent.Publish(request);
+
+                            DispatcherHelper.CheckBeginInvokeOnUI(() =>
+                            {
+                                MessageChildWindow msch = new MessageChildWindow();
+                                msch.Title = "Сохранение";
+                                msch.Message =
+                                    string.Format(
+                                        "Запрос на перемещение сохранен");
+                                msch.Show();
+
+                            });
+
                         }
 
-                        DispatcherHelper.CheckBeginInvokeOnUI(() =>
-                        {
-                            MessageChildWindow msch = new MessageChildWindow();
-                            msch.Title = "Создани";
-                            msch.Message =
-                                string.Format(
-                                    "Запрос на перемещение создан");
-                            msch.Show();
-
-                            //_closeViewNeedEvent.Publish(ViewId);
-                            IsNew = false;
-                            SavedDocumentId = request.Id;
-                            Saved = true;
-                        });
                     }
                     catch (Exception exception)
                     {

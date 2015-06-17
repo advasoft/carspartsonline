@@ -12,6 +12,7 @@
            Title="IncomesPage Page">
     <navigation:Page.Resources>
         <convertors:IncomeStatusToColorConverter x:Key="IncomeStatusToColorConverter"/>
+        <convertors:PeriodTypesToBoolBackConverter x:Key="PeriodTypesToBoolBackConverter"/>
     </navigation:Page.Resources>
     <Grid x:Name="LayoutRoot">
         <Grid.RowDefinitions>
@@ -94,6 +95,20 @@
                     <TextBlock Width="70" Grid.Column="1" Text="Печать" FontSize="14" Margin="4,2,0,0"/>
                 </Grid>
             </Button>
+            <Button  x:Name="RefreshIncomesButton" HorizontalAlignment="Left" VerticalAlignment="Top" Width="116" Height="32"  Margin="62,6,0,0" Command="{Binding RefreshIncomesCommand}" Grid.Column="1">
+                <Grid HorizontalAlignment="Left" VerticalAlignment="Stretch">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="32"/>
+                        <ColumnDefinition/>
+                    </Grid.ColumnDefinitions>
+                    <Image Width="24" Height="24" Source="/StoreAppTest;component/Assets/Images/1433854257_database_refresh.png"/>
+                    <TextBlock Grid.Column="1" Text="Обновить" FontSize="14" Margin="4,2,0,0"/>
+                </Grid>
+            </Button>
+            <TextBlock HorizontalAlignment="Left" Margin="239,11,0,0" TextWrapping="Wrap" Text="с" VerticalAlignment="Top" Width="16" Height="22" FontSize="14" Grid.Column="1"/>
+            <dxe:DateEdit HorizontalAlignment="Left" Margin="265,6,0,0" VerticalAlignment="Top" Width="123" Height="32" EditValue="{Binding AtFromDate, Mode=TwoWay}" IsEnabled="{Binding SelectedPeriodType, Converter={StaticResource PeriodTypesToBoolBackConverter}}" Grid.Column="1"/>
+            <TextBlock HorizontalAlignment="Left" Margin="393,11,0,0" TextWrapping="Wrap" Text="по" VerticalAlignment="Top" Width="19" Height="22" FontSize="14" Grid.Column="1"/>
+            <dxe:DateEdit HorizontalAlignment="Left" Margin="422,6,0,0" VerticalAlignment="Top" Width="123" Height="32" EditValue="{Binding AtToDate, Mode=TwoWay}" IsEnabled="{Binding SelectedPeriodType, Converter={StaticResource PeriodTypesToBoolBackConverter}}" Grid.Column="1"/>
         </Grid>
         <dxg:GridControl x:Name="IncomesGridControl" AutoGenerateColumns="None" Grid.Column="1" Grid.Row="1" SelectionMode="Row" ItemsSource="{Binding IncomeItems}" SelectedItem="{Binding SelectedIncome, Mode=TwoWay}" SelectedItems="{Binding SelectedIncomeItems, Mode=TwoWay}" ShowLoadingPanel="{Binding IsLoading}">
             <dxg:GridControl.Resources>

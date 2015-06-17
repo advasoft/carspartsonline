@@ -26,12 +26,60 @@ namespace StoreAppTest.ViewModels
             _agregator = ServiceLocator.Current.GetInstance<IEventAggregator>();
             _newWarehouseTransferRequestNeedEvent = _agregator.GetEvent<NewWarehouseTransferRequestNeedEvent>();
             _agregator.GetEvent<NewWarehouseTransferRequestAdded>().Subscribe(NewWarehouseTransferRequestAddedHandler);
+            _agregator.GetEvent<WarehouseTransferReceivedRequestChangedEvent>().Subscribe(WarehouseTransferReceivedRequestChangedEventHandler);
+            _agregator.GetEvent<WarehouseTransferSendedRequestChangedEvent>().Subscribe(WarehouseTransferSendedRequestChangedEventHandler);
 
             ReceivedRequests = new ObservableCollection<WarehouseTransferRequestModel>();
             SendredRequests = new ObservableCollection<WarehouseTransferRequestModel>();
             InitCommands();
         }
 
+        public DateTime ReceivedAtFromDate
+        {
+            get { return _receivedAtFromDate; }
+            set
+            {
+                _receivedAtFromDate = DateTimeHelper.GetStartDay(value);
+                OnPropertyChanged("ReceivedAtFromDate");
+            }
+        }
+        private DateTime _receivedAtFromDate;
+
+
+        public DateTime ReceivedAtToDate
+        {
+            get { return _receivedAtToDate; }
+            set
+            {
+                _receivedAtToDate = DateTimeHelper.GetEndDay(value);
+                OnPropertyChanged("ReceivedAtToDate");
+            }
+        }
+        private DateTime _receivedAtToDate;
+
+
+        public DateTime SendedAtFromDate
+        {
+            get { return _sendedAtFromDate; }
+            set
+            {
+                _sendedAtFromDate = DateTimeHelper.GetStartDay(value);
+                OnPropertyChanged("SendedAtFromDate");
+            }
+        }
+        private DateTime _sendedAtFromDate;
+
+
+        public DateTime SendedAtToDate
+        {
+            get { return _sendedAtToDate; }
+            set
+            {
+                _sendedAtToDate = DateTimeHelper.GetEndDay(value);
+                OnPropertyChanged("SendedAtToDate");
+            }
+        }
+        private DateTime _sendedAtToDate;
 
         public bool IsReceivedLoading
         {
@@ -107,123 +155,14 @@ namespace StoreAppTest.ViewModels
 
         protected override void LoadViewHandler()
         {
-            IsReceivedLoading = true;
-            IsSendedLoading = true;
+            var now = DateTime.Now;
+            ReceivedAtFromDate = DateTimeHelper.GetStartMonth(now);
+            ReceivedAtToDate = DateTimeHelper.GetEndMonth(now);
+            SendedAtFromDate = DateTimeHelper.GetStartMonth(now);
+            SendedAtToDate = DateTimeHelper.GetEndMonth(now);
 
-            var uri = GetContextUri();
-            
-
-            Task.Factory.StartNew(() =>
-            {
-
-                try
-                {
-                    var ctx = new StoreDbContext(uri);
-
-                    var receivedRequests =
-                        ctx.ExecuteSyncronous(
-                            ctx.WarehouseTransferRequests.Expand("WarehouseTransferRequestItemItems").Where(w => w.Supplier_Id == App.CurrentUser.Warehouse_Id))
-                            .ToList();
-
-
-                    foreach (var warehouseTransferRequest in receivedRequests)
-                    {
-                        var model = new WarehouseTransferRequestModel();
-                        model.ReserveAmount =(int)
-                            warehouseTransferRequest.WarehouseTransferRequestItemItems.Sum(s => s.Count*s.WholesalePrice);
-                        model.Customer_Id = warehouseTransferRequest.Customer_Id;
-                        model.Description = warehouseTransferRequest.Description;
-                        model.Id = warehouseTransferRequest.Id;
-                        model.IsAccept = warehouseTransferRequest.IsAccept;
-                        model.IsReserve = warehouseTransferRequest.IsReserve;
-                        model.RequestDate = warehouseTransferRequest.RequestDate;
-                        model.RequestNumber = warehouseTransferRequest.RequestNumber;
-                        model.CompletedAmount = (int)
-                            warehouseTransferRequest.WarehouseTransferRequestItemItems.Sum(s => s.AcceptedAmount);
-                        model.StateChangedDate = warehouseTransferRequest.StateChangedDate;
-                        model.Status = warehouseTransferRequest.Status;
-                        model.Supplier_Id = warehouseTransferRequest.Supplier_Id;
-
-                        DispatcherHelper.CheckBeginInvokeOnUI(() =>
-                        {
-                            ReceivedRequests.Add(model);
-                        });
-
-                    }
-
-
-                }
-                catch (Exception exception)
-                {
-                    DispatcherHelper.CheckBeginInvokeOnUI(() =>
-                    {
-                        MessageChildWindow ms = new MessageChildWindow();
-                        ms.Title = "Ошибка";
-                        ms.Message = exception.Message;
-
-                        ms.Show();
-                    });
-                }
-            }).ContinueWith(c =>
-            {
-                DispatcherHelper.CheckBeginInvokeOnUI(() =>
-                {
-                    IsReceivedLoading = false;
-                });
-            });
-
-            Task.Factory.StartNew(() =>
-            {
-
-                try
-                {
-                    var ctx = new StoreDbContext(uri);var receivedRequests =
-                        ctx.ExecuteSyncronous(
-                            ctx.WarehouseTransferRequests.Expand("WarehouseTransferRequestItemItems").Where(w => w.Customer_Id == App.CurrentUser.Warehouse_Id))
-                            .ToList();
-
-
-                    foreach (var warehouseTransferRequest in receivedRequests)
-                    {
-                        var model = new WarehouseTransferRequestModel();
-                        model.ReserveAmount = (int)
-                            warehouseTransferRequest.WarehouseTransferRequestItemItems.Sum(s => s.Count * s.WholesalePrice);
-                        model.Customer_Id = warehouseTransferRequest.Customer_Id;
-                        model.Description = warehouseTransferRequest.Description;
-                        model.Id = warehouseTransferRequest.Id;
-                        model.IsAccept = warehouseTransferRequest.IsAccept;
-                        model.IsReserve = warehouseTransferRequest.IsReserve;
-                        model.RequestDate = warehouseTransferRequest.RequestDate;
-                        model.RequestNumber = warehouseTransferRequest.RequestNumber;
-                        model.CompletedAmount = (int)
-                            warehouseTransferRequest.WarehouseTransferRequestItemItems.Sum(s => s.AcceptedAmount);
-                        model.StateChangedDate = warehouseTransferRequest.StateChangedDate;
-                        model.Status = warehouseTransferRequest.Status;
-                        model.Supplier_Id = warehouseTransferRequest.Supplier_Id;
-
-                        DispatcherHelper.CheckBeginInvokeOnUI(() =>
-                        {
-                            SendredRequests.Add(model);
-                        });
-
-                    }
-
-                }
-                catch (Exception exception)
-                {
-                    MessageChildWindow ms = new MessageChildWindow();
-                    ms.Title = "Ошибка";
-                    ms.Message = exception.Message;
-
-                    ms.Show();
-                }
-            }).ContinueWith(c =>
-            {
-                DispatcherHelper.CheckBeginInvokeOnUI(() =>
-                {
-                    IsSendedLoading = false;
-                });
-            });
+            RefreshReceivedRequestCommand.Execute(null);
+            RefreshSendedRequestCommand.Execute(null);
         }
 
         #endregion
@@ -237,6 +176,10 @@ namespace StoreAppTest.ViewModels
         public ICommand ViewWarehouseTransferRequestSendedCommand { get; set; }
 
         public ICommand CreateRequestCommand { get; set; }
+
+        public ICommand RefreshReceivedRequestCommand { get; set; }
+
+        public ICommand RefreshSendedRequestCommand { get; set; }
 
         private void InitCommands()
         {
@@ -440,6 +383,148 @@ namespace StoreAppTest.ViewModels
 
             #endregion
 
+            #region RefreshReceivedRequestCommand
+
+            RefreshReceivedRequestCommand = new UICommand(o =>
+            {
+                IsReceivedLoading = true;
+
+                var receivedUri = GetContextUri();
+
+                ReceivedRequests.Clear();
+
+                Task.Factory.StartNew(() =>
+                {
+
+                    try
+                    {
+                        var ctx = new StoreDbContext(receivedUri);
+
+                        var receivedRequests =
+                            ctx.ExecuteSyncronous(
+                                ctx.WarehouseTransferRequests.Expand("WarehouseTransferRequestItemItems")
+                                .Where(w => w.Supplier_Id == App.CurrentUser.Warehouse_Id
+                                && w.RequestDate >= ReceivedAtFromDate && w.RequestDate <= ReceivedAtToDate).OrderByDescending(or => or.RequestDate))
+                                .ToList();
+
+
+                        foreach (var warehouseTransferRequest in receivedRequests)
+                        {
+                            var model = new WarehouseTransferRequestModel();
+                            model.ReserveAmount = (int)
+                                warehouseTransferRequest.WarehouseTransferRequestItemItems.Sum(s => s.Count * s.WholesalePrice);
+                            model.Customer_Id = warehouseTransferRequest.Customer_Id;
+                            model.Description = warehouseTransferRequest.Description;
+                            model.Id = warehouseTransferRequest.Id;
+                            model.IsAccept = warehouseTransferRequest.IsAccept;
+                            model.IsReserve = warehouseTransferRequest.IsReserve;
+                            model.RequestDate = warehouseTransferRequest.RequestDate;
+                            model.RequestNumber = warehouseTransferRequest.RequestNumber;
+                            model.CompletedAmount = (int)
+                                warehouseTransferRequest.WarehouseTransferRequestItemItems.Sum(s => s.AcceptedAmount);
+                            model.StateChangedDate = warehouseTransferRequest.StateChangedDate;
+                            model.Status = warehouseTransferRequest.Status;
+                            model.Supplier_Id = warehouseTransferRequest.Supplier_Id;
+
+                            DispatcherHelper.CheckBeginInvokeOnUI(() =>
+                            {
+                                ReceivedRequests.Add(model);
+                            });
+
+                        }
+
+
+                    }
+                    catch (Exception exception)
+                    {
+                        DispatcherHelper.CheckBeginInvokeOnUI(() =>
+                        {
+                            MessageChildWindow ms = new MessageChildWindow();
+                            ms.Title = "Ошибка";
+                            ms.Message = exception.Message;
+
+                            ms.Show();
+                        });
+                    }
+                }).ContinueWith(c =>
+                {
+                    DispatcherHelper.CheckBeginInvokeOnUI(() =>
+                    {
+                        IsReceivedLoading = false;
+                    });
+                });
+            });
+
+            #endregion
+
+            #region RefreshSendedRequestCommand
+
+            RefreshSendedRequestCommand = new UICommand(o =>
+            {
+                IsSendedLoading = true;
+
+                var sendedUri = GetContextUri();
+
+                SendredRequests.Clear();
+
+                Task.Factory.StartNew(() =>
+                {
+
+                    try
+                    {
+                        var ctx = new StoreDbContext(sendedUri); 
+                        var receivedRequests =
+                             ctx.ExecuteSyncronous(
+                                 ctx.WarehouseTransferRequests.Expand("WarehouseTransferRequestItemItems")
+                                 .Where(w => w.Customer_Id == App.CurrentUser.Warehouse_Id
+                                 && w.RequestDate >= SendedAtFromDate && w.RequestDate <= SendedAtToDate)
+                                 .OrderByDescending(or => or.RequestDate))
+                                 .ToList();
+
+
+                        foreach (var warehouseTransferRequest in receivedRequests)
+                        {
+                            var model = new WarehouseTransferRequestModel();
+                            model.ReserveAmount = (int)
+                                warehouseTransferRequest.WarehouseTransferRequestItemItems.Sum(s => s.Count * s.WholesalePrice);
+                            model.Customer_Id = warehouseTransferRequest.Customer_Id;
+                            model.Description = warehouseTransferRequest.Description;
+                            model.Id = warehouseTransferRequest.Id;
+                            model.IsAccept = warehouseTransferRequest.IsAccept;
+                            model.IsReserve = warehouseTransferRequest.IsReserve;
+                            model.RequestDate = warehouseTransferRequest.RequestDate;
+                            model.RequestNumber = warehouseTransferRequest.RequestNumber;
+                            model.CompletedAmount = (int)
+                                warehouseTransferRequest.WarehouseTransferRequestItemItems.Sum(s => s.AcceptedAmount);
+                            model.StateChangedDate = warehouseTransferRequest.StateChangedDate;
+                            model.Status = warehouseTransferRequest.Status;
+                            model.Supplier_Id = warehouseTransferRequest.Supplier_Id;
+
+                            DispatcherHelper.CheckBeginInvokeOnUI(() =>
+                            {
+                                SendredRequests.Add(model);
+                            });
+
+                        }
+
+                    }
+                    catch (Exception exception)
+                    {
+                        MessageChildWindow ms = new MessageChildWindow();
+                        ms.Title = "Ошибка";
+                        ms.Message = exception.Message;
+
+                        ms.Show();
+                    }
+                }).ContinueWith(c =>
+                {
+                    DispatcherHelper.CheckBeginInvokeOnUI(() =>
+                    {
+                        IsSendedLoading = false;
+                    });
+                });
+            });
+            #endregion
         }
 
         #endregion
@@ -480,6 +565,43 @@ namespace StoreAppTest.ViewModels
             {
                 SendredRequests.Add(model);
             });
+        }
+
+
+        public void WarehouseTransferSendedRequestChangedEventHandler(WarehouseTransferRequest obj)
+        {
+            var model = SendredRequests.Where(m => m.Id == obj.Id).FirstOrDefault();
+            model.ReserveAmount = (int)
+                            obj.WarehouseTransferRequestItemItems.Sum(s => s.Count * s.WholesalePrice);
+            model.Customer_Id = obj.Customer_Id;
+            model.Description = obj.Description;
+            model.IsAccept = obj.IsAccept;
+            model.IsReserve = obj.IsReserve;
+            model.RequestDate = obj.RequestDate;
+            model.RequestNumber = obj.RequestNumber;
+            model.CompletedAmount = (int)
+                obj.WarehouseTransferRequestItemItems.Sum(s => s.AcceptedAmount);
+            model.StateChangedDate = obj.StateChangedDate;
+            model.Status = obj.Status;
+            model.Supplier_Id = obj.Supplier_Id;
+        }
+
+        public void WarehouseTransferReceivedRequestChangedEventHandler(WarehouseTransferRequest obj)
+        {
+            var model = ReceivedRequests.Where(m => m.Id == obj.Id).FirstOrDefault();
+            model.ReserveAmount = (int)
+                            obj.WarehouseTransferRequestItemItems.Sum(s => s.Count * s.WholesalePrice);
+            model.Customer_Id = obj.Customer_Id;
+            model.Description = obj.Description;
+            model.IsAccept = obj.IsAccept;
+            model.IsReserve = obj.IsReserve;
+            model.RequestDate = obj.RequestDate;
+            model.RequestNumber = obj.RequestNumber;
+            model.CompletedAmount = (int)
+                obj.WarehouseTransferRequestItemItems.Sum(s => s.AcceptedAmount);
+            model.StateChangedDate = obj.StateChangedDate;
+            model.Status = obj.Status;
+            model.Supplier_Id = obj.Supplier_Id;
         }
 
     }
@@ -719,6 +841,7 @@ namespace StoreAppTest.ViewModels
         public long WarehouseTransferRequest_Id { get; set; }
 
         public event EventHandler<EventArgs> WarehouseTransferRequestItemChanged = (sender, args) => { };
+
     }
 
 }

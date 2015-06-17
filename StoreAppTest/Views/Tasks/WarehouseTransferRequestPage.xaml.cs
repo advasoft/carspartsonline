@@ -47,26 +47,26 @@
 
         private void GridColumn_Validate(object sender, DevExpress.Xpf.Grid.GridCellValidationEventArgs e)
         {
-            if (_viewModel.SupplierRemainders.Count > 0 && !_viewModel.IsNew)//&& _viewModel.IsNew == false)
-            {
-                var row = e.Row as WarehouseTransferRequestModelItem;
-                var rem = _viewModel.SupplierRemainders[row.PriceItem_Id];
+            //if (_viewModel.SupplierRemainders.Count > 0 && !_viewModel.IsNew)//&& _viewModel.IsNew == false)
+            //{
+            //    var row = e.Row as WarehouseTransferRequestModelItem;
+            //    var rem = _viewModel.SupplierRemainders[row.PriceItem_Id];
 
-                if (e.Value != null)
-                {
-                    if (rem == null || (int.Parse(e.Value.ToString()) > rem.Amount))
-                    {
-                        e.IsValid = false;
-                        e.ErrorType = ErrorType.Critical;
-                        e.ErrorContent = string.Format("У {0} в наличии всего {1}", _viewModel.Warehouse_Id, rem == null ? 0 : rem.Amount);
-                    }
-                    else
-                    {
-                        e.IsValid = true;
-                    }
-                }
+            //    if (e.Value != null)
+            //    {
+            //        if (rem == null || (int.Parse(e.Value.ToString()) > rem.Amount))
+            //        {
+            //            e.IsValid = false;
+            //            e.ErrorType = ErrorType.Critical;
+            //            e.ErrorContent = string.Format("У {0} в наличии всего {1}", _viewModel.Warehouse_Id, rem == null ? 0 : rem.Amount);
+            //        }
+            //        else
+            //        {
+            //            e.IsValid = true;
+            //        }
+            //    }
 
-            }
+            //}
         }
 
         private void AcceptButton_Click(object sender, System.Windows.RoutedEventArgs e)

@@ -26,6 +26,8 @@
             }
         }
 
+        public int WholesalePrice { get; set; }
+
         private int _discount;
         public int Discount
         {
@@ -72,6 +74,8 @@
         }
 
         private bool _Selected;
+
+        public int Remainders { get; set; }
 
     }
 }

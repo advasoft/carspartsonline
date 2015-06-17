@@ -233,8 +233,12 @@
     <Compile Include="Convertors\BoolToBoolReverseConverter.cs" />
     <Compile Include="Convertors\BoolToVisibilityReverseConverter.cs" />
     <Compile Include="Convertors\DebtStatusToColorConverter.cs" />
+    <Compile Include="Convertors\PeriodTypesToBoolConverter.cs" />
+    <Compile Include="Event\RealizationPerDayOpenNeedEvent.cs" />
     <Compile Include="Event\NewWarehouseTransferRequestAdded.cs" />
     <Compile Include="Event\NewWarehouseTransferRequestNeedEvent.cs" />
+    <Compile Include="Event\WarehouseTransferSendedRequestChangedEvent.cs" />
+    <Compile Include="Event\WarehouseTransferReceivedRequestChangedEvent.cs" />
     <Compile Include="Event\WarehouseTransferReceivedRequestEvent.cs" />
     <Compile Include="Event\WarehouseTransferRequestItemChangedEvent.cs" />
     <Compile Include="Event\WarehouseTransferSendedRequestEvent.cs" />
@@ -257,8 +261,15 @@
       <DependentUpon>WarehouseRequestReportControl.xaml</DependentUpon>
     </Compile>
     <Compile Include="Utilities\DateTimeHelper.cs" />
+    <Compile Include="ViewModels\Tasks\CashFlowByCashierViewModel.cs" />
+    <Compile Include="ViewModels\Tasks\CashFlowViewModel.cs" />
+    <Compile Include="ViewModels\Tasks\RealizationPerDayReadOnlyViewModel.cs" />
     <Compile Include="ViewModels\Tasks\RemaindersWarehouseAmountViewModel.cs" />
+    <Compile Include="ViewModels\Tasks\RealizationPerDyaListViewModel.cs" />
     <Compile Include="ViewModels\Tasks\WarehouseTransferRequestViewModel.cs" />
+    <Compile Include="Views\Tasks\CashFlowPage.xaml.cs">
+      <DependentUpon>CashFlowPage.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\Tasks\RemaindersWarehouseAmountView.xaml.cs">
       <DependentUpon>RemaindersWarehouseAmountView.xaml</DependentUpon>
     </Compile>
@@ -399,6 +410,9 @@
     <Compile Include="Views\Tasks\Remainders.xaml.cs">
       <DependentUpon>Remainders.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Views\Tasks\RealizationPerDayList.xaml.cs">
+      <DependentUpon>RealizationPerDayList.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\Tasks\WarehouseTransferRequestsPage.xaml.cs">
       <DependentUpon>WarehouseTransferRequestsPage.xaml</DependentUpon>
     </Compile>
@@ -484,6 +498,10 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
+    <Page Include="Views\Tasks\CashFlowPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Views\Tasks\RemaindersWarehouseAmountView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -555,6 +573,10 @@
     <Page Include="Views\Tasks\Remainders.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\Tasks\RealizationPerDayList.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
     </Page>
     <Page Include="Views\Tasks\WarehouseTransferRequestsPage.xaml">
       <SubType>Designer</SubType>
@@ -633,6 +655,7 @@
     <Resource Include="Assets\Images\1431889171_Up.png" />
     <Resource Include="Assets\Images\1431924800_floppy-48.png" />
     <Resource Include="Assets\Images\1431932023_647403-email-48.png" />
+    <Resource Include="Assets\Images\1433854257_database_refresh.png" />
     <Content Include="Libs\MSPToolkit.dll">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>

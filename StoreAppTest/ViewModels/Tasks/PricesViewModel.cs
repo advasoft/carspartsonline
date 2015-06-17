@@ -307,10 +307,12 @@ namespace StoreAppTest.ViewModels
                         IsDuplicate = i.IsDuplicate,
                         Name = i.Name,
                         Price = price,
+                        WholesalePrice = price,
                         SoldCount = i.SoldCount,
                         Uom = i.Uom,
                         PriceItemData = i.PriceItemData,
-                        PriceItem_Id = i.PriceItemData.Id
+                        PriceItem_Id = i.PriceItemData.Id,
+                        Remainders = i.Remainders
                     });
                 });
                 _newReceiptEvent.Publish(realization);

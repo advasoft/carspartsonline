@@ -67,6 +67,7 @@ namespace StoreAppTest.ViewModels
             _agregator.GetEvent<NewWarehouseTransferRequestNeedEvent>().Subscribe(NewWarehouseTransferRequestNeedEvent);
             
             _agregator.GetEvent<NewPriceChangeReportNeedEvent>().Subscribe(NewPriceChangeReportNeedEventHandler);
+            _agregator.GetEvent<RealizationPerDayOpenNeedEvent>().Subscribe(RealizationPerDayOpenNeedEventHandler);
 
 
             PriceListsTabs = new ObservableCollection<MenuItem>();
@@ -88,6 +89,12 @@ namespace StoreAppTest.ViewModels
         public ICommand ShowWarehouseTransfersCommands { get; set; }
 
         public ICommand ShowRemaindersAmountCommands { get; set; }
+
+        public ICommand ShowCashFlowCommands { get; set; }
+        public ICommand ShowCashByCashierFlowCommands { get; set; }
+
+        public ICommand ShowRealizationPerDayListByCashierCommands { get; set; }
+        public ICommand ShowRealizationPerDayListCommands { get; set; }
 
 
         private void InitCommands()
@@ -185,6 +192,63 @@ namespace StoreAppTest.ViewModels
 
                 ClosableTabItem tb = new ClosableTabItem();
                 tb.Header = "Стоимость остатков";
+                tb.Content = ps;
+
+                _view.TasksTabControl.Items.Add(tb);
+                _view.TasksTabControl.SelectedItem = tb;
+                psv.LoadView();
+            });
+
+            ShowCashFlowCommands = new UICommand(a =>
+            {
+                CashFlowPage ps = new CashFlowPage();
+                CashFlowViewModel psv = new CashFlowViewModel();
+                ps.DataContext = psv;
+
+                ClosableTabItem tb = new ClosableTabItem();
+                tb.Header = "Отчет по денежным средствам";
+                tb.Content = ps;
+
+                _view.TasksTabControl.Items.Add(tb);
+                _view.TasksTabControl.SelectedItem = tb;
+                psv.LoadView();
+            });
+            ShowCashByCashierFlowCommands = new UICommand(a =>
+            {
+                CashFlowPage ps = new CashFlowPage();
+                CashFlowByCashierViewModel psv = new CashFlowByCashierViewModel();
+                ps.DataContext = psv;
+
+                ClosableTabItem tb = new ClosableTabItem();
+                tb.Header = "Отчет по денежным средствам";
+                tb.Content = ps;
+
+                _view.TasksTabControl.Items.Add(tb);
+                _view.TasksTabControl.SelectedItem = tb;
+                psv.LoadView();
+            });
+            ShowRealizationPerDayListByCashierCommands = new UICommand(a =>
+            {
+                RealizationPerDayList ps = new RealizationPerDayList();
+                RealizationPerDyaListViewModel psv = new RealizationPerDyaListViewModel(true);
+                ps.DataContext = psv;
+
+                ClosableTabItem tb = new ClosableTabItem();
+                tb.Header = "Реализации за день";
+                tb.Content = ps;
+
+                _view.TasksTabControl.Items.Add(tb);
+                _view.TasksTabControl.SelectedItem = tb;
+                psv.LoadView();
+            });
+            ShowRealizationPerDayListCommands = new UICommand(a =>
+            {
+                RealizationPerDayList ps = new RealizationPerDayList();
+                RealizationPerDyaListViewModel psv = new RealizationPerDyaListViewModel();
+                ps.DataContext = psv;
+
+                ClosableTabItem tb = new ClosableTabItem();
+                tb.Header = "Реализации за день";
                 tb.Content = ps;
 
                 _view.TasksTabControl.Items.Add(tb);
@@ -306,6 +370,31 @@ namespace StoreAppTest.ViewModels
             vm.LoadView();
 
         }
+
+        public void RealizationPerDayOpenNeedEventHandler(RealizationPerDayDocumentModel model)
+        {
+            Guid viewId = Guid.NewGuid();
+            RealizationPerDay ps = new RealizationPerDay();
+            ps.CloseRealizationButton.Visibility = Visibility.Collapsed;
+            ps.RealizationBarcode.IsEnabled = false;
+            ps.RealizationNumberTextBox.IsEnabled = false;
+
+            RealizationPerDayReadOnlyViewModel vm = new RealizationPerDayReadOnlyViewModel(viewId, model.Id);
+            vm.RealizationNumber = model.DocumentNumber;
+            vm.Barcode = model.Barcode;
+
+            ps.DataContext = vm;
+
+            ClosableTabItem tb = new ClosableTabItem();
+            tb.Header = "Реализация за день № " + vm.RealizationNumber;
+            tb.Content = ps;
+            tb.Name = viewId.ToString();
+
+            _view.TasksTabControl.Items.Add(tb);
+            _view.TasksTabControl.SelectedItem = tb;
+            vm.LoadView();
+        }
+
         public void NewIncomeNeedEventHandler(IncomeViewModell obj)
         {
             Guid viewId = Guid.NewGuid();

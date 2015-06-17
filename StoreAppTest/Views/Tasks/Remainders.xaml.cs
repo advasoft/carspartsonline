@@ -182,5 +182,10 @@ namespace StoreAppTest.Views
                 e.Handled = true;
             }
         }
+
+        private void PricesGridControl_AsyncOperationCompleted(object sender, DevExpress.Xpf.Core.WPFCompatibility.SLRoutedEventArgs e)
+        {
+            
+        }
     }
 }

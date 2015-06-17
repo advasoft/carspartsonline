@@ -1,0 +1,103 @@
+﻿<navigation:Page 
+           xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" 
+           xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" 
+           xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+           xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+           xmlns:navigation="clr-namespace:System.Windows.Controls;assembly=System.Windows.Controls.Navigation"
+           xmlns:dxe="http://schemas.devexpress.com/winfx/2008/xaml/editors"
+           xmlns:convertors="clr-namespace:StoreAppTest.Convertors"
+           x:Class="StoreAppTest.Views.CashFlowPage"
+           mc:Ignorable="d"
+           d:DesignWidth="1140" d:DesignHeight="480"
+           Title="CashFlowPage Page">
+    <navigation:Page.Resources>
+        <convertors:PeriodTypesToBoolConverter x:Key="PeriodTypesToBoolConverter" />
+        <convertors:PeriodTypesToBoolBackConverter x:Key="PeriodTypesToBoolBackConverter"/>
+    </navigation:Page.Resources>
+    <Grid x:Name="LayoutRoot">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="24"/>
+            <RowDefinition Height="52"/>
+            <RowDefinition Height="26"/>
+            <RowDefinition Height="28"/>
+            <RowDefinition Height="0"/>
+            <RowDefinition/>
+        </Grid.RowDefinitions>
+        <TextBlock HorizontalAlignment="Left" Margin="10,4,0,0" TextWrapping="Wrap" Text="Период" VerticalAlignment="Top" FontSize="14" Height="20" Width="54"/>
+        <Grid Grid.Row="1">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="10"/>
+                <ColumnDefinition Width="110"/>
+                <ColumnDefinition Width="110"/>
+                <ColumnDefinition Width="110"/>
+                <ColumnDefinition Width="110"/>
+                <ColumnDefinition Width="110"/>
+                <ColumnDefinition Width="112"/>
+                <ColumnDefinition Width="26"/>
+                <ColumnDefinition Width="133"/>
+                <ColumnDefinition Width="24"/>
+                <ColumnDefinition Width="133"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+            <Button Content="День" Command="{Binding SetDayPeriodCommand}" Grid.Column="1" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" Width="90" Height="32" FontSize="14" IsEnabled="{Binding SelectedPeriodType, Converter={StaticResource PeriodTypesToBoolConverter}}"/>
+            <Button Content="Неделя" Command="{Binding SetWeekPeriodCommand}" Grid.Column="2" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" Width="90" Height="32" FontSize="14" IsEnabled="{Binding SelectedPeriodType, Converter={StaticResource PeriodTypesToBoolConverter}}"/>
+            <Button Content="Месяц" Command="{Binding SetMonthPeriodCommand}" Grid.Column="3" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" Width="90" Height="32" FontSize="14" IsEnabled="{Binding SelectedPeriodType, Converter={StaticResource PeriodTypesToBoolConverter}}"/>
+            <Button Content="Полгода" Command="{Binding SetHalfYearPeriodCommand}" Grid.Column="4" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" Width="90" Height="32" FontSize="14" IsEnabled="{Binding SelectedPeriodType, Converter={StaticResource PeriodTypesToBoolConverter}}"/>
+            <Button Content="Год" Command="{Binding SetYearPeriodCommand}" Grid.Column="5" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" Width="90" Height="32" FontSize="14" IsEnabled="{Binding SelectedPeriodType, Converter={StaticResource PeriodTypesToBoolConverter}}"/>
+            <CheckBox Content="Период" Grid.Column="6" HorizontalAlignment="Left" Margin="28,15,0,0" VerticalAlignment="Top" FontSize="14" IsChecked="{Binding IsCustomPeriod, Mode=TwoWay}" Height="22" Width="74"/>
+            <TextBlock Grid.Column="7" HorizontalAlignment="Left" Margin="10,15,0,0" TextWrapping="Wrap" Text="с" VerticalAlignment="Top" Width="16" Height="22" FontSize="14"/>
+            <dxe:DateEdit Grid.Column="8" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" Width="123" Height="32" EditValue="{Binding AtFromDate, Mode=TwoWay}" IsEnabled="{Binding SelectedPeriodType, Converter={StaticResource PeriodTypesToBoolBackConverter}}"/>
+            <TextBlock Grid.Column="9" HorizontalAlignment="Left" Margin="5,15,0,0" TextWrapping="Wrap" Text="по" VerticalAlignment="Top" Width="19" Height="22" FontSize="14"/>
+            <dxe:DateEdit Grid.Column="10" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" Width="123" Height="32" EditValue="{Binding AtToDate, Mode=TwoWay}" IsEnabled="{Binding SelectedPeriodType, Converter={StaticResource PeriodTypesToBoolBackConverter}}"/>
+            <Button Content="Обновить" Grid.Column="11" Margin="10,10,0,0" VerticalAlignment="Top" Height="32" FontSize="14" HorizontalAlignment="Left" Width="88" IsEnabled="{Binding SelectedPeriodType, Converter={StaticResource PeriodTypesToBoolBackConverter}}" Command="{Binding RefreshCustomPeriodDataCommand}"/>
+        </Grid>
+        <TextBlock HorizontalAlignment="Left" Grid.Row="3" TextWrapping="Wrap" Text="{Binding AtDatePresentation}" VerticalAlignment="Top" FontSize="16" Width="329" Height="28"/>
+        <ListBox Grid.Row="5" ItemsSource="{Binding CashFlowItems}">
+            <ListBox.ItemTemplate>
+                <DataTemplate>
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="150"></ColumnDefinition>
+                            <ColumnDefinition Width="100"></ColumnDefinition>
+                            <ColumnDefinition Width="120"></ColumnDefinition>
+                            <ColumnDefinition Width="100"></ColumnDefinition>
+                            <ColumnDefinition Width="120"></ColumnDefinition>
+                            <ColumnDefinition Width="100"></ColumnDefinition>
+                            <ColumnDefinition Width="120"></ColumnDefinition>
+                            <ColumnDefinition Width="100"></ColumnDefinition>
+                            <ColumnDefinition Width="120"></ColumnDefinition>
+                            <ColumnDefinition Width="100"></ColumnDefinition>
+                            <ColumnDefinition Width="120"></ColumnDefinition>
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="*"></RowDefinition>
+                            <RowDefinition Height="42"></RowDefinition>
+                        </Grid.RowDefinitions>
+                        <TextBlock Grid.Row="1" Grid.Column="0" Text="{Binding Cashier}" FontSize="16"></TextBlock>
+                        <TextBlock Grid.Row="0" Grid.Column="1" Text="Продаж" FontSize="9"></TextBlock>
+                        <TextBlock Grid.Row="1" Grid.Column="1" Text="{Binding Sales}" FontSize="16" FontWeight="Bold"></TextBlock>
+                        <TextBlock Grid.Row="0" Grid.Column="2" Text="% по отношению к прошлому периоду" FontSize="9" TextWrapping="Wrap"></TextBlock>
+                        <TextBlock Grid.Row="1" Grid.Column="2" Text="{Binding SalesDifference, StringFormat=N2}" FontSize="16" FontWeight="Bold"></TextBlock>
+                        <TextBlock Grid.Row="0" Grid.Column="3" Text="Возврат" FontSize="9"></TextBlock>
+                        <TextBlock Grid.Row="1" Grid.Column="3" Text="{Binding Refunds}" FontSize="16" FontWeight="Bold"></TextBlock>
+                        <TextBlock Grid.Row="0" Grid.Column="4" Text="% по отношению к прошлому периоду" FontSize="9" TextWrapping="Wrap"></TextBlock>
+                        <TextBlock Grid.Row="1" Grid.Column="4" Text="{Binding RefundsDifference, StringFormat=N2}" FontSize="16" FontWeight="Bold"></TextBlock>
+                        <TextBlock Grid.Row="0" Grid.Column="5" Text="Продано в долг" FontSize="9"></TextBlock>
+                        <TextBlock Grid.Row="1" Grid.Column="5" Text="{Binding Debds}" FontSize="16" FontWeight="Bold"></TextBlock>
+                        <TextBlock Grid.Row="0" Grid.Column="6" Text="% по отношению к прошлому периоду" FontSize="9" TextWrapping="Wrap"></TextBlock>
+                        <TextBlock Grid.Row="1" Grid.Column="6" Text="{Binding DebdsDifference, StringFormat=N2}" FontSize="16" FontWeight="Bold"></TextBlock>
+                        <TextBlock Grid.Row="0" Grid.Column="7" Text="Возврат долга" FontSize="9"></TextBlock>
+                        <TextBlock Grid.Row="1" Grid.Column="7" Text="{Binding DebdDischarges}" FontSize="16" FontWeight="Bold"></TextBlock>
+                        <TextBlock Grid.Row="0" Grid.Column="8" Text="% по отношению к прошлому периоду" FontSize="9" TextWrapping="Wrap"></TextBlock>
+                        <TextBlock Grid.Row="1" Grid.Column="8" Text="{Binding DebdDischargesDifference, StringFormat=N2}" FontSize="16" FontWeight="Bold"></TextBlock>
+                        <TextBlock Grid.Row="0" Grid.Column="9" Text="Итого" FontSize="9"></TextBlock>
+                        <TextBlock Grid.Row="1" Grid.Column="9" Text="{Binding Totals}" FontSize="16" FontWeight="Bold"></TextBlock>
+                        <TextBlock Grid.Row="0" Grid.Column="10" Text="% по отношению к прошлому периоду" FontSize="9" TextWrapping="Wrap"></TextBlock>
+                        <TextBlock Grid.Row="1" Grid.Column="10" Text="{Binding TotalsDifference, StringFormat=N2}" FontSize="16" FontWeight="Bold"></TextBlock>
+                    </Grid>
+                </DataTemplate>
+            </ListBox.ItemTemplate>
+        </ListBox>
+
+    </Grid>
+</navigation:Page>

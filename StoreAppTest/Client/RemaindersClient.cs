@@ -21,11 +21,17 @@ namespace StoreAppTest
         private Uri _getLowLimitRemaindersUri;
         private Uri _getIncomesRemaindersUri;
         private Uri _getTotalIncomesUri;
+        private Uri _getIncomesUri;
         private Uri _getAllPriceListItemsUri;
 
-        public RemaindersClient(string parameter)
+        private DateTime? _from = null;
+        private DateTime? _to = null;
+
+        public RemaindersClient(string parameter, DateTime? from = null, DateTime? to = null)
         {
             _parameter = parameter;
+            _from = from;
+            _to = to;
 
             _getAllRemaindersUri = new Uri(
                         string.Concat(App.AppBaseUrl,
@@ -57,6 +63,11 @@ namespace StoreAppTest
                         string.Format("/api/PriceLists/GetTotalIncomes?priceListName={0}", _parameter))
                         , UriKind.Absolute);
 
+            _getIncomesUri = new Uri(
+                        string.Concat(App.AppBaseUrl,
+                        string.Format("/api/PriceLists/GetIncomes?priceListName={0}&from={1}&to={2}", _parameter, from, to))
+                        , UriKind.Absolute);
+            
             _getAllPriceListItemsUri = new Uri(
                         string.Concat(App.AppBaseUrl,
                         string.Format("/api/PriceLists/GetAllPriceListItems?warehouse={0}", _parameter))
@@ -94,6 +105,11 @@ namespace StoreAppTest
         public IEnumerable<PriceIncomeTotalItemView> GetTotalIncomes()
         {
             return GetInternalRemainders<IEnumerable<PriceIncomeTotalItemView>>(_getTotalIncomesUri);
+        }
+
+        public IEnumerable<PriceIncomeTotalItemView> GetIncomes()
+        {
+            return GetInternalRemainders<IEnumerable<PriceIncomeTotalItemView>>(_getIncomesUri);
         }
 
         public IEnumerable<PriceListItemRemainderView> GetAllPriceListItems()

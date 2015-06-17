@@ -66,7 +66,7 @@
 
             </sdk:DataGrid.Columns>
         </controls:ExtendedGrid>-->
-        <dxg:GridControl x:Name="PricesGridControl" AutoGenerateColumns="AddNew" Grid.Row="2" SelectionMode="Row"  ShowLoadingPanel="{Binding IsLoading}" AutoGeneratingColumn="PricesGridControl_AutoGeneratingColumn" ItemsSource="{Binding RemainderItems}" SelectedItem="{Binding SelectedRemainders, Mode=TwoWay}" CustomColumnSort="PricesGridControl_CustomColumnSort" >
+        <dxg:GridControl x:Name="PricesGridControl" AutoGenerateColumns="AddNew" Grid.Row="2" SelectionMode="Row"  ShowLoadingPanel="{Binding IsLoading}" AutoGeneratingColumn="PricesGridControl_AutoGeneratingColumn" ItemsSource="{Binding RemainderItems}" SelectedItem="{Binding SelectedRemainders, Mode=TwoWay}" CustomColumnSort="PricesGridControl_CustomColumnSort" AsyncOperationCompleted="PricesGridControl_AsyncOperationCompleted" >
             <dxg:GridControl.Resources>
                 <Style TargetType="dxg:TableView">
                     <Setter Property="ColumnHeaderTemplate">
@@ -119,7 +119,7 @@
                 </dxg:GridColumn>
             </dxg:GridControl.Columns>-->
             <dxg:GridControl.View>
-                <dxg:TableView AllowGrouping="False" ShowGroupPanel="False" ShowAutoFilterRow="True" ShowTotalSummary="True"  EnterMoveNextColumn="False" AllowEditing="True" RowDoubleClick="TableView_RowDoubleClick" ShowSearchPanelMode="Always" SearchPanelHighlightResults="True" SearchPanelFindFilter="Contains"  SearchPanelCriteriaOperatorType="And"/>
+                <dxg:TableView AllowGrouping="False" ShowGroupPanel="False" ShowAutoFilterRow="True" ShowTotalSummary="True"  EnterMoveNextColumn="False" AllowEditing="True" RowDoubleClick="TableView_RowDoubleClick" ShowSearchPanelMode="Never" SearchPanelHighlightResults="True" SearchPanelFindFilter="Contains"  SearchPanelCriteriaOperatorType="And"/>
             </dxg:GridControl.View>
         </dxg:GridControl>
         <Button HorizontalAlignment="Left" Margin="145,0,0,0" VerticalAlignment="Top" Width="32" Height="32" Command="{Binding AddPriceItemCommand}" Visibility="Collapsed">

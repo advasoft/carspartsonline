@@ -36,7 +36,7 @@
                 <ColumnDefinition Width="120"/>
             </Grid.ColumnDefinitions>
             <TextBlock Grid.Column="2" Margin="0,11,0,0" TextWrapping="Wrap" Text="Реализация за день №" VerticalAlignment="Top" FontSize="18" Height="40"/>
-            <TextBox Grid.Column="3" Height="32" Margin="10,10,0,0" TextWrapping="Wrap" Text="{Binding RealizationNumber, Mode=TwoWay}" VerticalAlignment="Top" FontSize="14" IsEnabled="{Binding Saved, Mode=TwoWay, Converter={StaticResource BoolToBoolReverseConverter}}"/>
+            <TextBox x:Name="RealizationNumberTextBox" Grid.Column="3" Height="32" Margin="10,10,0,0" TextWrapping="Wrap" Text="{Binding RealizationNumber, Mode=TwoWay}" VerticalAlignment="Top" FontSize="14" IsEnabled="{Binding Saved, Mode=TwoWay, Converter={StaticResource BoolToBoolReverseConverter}}"/>
             <Button  x:Name="CancelButton" HorizontalAlignment="Left" VerticalAlignment="Top" Width="110" Height="32"  Margin="2,10,0,0" Command="{Binding PrintReportCommand}" IsEnabled="{Binding Saved, Mode=TwoWay}">
                 <Grid HorizontalAlignment="Left" VerticalAlignment="Stretch">
                     <Grid.ColumnDefinitions>
@@ -47,7 +47,7 @@
                     <TextBlock Width="70" Grid.Column="1" Text="Печать" FontSize="14" Margin="4,2,0,0"/>
                 </Grid>
             </Button>
-            <Button  x:Name="CancelButton_Copy" Grid.Column="7" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" Width="110" Height="32" Command="{Binding SaveRealizationPerDayCommand}" IsEnabled="{Binding Saved, Mode=TwoWay, Converter={StaticResource BoolToBoolReverseConverter}}">
+            <Button  x:Name="CloseRealizationButton" Grid.Column="7" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" Width="110" Height="32" Command="{Binding SaveRealizationPerDayCommand}" IsEnabled="{Binding Saved, Mode=TwoWay, Converter={StaticResource BoolToBoolReverseConverter}}">
                 <Grid HorizontalAlignment="Left" VerticalAlignment="Stretch">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="32"/>
@@ -57,7 +57,7 @@
                     <TextBlock Width="72" Grid.Column="1" Text="Закрыть" FontSize="14" Margin="2,2,0,0" FontWeight="Bold"/>
                 </Grid>
             </Button>
-            <dxe:TextEdit Grid.Column="6" Margin="0,10,10,0" VerticalAlignment="Top" Height="32" HorizontalAlignment="Right" Width="205" EditValue="{Binding Barcode}" FontSize="12" IsEnabled="{Binding Saved, Mode=TwoWay, Converter={StaticResource BoolToBoolReverseConverter}}"/>
+            <dxe:TextEdit x:Name="RealizationBarcode" Grid.Column="6" Margin="0,10,10,0" VerticalAlignment="Top" Height="32" HorizontalAlignment="Right" Width="205" EditValue="{Binding Barcode}" FontSize="12" IsEnabled="{Binding Saved, Mode=TwoWay, Converter={StaticResource BoolToBoolReverseConverter}}"/>
             <TextBlock Grid.Column="5" HorizontalAlignment="Left" Margin="19,16,0,0" TextWrapping="Wrap" Text="Штрихкод" VerticalAlignment="Top" FontSize="14"/>
         </Grid>
         <Grid Grid.Row="2" HorizontalAlignment="Right" Width="310" Background="#FFFFF0D5">

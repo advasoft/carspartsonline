@@ -113,6 +113,28 @@ namespace StoreAppTest.ViewModels
         private IncomeItem _selecteIncome;
 
 
+        public DateTime AtFromDate
+        {
+            get { return _atFromDate; }
+            set
+            {
+                _atFromDate = DateTimeHelper.GetStartDay(value);
+                OnPropertyChanged("AtFromDate");
+            }
+        }
+        private DateTime _atFromDate;
+
+
+        public DateTime AtToDate
+        {
+            get { return _atToDate; }
+            set
+            {
+                _atToDate = DateTimeHelper.GetEndDay(value);
+                OnPropertyChanged("AtToDate");
+            }
+        }
+        private DateTime _atToDate;
 
         #region Overrides of ViewModelBase
 
@@ -120,130 +142,11 @@ namespace StoreAppTest.ViewModels
         {
             UpdateSuppliersList();
 
+            var now = DateTime.Now;
+            AtFromDate = DateTimeHelper.GetStartMonth(now);
+            AtToDate = DateTimeHelper.GetEndMonth(now);
 
-            IsLoading = true;
-
-
-            string uri = string.Concat(
-                Application.Current.Host.Source.Scheme, "://",
-                Application.Current.Host.Source.Host, ":",
-                Application.Current.Host.Source.Port,
-                "/StoreAppDataService.svc/");
-
-
-            Task.Factory.StartNew(() =>
-            {
-                try
-                {
-
-                    StoreDbContext ctx = new StoreDbContext(
-                        new Uri(uri
-                            , UriKind.Absolute));
-
-                    //var qr = ctx.ExecuteSyncronous<PriceIncomeTotalItemView>(
-                    //    new Uri(string.Format("{0}GetTotalIncomes?priceListName='{1}'", uri, _priceListName),
-                    //        UriKind.Absolute));
-
-                    RemaindersClient client = new RemaindersClient(_priceListName);
-                    var qr = client.GetTotalIncomes();
-
-                    //foreach (var priceItemRemainderView in 
-                    var query = from p in qr
-                                group p by new 
-                    {
-                        Articul = p.Articul,
-                        CatalogNumber = p.CatalogNumber,
-                        Income_ID = p.Income_Id,
-                        IsDuplicate = p.IsDuplicate ? "*" : "",
-                        Gear_Id = p.Gear_Id,
-                        Name = p.Gear_Name,
-                        PriceItem_Id = p.PriceItem_Id,
-                        Uom = p.Uom,
-                        IsAccepted = p.IsAccept
-                    }                
-                    into grp
-                    select new IncomeItem()
-                    
-                    //).Select(new IncomeItem()
-                    {
-                        Number = IncomeItems.Select(s => s.Number).LastOrDefault() + 1,
-                        Articul = grp.Key.Articul,
-                        BuyPriceRur = (int)grp.Average(a => a.BuyPriceRur),
-                        BuyPriceTng = (int)grp.Average(a => a.BuyPriceTng),
-                        CatalogNumber = grp.Key.CatalogNumber,
-                        Incomes = (int)grp.Average(s => s.Incomes),
-                        Income_ID = grp.Key.Income_ID,
-                        IsDuplicate = grp.Key.IsDuplicate,
-                        Gear_Id = grp.Key.Gear_Id,
-                        Name = grp.Key.Name,
-                        LowerLimitRemainder = grp.Average(a => a.LowerLimitRemainder),
-                        RecommendedRemainder = grp.Average(a => a.RecommendedRemainder),
-                        NewPrice = (int)grp.Average(a => a.NewPrice),
-                        PriceItem_Id = grp.Key.PriceItem_Id,
-                        Uom = grp.Key.Uom,
-                        WholesalePrice = (int)grp.Average(a => a.WholesalePrice),
-                        Remainders = (int)grp.Average(s => s.Remainders),
-                        IsAccepted = grp.Key.IsAccepted
-                    };
-
-
-                    //)
-                    //{
-                    //    var item = new IncomeItem()
-                    //    {
-                    //        Number = IncomeItems.Select(s => s.Number).LastOrDefault() + 1,
-                    //        Articul = priceItemRemainderView.Articul,
-                    //        BuyPriceRur = priceItemRemainderView.BuyPriceRur,
-                    //        BuyPriceTng = priceItemRemainderView.BuyPriceTng,
-                    //        CatalogNumber = priceItemRemainderView.CatalogNumber,
-                    //        Incomes = priceItemRemainderView.Incomes,
-                    //        Income_ID = priceItemRemainderView.Income_Id,
-                    //        IsDuplicate = priceItemRemainderView.IsDuplicate ? "*" : "",
-                    //        Gear_Id = priceItemRemainderView.Gear_Id,
-                    //        Name = priceItemRemainderView.Gear_Name,
-                    //        LowerLimitRemainder = priceItemRemainderView.LowerLimitRemainder,
-                    //        RecommendedRemainder = priceItemRemainderView.RecommendedRemainder,
-                    //        NewPrice = priceItemRemainderView.NewPrice,
-                    //        PriceItem_Id = priceItemRemainderView.PriceItem_Id,
-                    //        Uom = priceItemRemainderView.Uom,
-                    //        WholesalePrice = priceItemRemainderView.WholesalePrice,
-                    //        Remainders = priceItemRemainderView.Remainders,
-                    //        IsAccepted = priceItemRemainderView.IsAccept
-
-                    //    };
-
-                    var incomeItems = query as IList<IncomeItem> ?? query.ToList();
-                    foreach (var grp in incomeItems.GroupBy(g => g.Income_ID))
-                    {
-                        var grp1 = grp;
-                        var inc = ctx.ExecuteSyncronous(ctx.Incomes.Where(w => w.Id == grp1.Key)).FirstOrDefault();
-                        foreach (var incomeItem in grp1)
-                        {
-                            incomeItem.Income = string.Format("Оприходование № {0} от {1:dd.MM.yyyy}",
-                                inc.IncomeNumber, inc.IncomeDate);
-                        }
-                    }
-                    foreach (var incomeItem in incomeItems)
-                    {
-                        var item = incomeItem;
-                        DispatcherHelper.CheckBeginInvokeOnUI(() =>
-                        {
-                            IncomeItems.Add(item);
-                        });
-                    }
-                    //}
-                }
-                catch (Exception exception)
-                {
-                    throw;
-                }
-            }).ContinueWith(c =>
-            {
-                DispatcherHelper.CheckBeginInvokeOnUI(() =>
-                {
-                    IsLoading = false;
-                });
-            });
+            UpdateIncomesList();
         }
 
         #endregion
@@ -256,6 +159,7 @@ namespace StoreAppTest.ViewModels
         public ICommand AcceptIncomeCommand { get; set; }
         public ICommand PriceChangeReportCommand { get; set; }
         public ICommand PrintReportCommand { get; set; }
+        public ICommand RefreshIncomesCommand { get; set; }
 
         private void InitCommands()
         {
@@ -493,6 +397,14 @@ namespace StoreAppTest.ViewModels
 
             #endregion
 
+            #region RefreshIncomesCommand
+
+            RefreshIncomesCommand = new UICommand(a =>
+            {
+                UpdateIncomesList();
+            });
+            #endregion
+
         }
         #endregion
 
@@ -622,5 +534,106 @@ namespace StoreAppTest.ViewModels
             }
         }
 
+        public void UpdateIncomesList()
+        {
+            IsLoading = true;
+
+
+            string uri = string.Concat(
+                Application.Current.Host.Source.Scheme, "://",
+                Application.Current.Host.Source.Host, ":",
+                Application.Current.Host.Source.Port,
+                "/StoreAppDataService.svc/");
+
+
+            Task.Factory.StartNew(() =>
+            {
+                try
+                {
+
+                    StoreDbContext ctx = new StoreDbContext(
+                        new Uri(uri
+                            , UriKind.Absolute));
+
+                    //var qr = ctx.ExecuteSyncronous<PriceIncomeTotalItemView>(
+                    //    new Uri(string.Format("{0}GetTotalIncomes?priceListName='{1}'", uri, _priceListName),
+                    //        UriKind.Absolute));
+
+                    RemaindersClient client = new RemaindersClient(_priceListName, AtFromDate, AtToDate);
+                    var qr = client.GetIncomes();
+
+                    //foreach (var priceItemRemainderView in 
+                    var query = from p in qr
+                                group p by new
+                                {
+                                    Articul = p.Articul,
+                                    CatalogNumber = p.CatalogNumber,
+                                    Income_ID = p.Income_Id,
+                                    IsDuplicate = p.IsDuplicate ? "*" : "",
+                                    Gear_Id = p.Gear_Id,
+                                    Name = p.Gear_Name,
+                                    PriceItem_Id = p.PriceItem_Id,
+                                    Uom = p.Uom,
+                                    IsAccepted = p.IsAccept
+                                }
+                                    into grp
+                                    select new IncomeItem()
+
+                                    //).Select(new IncomeItem()
+                                    {
+                                        Number = IncomeItems.Select(s => s.Number).LastOrDefault() + 1,
+                                        Articul = grp.Key.Articul,
+                                        BuyPriceRur = (int)grp.Average(a => a.BuyPriceRur),
+                                        BuyPriceTng = (int)grp.Average(a => a.BuyPriceTng),
+                                        CatalogNumber = grp.Key.CatalogNumber,
+                                        Incomes = (int)grp.Average(s => s.Incomes),
+                                        Income_ID = grp.Key.Income_ID,
+                                        IsDuplicate = grp.Key.IsDuplicate,
+                                        Gear_Id = grp.Key.Gear_Id,
+                                        Name = grp.Key.Name,
+                                        LowerLimitRemainder = grp.Average(a => a.LowerLimitRemainder),
+                                        RecommendedRemainder = grp.Average(a => a.RecommendedRemainder),
+                                        NewPrice = (int)grp.Average(a => a.NewPrice),
+                                        PriceItem_Id = grp.Key.PriceItem_Id,
+                                        Uom = grp.Key.Uom,
+                                        WholesalePrice = (int)grp.Average(a => a.WholesalePrice),
+                                        Remainders = (int)grp.Average(s => s.Remainders),
+                                        IsAccepted = grp.Key.IsAccepted
+                                    };
+
+                    var incomeItems = query as IList<IncomeItem> ?? query.ToList();
+                    foreach (var grp in incomeItems.GroupBy(g => g.Income_ID))
+                    {
+                        var grp1 = grp;
+                        var inc = ctx.ExecuteSyncronous(ctx.Incomes.Where(w => w.Id == grp1.Key)).FirstOrDefault();
+                        foreach (var incomeItem in grp1)
+                        {
+                            incomeItem.Income = string.Format("Оприходование № {0} от {1:dd.MM.yyyy}",
+                                inc.IncomeNumber, inc.IncomeDate);
+                        }
+                    }
+                    foreach (var incomeItem in incomeItems)
+                    {
+                        var item = incomeItem;
+                        DispatcherHelper.CheckBeginInvokeOnUI(() =>
+                        {
+                            IncomeItems.Add(item);
+                        });
+                    }
+                    //}
+                }
+                catch (Exception exception)
+                {
+                    throw;
+                }
+            }).ContinueWith(c =>
+            {
+                DispatcherHelper.CheckBeginInvokeOnUI(() =>
+                {
+                    IsLoading = false;
+                });
+            });
+            
+        }
     }
 }
