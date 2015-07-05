@@ -104,6 +104,8 @@ namespace StoreAppTest.ViewModels
             {
                 _Barcode = value;
                 OnPropertyChanged("Barcode");
+                SearchByBarcode();
+
             }
         }
         private string _Barcode;
@@ -177,7 +179,7 @@ namespace StoreAppTest.ViewModels
                         {
                             salesPerDayDocuments =
                                 ctx.ExecuteSyncronous(ctx.SaleDocumentsPerDays.Expand(
-                                    "Creator,SalesPerDayItems/SaleItem/PriceItem/Prices,SalesPerDayItems/SaleItem/PriceItem/Gear,SalesPerDayItems/SaleItem/PriceItem/Remainders,RefundsPerDayItems/RefundItem/SaleItem/PriceItem/Prices,RefundsPerDayItems/RefundItem/SaleItem/PriceItem/Gear,RefundsPerDayItems/RefundItem/SaleItem/PriceItem/Remainders,RefundsPerDayItems/RefundItem/PriceItem/Prices,RefundsPerDayItems/RefundItem/PriceItem/Gear,RefundsPerDayItems/RefundItem/PriceItem/Remainders")
+                                    "Creator,SalesPerDayItems")
                                     .Where(rl => rl.SaleDocumentsDate >= AtFromDate
                                     && rl.SaleDocumentsDate <= AtToDate
                                     && rl.Creator_Id == App.CurrentUser.UserName)
@@ -188,7 +190,7 @@ namespace StoreAppTest.ViewModels
 
                             salesPerDayDocuments =
                                 ctx.ExecuteSyncronous(ctx.SaleDocumentsPerDays.Expand(
-                                    "Creator,SalesPerDayItems/SaleItem/PriceItem/Prices,SalesPerDayItems/SaleItem/PriceItem/Gear,SalesPerDayItems/SaleItem/PriceItem/Remainders,RefundsPerDayItems/RefundItem/SaleItem/PriceItem/Prices,RefundsPerDayItems/RefundItem/SaleItem/PriceItem/Gear,RefundsPerDayItems/RefundItem/SaleItem/PriceItem/Remainders,RefundsPerDayItems/RefundItem/PriceItem/Prices,RefundsPerDayItems/RefundItem/PriceItem/Gear,RefundsPerDayItems/RefundItem/PriceItem/Remainders")
+                                    "Creator,SalesPerDayItems")
                                     .Where(rl => rl.SaleDocumentsDate >= AtFromDate 
                                     && rl.SaleDocumentsDate <= AtToDate)
                                     .OrderByDescending(or => or.SaleDocumentsDate)).ToList();
@@ -202,37 +204,10 @@ namespace StoreAppTest.ViewModels
                             model.DocumentNumber = document.Number;
                             model.Barcode = document.Barcode;
                             model.Id = document.Id;
-                            model.RefundAmount = (int)document.RefundsPerDayItems.Sum(s => s.RefundItem.Amount);
+                            model.RefundAmount = (int)document.TotalRefund;
 
-                            var discharges = new List<DebtDischargeDocument>();
-
-                            var startDate = DateTimeHelper.GetStartDay(document.SaleDocumentsDate);
-                            var endDate = DateTimeHelper.GetEndDay(document.SaleDocumentsDate);
-
-                            var dischargesSource =
-                                ctx.ExecuteSyncronous(
-                                    ctx.DebtDischargeDocuments.Expand("Debtor")
-                                        .Where(w => w.DischargeDate >= startDate && w.DischargeDate <= endDate && w.IsDischarge && w.Creator_Id == App.CurrentUser.UserName)).ToList();
-                            discharges = (from d in dischargesSource
-                                          group d by new
-                                          {
-                                              Debtor = d.Debtor_Id
-                                          }
-                                              into ds
-                                              select new DebtDischargeDocument()
-                                              {
-                                                  Amount = ds.Sum(s => s.Amount),
-                                                  Debtor_Id = ds.Key.Debtor
-                                              }).ToList();
-
-
-
-                            var totalDisc = discharges.Sum(s => s.Amount);
-                            var total = document.SalesPerDayItems.Sum(s => s.SaleItem.Amount);
-
-
-                            model.TotalAmount = (int)(total + totalDisc);
-                            model.Total = model.TotalAmount - model.RefundAmount;
+                            model.TotalAmount = (int)document.TotalAmount;
+                            model.Total = (int) document.SubTotal;
 
                             model.UserName = document.Creator.DisplayName;
 
@@ -275,6 +250,43 @@ namespace StoreAppTest.ViewModels
 
         #endregion
 
+        private void SearchByBarcode()
+        {
+            string uri = string.Concat(
+               Application.Current.Host.Source.Scheme, "://",
+               Application.Current.Host.Source.Host, ":",
+               Application.Current.Host.Source.Port,
+               "/StoreAppDataService.svc/");
+            string barcode = Barcode;
+            Task.Factory.StartNew(() =>
+            {
+                try
+                {
+
+                    StoreDbContext ctx = new StoreDbContext(
+                        new Uri(uri
+                            , UriKind.Absolute));
+
+
+                    var findedDocument = ctx.ExecuteSyncronous(ctx.SaleDocumentsPerDays
+                        .Where(rl => rl.Barcode == barcode)).FirstOrDefault();
+
+                    if (findedDocument != null)
+                    {
+                        DispatcherHelper.CheckBeginInvokeOnUI(() =>
+                        {
+                            _realizationPerDayOpenNeedEvent.Publish(
+                                new RealizationPerDayDocumentModel() {Id = findedDocument.Id, DocumentNumber = findedDocument.Number, Barcode = findedDocument.Barcode});
+                            Barcode = string.Empty;
+                        });
+                    }
+                }
+                catch (Exception ex)
+                {
+                    throw;
+                }
+            });
+        }
 
 
         private Uri GetContextUri()
@@ -286,6 +298,7 @@ namespace StoreAppTest.ViewModels
                 "/StoreAppDataService.svc/"));
 
         }
+
 
     }
 

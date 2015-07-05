@@ -20,6 +20,15 @@ namespace StoreAppTest.Web.DataModel
         [DataMember]
         public string Name { get; set; }
 
+        [DataMember]
+        public string Details { get; set; }
+
+        [DataMember]
+        public string BankDetails { get; set; }
+
+        [DataMember]
+        public string ShipmentAddress { get; set; }
+
 
         [DataMember]
         [Required]

@@ -62,6 +62,18 @@
       <Link>Utilities\DateTimeHelper.cs</Link>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Reports\InvoiceReport.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Reports\InvoiceReport.Designer.cs">
+      <DependentUpon>InvoiceReport.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Reports\ProductsTagReport.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Reports\ProductsTagReport.Designer.cs">
+      <DependentUpon>ProductsTagReport.cs</DependentUpon>
+    </Compile>
     <Compile Include="Reports\RealizationPerDayReport.cs">
       <SubType>Component</SubType>
     </Compile>
@@ -92,15 +104,34 @@
     <Compile Include="Reports\PriceChangeDocumentReport.Designer.cs">
       <DependentUpon>PriceChangeDocumentReport.cs</DependentUpon>
     </Compile>
+    <Compile Include="Reports\SalesInvoiceReport.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Reports\SalesInvoiceReport.Designer.cs">
+      <DependentUpon>SalesInvoiceReport.cs</DependentUpon>
+    </Compile>
     <Compile Include="Reports\WarehouseTransferRequestReport.cs">
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="Reports\WarehouseTransferRequestReport.Designer.cs">
       <DependentUpon>WarehouseTransferRequestReport.cs</DependentUpon>
     </Compile>
+    <Compile Include="Reports\OrderReport.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Reports\OrderReport.Designer.cs">
+      <DependentUpon>OrderReport.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Utilities\NumberByWordsHelper.cs" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Properties\licenses.licx" />
+    <EmbeddedResource Include="Reports\InvoiceReport.resx">
+      <DependentUpon>InvoiceReport.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Reports\ProductsTagReport.resx">
+      <DependentUpon>ProductsTagReport.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Reports\RealizationPerDayReport.resx">
       <DependentUpon>RealizationPerDayReport.cs</DependentUpon>
     </EmbeddedResource>
@@ -116,8 +147,14 @@
     <EmbeddedResource Include="Reports\PriceChangeDocumentReport.resx">
       <DependentUpon>PriceChangeDocumentReport.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Reports\SalesInvoiceReport.resx">
+      <DependentUpon>SalesInvoiceReport.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Reports\WarehouseTransferRequestReport.resx">
       <DependentUpon>WarehouseTransferRequestReport.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Reports\OrderReport.resx">
+      <DependentUpon>OrderReport.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
@@ -129,14 +166,19 @@
   <ItemGroup>
     <None Include="App.config" />
     <None Include="packages.config" />
+    <None Include="Properties\DataSources\InvoiceModel.datasource" />
+    <None Include="Properties\DataSources\OrderReportModel.datasource" />
     <None Include="Properties\DataSources\RealizationPerDayReportDocument.datasource" />
     <None Include="Properties\DataSources\RealizationPerDayReportItem.datasource" />
     <None Include="Properties\DataSources\ReportChangeReport.datasource" />
     <None Include="Properties\DataSources\ReportChangeReportItem.datasource" />
+    <None Include="Properties\DataSources\SalesInvoiceReportModel.datasource" />
+    <None Include="Properties\DataSources\StoreAppTest.Reports.Reports.ProductTagItem.datasource" />
     <None Include="Properties\DataSources\StoreAppTest.Web.DataModel.Income.datasource" />
     <None Include="Properties\DataSources\StoreAppTest.Web.DataModel.IncomeItem.datasource" />
     <None Include="Properties\DataSources\StoreAppTest.Web.DataModel.PriceChangeReport.datasource" />
     <None Include="Properties\DataSources\StoreAppTest.Web.DataModel.PriceChangeReportItem.datasource" />
+    <None Include="Properties\DataSources\StoreAppTest.Web.DataModel.PriceItem.datasource" />
     <None Include="Properties\DataSources\StoreAppTest.Web.DataModel.RefundDocument.datasource" />
     <None Include="Properties\DataSources\StoreAppTest.Web.DataModel.RefundItem.datasource" />
     <None Include="Properties\DataSources\StoreAppTest.Web.DataModel.SaleDocument.datasource" />

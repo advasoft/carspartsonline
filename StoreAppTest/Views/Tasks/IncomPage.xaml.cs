@@ -21,6 +21,12 @@ namespace StoreAppTest.Views
         public IncomPage()
         {
             InitializeComponent();
+            Loaded += IncomPage_Loaded;
+        }
+
+        void IncomPage_Loaded(object sender, RoutedEventArgs e)
+        {
+            BarcodeEditText.Focus();
         }
 
         // Выполняется, когда пользователь переходит на эту страницу.

@@ -113,8 +113,8 @@ namespace StoreAppTest.ViewModels
                         item.IsDuplicate = reportItem.PriceItem.Gear.IsDuplicate ? "*" : "";
                         item.Gear_Id = reportItem.PriceItem.Gear.Id;
                         item.Gear_Name = reportItem.PriceItem.Gear.Name;
-                        item.LowerLimitRemainder = (int)reportItem.PriceItem.Gear.LowerLimitRemainder;
-                        item.RecommendedRemainder = (int)reportItem.PriceItem.Gear.RecommendedRemainder;
+                        item.LowerLimitRemainder = 0;//(int)reportItem.PriceItem.Gear.LowerLimitRemainder;
+                        item.RecommendedRemainder = 0;//(int)reportItem.PriceItem.Gear.RecommendedRemainder;
 
                         decimal newPrice = 0;
                         long newPriceId = 0;

@@ -8,6 +8,12 @@ namespace StoreAppTest.Views
         public Receipt()
         {
             InitializeComponent();
+            Loaded += Receipt_Loaded;
+        }
+
+        void Receipt_Loaded(object sender, System.Windows.RoutedEventArgs e)
+        {
+            BarcodeEditText.Focus();
         }
 
         // Выполняется, когда пользователь переходит на эту страницу.

@@ -47,7 +47,7 @@
                     <TextBlock Width="70" Grid.Column="1" Text="Печать" FontSize="14" Margin="4,2,0,0"/>
                 </Grid>
             </Button>
-            <Button  x:Name="CloseRealizationButton" Grid.Column="7" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" Width="110" Height="32" Command="{Binding SaveRealizationPerDayCommand}" IsEnabled="{Binding Saved, Mode=TwoWay, Converter={StaticResource BoolToBoolReverseConverter}}">
+            <Button  x:Name="CloseRealizationButton" Grid.Column="7" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" Width="110" Height="32" Command="{Binding SaveRealizationPerDayCommand}" IsEnabled="{Binding Saving, Mode=TwoWay, Converter={StaticResource BoolToBoolReverseConverter}}">
                 <Grid HorizontalAlignment="Left" VerticalAlignment="Stretch">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="32"/>
@@ -86,7 +86,7 @@
             <TextBlock Grid.Column="1" HorizontalAlignment="Left" Margin="10,10,0,-14" Grid.Row="4" TextWrapping="Wrap" Text="{Binding TotalByPrice, StringFormat='₸{0:n2}'}" VerticalAlignment="Top" FontSize="14" Width="78" FontWeight="Bold" Visibility="Collapsed"/>
 
         </Grid>
-        <dxg:GridControl x:Name="ReceiptGridControl" AutoGenerateColumns="None" SelectionMode="Cell" ItemsSource="{Binding RealizationItems}" ShowLoadingPanel="{Binding IsLoading}" Grid.Row="1" CustomColumnDisplayText="ReceiptGridControl_CustomColumnDisplayText">
+        <dxg:GridControl x:Name="ReceiptGridControl" AutoGenerateColumns="None" SelectionMode="Cell" ItemsSource="{Binding RealizationItems}" ShowLoadingPanel="{Binding IsLoading}" Grid.Row="1" CustomColumnDisplayText="ReceiptGridControl_CustomColumnDisplayText" CustomSummaryExists="ReceiptGridControl_OnCustomSummaryExists">
             <dxg:GridControl.Resources>
                 <Style TargetType="dxg:TableView">
                     <Setter Property="ColumnHeaderTemplate">
@@ -99,6 +99,7 @@
                 </Style>
             </dxg:GridControl.Resources>
             <dxg:GridControl.Columns>
+                <dxg:GridColumn FieldName="PriceListName" Header="Прайс" ReadOnly="True" GroupIndex="0"/>
                 <dxg:GridColumn FieldName="Number" Header="№" ReadOnly="True" Width="40"/>
                 <dxg:GridColumn FieldName="CatalogNumber" Header="Каталожный номер" ReadOnly="True"/>
                 <dxg:GridColumn FieldName="IsDuplicate" Header="*" ReadOnly="True" Width="20"/>
@@ -122,7 +123,16 @@
                         <dxe:TextEditSettings Mask="Numeric"
 							DisplayFormat="N0"/>
                     </dxg:GridColumn.EditSettings>-->
-                </dxg:GridColumn> 
+                </dxg:GridColumn>
+                <dxg:GridColumn FieldName="Amount" Header="Сумма" ReadOnly="True"  Width="80">
+                    <!--<dxg:GridColumn.EditSettings>
+                        <dxe:TextEditSettings Mask="Numeric"
+							DisplayFormat="N0"/>
+                    </dxg:GridColumn.EditSettings>-->
+                </dxg:GridColumn>
+                <dxg:GridColumn FieldName="AmountWithoutDebt" Header="Сумма(без продаж в долг)" ReadOnly="True"  Width="80" Visible="False"/>
+                <dxg:GridColumn FieldName="SaledDate" Header="Время продажи" ReadOnly="True" />
+                <dxg:GridColumn FieldName="Additional" Header="Примечание" ReadOnly="True"/>
                 <!--<dxg:GridColumn FieldName="Customer" Header="Клиент" ReadOnly="True"  Width="150">
                 </dxg:GridColumn>
                 <dxg:GridColumn FieldName="DebtDischarge" Header="Возврат" ReadOnly="True"  Width="80">

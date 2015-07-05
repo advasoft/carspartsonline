@@ -18,6 +18,7 @@ namespace StoreAppTest.ViewModels
     using Microsoft.Practices.Prism.PubSubEvents;
     using Microsoft.Practices.ServiceLocation;
     using Model;
+    using Print;
     using StoreAppDataService;
     using Utilities;
     using Views;
@@ -210,11 +211,17 @@ namespace StoreAppTest.ViewModels
 
         public ICommand CreateRequestCommand { get; set; }
 
+        public ICommand PrintTagsCommand { get; set; }
+
+
         private void InitCommands()
         {
             #region EditRemaindersCommand
             EditRemaindersCommand = new UICommand(o =>
             {
+                if(App.CurrentUser.UserName != "admin")
+                    return;
+                
                 if (SelectedRemainders != null)
                 {
                     EditRemainders rm = new EditRemainders();
@@ -428,9 +435,9 @@ namespace StoreAppTest.ViewModels
                     newGear.CatalogNumber = editModel.CatalogNumber;
                     newGear.Category_Id = "Обычные";
                     newGear.IsDuplicate = editModel.IsDuplicate;
-                    newGear.LowerLimitRemainder = editModel.LowerLimitRemainder;
+                    //newGear.LowerLimitRemainder = editModel.LowerLimitRemainder;
                     newGear.Name = editModel.Name;
-                    newGear.RecommendedRemainder = editModel.RecommendedRemainder;
+                    //newGear.RecommendedRemainder = editModel.RecommendedRemainder;
                     
                     ctx.AddToGears(newGear);
                     ctx.SaveChangesSynchronous();
@@ -448,7 +455,10 @@ namespace StoreAppTest.ViewModels
                     //newPriceItem.WholesalePrice = editModel.WholesalePrice;
                     newPriceItem.BuyPriceRur = editModel.BuyPriceRur;
                     newPriceItem.BuyPriceTng = editModel.BuyPriceTng;
-                    
+                    newPriceItem.Barcode1 = editModel.Barcode1;
+                    newPriceItem.Barcode2 = editModel.Barcode2;
+                    newPriceItem.Barcode3 = editModel.Barcode3;
+
                     ctx.AddToPriceItems(newPriceItem);
                     ctx.SaveChangesSynchronous();
 
@@ -457,6 +467,8 @@ namespace StoreAppTest.ViewModels
                     newRemainder.PriceItem = newPriceItem;
                     newRemainder.RemainderDate = DateTimeHelper.GetNowKz();
                     newRemainder.Warehouse_Id = App.CurrentUser.Warehouse_Id;
+                    newRemainder.LowerLimitRemainder = editModel.LowerLimitRemainder;
+                    newRemainder.RecommendedRemainder = editModel.RecommendedRemainder;
 
                     ctx.AddToRemainders(newRemainder);
 
@@ -513,7 +525,11 @@ namespace StoreAppTest.ViewModels
                     ctx.ExecuteSyncronous(
                         ctx.PriceItems.Expand("Gear,Remainders,UnitOfMeasure,Prices")
                             .Where(w => w.Id == SelectedRemainders.GetPriceItemData().Id)).FirstOrDefault();
- 
+
+                var findedRemainder =
+                    findedPriceItem.Remainders.Where(w => w.Warehouse_Id == App.CurrentUser.Warehouse_Id)
+                        .FirstOrDefault();
+
                 var editModel = new PriceItemEditModel();
 
                 editModel.UomList = new ObservableCollection<UnitOfMeasure>(uoms);
@@ -523,12 +539,15 @@ namespace StoreAppTest.ViewModels
                 editModel.BuyPriceTng = (int)findedPriceItem.BuyPriceTng;
                 editModel.CatalogNumber = findedPriceItem.Gear.CatalogNumber;
                 editModel.IsDuplicate = findedPriceItem.Gear.IsDuplicate;
-                editModel.LowerLimitRemainder = (int)findedPriceItem.Gear.LowerLimitRemainder;
+                editModel.LowerLimitRemainder = findedRemainder == null ? 0 : (int)findedRemainder.LowerLimitRemainder;
                 editModel.Name = findedPriceItem.Gear.Name;
-                editModel.RecommendedRemainder = (int)findedPriceItem.Gear.RecommendedRemainder;
+                editModel.RecommendedRemainder = findedRemainder == null ? 0 : (int)findedRemainder.RecommendedRemainder;
                 editModel.WholesalePrice = (int)findedPriceItem.Prices.OrderByDescending(o => o.PriceDate).First().Price;
                 editModel.PreviousWholesalePrice = editModel.WholesalePrice;
                 editModel.IsAdmin = App.CurrentUser.UserName.ToLower() == "admin";
+                editModel.Barcode1 = findedPriceItem.Barcode1;
+                editModel.Barcode2 = findedPriceItem.Barcode2;
+                editModel.Barcode3 = findedPriceItem.Barcode3;
 
                 var editor = new PriceItemEditControl();
                 editor.DataContext = editModel;
@@ -538,9 +557,9 @@ namespace StoreAppTest.ViewModels
                     findedPriceItem.Gear.CatalogNumber = editModel.CatalogNumber;
                     findedPriceItem.Gear.Category_Id = "Обычные";
                     findedPriceItem.Gear.IsDuplicate = editModel.IsDuplicate;
-                    findedPriceItem.Gear.LowerLimitRemainder = editModel.LowerLimitRemainder;
+                    //findedPriceItem.Gear.LowerLimitRemainder = editModel.LowerLimitRemainder;
                     findedPriceItem.Gear.Name = editModel.Name;
-                    findedPriceItem.Gear.RecommendedRemainder = editModel.RecommendedRemainder;
+                    //findedPriceItem.Gear.RecommendedRemainder = editModel.RecommendedRemainder;
 
                     ctx.ChangeState(findedPriceItem.Gear, EntityStates.Modified);
 
@@ -548,8 +567,31 @@ namespace StoreAppTest.ViewModels
                     //findedPriceItem.WholesalePrice = editModel.WholesalePrice;
                     findedPriceItem.BuyPriceRur = editModel.BuyPriceRur;
                     findedPriceItem.BuyPriceTng = editModel.BuyPriceTng;
+                    findedPriceItem.Barcode1 = editModel.Barcode1;
+                    findedPriceItem.Barcode2 = editModel.Barcode2;
+                    findedPriceItem.Barcode3 = editModel.Barcode3;
 
                     ctx.ChangeState(findedPriceItem, EntityStates.Modified);
+
+                    if (findedRemainder != null)
+                    {
+                        findedRemainder.RecommendedRemainder = editModel.RecommendedRemainder;
+                        findedRemainder.LowerLimitRemainder = editModel.LowerLimitRemainder;
+                        ctx.ChangeState(findedRemainder, EntityStates.Modified);
+                    }
+                    else
+                    {
+                        var newRemainder = new Remainder();
+                        newRemainder.PriceItem_Id = findedPriceItem.Id;
+                        newRemainder.PriceItem = findedPriceItem;
+                        newRemainder.RemainderDate = DateTimeHelper.GetNowKz();
+                        newRemainder.Warehouse_Id = App.CurrentUser.Warehouse_Id;
+                        newRemainder.LowerLimitRemainder = editModel.LowerLimitRemainder;
+                        newRemainder.RecommendedRemainder = editModel.RecommendedRemainder;
+                        ctx.AddToRemainders(newRemainder);
+
+                    }
+
 
                     if (editModel.PreviousWholesalePrice != editModel.WholesalePrice)
                     {
@@ -585,6 +627,16 @@ namespace StoreAppTest.ViewModels
 
             #endregion
 
+            #region PrintTagsCommand
+
+            PrintTagsCommand = new UICommand(o =>
+            {
+                ProductTagReportControl control =
+                    new ProductTagReportControl(
+                        RemainderItems.Where(wh => wh.Selected).Select(s => s.GetPriceItemData().Id).ToArray());
+                control.Show();
+            });
+            #endregion
 
             #region RemovePriceItemCommand
 

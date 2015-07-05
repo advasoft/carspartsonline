@@ -23,6 +23,7 @@ namespace StoreAppTest.ViewModels
 
         public WarehouseTransferRequestsViewModel()
         {
+
             _agregator = ServiceLocator.Current.GetInstance<IEventAggregator>();
             _newWarehouseTransferRequestNeedEvent = _agregator.GetEvent<NewWarehouseTransferRequestNeedEvent>();
             _agregator.GetEvent<NewWarehouseTransferRequestAdded>().Subscribe(NewWarehouseTransferRequestAddedHandler);
@@ -217,11 +218,11 @@ namespace StoreAppTest.ViewModels
                                 .ToList()
                                 .Select(s => new WarehouseTransferRequestModelItem((int)s.AcceptedAmount,(int)s.CountAccepted)
                                 {
-                                    AcceptedAmount = (int)s.AcceptedAmount,
+                                    //AcceptedAmount = (int)s.AcceptedAmount,
                                     Articul = s.PriceItem.Gear.Articul,
                                     CatalogNumber = s.PriceItem.Gear.CatalogNumber,
                                     Count = (int)s.Count,
-                                    CountAccepted = (int)s.CountAccepted,
+                                    //CountAccepted = (int)s.CountAccepted,
                                     Gear_Id = s.PriceItem.Gear_Id,
                                     Id = s.Id,
                                     IsDuplicate = s.PriceItem.Gear.IsDuplicate ? "*" : "",
@@ -283,19 +284,22 @@ namespace StoreAppTest.ViewModels
                         var ctx = new StoreDbContext(uri);
 
                         int number = 1;
-                        var items =
+
+                        var rawItems =
                             ctx.ExecuteSyncronous(
                                 ctx.WarehouseTransferRequestItems.Expand("PriceItem/Gear")
-                                .Where(
-                                    w => w.WarehouseTransferRequest_Id == SelectedSendredRequest.Id))
-                                .ToList()
+                                    .Where(
+                                        w => w.WarehouseTransferRequest_Id == SelectedSendredRequest.Id))
+                                .ToList();
+
+                        var items = rawItems
                                 .Select(s => new WarehouseTransferRequestModelItem((int)s.AcceptedAmount, (int)s.CountAccepted)
                                 {
-                                    AcceptedAmount = (int)s.AcceptedAmount,
+                                    //AcceptedAmount = (int)s.AcceptedAmount,
                                     Articul = s.PriceItem.Gear.Articul,
                                     CatalogNumber = s.PriceItem.Gear.CatalogNumber,
                                     Count = (int)s.Count,
-                                    CountAccepted = (int)s.CountAccepted,
+                                    //CountAccepted = (int)s.CountAccepted,
                                     Gear_Id = s.PriceItem.Gear_Id,
                                     Id = s.Id,
                                     IsDuplicate = s.PriceItem.Gear.IsDuplicate ? "*" : "",
@@ -735,6 +739,8 @@ namespace StoreAppTest.ViewModels
         {
             StartedAcceptedCount = 0;
             StartedAcceptedAmmount = 0;
+            _AcceptedAmount = 0;
+            _CountAccepted = 0;
 
             _aggregator = ServiceLocator.Current.GetInstance<IEventAggregator>();
             _requestItemChangedEvent = _aggregator.GetEvent<WarehouseTransferRequestItemChangedEvent>();
@@ -744,6 +750,8 @@ namespace StoreAppTest.ViewModels
         {
             StartedAcceptedCount = acceptedCount;
             StartedAcceptedAmmount = acceptedAmound;
+            _AcceptedAmount = acceptedAmound;
+            _CountAccepted = acceptedCount;
 
             _aggregator = ServiceLocator.Current.GetInstance<IEventAggregator>();
             _requestItemChangedEvent = _aggregator.GetEvent<WarehouseTransferRequestItemChangedEvent>();

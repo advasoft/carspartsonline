@@ -134,6 +134,25 @@ namespace StoreAppTest.ViewModels
         private bool _Saved;
 
 
+
+        public string Barcode
+        {
+            get
+            {
+                return _Barcode;
+            }
+            set
+            {
+                _Barcode = value;
+                OnPropertyChanged("Barcode");
+                AddPositionToIncome(value);
+
+            }
+        }
+
+
+        private string _Barcode;
+
         public long SavedDocumentId { get; set; }
 
 
@@ -277,10 +296,8 @@ namespace StoreAppTest.ViewModels
                         newGear.CatalogNumber = editModel.CatalogNumber;
                         newGear.Category_Id = "Обычные";
                         newGear.IsDuplicate = editModel.IsDuplicate;
-                        newGear.LowerLimitRemainder = editModel.LowerLimitRemainder;
                         newGear.Name = editModel.Name;
-                        newGear.RecommendedRemainder = editModel.RecommendedRemainder;
-
+                        
                         ctx.AddToGears(newGear);
                         ctx.SaveChangesSynchronous();
 
@@ -298,6 +315,9 @@ namespace StoreAppTest.ViewModels
                         //newPriceItem.WholesalePrice = editModel.WholesalePrice;
                         newPriceItem.BuyPriceRur = editModel.BuyPriceRur;
                         newPriceItem.BuyPriceTng = editModel.BuyPriceTng;
+                        newPriceItem.Barcode1 = editModel.Barcode1;
+                        newPriceItem.Barcode2 = editModel.Barcode2;
+                        newPriceItem.Barcode3 = editModel.Barcode3;
 
                         ctx.AddToPriceItems(newPriceItem);
                         ctx.SaveChangesSynchronous();
@@ -312,7 +332,8 @@ namespace StoreAppTest.ViewModels
                         newRemainder.PriceItem = newPriceItem;
                         newRemainder.RemainderDate = DateTimeHelper.GetNowKz();
                         newRemainder.Warehouse_Id = App.CurrentUser.Warehouse_Id;
-
+                        newRemainder.LowerLimitRemainder = editModel.LowerLimitRemainder;
+                        newRemainder.RecommendedRemainder = editModel.RecommendedRemainder;
                         ctx.AddToRemainders(newRemainder);
 
 
@@ -343,8 +364,8 @@ namespace StoreAppTest.ViewModels
                             IsDuplicate = newGear.IsDuplicate ? "*" : "",
                             Gear_Id = newGear.Id,
                             Name = newGear.Name,
-                            LowerLimitRemainder = newGear.LowerLimitRemainder,
-                            RecommendedRemainder = newGear.RecommendedRemainder,
+                            LowerLimitRemainder = newRemainder.LowerLimitRemainder,
+                            RecommendedRemainder = newRemainder.RecommendedRemainder,
                             NewPrice = 0,
                             PriceItem_Id = newPriceItem.Id,
                             Uom = newPriceItem.Uom_Id,
@@ -387,6 +408,10 @@ namespace StoreAppTest.ViewModels
                         ctx.PriceItems.Expand("Gear,Remainders,UnitOfMeasure,Prices")
                             .Where(w => w.Id == SelectedIncome.PriceItem_Id)).FirstOrDefault();
 
+                var findedRemainder =
+                    findedPriceItem.Remainders.Where(w => w.Warehouse_Id == App.CurrentUser.Warehouse_Id)
+                        .FirstOrDefault();
+
                 var editModel = new PriceItemEditModel();
 
                 editModel.UomList = new ObservableCollection<UnitOfMeasure>(uoms);
@@ -396,12 +421,15 @@ namespace StoreAppTest.ViewModels
                 editModel.BuyPriceTng = (int)findedPriceItem.BuyPriceTng;
                 editModel.CatalogNumber = findedPriceItem.Gear.CatalogNumber;
                 editModel.IsDuplicate = findedPriceItem.Gear.IsDuplicate;
-                editModel.LowerLimitRemainder = (int)findedPriceItem.Gear.LowerLimitRemainder;
+                editModel.LowerLimitRemainder = findedRemainder == null ? 0 : (int)findedRemainder.LowerLimitRemainder;
                 editModel.Name = findedPriceItem.Gear.Name;
-                editModel.RecommendedRemainder = (int)findedPriceItem.Gear.RecommendedRemainder;
+                editModel.RecommendedRemainder = findedRemainder == null ? 0 : (int)findedRemainder.RecommendedRemainder;
                 editModel.WholesalePrice = (int)findedPriceItem.Prices.OrderByDescending(o => o.PriceDate).First().Price;
                 editModel.PreviousWholesalePrice = editModel.WholesalePrice;
                 editModel.IsAdmin = App.CurrentUser.UserName.ToLower() == "admin";
+                editModel.Barcode1 = findedPriceItem.Barcode1;
+                editModel.Barcode2 = findedPriceItem.Barcode2;
+                editModel.Barcode3 = findedPriceItem.Barcode3;
 
                 var editor = new PriceItemEditControl();
                 editor.DataContext = editModel;
@@ -411,9 +439,7 @@ namespace StoreAppTest.ViewModels
                     findedPriceItem.Gear.CatalogNumber = editModel.CatalogNumber;
                     findedPriceItem.Gear.Category_Id = "Обычные";
                     findedPriceItem.Gear.IsDuplicate = editModel.IsDuplicate;
-                    findedPriceItem.Gear.LowerLimitRemainder = editModel.LowerLimitRemainder;
                     findedPriceItem.Gear.Name = editModel.Name;
-                    findedPriceItem.Gear.RecommendedRemainder = editModel.RecommendedRemainder;
 
                     ctx.ChangeState(findedPriceItem.Gear, EntityStates.Modified);
 
@@ -421,9 +447,30 @@ namespace StoreAppTest.ViewModels
                     //findedPriceItem.WholesalePrice = editModel.WholesalePrice;
                     findedPriceItem.BuyPriceRur = editModel.BuyPriceRur;
                     findedPriceItem.BuyPriceTng = editModel.BuyPriceTng;
+                    findedPriceItem.Barcode1 = editModel.Barcode1;
+                    findedPriceItem.Barcode2 = editModel.Barcode2;
+                    findedPriceItem.Barcode3 = editModel.Barcode3;
 
                     ctx.ChangeState(findedPriceItem, EntityStates.Modified);
 
+                    if (findedRemainder != null)
+                    {
+                        findedRemainder.RecommendedRemainder = editModel.RecommendedRemainder;
+                        findedRemainder.LowerLimitRemainder = editModel.LowerLimitRemainder;
+                        ctx.ChangeState(findedRemainder, EntityStates.Modified);
+                    }
+                    else
+                    {
+                        var newRemainder = new Remainder();
+                        newRemainder.PriceItem_Id = findedPriceItem.Id;
+                        newRemainder.PriceItem = findedPriceItem;
+                        newRemainder.RemainderDate = DateTimeHelper.GetNowKz();
+                        newRemainder.Warehouse_Id = App.CurrentUser.Warehouse_Id;
+                        newRemainder.LowerLimitRemainder = editModel.LowerLimitRemainder;
+                        newRemainder.RecommendedRemainder = editModel.RecommendedRemainder;
+                        ctx.AddToRemainders(newRemainder);
+                      
+                    }
 
                     if (editModel.PreviousWholesalePrice != editModel.WholesalePrice)
                     {
@@ -445,8 +492,8 @@ namespace StoreAppTest.ViewModels
                     SelectedIncome.CatalogNumber = findedPriceItem.Gear.CatalogNumber;
                     SelectedIncome.IsDuplicate = findedPriceItem.Gear.IsDuplicate ? "*" : "";
                     SelectedIncome.Name = findedPriceItem.Gear.Name;
-                    SelectedIncome.LowerLimitRemainder = findedPriceItem.Gear.LowerLimitRemainder;
-                    SelectedIncome.RecommendedRemainder = findedPriceItem.Gear.RecommendedRemainder;
+                    SelectedIncome.LowerLimitRemainder = 0;//findedPriceItem.Gear.LowerLimitRemainder;
+                    SelectedIncome.RecommendedRemainder = 0;//findedPriceItem.Gear.RecommendedRemainder;
                     SelectedIncome.PriceItem_Id = findedPriceItem.Id;
                     SelectedIncome.Uom = findedPriceItem.Uom_Id;
                     SelectedIncome.WholesalePrice = (int)
@@ -939,6 +986,85 @@ namespace StoreAppTest.ViewModels
             });
         }
 
+        private void AddPositionToIncome(string barcode)
+        {
+            string uri = string.Concat(
+                Application.Current.Host.Source.Scheme, "://",
+                Application.Current.Host.Source.Host, ":",
+                Application.Current.Host.Source.Port,
+                "/StoreAppDataService.svc/");
+
+            Task.Factory.StartNew(() =>
+            {
+                try
+                {
+
+                    StoreDbContext ctx = new StoreDbContext(
+                        new Uri(uri
+                            , UriKind.Absolute));
+
+
+                    var findedPosition =
+                        ctx.ExecuteSyncronous(ctx.PriceItems.Expand("Gear,Prices,Remainders").Where(wh => wh.Barcode1 == barcode || wh.Barcode2 == barcode || wh.Barcode3 == barcode))
+                            .FirstOrDefault();
+
+                    if (findedPosition != null)
+                    {
+
+                        var price = 0;
+                        if (findedPosition.Prices.Count > 0)
+                        {
+                            price = (int)findedPosition.Prices.OrderByDescending(or => or.PriceDate).First().Price;
+                        }
+                        var remainders = 0;
+                        if (findedPosition.Remainders.Count > 0)
+                        {
+                            remainders = (int)findedPosition.Remainders.Sum(s => s.Amount);
+                        }
+
+                        IncomeItem model = new IncomeItem()
+                        {
+                            Number = IncomeItems.Select(s => s.Number).LastOrDefault() + 1,
+                            Articul = findedPosition.Gear.Articul,
+                            BuyPriceRur = (int)findedPosition.BuyPriceRur,
+                            BuyPriceTng = (int)findedPosition.BuyPriceTng,
+                            CatalogNumber = findedPosition.Gear.CatalogNumber,
+                            Incomes = 0,
+                            IsDuplicate = findedPosition.Gear.IsDuplicate ? "*" : "",
+                            Gear_Id = findedPosition.Gear.Id,
+                            Name = findedPosition.Gear.Name,
+                            LowerLimitRemainder = 0,//findedPosition.Gear.LowerLimitRemainder,
+                            RecommendedRemainder = 0,//findedPosition.Gear.RecommendedRemainder,
+                            NewPrice = price,
+                            PriceItem_Id = findedPosition.Id,
+                            Uom = findedPosition.Uom_Id,
+                            WholesalePrice = price,
+                            Remainders = remainders
+                        };
+
+
+                        DispatcherHelper.CheckBeginInvokeOnUI(() =>
+                        {
+                            IncomeItems.Add(model);
+                            SelectedIncome = model;
+
+                            _Barcode = string.Empty;
+                            OnPropertyChanged("Barcode");
+                        });
+                    }
+                }
+                catch (Exception exception)
+                {
+                    DispatcherHelper.CheckBeginInvokeOnUI(() =>
+                    {
+                        MessageChildWindow msch = new MessageChildWindow();
+                        msch.Title = "Ошибка";
+                        msch.Message = exception.Message;
+                        msch.Show();
+                    });
+                }
+            });
+        }
 
     }
 }

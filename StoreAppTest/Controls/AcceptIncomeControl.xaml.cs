@@ -12,6 +12,7 @@ namespace StoreAppTest.Controls
 
         private void OkButton_OnClick(object sender, RoutedEventArgs e)
         {
+            OkButton.IsEnabled = false;
             DialogResult = true;
         }
 

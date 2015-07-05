@@ -36,6 +36,13 @@ namespace StoreAppTest.Web.DataModel
         [DataMember]
         public decimal Amount { get; set; }
 
+
+        [DataMember]
+        public decimal RecommendedRemainder { get; set; }
+
+        [DataMember]
+        public decimal LowerLimitRemainder { get; set; }
+
         [DataMember]
         public virtual PriceItem PriceItem { get; set; }
 

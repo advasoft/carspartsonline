@@ -149,9 +149,10 @@ namespace StoreAppTest.ViewModels
                         {
                             priceItem.WholesalePrice = (int) _oldPrices[priceItem.Number];
                             //priceItem.WholesalePrice = (int) (priceItem.WholesalePrice - (priceItem.WholesalePrice*0.2));}
-                            SelectedCustomer = CustomerList.FirstOrDefault(f => f.Name == "Розничный покупатель");
                         }
                     }
+                    SelectedCustomer = CustomerList.FirstOrDefault(f => f.Name == "Розничный покупатель");
+
                     OnPropertyChanged("IsECommerceCustomer");
                 }
             }
@@ -276,21 +277,84 @@ namespace StoreAppTest.ViewModels
                     new Uri(uri
                         , UriKind.Absolute));
 
-                var realizationDb =
-                    ctx.ExecuteSyncronous(ctx.SaleDocuments.OrderByDescending(s => s.Id)).FirstOrDefault();
-                if (realizationDb != null)
+                int lastNumber = 0;
+                string prefix = string.Empty;
+
+                if (!IsOrder && !IsInvoice)
                 {
-                    int lastNumber = 0;
-                    if (int.TryParse(realizationDb.Number, out lastNumber))
+                    var realizationDb =
+                        ctx.ExecuteSyncronous(
+                            ctx.SaleDocuments.Where(w => !w.IsOrder && !w.IsInvoice).OrderByDescending(s => s.Id))
+                            .FirstOrDefault();
+                    if (realizationDb != null)
                     {
-                        realization.ReceiptNumber = (++lastNumber).ToString();
+                        prefix = "ТЧ";
+                        string number = realizationDb.Number;
+                        if (number.StartsWith(prefix))
+                            number = number.Remove(0, 2);
+
+                        if (int.TryParse(number, out lastNumber))
+                        {                            
+                            lastNumber = ++lastNumber;
+                        }
+                    }
+                    else
+                    {
+                        prefix = "ТЧ";
+                        lastNumber = 1;
                     }
                 }
-                else
+                else if (IsOrder)
                 {
-                    realization.ReceiptNumber = "1";
+                    var realizationDb =
+                        ctx.ExecuteSyncronous(
+                            ctx.SaleDocuments.Where(w => w.IsOrder).OrderByDescending(s => s.Id))
+                            .FirstOrDefault();
+                    if (realizationDb != null)
+                    {
+                        prefix = "СЧ";
+                        string number = realizationDb.Number;
+                        if (number.StartsWith(prefix))
+                            number = number.Remove(0, 2);
+
+                        if (int.TryParse(number, out lastNumber))
+                        {
+                            lastNumber = ++lastNumber;
+                        }
+                    }
+                    else
+                    {
+                        prefix = "СЧ";
+                        lastNumber = 1;
+                    }
+                    
+                }
+                else if (IsInvoice)
+                {
+                    var realizationDb =
+                        ctx.ExecuteSyncronous(
+                            ctx.SaleDocuments.Where(w => w.IsInvoice).OrderByDescending(s => s.Id))
+                            .FirstOrDefault();
+                    if (realizationDb != null)
+                    {
+                        prefix = "СФ";
+                        string number = realizationDb.Number;
+                        if (number.StartsWith(prefix))
+                            number = number.Remove(0, 2);
+
+                        if (int.TryParse(number, out lastNumber))
+                        {
+                            lastNumber = ++lastNumber;
+                        }
+                    }
+                    else
+                    {
+                        prefix = "СФ";
+                        lastNumber = 1;
+                    }
                 }
 
+                realization.ReceiptNumber = DocumentNumberHelper.GetRecipeDocumentNumber(prefix, lastNumber);
 
 
                 int index = 1;
@@ -298,7 +362,9 @@ namespace StoreAppTest.ViewModels
                 {
                     int price = i.WholesalePrice;
 
-
+                    var clearPrice = 0;
+                    if (_oldPrices.ContainsKey(i.Number))
+                        clearPrice = (int) _oldPrices[i.Number];
                     realization.ReceiptItems.Add(new ReceiptItem()
                     {
                         Number = index++,
@@ -312,7 +378,8 @@ namespace StoreAppTest.ViewModels
                         Uom = i.Uom,
                         PriceItemData = i.PriceItemData,
                         PriceItem_Id = i.PriceItemData.Id,
-                        Remainders = i.Remainders
+                        Remainders = i.Remainders,
+                        ClearPrice = clearPrice == 0 ? price : clearPrice
                     });
                 });
                 _newReceiptEvent.Publish(realization);
@@ -371,9 +438,9 @@ namespace StoreAppTest.ViewModels
                         RetailPrice = i.WholesalePrice,
                         WhosalePrice = i.WholesalePrice,
                         SoldCount = i.SoldCount,
+                        SaledCount = i.SoldCount,
                         Uom = i.Uom,
                         PriceItemData = i.PriceItemData
-                        //Discount = i
                     });
                 });
                 _newRefundNeedEvent.Publish(refund);
@@ -433,7 +500,7 @@ namespace StoreAppTest.ViewModels
                 var customersDb =
                     ctx.ExecuteSyncronous(ctx.Customers.Where(
                             c =>
-                                c.Creator_Id == App.CurrentUser.UserName ||
+                                c.Creator_Id == App.CurrentUser.UserName || c.Creator_Id == "admin" ||
                                 (c.Name == "Розничный покупатель" || c.Name == "Клиент интернет-магазина"))).ToList();
 
                 DispatcherHelper.CheckBeginInvokeOnUI(() =>

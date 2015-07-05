@@ -8,6 +8,8 @@ namespace StoreAppTest
     using System.Net;
     using System.Text;
     using System.Threading;
+    using System.Windows;
+    using GalaSoft.MvvmLight.Threading;
     using MSPToolkit.Encodings;
     using Newtonsoft.Json;
     using StoreAppDataService;
@@ -107,9 +109,15 @@ namespace StoreAppTest
             return GetInternalRemainders<IEnumerable<PriceIncomeTotalItemView>>(_getTotalIncomesUri);
         }
 
-        public IEnumerable<PriceIncomeTotalItemView> GetIncomes()
+        public IEnumerable<PriceIncomeTotalItemView> GetIncomes(string warehouse, string creator, DateTime from, DateTime to)
         {
-            return GetInternalRemainders<IEnumerable<PriceIncomeTotalItemView>>(_getIncomesUri);
+            var uri = new Uri(
+                        string.Concat(App.AppBaseUrl,
+                        string.Format("/api/PriceLists/GetIncomes?priceListName={0}&warehouse={1}&creator={2}&from={3}&to={4}"
+                        , _parameter, warehouse, creator, from, to))
+                        , UriKind.Absolute);
+
+            return GetInternalRemainders<IEnumerable<PriceIncomeTotalItemView>>(uri);
         }
 
         public IEnumerable<PriceListItemRemainderView> GetAllPriceListItems()
@@ -130,6 +138,7 @@ namespace StoreAppTest
 
              WebRequest.Create(uri);
             request.Method = "GET";
+
             request.BeginGetResponse((r) =>
             {
                 HttpWebResponse response;
@@ -157,6 +166,7 @@ namespace StoreAppTest
             request);
 
         }) { IsBackground = true }.Start();
+
 
                     handler.WaitOne();
                     return result;

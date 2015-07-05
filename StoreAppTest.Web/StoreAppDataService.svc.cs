@@ -53,8 +53,8 @@ namespace StoreAppTest.Web
             sb.Append("GR.Articul AS Articul, ");
             sb.Append("GR.IsDuplicate AS IsDuplicate, ");
             sb.Append("GR.Name AS Gear_Name, ");
-            sb.Append("GR.RecommendedRemainder AS RecommendedRemainder, ");
-            sb.Append("GR.LowerLimitRemainder AS LowerLimitRemainder, ");
+            sb.Append("RM.RecommendedRemainder AS RecommendedRemainder, ");
+            sb.Append("RM.LowerLimitRemainder AS LowerLimitRemainder, ");
             sb.Append("RM.Id AS Remainder_Id, ");
             sb.Append("RM.Warehouse_Id AS Warehouse, ");
             sb.Append("RM.RemainderDate AS RemainderDate, ");
@@ -63,7 +63,7 @@ namespace StoreAppTest.Web
             sb.Append("FROM [dbo].[PriceItems] AS PR ");
             sb.Append("LEFT JOIN [dbo].[Gears] AS GR ON PR.Gear_Id = GR.Id ");
             sb.Append("JOIN [dbo].[Remainders] AS RM ON PR.Id = RM.PriceItem_Id ");
-            sb.Append("WHERE RM.Amount <= GR.LowerLimitRemainder ");
+            sb.Append("WHERE RM.Amount <= RM.LowerLimitRemainder ");
 
             if (!string.IsNullOrEmpty(priceListName))
             {
@@ -95,8 +95,8 @@ namespace StoreAppTest.Web
             sb.Append("GR.Articul AS Articul, ");
             sb.Append("GR.IsDuplicate AS IsDuplicate, ");
             sb.Append("GR.Name AS Gear_Name, ");
-            sb.Append("GR.RecommendedRemainder AS RecommendedRemainder, ");
-            sb.Append("GR.LowerLimitRemainder AS LowerLimitRemainder, ");
+            sb.Append("RM.RecommendedRemainder AS RecommendedRemainder, ");
+            sb.Append("RM.LowerLimitRemainder AS LowerLimitRemainder, ");
             sb.Append("RM.Id AS Remainder_Id, ");
             sb.Append("RM.Warehouse_Id AS Warehouse, ");
             sb.Append("RM.RemainderDate AS RemainderDate, ");
@@ -153,8 +153,8 @@ namespace StoreAppTest.Web
             sb.Append("GR.Articul AS Articul, ");
             sb.Append("GR.IsDuplicate AS IsDuplicate, ");
             sb.Append("GR.Name AS Gear_Name, ");
-            sb.Append("GR.RecommendedRemainder AS RecommendedRemainder, ");
-            sb.Append("GR.LowerLimitRemainder AS LowerLimitRemainder, ");
+            sb.Append("RM.RecommendedRemainder AS RecommendedRemainder, ");
+            sb.Append("RM.LowerLimitRemainder AS LowerLimitRemainder, ");
             sb.Append("RM.Id AS Remainder_Id, ");
             sb.Append("RM.Warehouse_Id AS Warehouse, ");
             sb.Append("RM.RemainderDate AS RemainderDate, ");
@@ -197,8 +197,8 @@ namespace StoreAppTest.Web
             sb.Append("GR.Articul AS Articul, ");
             sb.Append("GR.IsDuplicate AS IsDuplicate, ");
             sb.Append("GR.Name AS Gear_Name, ");
-            sb.Append("GR.RecommendedRemainder AS RecommendedRemainder, ");
-            sb.Append("GR.LowerLimitRemainder AS LowerLimitRemainder, ");
+            sb.Append("RM.RecommendedRemainder AS RecommendedRemainder, ");
+            sb.Append("RM.LowerLimitRemainder AS LowerLimitRemainder, ");
             sb.Append("RM.Id AS Remainder_Id, ");
             sb.Append("RM.Warehouse_Id AS Warehouse, ");
             sb.Append("RM.RemainderDate AS RemainderDate, ");
@@ -244,8 +244,8 @@ namespace StoreAppTest.Web
             sb.Append("GR.Articul AS Articul, ");
             sb.Append("GR.IsDuplicate AS IsDuplicate, ");
             sb.Append("GR.Name AS Gear_Name, ");
-            sb.Append("GR.RecommendedRemainder AS RecommendedRemainder, ");
-            sb.Append("GR.LowerLimitRemainder AS LowerLimitRemainder, ");
+            sb.Append("RM.RecommendedRemainder AS RecommendedRemainder, ");
+            sb.Append("RM.LowerLimitRemainder AS LowerLimitRemainder, ");
             sb.Append("RM.Id AS Remainder_Id, ");
             sb.Append("RM.Warehouse_Id AS Warehouse, ");
             sb.Append("RM.RemainderDate AS RemainderDate, ");
@@ -299,8 +299,16 @@ namespace StoreAppTest.Web
             sb.Append("GR.Articul AS Articul, ");
             sb.Append("GR.IsDuplicate AS IsDuplicate, ");
             sb.Append("GR.Name AS Gear_Name, ");
-            sb.Append("GR.RecommendedRemainder AS RecommendedRemainder, ");
-            sb.Append("GR.LowerLimitRemainder AS LowerLimitRemainder, ");
+            if (!string.IsNullOrEmpty(warehouse))
+            {
+                sb.Append("RMW.RecommendedRemainder AS RecommendedRemainder, ");
+                sb.Append("RMW.LowerLimitRemainder AS LowerLimitRemainder, ");
+            }
+            else
+            {
+                sb.Append("0 AS RecommendedRemainder, ");
+                sb.Append("0 AS LowerLimitRemainder, ");
+            }
             sb.Append("CAST(0 AS BIGINT) AS Remainder_Id, ");
             if (!string.IsNullOrEmpty(warehouse))
             {
@@ -337,7 +345,10 @@ namespace StoreAppTest.Web
                 sb.Append(",Warehouse_Id ");
             }
             sb.Append(") AS RM ON PR.Id = RM.PriceItem_Id ");
-
+            if (!string.IsNullOrEmpty(warehouse))
+            {
+                sb.Append("LEFT JOIN [dbo].[Remainders] AS RMW ON RM.PriceItem_Id = RMW.PriceItem_Id AND RM.Warehouse_Id = RMW.Warehouse_Id ");
+            }
 
 sb.Append("JOIN [PriceListPriceItems] AS PRPRL ON PR.Id = PRPRL.PriceItem_Id ");
   sb.Append("JOIN [PriceLists] AS PRL ON PRPRL.PriceList_Name = PRL.Name ");
@@ -380,8 +391,8 @@ sb.Append("JOIN [PriceListPriceItems] AS PRPRL ON PR.Id = PRPRL.PriceItem_Id ");
             sb.Append("GR.Articul AS Articul, ");
             sb.Append("GR.IsDuplicate AS IsDuplicate, ");
             sb.Append("GR.Name AS Gear_Name, ");
-            sb.Append("GR.RecommendedRemainder AS RecommendedRemainder, ");
-            sb.Append("GR.LowerLimitRemainder AS LowerLimitRemainder, ");
+            sb.Append("0 AS RecommendedRemainder, ");
+            sb.Append("0 AS LowerLimitRemainder, ");
             sb.Append("RM.Amount AS Remainders, ");
             sb.Append("INCS.Amount AS Incomes ");
             sb.Append("FROM [dbo].[PriceItems] AS PR ");
@@ -432,8 +443,8 @@ sb.Append("JOIN [PriceListPriceItems] AS PRPRL ON PR.Id = PRPRL.PriceItem_Id ");
             sb.Append("GR.Articul AS Articul, ");
             sb.Append("GR.IsDuplicate AS IsDuplicate, ");
             sb.Append("GR.Name AS Gear_Name, ");
-            sb.Append("GR.RecommendedRemainder AS RecommendedRemainder, ");
-            sb.Append("GR.LowerLimitRemainder AS LowerLimitRemainder, ");
+            sb.Append("0 AS RecommendedRemainder, ");
+            sb.Append("0 AS LowerLimitRemainder, ");
             sb.Append("RM.Amount AS Remainders ");
             sb.Append(",INCI.Amount AS Incomes ");
             sb.Append(",INCI.Income_Id AS Income_Id ");
@@ -488,8 +499,16 @@ sb.Append("JOIN [PriceListPriceItems] AS PRPRL ON PR.Id = PRPRL.PriceItem_Id ");
             sb.Append("GR.Articul AS Articul, ");
             sb.Append("GR.IsDuplicate AS IsDuplicate, ");
             sb.Append("GR.Name AS Gear_Name, ");
-            sb.Append("GR.RecommendedRemainder AS RecommendedRemainder, ");
-            sb.Append("GR.LowerLimitRemainder AS LowerLimitRemainder, ");
+            if (!string.IsNullOrEmpty(warehouse))
+            {
+                sb.Append("RMW.RecommendedRemainder AS RecommendedRemainder, ");
+                sb.Append("RMW.LowerLimitRemainder AS LowerLimitRemainder, ");
+            }
+            else
+            {
+                sb.Append("0 AS RecommendedRemainder, ");
+                sb.Append("0 AS LowerLimitRemainder, ");
+            }
             sb.Append("CAST(0 AS BIGINT) AS Remainder_Id, ");
             if (!string.IsNullOrEmpty(warehouse))
             {
@@ -526,7 +545,10 @@ sb.Append("JOIN [PriceListPriceItems] AS PRPRL ON PR.Id = PRPRL.PriceItem_Id ");
                 sb.Append(",Warehouse_Id ");
             }
             sb.Append(") AS RM ON PR.Id = RM.PriceItem_Id ");
-
+            if (!string.IsNullOrEmpty(warehouse))
+            {
+                sb.Append("LEFT JOIN [dbo].[Remainders] AS RMW ON RM.PriceItem_Id = RMW.PriceItem_Id AND RM.Warehouse_Id = RMW.Warehouse_Id ");
+            }
 
             sb.Append("JOIN [PriceListPriceItems] AS PRPRL ON PR.Id = PRPRL.PriceItem_Id ");
             sb.Append("JOIN [PriceLists] AS PRL ON PRPRL.PriceList_Name = PRL.Name ");

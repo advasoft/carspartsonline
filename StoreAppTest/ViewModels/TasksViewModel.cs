@@ -68,6 +68,7 @@ namespace StoreAppTest.ViewModels
             
             _agregator.GetEvent<NewPriceChangeReportNeedEvent>().Subscribe(NewPriceChangeReportNeedEventHandler);
             _agregator.GetEvent<RealizationPerDayOpenNeedEvent>().Subscribe(RealizationPerDayOpenNeedEventHandler);
+            _agregator.GetEvent<RefundOpenNeedEvent>().Subscribe(RefundOpenNeedEventHandler);
 
 
             PriceListsTabs = new ObservableCollection<MenuItem>();
@@ -96,6 +97,8 @@ namespace StoreAppTest.ViewModels
         public ICommand ShowRealizationPerDayListByCashierCommands { get; set; }
         public ICommand ShowRealizationPerDayListCommands { get; set; }
 
+        public ICommand ShowRefundListByCashierCommands { get; set; }
+        public ICommand ShowRefundListCommands { get; set; }
 
         private void InitCommands()
         {
@@ -216,8 +219,18 @@ namespace StoreAppTest.ViewModels
             ShowCashByCashierFlowCommands = new UICommand(a =>
             {
                 CashFlowPage ps = new CashFlowPage();
-                CashFlowByCashierViewModel psv = new CashFlowByCashierViewModel();
-                ps.DataContext = psv;
+                ViewModelBase psv = null;
+
+                if (App.CurrentUser.UserName != "admin")
+                {
+                    psv = new CashFlowByCashierViewModel();
+                    ps.DataContext = psv;
+                }
+                else
+                {
+                    psv = new CashFlowViewModel();
+                    ps.DataContext = psv;
+                }
 
                 ClosableTabItem tb = new ClosableTabItem();
                 tb.Header = "Отчет по денежным средствам";
@@ -249,6 +262,34 @@ namespace StoreAppTest.ViewModels
 
                 ClosableTabItem tb = new ClosableTabItem();
                 tb.Header = "Реализации за день";
+                tb.Content = ps;
+
+                _view.TasksTabControl.Items.Add(tb);
+                _view.TasksTabControl.SelectedItem = tb;
+                psv.LoadView();
+            });
+            ShowRefundListByCashierCommands = new UICommand(a =>
+            {
+                RefundList ps = new RefundList();
+                RefundListViewModel psv = new RefundListViewModel(true);
+                ps.DataContext = psv;
+
+                ClosableTabItem tb = new ClosableTabItem();
+                tb.Header = "Возвраты покупателей";
+                tb.Content = ps;
+
+                _view.TasksTabControl.Items.Add(tb);
+                _view.TasksTabControl.SelectedItem = tb;
+                psv.LoadView();
+            });
+            ShowRefundListCommands = new UICommand(a =>
+            {
+                RefundList ps = new RefundList();
+                RefundListViewModel psv = new RefundListViewModel();
+                ps.DataContext = psv;
+
+                ClosableTabItem tb = new ClosableTabItem();
+                tb.Header = "Возвраты покупателей";
                 tb.Content = ps;
 
                 _view.TasksTabControl.Items.Add(tb);
@@ -355,6 +396,15 @@ namespace StoreAppTest.ViewModels
         }
         public void NewRealizationNeedEventHandler(object obj)
         {
+            var findedTab =
+                _view.TasksTabControl.Items.Where(
+                    t => ((ClosableTabItem)t).Header.ToString().Contains("Реализация за день № ")).FirstOrDefault();
+            if (findedTab != null)
+            {
+                _view.TasksTabControl.SelectedItem = findedTab;
+                return;
+            }
+
             Guid viewId = Guid.NewGuid();
             RealizationPerDay ps = new RealizationPerDay();
             RealizationPerDayViewModel vm = new RealizationPerDayViewModel(viewId);
@@ -373,6 +423,7 @@ namespace StoreAppTest.ViewModels
 
         public void RealizationPerDayOpenNeedEventHandler(RealizationPerDayDocumentModel model)
         {
+
             Guid viewId = Guid.NewGuid();
             RealizationPerDay ps = new RealizationPerDay();
             ps.CloseRealizationButton.Visibility = Visibility.Collapsed;
@@ -382,11 +433,37 @@ namespace StoreAppTest.ViewModels
             RealizationPerDayReadOnlyViewModel vm = new RealizationPerDayReadOnlyViewModel(viewId, model.Id);
             vm.RealizationNumber = model.DocumentNumber;
             vm.Barcode = model.Barcode;
-
+            vm.Saved = true;
+            vm.SavedDocumentId = model.Id;
             ps.DataContext = vm;
 
             ClosableTabItem tb = new ClosableTabItem();
             tb.Header = "Реализация за день № " + vm.RealizationNumber;
+            tb.Content = ps;
+            tb.Name = viewId.ToString();
+
+            _view.TasksTabControl.Items.Add(tb);
+            _view.TasksTabControl.SelectedItem = tb;
+            vm.LoadView();
+        }
+        public void RefundOpenNeedEventHandler(RefundDocumentModel model)
+        {
+            Guid viewId = Guid.NewGuid();
+            Refund ps = new Refund();
+            ps.RemoveItemButton.Visibility = Visibility.Collapsed;
+            //ps.SalesDocumentLabel.Visibility = Visibility.Collapsed;
+            //ps.SalesDocumentComboBox.Visibility = Visibility.Collapsed;
+            ps.RefundButton.Visibility = Visibility.Collapsed;
+
+            RefundReadOnlyViewModel vm = new RefundReadOnlyViewModel(viewId, model.Id);
+            vm.RefundNumber = model.DocumentNumber;
+            vm.Barcode = model.Barcode;
+            vm.Saved = true;
+            vm.SavedDocumentId = model.Id;
+            ps.DataContext = vm;
+
+            ClosableTabItem tb = new ClosableTabItem();
+            tb.Header = "Возврат покупателя № " + vm.RefundNumber;
             tb.Content = ps;
             tb.Name = viewId.ToString();
 

@@ -68,6 +68,8 @@
                             <ColumnDefinition Width="120"></ColumnDefinition>
                             <ColumnDefinition Width="100"></ColumnDefinition>
                             <ColumnDefinition Width="120"></ColumnDefinition>
+                            <ColumnDefinition Width="100"></ColumnDefinition>
+                            <ColumnDefinition Width="120"></ColumnDefinition>
                         </Grid.ColumnDefinitions>
                         <Grid.RowDefinitions>
                             <RowDefinition Height="*"></RowDefinition>
@@ -94,6 +96,11 @@
                         <TextBlock Grid.Row="1" Grid.Column="9" Text="{Binding Totals}" FontSize="16" FontWeight="Bold"></TextBlock>
                         <TextBlock Grid.Row="0" Grid.Column="10" Text="% по отношению к прошлому периоду" FontSize="9" TextWrapping="Wrap"></TextBlock>
                         <TextBlock Grid.Row="1" Grid.Column="10" Text="{Binding TotalsDifference, StringFormat=N2}" FontSize="16" FontWeight="Bold"></TextBlock>
+                        <TextBlock Grid.Row="0" Grid.Column="11" Text="Доп. прибыль" FontSize="9"></TextBlock>
+                        <TextBlock Grid.Row="1" Grid.Column="11" Text="{Binding AdvancedProfit}" FontSize="16" FontWeight="Bold"></TextBlock>
+                        <TextBlock Grid.Row="0" Grid.Column="12" Text="% по отношению к прошлому периоду" FontSize="9" TextWrapping="Wrap"></TextBlock>
+                        <TextBlock Grid.Row="1" Grid.Column="12" Text="{Binding AdvancedProfitDifference, StringFormat=N2}" FontSize="16" FontWeight="Bold"></TextBlock>
+
                     </Grid>
                 </DataTemplate>
             </ListBox.ItemTemplate>

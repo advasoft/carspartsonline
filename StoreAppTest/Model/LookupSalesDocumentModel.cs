@@ -11,6 +11,7 @@ namespace StoreAppTest.Model
         public DateTime SaleDate { get; set; }
         public string Customer { get; set; }
         public decimal Amount { get; set; }
+        public long Id { get; set; }
 
         #region Overrides of Object
 

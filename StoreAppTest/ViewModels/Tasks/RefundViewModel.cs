@@ -9,6 +9,7 @@ namespace StoreAppTest.ViewModels
     using System.Threading.Tasks;
     using System.Windows;
     using System.Windows.Input;
+    using Controls;
     using Event;
     using GalaSoft.MvvmLight.Threading;
     using Microsoft.Practices.ObjectBuilder2;
@@ -32,6 +33,8 @@ namespace StoreAppTest.ViewModels
 
         private Refund _durtyRefund;
 
+        private long _SelectedSaleDocumentId;
+
         public RefundViewModel(Refund durtyRefund, Guid viewId)
         {
             _durtyRefund = durtyRefund;
@@ -48,7 +51,7 @@ namespace StoreAppTest.ViewModels
                 i.RefundItemChanged += i_RefundItemChanged;    
             });
 
-            SaleDocuments = new ObservableCollection<LookupSalesDocumentModel>();
+            //SaleDocuments = new ObservableCollection<LookupSalesDocumentModel>();
 
             InitCommands();
         }
@@ -97,27 +100,27 @@ namespace StoreAppTest.ViewModels
         private string _receiptNumber;
 
         public ObservableCollection<RefundItem> RefundItems { get; set; }
-        public ObservableCollection<LookupSalesDocumentModel> SaleDocuments { get; set; }
+        //public ObservableCollection<LookupSalesDocumentModel> SaleDocuments { get; set; }
 
-        private LookupSalesDocumentModel _SelectedSaleDocument;
+        //private LookupSalesDocumentModel _SelectedSaleDocument;
 
-        public LookupSalesDocumentModel SelectedSaleDocument
-        {
-            get
-            {
-                return _SelectedSaleDocument;
-            }
-            set
-            {
-                _SelectedSaleDocument = value;
-                OnPropertyChanged("SelectedSaleDocument");
+        //public LookupSalesDocumentModel SelectedSaleDocument
+        //{
+        //    get
+        //    {
+        //        return _SelectedSaleDocument;
+        //    }
+        //    set
+        //    {
+        //        _SelectedSaleDocument = value;
+        //        OnPropertyChanged("SelectedSaleDocument");
 
-                if (_SelectedSaleDocument != null)
-                {
-                    FindReceiptCommand.Execute(null);
-                }
-            }
-        }
+        //        if (_SelectedSaleDocument != null)
+        //        {
+        //            FindReceiptCommand.Execute(null);
+        //        }
+        //    }
+        //}
 
         public RefundItem SelectedRefundItem
         {
@@ -137,7 +140,7 @@ namespace StoreAppTest.ViewModels
 
         protected override void LoadViewHandler()
         {
-            UpdateCustomersList();
+            //UpdateCustomersList();
         }
 
         #endregion
@@ -145,16 +148,20 @@ namespace StoreAppTest.ViewModels
         #region Commands
 
         public ICommand SaveRefundCommand { get; set; }
-        public ICommand FindReceiptCommand { get; set; }
+        //public ICommand FindReceiptCommand { get; set; }
 
         public ICommand PrintReportCommand { get; set; }
 
         public ICommand RemoveRefundItemCommand { get; set; }
+        public ICommand SelectSalesDocumentCommand { get; set; }
+
         private void InitCommands()
         {
             #region Save command
             SaveRefundCommand = new UICommand(o =>
             {
+                if (RefundItems.Count == 0) return;
+                
                 RefundItems.ForEach(i =>
                 {
                     i.RefundItemChanged -= i_RefundItemChanged;
@@ -197,7 +204,7 @@ namespace StoreAppTest.ViewModels
                         var refund = new RefundDocument();
                         refund.Creator_Id = App.CurrentUser.UserName;
                         refund.RefundDate = _durtyRefund.RefundDate;
-                        refund.SaleDocument_Id = SelectedSaleDocument.SaleDocumentData.Id;                        
+                        refund.SaleDocument_Id = _SelectedSaleDocumentId;                        
                         refund.LastChanger_Id = App.CurrentUser.UserName;
                         refund.RefundNumber = RefundNumber;
 
@@ -285,82 +292,145 @@ namespace StoreAppTest.ViewModels
 
             #endregion
 
-            #region Find receipt command
-            FindReceiptCommand = new UICommand(o =>
+            #region SelectSalesDocumentCommand
+            SelectSalesDocumentCommand = new UICommand(o =>
             {
-                string uri = string.Concat(
-                    Application.Current.Host.Source.Scheme, "://",
-                    Application.Current.Host.Source.Host, ":",
-                    Application.Current.Host.Source.Port,
-                    "/StoreAppDataService.svc/");
 
                 RefundItems.Clear();
 
-                Task.Factory.StartNew(() =>
+
+
+                SelectSalesDocumentControl ctrl = new SelectSalesDocumentControl();
+
+                SelectSalesDocumentControlViewModel vm = new SelectSalesDocumentControlViewModel();
+
+                ctrl.DataContext = vm;
+
+                ctrl.Closed += (sender, args) =>
                 {
-                    StoreDbContext ctx = new StoreDbContext(
-                        new Uri(uri
-                            , UriKind.Absolute));
-
-                    var receiptDb =
-                        ctx.ExecuteSyncronous(ctx.SaleDocuments.Expand("SaleItems/PriceItem/Gear,SaleItems/PriceItem/UnitOfMeasure,SaleItems/PriceItem/Remainders,SaleItems/PriceItem/Prices")
-                        .Where(s => s.Id == SelectedSaleDocument.SaleDocumentData.Id)).FirstOrDefault();
-
-                    
-                    if (receiptDb != null)
+                    if (ctrl.DialogResult == true)
                     {
-
-                        IList<StoreAppDataService.RefundItem> refs = default(IList<StoreAppDataService.RefundItem>);
-
-                        var refundsDb =
-                            ctx.ExecuteSyncronous(ctx.RefundDocuments.Expand("RefundItems").Where(d => d.SaleDocument_Id == receiptDb.Id))
-                                .ToList();
-
-                        if (refundsDb != null)
-                        {
-                            refs = refundsDb.SelectMany(s => s.RefundItems).ToList();
-                        }
-
                         int number = 1;
-                        receiptDb.SaleItems.ForEach(i =>
-                        {
-                            if (refs == null || !refs.Any(v => v.SaleItem_Id == i.Id))
-                            {
-                                DispatcherHelper.CheckBeginInvokeOnUI(() =>
-                                {
-                                    var item = new RefundItem()
-                                    {
-                                        Articul = i.PriceItem.Gear.Articul,
-                                        CatalogNumber = i.PriceItem.Gear.CatalogNumber,
-                                        IsDuplicate = i.PriceItem.Gear.IsDuplicate ? "*" : "",
-                                        Name = i.PriceItem.Gear.Name,
-                                        Number = number++,
-                                        RetailPrice = (int) i.Price,
-                                        SoldCount = (int) i.Count,
-                                        PreviousSoldCount = (int) i.Count,
-                                        Uom = i.PriceItem.UnitOfMeasure.Name,
-                                        WhosalePrice =
-                                            (int) i.PriceItem.Prices.OrderByDescending(g => g.PriceDate).First().Price,
-                                        PriceItemData = i.PriceItem,
-                                        Discount = (int) i.Discount,
-                                        SaleItem_Id = i.Id
+                        _SelectedSaleDocumentId = vm.SelectedSaleDocument.Id;
 
-                                    };
-                                    RefundItems.Add(item);
-                                    item.RefundItemChanged += i_RefundItemChanged;
-                                });
-                            }
-                        });
+                        foreach (var source in vm.SalesDocumentItems.Where(p => p.Selected))
+                        {
+                            var item = new RefundItem()
+                            {
+                                Articul = source.Articul,
+                                CatalogNumber = source.CatalogNumber,
+                                IsDuplicate = source.IsDuplicate,
+                                Name = source.Gear_Name,
+                                Number = number++,
+                                RetailPrice = (int)source.RetailPrice,
+                                SoldCount = source.SoldCount,
+                                PreviousSoldCount = source.PreviousSoldCount,
+                                Uom = source.Uom,
+                                WhosalePrice =
+                                    (int)source.WhosalePrice,
+                                PriceItemData = source.PriceItemData,
+                                Discount = (int)source.Discount,
+                                SaleItem_Id = source.SaleItem_Id,
+                                SaledCount = source.SaledCount
+
+                            };
+                            RefundItems.Add(item);
+                            item.RefundItemChanged += i_RefundItemChanged;
+                        }
 
                         DispatcherHelper.CheckBeginInvokeOnUI(() =>
                         {
                             OnPropertyChanged("TotalRefund");
                         });
+
                     }
-                });
+                };
+
+                ctrl.Show();
+                vm.LoadView();
+
+
+
             });
 
             #endregion
+
+            //#region Find receipt command
+            //FindReceiptCommand = new UICommand(o =>
+            //{
+            //    string uri = string.Concat(
+            //        Application.Current.Host.Source.Scheme, "://",
+            //        Application.Current.Host.Source.Host, ":",
+            //        Application.Current.Host.Source.Port,
+            //        "/StoreAppDataService.svc/");
+
+            //    RefundItems.Clear();
+
+            //    Task.Factory.StartNew(() =>
+            //    {
+            //        StoreDbContext ctx = new StoreDbContext(
+            //            new Uri(uri
+            //                , UriKind.Absolute));
+
+            //        var receiptDb =
+            //            ctx.ExecuteSyncronous(ctx.SaleDocuments.Expand("SaleItems/PriceItem/Gear,SaleItems/PriceItem/UnitOfMeasure,SaleItems/PriceItem/Remainders,SaleItems/PriceItem/Prices")
+            //            .Where(s => s.Id == SelectedSaleDocument.SaleDocumentData.Id)).FirstOrDefault();
+
+                    
+            //        if (receiptDb != null)
+            //        {
+
+            //            IList<StoreAppDataService.RefundItem> refs = default(IList<StoreAppDataService.RefundItem>);
+
+            //            var refundsDb =
+            //                ctx.ExecuteSyncronous(ctx.RefundDocuments.Expand("RefundItems").Where(d => d.SaleDocument_Id == receiptDb.Id))
+            //                    .ToList();
+
+            //            if (refundsDb != null)
+            //            {
+            //                refs = refundsDb.SelectMany(s => s.RefundItems).ToList();
+            //            }
+
+            //            int number = 1;
+            //            receiptDb.SaleItems.ForEach(i =>
+            //            {
+            //                if (refs == null || !refs.Any(v => v.SaleItem_Id == i.Id) || (refs.Any(v => v.SaleItem_Id == i.Id) && refs.Where(wh => wh.SaleItem_Id == i.Id).Sum(sm => sm.Count) < i.Count))
+            //                {
+            //                    DispatcherHelper.CheckBeginInvokeOnUI(() =>
+            //                    {
+            //                        var item = new RefundItem()
+            //                        {
+            //                            Articul = i.PriceItem.Gear.Articul,
+            //                            CatalogNumber = i.PriceItem.Gear.CatalogNumber,
+            //                            IsDuplicate = i.PriceItem.Gear.IsDuplicate ? "*" : "",
+            //                            Name = i.PriceItem.Gear.Name,
+            //                            Number = number++,
+            //                            RetailPrice = (int) i.Price,
+            //                            SoldCount = (int)i.Count - (int)refs.Where(wh => wh.SaleItem_Id == i.Id).Sum(sm => sm.Count),
+            //                            PreviousSoldCount = (int) i.Count,
+            //                            Uom = i.PriceItem.UnitOfMeasure.Name,
+            //                            WhosalePrice =
+            //                                (int) i.PriceItem.Prices.OrderByDescending(g => g.PriceDate).First().Price,
+            //                            PriceItemData = i.PriceItem,
+            //                            Discount = (int) i.Discount,
+            //                            SaleItem_Id = i.Id
+
+            //                        };
+            //                        RefundItems.Add(item);
+            //                        item.RefundItemChanged += i_RefundItemChanged;
+            //                    });
+            //                }
+            //            });
+
+            //            DispatcherHelper.CheckBeginInvokeOnUI(() =>
+            //            {
+            //                OnPropertyChanged("TotalRefund");
+            //            });
+            //        }
+            //    });
+            //});
+
+            //#endregion
             #region PrintReportCommand
 
             PrintReportCommand = new UICommand(a =>
@@ -387,45 +457,47 @@ namespace StoreAppTest.ViewModels
         #endregion
 
 
-        private void UpdateCustomersList()
-        {
+        //private void UpdateCustomersList()
+        //{
 
-            string uri = string.Concat(
-                Application.Current.Host.Source.Scheme, "://",
-                Application.Current.Host.Source.Host, ":",
-                Application.Current.Host.Source.Port,
-                "/StoreAppDataService.svc/");
+        //    string uri = string.Concat(
+        //        Application.Current.Host.Source.Scheme, "://",
+        //        Application.Current.Host.Source.Host, ":",
+        //        Application.Current.Host.Source.Port,
+        //        "/StoreAppDataService.svc/");
 
-            Task.Factory.StartNew(() =>
-            {
-                StoreDbContext ctx = new StoreDbContext(
-                    new Uri(uri
-                        , UriKind.Absolute));
+        //    Task.Factory.StartNew(() =>
+        //    {
+        //        StoreDbContext ctx = new StoreDbContext(
+        //            new Uri(uri
+        //                , UriKind.Absolute));
 
-                var salesDb =
-                    ctx.ExecuteSyncronous(ctx.SaleDocuments.Expand("SaleItems,Customer").Where(f => !f.IsOrder && f.Creator_Id == App.CurrentUser.UserName)).ToList();
+        //        var salesDb =
+        //            ctx.ExecuteSyncronous(ctx.SaleDocuments.Expand("SaleItems,Customer")
+        //            .Where(f => !f.IsOrder && f.Creator_Id == App.CurrentUser.UserName)
+        //            .OrderByDescending(or => or.SaleDate)).ToList();
 
-                DispatcherHelper.CheckBeginInvokeOnUI(() =>
-                {
-                    SaleDocuments.Clear();
+        //        DispatcherHelper.CheckBeginInvokeOnUI(() =>
+        //        {
+        //            SaleDocuments.Clear();
 
-                    salesDb.ForEach(i =>
-                    {
-                        SaleDocuments.Add(new LookupSalesDocumentModel()
-                        {
-                            Amount = i.SaleItems.Sum(s => s.Amount),
-                            Customer = i.Customer.Name,
-                            Number = i.Number,
-                            SaleDate = i.SaleDate,
-                            SaleDocumentData = i
-                        });
-                    });
+        //            salesDb.ForEach(i =>
+        //            {
+        //                SaleDocuments.Add(new LookupSalesDocumentModel()
+        //                {
+        //                    Amount = i.SaleItems.Sum(s => s.Amount),
+        //                    Customer = i.Customer.Name,
+        //                    Number = i.Number,
+        //                    SaleDate = i.SaleDate,
+        //                    SaleDocumentData = i
+        //                });
+        //            });
 
-                });
-            });
+        //        });
+        //    });
 
 
-        }
+        //}
 
     }
 }

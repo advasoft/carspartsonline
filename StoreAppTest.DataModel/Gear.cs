@@ -44,11 +44,6 @@ namespace StoreAppTest.Web.DataModel
         //[ForeignKey("GearCategory")]
         public string Category_Id { get; set; }
 
-        [DataMember]
-        public decimal RecommendedRemainder { get; set; }
-
-        [DataMember]
-        public decimal LowerLimitRemainder { get; set; }
 
 
         [DataMember]

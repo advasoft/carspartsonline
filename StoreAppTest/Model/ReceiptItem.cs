@@ -4,10 +4,66 @@
 
     public class ReceiptItem : Notified
     {
-        public string Articul { get; set; }
-        public string CatalogNumber { get; set; }
-        public string Name { get; set; }
-        public string IsDuplicate { get; set; }
+
+        public string Articul
+        {
+            get
+            {
+                return _articul;
+            }
+            set
+            {
+                _articul = value;
+                OnPropertyChanged("Articul");
+            }
+        }
+        private string _articul;
+
+
+        public string CatalogNumber
+        {
+            get
+            {
+                return _catalogNumbe;
+            }
+            set
+            {
+                _catalogNumbe = value;
+                OnPropertyChanged("CatalogNumber");
+            }
+        }
+        private string _catalogNumbe;
+
+
+        public string Name
+        {
+            get
+            {
+                return _name;
+            }
+            set
+            {
+                _name = value;
+                OnPropertyChanged("Name");
+            }
+        }
+        private string _name;
+
+
+        public string IsDuplicate
+        {
+            get
+            {
+                return _isDuplicate;
+            }
+            set
+            {
+                _isDuplicate = value;
+                OnPropertyChanged("IsDuplicate");
+            }
+        }
+        private string _isDuplicate;
+
         public int Number { get; set; }
         public string Uom { get; set; }
         public long PriceItem_Id { get; set; }
@@ -26,6 +82,7 @@
             }
         }
 
+        public int ClearPrice { get; set; }
         public int WholesalePrice { get; set; }
 
         private int _discount;

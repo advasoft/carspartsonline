@@ -42,32 +42,6 @@ namespace StoreAppTest.ViewModels
         public ObservableCollection<LookupSalesDocumentModel> SaleDocuments { get; set; }
         public ObservableCollection<DebtItem> DebtorItems { get; set; }
 
-        //private bool _SaleDocumentSelected;
-        //public bool SaleDocumentSelected
-        //{
-        //    get
-        //    {
-        //        return SelectedSaleDocument != null;
-        //    }
-        //}
-
-
-        //private LookupSalesDocumentModel _SelectedSaleDocument;
-        //public LookupSalesDocumentModel SelectedSaleDocument
-        //{
-        //    get
-        //    {
-        //        return _SelectedSaleDocument;
-        //    }
-        //    set
-        //    {
-        //        _SelectedSaleDocument = value;
-        //        OnPropertyChanged("SelectedSaleDocument");
-        //        OnPropertyChanged("SaleDocumentSelected");
-        //        UpdateDebtList();
-        //    }
-        //}
-
 
         private bool _IsLoading;
         public bool IsLoading
@@ -315,26 +289,42 @@ namespace StoreAppTest.ViewModels
                 var salesDb =
                     ctx.ExecuteSyncronous(query).ToList();
 
-                var returns =
-                    ctx.ExecuteSyncronous(ctx.RefundDocuments.Expand("SaleDocument").Where(f => !f.SaleDocument.IsOrder && f.SaleDocument.IsInDebt && f.Creator_Id == App.CurrentUser.UserName))
-                        .Select(s => s.SaleDocument_Id)
+                IList<StoreAppDataService.RefundItem> refs = default(IList<StoreAppDataService.RefundItem>);
+
+                var refundsDb =
+                    ctx.ExecuteSyncronous(ctx.RefundDocuments.Expand("RefundItems").Where(f => !f.SaleDocument.IsOrder && f.SaleDocument.IsInDebt && f.Creator_Id == App.CurrentUser.UserName))
                         .ToList();
+
+                if (refundsDb != null)
+                {
+                    refs = refundsDb.SelectMany(s => s.RefundItems).ToList();
+                }
 
 
                 DispatcherHelper.CheckBeginInvokeOnUI(() =>
                 {
                     SaleDocuments.Clear();
 
-                    salesDb.Where(s => !returns.Contains(s.Id)).ForEach(i =>
+                    salesDb.ForEach(i =>
                     {
-                        SaleDocuments.Add(new LookupSalesDocumentModel()
+
+                        if (refs == null || !refs.Any(v => v.SaleItem_Id == i.Id) ||
+                            (refs.Any(v => v.SaleItem_Id == i.Id) &&
+                             refs.Where(wh => wh.SaleItem_Id == i.Id).Sum(sm => sm.Count) <
+                             i.SaleItems.Sum(sm => sm.Count)))
                         {
-                            Amount = i.SaleItems.Sum(s => s.Amount),
-                            Customer = i.Customer.Name,
-                            Number = i.Number,
-                            SaleDate = i.SaleDate,
-                            SaleDocumentData = i
-                        });
+                            var @return =
+                                (int)refs.Where(wh => wh.SaleItem_Id == i.Id).Sum(sm => (sm.Count * sm.Price) - sm.Discount);
+
+                            SaleDocuments.Add(new LookupSalesDocumentModel()
+                            {
+                                Amount = i.SaleItems.Sum(s => s.Amount) - @return,
+                                Customer = i.Customer.Name,
+                                Number = i.Number,
+                                SaleDate = i.SaleDate,
+                                SaleDocumentData = i
+                            });
+                        }
                     });
 
                 });
@@ -374,21 +364,49 @@ namespace StoreAppTest.ViewModels
                 salesDb =
                     ctx.ExecuteSyncronous(query).ToList();
 
-                var returns =
-                    ctx.ExecuteSyncronous(ctx.RefundDocuments.Where(f => f.SaleDocument.IsInDebt && f.Creator_Id == App.CurrentUser.UserName))
-                        .Select(s => s.SaleDocument_Id)
+                //var returns =
+                //    ctx.ExecuteSyncronous(ctx.RefundDocuments.Where(f => f.SaleDocument.IsInDebt && f.Creator_Id == App.CurrentUser.UserName))
+                //        .Select(s => s.SaleDocument_Id)
+                //        .ToList();
+
+                IList<StoreAppDataService.RefundItem> refs = default(IList<StoreAppDataService.RefundItem>);
+
+                var refundsDb =
+                    ctx.ExecuteSyncronous(ctx.RefundDocuments.Expand("RefundItems").Where(f => f.SaleDocument.IsInDebt && f.Creator_Id == App.CurrentUser.UserName))
                         .ToList();
 
-                List<DebtItem> salesDebtItems = new List<DebtItem>();
-                salesDb.Where(s => !returns.Contains(s.Id)).ForEach(i =>
+                if (refundsDb != null)
                 {
-                    salesDebtItems.Add(new DebtItem()
+                    refs = refundsDb.SelectMany(s => s.RefundItems).ToList();
+                }
+
+
+                List<DebtItem> salesDebtItems = new List<DebtItem>();
+                salesDb.ForEach(i =>
+                {
+                    if (refs == null || !refs.Any(v => v.SaleItem_Id == i.Id) ||
+                        (refs.Any(v => v.SaleItem_Id == i.Id) &&
+                         refs.Where(wh => wh.SaleItem_Id == i.Id).Sum(sm => sm.Count) < i.SaleItems.Sum(sm => sm.Count)))
                     {
-                        Date = i.SaleDate,
-                        Debtor = i.Customer_Name,
-                        Up = (int)i.SaleItems.Sum(s => s.Amount),
-                        SaleDocument = new LookupSalesDocumentModel() { Number = i.Number, SaleDate = i.SaleDate, Amount = i.SaleItems.Sum(s => s.Amount), Customer = i.Customer.Name, SaleDocumentData = i }
-                    });
+                        var @return =
+                            (int)refs.Where(wh => wh.SaleItem_Id == i.Id).Sum(sm => (sm.Count * sm.Price) - sm.Discount);
+
+                        salesDebtItems.Add(new DebtItem()
+                        {
+                            Date = i.SaleDate,
+                            Debtor = i.Customer_Name,
+                            Up = (int)i.SaleItems.Sum(s => s.Amount) - @return,
+                            SaleDocument =
+                                new LookupSalesDocumentModel()
+                                {
+                                    Number = i.Number,
+                                    SaleDate = i.SaleDate,
+                                    Amount = i.SaleItems.Sum(s => s.Amount) - @return,
+                                    Customer = i.Customer.Name,
+                                    SaleDocumentData = i
+                                }
+                        });
+                    }
 
                 });
 

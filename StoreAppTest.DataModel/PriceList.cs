@@ -12,6 +12,7 @@ namespace StoreAppTest.Web.DataModel
         public PriceList()
         {
             PriceItems = new HashSet<PriceItem>();
+            Users = new HashSet<User>();
         }
 
         [Key]
@@ -34,5 +35,9 @@ namespace StoreAppTest.Web.DataModel
 
         [DataMember]
         public virtual User UploadUser { get; set; }
+
+        [DataMember]
+        //public virtual PriceList PriceList { get; set; }
+        public virtual ICollection<User> Users { get; set; }
     }
 }

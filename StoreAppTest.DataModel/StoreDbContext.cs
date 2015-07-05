@@ -242,11 +242,11 @@ namespace StoreAppTest.Web.DataModel
                 .HasForeignKey(e => e.SaleDocumentsPerDay_Id)
                 .WillCascadeOnDelete(false);
 
-            modelBuilder.Entity<SaleDocumentsPerDay>()
-                .HasMany(e => e.RefundsPerDayItems)
-                .WithRequired(e => e.SaleDocumentsPerDay)
-                .HasForeignKey(e => e.SaleDocumentsPerDay_Id)
-                .WillCascadeOnDelete(false);
+            //modelBuilder.Entity<SaleDocumentsPerDay>()
+            //    .HasMany(e => e.RefundsPerDayItems)
+            //    .WithRequired(e => e.SaleDocumentsPerDay)
+            //    .HasForeignKey(e => e.SaleDocumentsPerDay_Id)
+            //    .WillCascadeOnDelete(false);
 
             modelBuilder.Entity<SaleDocumentsPerDay>()
                 .HasRequired(r => r.Creator)
@@ -383,6 +383,11 @@ namespace StoreAppTest.Web.DataModel
                 .HasMany(e => e.Roles)
                 .WithMany(e => e.Users);
 
+            modelBuilder.Entity<User>()
+                .HasMany(m => m.PriceLists)
+                .WithMany(m => m.Users)
+                .Map(m => m.ToTable("UsersPriceLists")
+                    .MapLeftKey("User_UserName").MapRightKey("PriceList_Name"));
         }
     }
 
@@ -403,6 +408,11 @@ namespace StoreAppTest.Web.DataModel
             wh.Name = "Основной";
             context.Warehouses.Add(wh);
 
+            Warehouse wh1 = new Warehouse();
+            wh1.Name = "Интернет-магазин";
+            context.Warehouses.Add(wh1);
+
+
             User usr = new User();
             usr.DisplayName = "Администратор";
             usr.UserName = "admin";
@@ -414,6 +424,17 @@ namespace StoreAppTest.Web.DataModel
             var pwdBytes = Encoding.Unicode.GetBytes(securePwd);
             usr.PasswordHash = pwdBytes;
             context.Users.Add(usr);
+
+            User usre = new User();
+            usre.DisplayName = "Интернет-магазин";
+            usre.UserName = "ecommerce";
+            usre.Warehouse_Id = wh1.Name;
+            usre.Warehouse = wh1;
+            usre.IsSupplierVisible = true;
+
+            usre.PasswordHash = pwdBytes;
+            context.Users.Add(usre);
+
 
             Customer cs = new Customer();
             cs.Name = "Розничный покупатель";

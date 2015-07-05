@@ -58,6 +58,8 @@ namespace StoreAppTest.ViewModels
 
             CustomerList = new ObservableCollection<Customer>();
 
+            PaymentType = "Безналичный расчет";
+
             InitCommands();
         }
 
@@ -155,6 +157,65 @@ namespace StoreAppTest.ViewModels
             }
         }
 
+
+        private bool _IsReserve;
+        public bool IsReserve
+        {
+            get { return _IsReserve; }
+            set
+            {
+                _IsReserve = value;
+                OnPropertyChanged("IsReserve");
+            }
+        }
+
+
+        private bool _IsRefund;
+        public bool IsRefund
+        {
+            get { return _IsRefund; }
+            set
+            {
+                _IsRefund = value;
+                OnPropertyChanged("IsRefund");
+            }
+        }
+
+
+        private string _Contract;
+        public string Contract
+        {
+            get { return _Contract; }
+            set
+            {
+                _Contract = value;
+                OnPropertyChanged("Contract");
+            }
+        }
+
+        private string _PaymentType;
+        public string PaymentType
+        {
+            get { return _PaymentType; }
+            set
+            {
+                _PaymentType = value;
+                OnPropertyChanged("PaymentType");
+            }
+        }
+
+        private string _TtnNumber;
+        public string TtnNumber
+        {
+            get { return _TtnNumber; }
+            set
+            {
+                _TtnNumber = value;
+                OnPropertyChanged("TtnNumber");
+            }
+        }
+
+
         private bool _SelectAll;
         public bool SelectAll
         {
@@ -220,8 +281,12 @@ namespace StoreAppTest.ViewModels
             {
                 _Barcode = value;
                 OnPropertyChanged("Barcode");
+                AddPositionToReceipt(value);
+
             }
         }
+
+
         private string _Barcode;
 
         public long SavedDocumentId { get; set; }
@@ -269,6 +334,7 @@ namespace StoreAppTest.ViewModels
         public ICommand RemovePriceItemCommand { get; set; }
 
         public ICommand PrintReportCommand { get; set; }
+        public ICommand PrintInvoiceReportCommand { get; set; }
 
         private void InitCommands()
         {
@@ -583,7 +649,8 @@ namespace StoreAppTest.ViewModels
                                     SoldCount = 0,
                                     Uom = source.Uom,
                                     PriceItem_Id = source.PriceItem_Id,
-                                    Remainders = source.Remainders
+                                    Remainders = source.Remainders,
+                                    ClearPrice = (int)source.WholesalePrice
                                     //PriceItemData = source.PriceItemData,
 
                                 };
@@ -605,7 +672,8 @@ namespace StoreAppTest.ViewModels
                                 WholesalePrice = (int)vm.SelectedPriceItem.WholesalePrice,
                                 SoldCount = 0,
                                 Uom = vm.SelectedPriceItem.Uom,
-                                PriceItem_Id = vm.SelectedPriceItem.PriceItem_Id
+                                PriceItem_Id = vm.SelectedPriceItem.PriceItem_Id,
+                                ClearPrice = (int)vm.SelectedPriceItem.WholesalePrice
                                 //PriceItemData = source.PriceItemData,
 
                             };
@@ -650,11 +718,35 @@ namespace StoreAppTest.ViewModels
 
             PrintReportCommand = new UICommand(a =>
             {
-                SalesDocumentReportControl control = new SalesDocumentReportControl(SavedDocumentId);
+                if (IsInvoice)
+                {
+                    InvoiceReportControl control = new InvoiceReportControl(SavedDocumentId, IsRefund, Contract, PaymentType, TtnNumber);
+                    control.Show();
+                }
+                else if (IsOrder)
+                {
+                    OrderReportControl control = new OrderReportControl(SavedDocumentId, IsReserve, IsRefund);
+                    control.Show();                   
+                }
+                else 
+                {
+                    SalesDocumentReportControl control = new SalesDocumentReportControl(SavedDocumentId);
+                    control.Show();
+                }
+            });
+
+            #endregion
+
+            #region PrintInvoiceReportCommand
+
+            PrintInvoiceReportCommand = new UICommand(a =>
+            {
+                SalesInvoiceReportControl control = new SalesInvoiceReportControl(SavedDocumentId, IsRefund);
                 control.Show();
             });
 
             #endregion
+
         }
         #endregion
 
@@ -678,7 +770,7 @@ namespace StoreAppTest.ViewModels
                     ctx.ExecuteSyncronous(
                         ctx.Customers.Where(
                             c =>
-                                c.Creator_Id == App.CurrentUser.UserName ||
+                                c.Creator_Id == App.CurrentUser.UserName || c.Creator_Id == "admin" ||
                                 (c.Name == "Розничный покупатель" || c.Name == "Клиент интернет-магазина"))).ToList();
 
 
@@ -701,8 +793,12 @@ namespace StoreAppTest.ViewModels
         private string GetBarcode()
         {
             string pref = "SL";
-            int lenAll = 4;
-            int lenNum = ReceiptNumber.Length;
+            int lenAll = 7;
+            var numb = ReceiptNumber;
+            if (numb.StartsWith("ТЧ") || numb.StartsWith("СЧ") || numb.StartsWith("СФ"))
+                numb = numb.Remove(0, 2);
+
+            int lenNum = numb.Length;
             int zeroCount = lenAll - lenNum;
 
             StringBuilder builder = new StringBuilder(pref);
@@ -711,7 +807,7 @@ namespace StoreAppTest.ViewModels
                 builder.Append("0");
             }
 
-            builder.Append(ReceiptNumber);
+            builder.Append(numb);
 
             return builder.ToString();
         }
@@ -732,6 +828,24 @@ namespace StoreAppTest.ViewModels
                             string.Format(
                                 "Продаваемое количество {0} {1}{2} больше количества остатков {3}{2}",
                                 item.Name, item.SoldCount, item.Uom, item.Remainders);
+                        msch.Show();
+
+                        Saving = false;
+
+                    });
+                    return;
+                }
+                if ((receiptItem.Amount / receiptItem.SoldCount) < (receiptItem.ClearPrice))
+                {
+                    var item = receiptItem;
+                    DispatcherHelper.CheckBeginInvokeOnUI(() =>
+                    {
+                        MessageChildWindow msch = new MessageChildWindow();
+                        msch.Title = "Важно";
+                        msch.Message =
+                            string.Format(
+                                "Итоговая цена {0} позиции {1} меньше оптовой цены {2}",
+                                receiptItem.Amount / receiptItem.SoldCount, item.Name, receiptItem.ClearPrice);
                         msch.Show();
 
                         Saving = false;
@@ -773,8 +887,12 @@ namespace StoreAppTest.ViewModels
                     PriceItem_Id = receiptItem.PriceItem_Id,
                     //PriceItem = receiptItem.PriceItemData,
                     SaleDocument = receipt,
-                    SaleDocument_Id = receipt.Id
-
+                    SaleDocument_Id = receipt.Id,
+                    Name = receiptItem.Name,
+                    CatalogNumber = receiptItem.CatalogNumber,
+                    Articul = receiptItem.Articul,
+                    IsDuplicate = receiptItem.IsDuplicate == "*" ? true : false
+                    
                 };
                 var rem =
                     ctx.ExecuteSyncronous(
@@ -841,12 +959,91 @@ namespace StoreAppTest.ViewModels
             {
                 //_closeViewNeedEvent.Publish(ViewId);
                 SavedDocumentId = receipt.Id;
-                Barcode = receipt.Barcode;
+                _Barcode = receipt.Barcode;
                 Saved = true;
 
             });
             _changeRemaindersEvent.Publish(receiptItems);
         }
+        private void AddPositionToReceipt(string barcode)
+        {
+            string uri = string.Concat(
+                Application.Current.Host.Source.Scheme, "://",
+                Application.Current.Host.Source.Host, ":",
+                Application.Current.Host.Source.Port,
+                "/StoreAppDataService.svc/");
 
+            if (string.IsNullOrEmpty(barcode))
+                return;
+            
+
+            Task.Factory.StartNew(() =>
+            {
+                try
+                {
+
+                    StoreDbContext ctx = new StoreDbContext(
+                        new Uri(uri
+                            , UriKind.Absolute));
+
+
+                    var findedPosition =
+                        ctx.ExecuteSyncronous(ctx.PriceItems.Expand("Gear,Prices").Where(wh => wh.Barcode1 == barcode || wh.Barcode2 == barcode || wh.Barcode3 == barcode))
+                            .FirstOrDefault();
+
+                    if (findedPosition != null)
+                    {
+                        var price = 0;
+                        if (findedPosition.Prices.Count > 0)
+                        {
+                            price = (int)findedPosition.Prices.OrderByDescending(or => or.PriceDate).First().Price;
+                        }
+
+                        var model = new ReceiptItem()
+                        {
+                            Number = ReceiptItems.Select(s => s.Number).LastOrDefault() + 1,
+                            Articul = findedPosition.Gear.Articul,
+                            CatalogNumber = findedPosition.Gear.CatalogNumber,
+                            IsDuplicate = findedPosition.Gear.IsDuplicate ? "*" : "",
+                            Name = findedPosition.Gear.Name,
+                            Price = price,
+                            WholesalePrice = price,
+                            SoldCount = 1,
+                            Uom = findedPosition.Uom_Id,
+                            PriceItem_Id = findedPosition.Id,
+                            ClearPrice = price
+                            //PriceItemData = source.PriceItemData,
+
+                        };
+
+                        DispatcherHelper.CheckBeginInvokeOnUI(() =>
+                        {
+                            ReceiptItems.Add(model);
+                            SelectedReceiptItem = model;
+
+                            model.ReceiptItemChanged += i_ReceiptItemChanged;
+
+                            OnPropertyChanged("TotalAmount");
+                            OnPropertyChanged("TotalDiscount");
+                            OnPropertyChanged("SubTotal");
+
+                            _Barcode = string.Empty;
+                            OnPropertyChanged("Barcode");
+                        });
+
+                    }
+                }
+                catch (Exception exception)
+                {
+                    DispatcherHelper.CheckBeginInvokeOnUI(() =>
+                    {
+                        MessageChildWindow msch = new MessageChildWindow();
+                        msch.Title = "Ошибка";
+                        msch.Message = exception.Message;
+                        msch.Show();
+                    });
+                }
+            });
+        }
     }
 }

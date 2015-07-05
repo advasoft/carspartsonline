@@ -28,12 +28,12 @@
                 <ColumnDefinition Width="0"/>
                 <ColumnDefinition Width="0"/>
                 <ColumnDefinition Width="225"/>
-                <ColumnDefinition Width="159*"/>
-                <ColumnDefinition Width="127*"/>
-                <ColumnDefinition Width="88*"/>
-                <ColumnDefinition Width="97*"/>
-                <ColumnDefinition Width="45"/>
-                <ColumnDefinition Width="859*"/>
+                <ColumnDefinition Width="156"/>
+                <ColumnDefinition Width="81"/>
+                <ColumnDefinition Width="55"/>
+                <ColumnDefinition Width="116"/>
+                <ColumnDefinition Width="11"/>
+                <ColumnDefinition/>
             </Grid.ColumnDefinitions>
             <dxe:CheckEdit Grid.Column="4" HorizontalContentAlignment="Stretch" IsChecked="{Binding IsInvoice, Mode=TwoWay}" FontSize="14">
                 <TextBlock  Text="Продать С/Ф" TextWrapping="Wrap" />
@@ -44,7 +44,7 @@
             <dxe:CheckEdit x:Name="InDebtCheckEdit" Grid.Column="6" HorizontalContentAlignment="Stretch" IsChecked="{Binding InDebt, Mode=TwoWay}"  EditValueChanged="InDebtCheckEdit_EditValueChanged" FontSize="14" >
                 <TextBlock Text="Товар в долг" TextWrapping="Wrap" />
             </dxe:CheckEdit>
-            <dxg:LookUpEdit x:Name="CustomerLookUpEdit" Margin="221,6,0,0" VerticalAlignment="Top" AutoPopulateColumns="False" NullText="Поиск клиента" ItemsSource="{Binding CustomerList}" DisplayMember="Name" ValueMember="Name" Grid.Column="8" Height="32" CausesValidation="True" Validate="CustomerLookUpEdit_Validate" SelectedItem="{Binding SelectedCustomer, Mode=TwoWay}" FontSize="14">
+            <dxg:LookUpEdit x:Name="CustomerLookUpEdit" Margin="10,6,0,0" VerticalAlignment="Top" AutoPopulateColumns="False" NullText="Поиск клиента" ItemsSource="{Binding CustomerList}" DisplayMember="Name" ValueMember="Name" Grid.Column="8" Height="32" CausesValidation="True" Validate="CustomerLookUpEdit_Validate" SelectedItem="{Binding SelectedCustomer, Mode=TwoWay}" FontSize="14">
                 <dxg:LookUpEdit.PopupContentTemplate>
                     <ControlTemplate>
                         <dxg:GridControl x:Name="PART_GridControl" ItemsSource="{Binding CustomerList}" >
@@ -60,7 +60,7 @@
                 <dxe:ButtonInfo GlyphKind="Plus" Command="{Binding AddNewCustomerCommand}"/>
             </dxg:LookUpEdit>
             <dxe:CheckEdit Grid.Column="3" IsChecked="{Binding IsECommerceCustomer, Mode=TwoWay}" FontSize="14">
-                <TextBlock TextWrapping="Wrap" Text="Клиент интернет-магазина" HorizontalAlignment="Stretch" Width="146"></TextBlock>
+                <TextBlock TextWrapping="Wrap" Text="Клиент интернет-магазина" HorizontalAlignment="Stretch" Width="132"></TextBlock>
             </dxe:CheckEdit>
         </Grid>
         <Grid Grid.Row="1" Grid.Column="0">

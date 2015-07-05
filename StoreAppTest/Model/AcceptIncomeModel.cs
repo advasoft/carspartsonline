@@ -4,11 +4,12 @@ namespace StoreAppTest.Model
     using System;
     using System.Collections.ObjectModel;
 
-    public class AcceptIncomeModel
+    public class AcceptIncomeModel : Notified
     {
         public AcceptIncomeModel()
         {
             IncomeItems = new ObservableCollection<IncomeItem>();
+            IsEnabled = true;
         }
 
 
@@ -18,5 +19,18 @@ namespace StoreAppTest.Model
         public string IncomeNumber { get; set; }
 
         public DateTime IncomeDate { get; set; }
+
+
+        public bool IsEnabled
+        {
+            get { return _isEnabled; }
+            set
+            {
+                _isEnabled = value;
+                OnPropertyChanged("IsEnabled");
+            }
+        }
+        private bool _isEnabled;
+
     }
 }

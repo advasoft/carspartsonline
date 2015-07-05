@@ -80,6 +80,23 @@
         <dxe:TextEdit Grid.Column="2" Margin="5,0,23,0" Grid.Row="7" VerticalAlignment="Top" Height="30" EditValue="{Binding WholesalePrice, Mode=TwoWay, StringFormat='N0'}" FontSize="14" HorizontalContentAlignment="Right" Visibility="{Binding IsAdmin, Converter={StaticResource BoolToVisibilityConverter}}"/>
         <dxe:SpinEdit Grid.Column="2" Margin="5,0,23,0" Grid.Row="6" VerticalAlignment="Top" Height="30" EditValue="{Binding RecommendedRemainder, Mode=TwoWay}" FontSize="14"/>
         <dxe:SpinEdit Grid.Column="4" Margin="5,0,23,0" Grid.Row="6" VerticalAlignment="Top" Height="30" EditValue="{Binding LowerLimitRemainder, Mode=TwoWay}" FontSize="14"/>
+        <TextBlock Grid.Row="7" TextWrapping="Wrap" Text="Штрихкод 1:" FontSize="14" Grid.Column="3"/>
+        <dxe:TextEdit Grid.Column="4" Margin="5,0,64,0" Grid.Row="7" VerticalAlignment="Top" Height="30" EditValue="{Binding Barcode1, Mode=TwoWay}" FontSize="14"/>
+        <Button Grid.Column="4" HorizontalAlignment="Left" Margin="266,0,0,0" Grid.Row="7" VerticalAlignment="Top" Width="36" Height="30" Command="{Binding GenerateBarcode1Command}">
+            <Button.Content>
+                <Image Source="/StoreAppTest;component/Assets/Images/1435282594_barcode_2.png"></Image>
+            </Button.Content>
+        </Button>
+        <TextBlock Grid.Row="8" TextWrapping="Wrap" Text="Штрихкод 2:" FontSize="14" Grid.Column="1" Margin="0,0,0,3"/>
+        <dxe:TextEdit Grid.Column="2" Margin="5,0,64,0" Grid.Row="8" VerticalAlignment="Top" Height="30" EditValue="{Binding Barcode2, Mode=TwoWay}" FontSize="14"/>
+        <Button Grid.Column="2" HorizontalAlignment="Left" Margin="266,0,0,0" Grid.Row="8" VerticalAlignment="Top" Width="36" Height="30" Command="{Binding GenerateBarcode2Command}">
+            <Image Source="/StoreAppTest;component/Assets/Images/1435282594_barcode_2.png"/>
+        </Button>
+        <TextBlock Grid.Row="8" TextWrapping="Wrap" Text="Штрихкод 3:" FontSize="14" Grid.Column="3" Margin="0,0,0,3"/>
+        <dxe:TextEdit Grid.Column="4" Margin="5,0,64,0" Grid.Row="8" VerticalAlignment="Top" Height="30" EditValue="{Binding Barcode3, Mode=TwoWay}" FontSize="14"/>
+        <Button Grid.Column="4" HorizontalAlignment="Left" Margin="266,0,0,0" Grid.Row="8" VerticalAlignment="Top" Width="36" Height="30" Command="{Binding GenerateBarcode3Command}">
+            <Image Source="/StoreAppTest;component/Assets/Images/1435282594_barcode_2.png"/>
+        </Button>
 
     </Grid>
 </sdk:ChildWindow>

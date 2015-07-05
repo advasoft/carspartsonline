@@ -27,8 +27,9 @@ namespace StoreAppTest.ViewModels
         private CloseViewNeedEvent _closeViewNeedEvent;
 
         private IList<RealizationItem> realization = new List<RealizationItem>();
-        private IList<RefundsPerDayItem>  _refundItems = new List<RefundsPerDayItem>();
         private IList<DebtDischargeDocument> discharges = new List<DebtDischargeDocument>();
+
+        private Task _loadTask;
 
         public RealizationPerDayReadOnlyViewModel(Guid viewId, long realizationPerDayId)
         {
@@ -59,63 +60,95 @@ namespace StoreAppTest.ViewModels
         {
             get
             {
-                var totalDisc = discharges.Sum(s => s.Amount);
-                var total = realization.Sum(s => s.Amount);
-                return total + totalDisc;
+                return _TotalAmount;
+            }
+            set
+            {
+                _TotalAmount = value;
+                OnPropertyChanged("TotalAmount");
             }
         }
+
+        private decimal _TotalAmount;
+
         public decimal TotalRefund
         {
             get
             {
-                return _refundItems.Sum(s => s.RefundItem.Amount);
+                return _TotalRefund;
+            }
+            set
+            {
+                _TotalRefund = value;
+                OnPropertyChanged("TotalRefund");
             }
         }
+
+        private decimal _TotalRefund;
+
+
         public decimal SubTotal
         {
             get
             {
-                return TotalAmount - TotalRefund;
+                return _SubTotal;
+            }
+            set
+            {
+                _SubTotal = value;
+                OnPropertyChanged("SubTotal");
             }
         }
+
+        private decimal _SubTotal;
+
         public decimal TotalAmountProfit
         {
             get
             {
-                var totalDisc = discharges.Sum(s => s.Amount);
 
-                decimal total = realization.Sum(
-                    s => s.SoldCount*s.WholePrice);
-                return TotalAmount - (total + totalDisc);
+                return _TotalAmountProfit;
+            }
+            set
+            {
+                _TotalAmountProfit = value;
+                OnPropertyChanged("TotalAmountProfit");
             }
         }
+
+        private decimal _TotalAmountProfit;
+
         public decimal TotalRefundProfit
         {
             get
             {
-                decimal total = _refundItems.Sum(
-                    s => s.RefundItem.Count * s.RefundItem.PriceItem.Prices.OrderByDescending(o => o.PriceDate).First().Price);
-
-                return TotalRefund - total;
+                return _TotalRefundProfit;
+            }
+            set
+            {
+                _TotalRefundProfit = value;
+                OnPropertyChanged("TotalRefundProfit");
             }
         }
+
+        private decimal _TotalRefundProfit;
+
+
         public decimal SubTotalProfit
         {
             get
             {
-                return TotalAmountProfit - TotalRefundProfit;
+                return _SubTotalProfit;
             }
-        }
-        public decimal TotalByPrice
-        {
-            get
+            set
             {
-                //var totalDisc = discharges.Sum(s => s.Amount);
-
-                var total = realization.Where(w => !_refundItems.Any(a => a.RefundItem.SaleItem_Id == w.SaleItemData.Id)).Sum(s => s.SoldCount * s.WholePrice);
-                return total;
+                _SubTotalProfit = value;
+                OnPropertyChanged("SubTotalProfit");
             }
         }
+
+        private decimal _SubTotalProfit;
+
 
 
         public bool Saved
@@ -167,10 +200,9 @@ namespace StoreAppTest.ViewModels
                 "/StoreAppDataService.svc/");
 
             RealizationItems.Clear();
-            _refundItems.Clear();
             realization.Clear();
 
-            Task.Factory.StartNew(() =>
+            _loadTask = Task.Factory.StartNew(() =>
             {
                 try
                 {
@@ -183,7 +215,7 @@ namespace StoreAppTest.ViewModels
 
 
                     var realizationPdDb =
-                        ctx.ExecuteSyncronous(ctx.SaleDocumentsPerDays.Expand("SalesPerDayItems/SaleItem/PriceItem/Prices,SalesPerDayItems/SaleItem/PriceItem/Gear,SalesPerDayItems/SaleItem/PriceItem/Remainders,RefundsPerDayItems/RefundItem/SaleItem/PriceItem/Prices,RefundsPerDayItems/RefundItem/SaleItem/PriceItem/Gear,RefundsPerDayItems/RefundItem/SaleItem/PriceItem/Remainders,RefundsPerDayItems/RefundItem/PriceItem/Prices,RefundsPerDayItems/RefundItem/PriceItem/Gear,RefundsPerDayItems/RefundItem/PriceItem/Remainders")
+                        ctx.ExecuteSyncronous(ctx.SaleDocumentsPerDays.Expand("SalesPerDayItems/SaleItem/SaleDocument,SalesPerDayItems/SaleItem/PriceItem/PriceLists,SalesPerDayItems/SaleItem/PriceItem/Prices")
                         .Where(rl => rl.Id == _realizationPerDayId)).FirstOrDefault();
 
                     var startDate = DateTimeHelper.GetStartDay(realizationPdDb.SaleDocumentsDate);
@@ -207,37 +239,47 @@ namespace StoreAppTest.ViewModels
 
 
 
-
-                    _refundItems = realizationPdDb.RefundsPerDayItems.ToList();
-
                     foreach (var realizationItem in realizationPdDb.SalesPerDayItems)
                     {
+                        var amouuntWithoutDebt = 0;
+                        var amountWholesalePriceWithoutDebt = 0;
 
-                        var remainders = 0;
-                        var rems =
-                            realizationItem.SaleItem.PriceItem.Remainders.Where(w => w.Warehouse_Id == App.CurrentUser.Warehouse_Id)
-                                .FirstOrDefault();
-                        if (rems != null)
-                            remainders = (int)rems.Amount;
+                        if (!realizationItem.SaleItem.SaleDocument.IsInDebt)
+                        {
+                            var price =
+                                realizationItem.SaleItem.PriceItem.Prices.Where(p => p.PriceDate <= DateTimeHelper.GetNowKz())
+                                    .OrderByDescending(o => o.PriceDate)
+                                    .FirstOrDefault();
+
+
+                            amouuntWithoutDebt = (int)((realizationItem.Price * realizationItem.Count) - realizationItem.Discount);
+                            if (price != null)
+                            {
+                                amountWholesalePriceWithoutDebt =
+                                    (int)((price.Price * realizationItem.Count));
+                            }
+
+                        }
 
                         var item = new RealizationItem()
                         {
-
-                            CatalogNumber = realizationItem.SaleItem.PriceItem.Gear.CatalogNumber,
-                            IsDuplicate = realizationItem.SaleItem.PriceItem.Gear.IsDuplicate ? "*" : "",
-                            Name = realizationItem.SaleItem.PriceItem.Gear.Name,
-                            Price = (int)realizationItem.SaleItem.Price,
-                            Remainders = remainders,
-                            SoldCount = (int)realizationItem.SaleItem.Count,
-                            Uom = realizationItem.SaleItem.PriceItem.Uom_Id,
-                            WholePrice = (int)realizationItem.SaleItem.PriceItem.Prices.OrderByDescending(o => o.PriceDate).First().Price,
-                            Amount = (int)((realizationItem.SaleItem.Price * realizationItem.SaleItem.Count) - realizationItem.SaleItem.Discount),
-                            Discount = (int)realizationItem.SaleItem.Discount,
-                            SaleItemData = realizationItem.SaleItem,
-                            //Customer = realizationItem.SaleItem.SaleDocument.IsInDebt ? realizationItem.SaleItem.SaleDocument.Customer_Name : "",
-                            ////DebtDischarge = s.SaleDocument.IsInDebt ? debtDisc : 0,
-                            //IsInDebt = realizationItem.SaleItem.SaleDocument.IsInDebt
-
+                            Number = index++,
+                            CatalogNumber = realizationItem.CatalogNumber,
+                            IsDuplicate = realizationItem.IsDuplicate ? "*" : "",
+                            Name = realizationItem.Name,
+                            Price = (int)realizationItem.Price,
+                            Remainders = (int)realizationItem.Remainders,
+                            SoldCount = (int)realizationItem.Count,
+                            Uom = realizationItem.UnitOfMeasure,
+                            Amount = (int)realizationItem.Amount,
+                            Discount = (int)realizationItem.Discount,
+                            IsInDebt = realizationItem.SaleItem.SaleDocument.IsInDebt,
+                            PriceListName = realizationItem.SaleItem.PriceItem.PriceLists.First().Name,
+                            SaledDate = realizationItem.SaleItem.SaleDocument.SaleDate.ToString("T"),
+                            AmountWithoutDebt = amouuntWithoutDebt,
+                            AmountWithoutDebtProfit = amouuntWithoutDebt - amountWholesalePriceWithoutDebt,
+                            SaledCount = (int)realizationItem.SaleItem.Count,
+                            Additional = realizationItem.SaleItem.SaleDocument.IsInDebt ? "Продан в долг" : ""
                         };
                         realization.Add(item);
                         DispatcherHelper.CheckBeginInvokeOnUI(() =>
@@ -259,11 +301,22 @@ namespace StoreAppTest.ViewModels
                             });
                         });
                     }
-
+                    DispatcherHelper.CheckBeginInvokeOnUI(() =>
+                    {
+                        TotalAmount = realizationPdDb.TotalAmount;
+                        TotalAmountProfit = realizationPdDb.TotalAmountProfit;
+                        TotalRefund = realizationPdDb.TotalRefund;
+                        TotalRefundProfit = realizationPdDb.TotalRefundProfit;
+                        SubTotal = realizationPdDb.SubTotal;
+                        SubTotalProfit = realizationPdDb.SubTotalProfit;
+                    });
                 }
                 catch (Exception e)
                 {
-                    MessageBox.Show(e.Message);
+                    DispatcherHelper.CheckBeginInvokeOnUI(() =>
+                    {
+                        MessageBox.Show(e.Message);
+                    });
                 }
             }).ContinueWith(t =>
             {
@@ -275,7 +328,7 @@ namespace StoreAppTest.ViewModels
                     OnPropertyChanged("TotalAmountProfit");
                     OnPropertyChanged("TotalRefundProfit");
                     OnPropertyChanged("SubTotalProfit");
-                    OnPropertyChanged("TotalByPrice");
+                    //OnPropertyChanged("TotalByPrice");
                 });
             });
         }
@@ -298,5 +351,7 @@ namespace StoreAppTest.ViewModels
 
         #endregion
 
+
+            
     }
 }

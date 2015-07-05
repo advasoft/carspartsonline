@@ -115,7 +115,7 @@ namespace StoreAppTest.ViewModels
                 var customersDb =
                     ctx.ExecuteSyncronous(ctx.Customers.Where(
                             c =>
-                                c.Creator_Id == App.CurrentUser.UserName ||
+                                c.Creator_Id == App.CurrentUser.UserName || c.Creator_Id == "admin" ||
                                 (c.Name == "Розничный покупатель" || c.Name == "Клиент интернет-магазина"))).ToList();
 
                 DispatcherHelper.CheckBeginInvokeOnUI(() =>

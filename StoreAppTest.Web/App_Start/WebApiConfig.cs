@@ -3,6 +3,8 @@ using System.Web.Http;
 
 namespace StoreAppTest.Web
 {
+    using System.Net.Http.Headers;
+
     public static class WebApiConfig
     {
         public static void Register(HttpConfiguration config)
@@ -14,6 +16,8 @@ namespace StoreAppTest.Web
                 routeTemplate: "api/{controller}/{action}/{id}",
                 defaults: new { id = RouteParameter.Optional , action = RouteParameter.Optional}
             );
+
+            config.Formatters.JsonFormatter.SupportedMediaTypes.Add(new MediaTypeHeaderValue("text/html"));
         }
     }
 }

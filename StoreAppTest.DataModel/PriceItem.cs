@@ -51,6 +51,22 @@ namespace StoreAppTest.Web.DataModel
         //[ForeignKey("UnitOfMeasure")]
         public string Uom_Id { get; set; }
 
+        [DataMember]
+        [StringLength(50)]
+        //[ForeignKey("UnitOfMeasure")]
+        public string Barcode1 { get; set; }
+
+        [DataMember]
+        [StringLength(50)]
+        //[ForeignKey("UnitOfMeasure")]
+        public string Barcode2 { get; set; }
+
+        [DataMember]
+        [StringLength(50)]
+        //[ForeignKey("UnitOfMeasure")]
+        public string Barcode3 { get; set; }
+
+
         //[DataMember]
         //[Required]
         //[StringLength(255)]

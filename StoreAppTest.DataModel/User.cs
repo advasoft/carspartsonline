@@ -19,6 +19,7 @@ namespace StoreAppTest.Web.DataModel
             //RetailPrices = new HashSet<RetailPrice>();
             //SaleDocuments = new HashSet<SaleDocument>();
             Roles = new HashSet<Role>();
+            PriceLists = new HashSet<PriceList>();
         }
 
         [DataMember]
@@ -75,6 +76,10 @@ namespace StoreAppTest.Web.DataModel
 
         [DataMember]
         public virtual ICollection<Role> Roles { get; set; }
+
+
+        [DataMember]
+        public virtual ICollection<PriceList> PriceLists { get; set; }
 
     }
 }

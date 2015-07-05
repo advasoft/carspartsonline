@@ -80,6 +80,7 @@
     <Compile Include="Supplier.cs" />
     <Compile Include="UnitOfMeasure.cs" />
     <Compile Include="User.cs" />
+    <Compile Include="UsersPriceLists.cs" />
     <Compile Include="Warehouse.cs" />
     <Compile Include="WarehouseTransferRequest.cs" />
     <Compile Include="WarehouseTransferRequestItem.cs" />

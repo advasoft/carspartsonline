@@ -22,6 +22,7 @@
         void WarehouseTransferRequestPage_Loaded(object sender, System.Windows.RoutedEventArgs e)
         {
             _viewModel = DataContext as WarehouseTransferRequestViewModel;
+            BarcodeEditText.Focus();
         }
 
         // Выполняется, когда пользователь переходит на эту страницу.

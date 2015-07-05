@@ -43,6 +43,8 @@
             this.Address = new DevExpress.XtraReports.UI.XRControlStyle();
             this.oddstyle = new DevExpress.XtraReports.UI.XRControlStyle();
             this.GroupFooter1 = new DevExpress.XtraReports.UI.GroupFooterBand();
+            this.xrLabel6 = new DevExpress.XtraReports.UI.XRLabel();
+            this.xrLabel5 = new DevExpress.XtraReports.UI.XRLabel();
             this.xrLabel4 = new DevExpress.XtraReports.UI.XRLabel();
             this.xrLabel3 = new DevExpress.XtraReports.UI.XRLabel();
             this.xrLabel2 = new DevExpress.XtraReports.UI.XRLabel();
@@ -158,12 +160,32 @@
             // GroupFooter1
             // 
             this.GroupFooter1.Controls.AddRange(new DevExpress.XtraReports.UI.XRControl[] {
+            this.xrLabel6,
+            this.xrLabel5,
             this.xrLabel4,
             this.xrLabel3,
             this.xrLabel2,
             this.xrLine1});
-            this.GroupFooter1.HeightF = 46.875F;
+            this.GroupFooter1.HeightF = 46.87502F;
             this.GroupFooter1.Name = "GroupFooter1";
+            // 
+            // xrLabel6
+            // 
+            this.xrLabel6.DataBindings.AddRange(new DevExpress.XtraReports.UI.XRBinding[] {
+            new DevExpress.XtraReports.UI.XRBinding("Text", null, "Creator.DisplayName")});
+            this.xrLabel6.LocationFloat = new DevExpress.Utils.PointFloat(100F, 23.87501F);
+            this.xrLabel6.Name = "xrLabel6";
+            this.xrLabel6.Padding = new DevExpress.XtraPrinting.PaddingInfo(2, 2, 0, 0, 100F);
+            this.xrLabel6.SizeF = new System.Drawing.SizeF(228.0365F, 23F);
+            this.xrLabel6.Text = "xrLabel6";
+            // 
+            // xrLabel5
+            // 
+            this.xrLabel5.LocationFloat = new DevExpress.Utils.PointFloat(0F, 23.87501F);
+            this.xrLabel5.Name = "xrLabel5";
+            this.xrLabel5.Padding = new DevExpress.XtraPrinting.PaddingInfo(2, 2, 0, 0, 100F);
+            this.xrLabel5.SizeF = new System.Drawing.SizeF(100F, 23F);
+            this.xrLabel5.Text = "Продавец";
             // 
             // xrLabel4
             // 
@@ -250,7 +272,7 @@
             // xrTableCell5
             // 
             this.xrTableCell5.DataBindings.AddRange(new DevExpress.XtraReports.UI.XRBinding[] {
-            new DevExpress.XtraReports.UI.XRBinding("Text", null, "SaleItems.PriceItem.Gear.CatalogNumber")});
+            new DevExpress.XtraReports.UI.XRBinding("Text", null, "SaleItems.CatalogNumber")});
             this.xrTableCell5.Font = new System.Drawing.Font("Times New Roman", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.xrTableCell5.Name = "xrTableCell5";
             this.xrTableCell5.StylePriority.UseFont = false;
@@ -260,7 +282,7 @@
             // xrTableCell11
             // 
             this.xrTableCell11.DataBindings.AddRange(new DevExpress.XtraReports.UI.XRBinding[] {
-            new DevExpress.XtraReports.UI.XRBinding("Text", null, "SaleItems.PriceItem.Gear.Name")});
+            new DevExpress.XtraReports.UI.XRBinding("Text", null, "SaleItems.Name")});
             this.xrTableCell11.Font = new System.Drawing.Font("Times New Roman", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.xrTableCell11.Name = "xrTableCell11";
             this.xrTableCell11.StylePriority.UseFont = false;
@@ -417,10 +439,10 @@
             // 
             this.xrBarCode1.DataBindings.AddRange(new DevExpress.XtraReports.UI.XRBinding[] {
             new DevExpress.XtraReports.UI.XRBinding("Text", null, "Barcode")});
-            this.xrBarCode1.LocationFloat = new DevExpress.Utils.PointFloat(501.5833F, 10.00001F);
+            this.xrBarCode1.LocationFloat = new DevExpress.Utils.PointFloat(400.5417F, 10.00001F);
             this.xrBarCode1.Name = "xrBarCode1";
             this.xrBarCode1.Padding = new DevExpress.XtraPrinting.PaddingInfo(10, 10, 0, 0, 100F);
-            this.xrBarCode1.SizeF = new System.Drawing.SizeF(235.4167F, 50.49996F);
+            this.xrBarCode1.SizeF = new System.Drawing.SizeF(336.4583F, 50.49996F);
             this.xrBarCode1.Symbology = code128Generator1;
             this.xrBarCode1.Text = "SL0001";
             // 
@@ -603,6 +625,8 @@
         private DevExpress.XtraReports.UI.XRLabel xrDebtorLabel;
         private DevExpress.XtraReports.UI.XRLabel xrDebtor;
         private System.Windows.Forms.BindingSource bindingSource2;
+        private DevExpress.XtraReports.UI.XRLabel xrLabel5;
+        private DevExpress.XtraReports.UI.XRLabel xrLabel6;
 
         //private System.Windows.Forms.BindingSource bindingSource1;
 

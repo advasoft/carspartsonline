@@ -9,7 +9,7 @@
 //------------------------------------------------------------------------------
 
 // Исходное имя файла:
-// Дата создания: 01.06.2015 2:36:08
+// Дата создания: 05.07.2015 3:03:48
 namespace StoreAppTest.StoreAppDataService
 {
     
@@ -95,73 +95,39 @@ namespace StoreAppTest.StoreAppDataService
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Services.Design", "1.0.0")]
         private global::System.Data.Services.Client.DataServiceQuery<User> _Users;
         /// <summary>
-        /// В схеме отсутствуют комментарии для Roles.
+        /// В схеме отсутствуют комментарии для PriceLists.
         /// </summary>
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Services.Design", "1.0.0")]
-        public global::System.Data.Services.Client.DataServiceQuery<Role> Roles
+        public global::System.Data.Services.Client.DataServiceQuery<PriceList> PriceLists
         {
             get
             {
-                if ((this._Roles == null))
+                if ((this._PriceLists == null))
                 {
-                    this._Roles = base.CreateQuery<Role>("Roles");
+                    this._PriceLists = base.CreateQuery<PriceList>("PriceLists");
                 }
-                return this._Roles;
+                return this._PriceLists;
             }
         }
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Services.Design", "1.0.0")]
-        private global::System.Data.Services.Client.DataServiceQuery<Role> _Roles;
+        private global::System.Data.Services.Client.DataServiceQuery<PriceList> _PriceLists;
         /// <summary>
-        /// В схеме отсутствуют комментарии для Warehouses.
+        /// В схеме отсутствуют комментарии для PriceItems.
         /// </summary>
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Services.Design", "1.0.0")]
-        public global::System.Data.Services.Client.DataServiceQuery<Warehouse> Warehouses
+        public global::System.Data.Services.Client.DataServiceQuery<PriceItem> PriceItems
         {
             get
             {
-                if ((this._Warehouses == null))
+                if ((this._PriceItems == null))
                 {
-                    this._Warehouses = base.CreateQuery<Warehouse>("Warehouses");
+                    this._PriceItems = base.CreateQuery<PriceItem>("PriceItems");
                 }
-                return this._Warehouses;
+                return this._PriceItems;
             }
         }
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Services.Design", "1.0.0")]
-        private global::System.Data.Services.Client.DataServiceQuery<Warehouse> _Warehouses;
-        /// <summary>
-        /// В схеме отсутствуют комментарии для DebtDischargeDocuments.
-        /// </summary>
-        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Services.Design", "1.0.0")]
-        public global::System.Data.Services.Client.DataServiceQuery<DebtDischargeDocument> DebtDischargeDocuments
-        {
-            get
-            {
-                if ((this._DebtDischargeDocuments == null))
-                {
-                    this._DebtDischargeDocuments = base.CreateQuery<DebtDischargeDocument>("DebtDischargeDocuments");
-                }
-                return this._DebtDischargeDocuments;
-            }
-        }
-        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Services.Design", "1.0.0")]
-        private global::System.Data.Services.Client.DataServiceQuery<DebtDischargeDocument> _DebtDischargeDocuments;
-        /// <summary>
-        /// В схеме отсутствуют комментарии для GearCategories.
-        /// </summary>
-        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Services.Design", "1.0.0")]
-        public global::System.Data.Services.Client.DataServiceQuery<GearCategory> GearCategories
-        {
-            get
-            {
-                if ((this._GearCategories == null))
-                {
-                    this._GearCategories = base.CreateQuery<GearCategory>("GearCategories");
-                }
-                return this._GearCategories;
-            }
-        }
-        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Services.Design", "1.0.0")]
-        private global::System.Data.Services.Client.DataServiceQuery<GearCategory> _GearCategories;
+        private global::System.Data.Services.Client.DataServiceQuery<PriceItem> _PriceItems;
         /// <summary>
         /// В схеме отсутствуют комментарии для Gears.
         /// </summary>
@@ -180,6 +146,23 @@ namespace StoreAppTest.StoreAppDataService
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Services.Design", "1.0.0")]
         private global::System.Data.Services.Client.DataServiceQuery<Gear> _Gears;
         /// <summary>
+        /// В схеме отсутствуют комментарии для GearCategories.
+        /// </summary>
+        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Services.Design", "1.0.0")]
+        public global::System.Data.Services.Client.DataServiceQuery<GearCategory> GearCategories
+        {
+            get
+            {
+                if ((this._GearCategories == null))
+                {
+                    this._GearCategories = base.CreateQuery<GearCategory>("GearCategories");
+                }
+                return this._GearCategories;
+            }
+        }
+        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Services.Design", "1.0.0")]
+        private global::System.Data.Services.Client.DataServiceQuery<GearCategory> _GearCategories;
+        /// <summary>
         /// В схеме отсутствуют комментарии для Resources.
         /// </summary>
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Services.Design", "1.0.0")]
@@ -196,6 +179,125 @@ namespace StoreAppTest.StoreAppDataService
         }
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Services.Design", "1.0.0")]
         private global::System.Data.Services.Client.DataServiceQuery<Resource> _Resources;
+        /// <summary>
+        /// В схеме отсутствуют комментарии для WholesalePrices.
+        /// </summary>
+        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Services.Design", "1.0.0")]
+        public global::System.Data.Services.Client.DataServiceQuery<WholesalePrice> WholesalePrices
+        {
+            get
+            {
+                if ((this._WholesalePrices == null))
+                {
+                    this._WholesalePrices = base.CreateQuery<WholesalePrice>("WholesalePrices");
+                }
+                return this._WholesalePrices;
+            }
+        }
+        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Services.Design", "1.0.0")]
+        private global::System.Data.Services.Client.DataServiceQuery<WholesalePrice> _WholesalePrices;
+        /// <summary>
+        /// В схеме отсутствуют комментарии для Remainders.
+        /// </summary>
+        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Services.Design", "1.0.0")]
+        public global::System.Data.Services.Client.DataServiceQuery<Remainder> Remainders
+        {
+            get
+            {
+                if ((this._Remainders == null))
+                {
+                    this._Remainders = base.CreateQuery<Remainder>("Remainders");
+                }
+                return this._Remainders;
+            }
+        }
+        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Services.Design", "1.0.0")]
+        private global::System.Data.Services.Client.DataServiceQuery<Remainder> _Remainders;
+        /// <summary>
+        /// В схеме отсутствуют комментарии для RemaindersUserChanges.
+        /// </summary>
+        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Services.Design", "1.0.0")]
+        public global::System.Data.Services.Client.DataServiceQuery<RemaindersUserChange> RemaindersUserChanges
+        {
+            get
+            {
+                if ((this._RemaindersUserChanges == null))
+                {
+                    this._RemaindersUserChanges = base.CreateQuery<RemaindersUserChange>("RemaindersUserChanges");
+                }
+                return this._RemaindersUserChanges;
+            }
+        }
+        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Services.Design", "1.0.0")]
+        private global::System.Data.Services.Client.DataServiceQuery<RemaindersUserChange> _RemaindersUserChanges;
+        /// <summary>
+        /// В схеме отсутствуют комментарии для Warehouses.
+        /// </summary>
+        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Services.Design", "1.0.0")]
+        public global::System.Data.Services.Client.DataServiceQuery<Warehouse> Warehouses
+        {
+            get
+            {
+                if ((this._Warehouses == null))
+                {
+                    this._Warehouses = base.CreateQuery<Warehouse>("Warehouses");
+                }
+                return this._Warehouses;
+            }
+        }
+        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Services.Design", "1.0.0")]
+        private global::System.Data.Services.Client.DataServiceQuery<Warehouse> _Warehouses;
+        /// <summary>
+        /// В схеме отсутствуют комментарии для UnitOfMeasures.
+        /// </summary>
+        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Services.Design", "1.0.0")]
+        public global::System.Data.Services.Client.DataServiceQuery<UnitOfMeasure> UnitOfMeasures
+        {
+            get
+            {
+                if ((this._UnitOfMeasures == null))
+                {
+                    this._UnitOfMeasures = base.CreateQuery<UnitOfMeasure>("UnitOfMeasures");
+                }
+                return this._UnitOfMeasures;
+            }
+        }
+        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Services.Design", "1.0.0")]
+        private global::System.Data.Services.Client.DataServiceQuery<UnitOfMeasure> _UnitOfMeasures;
+        /// <summary>
+        /// В схеме отсутствуют комментарии для Roles.
+        /// </summary>
+        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Services.Design", "1.0.0")]
+        public global::System.Data.Services.Client.DataServiceQuery<Role> Roles
+        {
+            get
+            {
+                if ((this._Roles == null))
+                {
+                    this._Roles = base.CreateQuery<Role>("Roles");
+                }
+                return this._Roles;
+            }
+        }
+        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Services.Design", "1.0.0")]
+        private global::System.Data.Services.Client.DataServiceQuery<Role> _Roles;
+        /// <summary>
+        /// В схеме отсутствуют комментарии для DebtDischargeDocuments.
+        /// </summary>
+        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Services.Design", "1.0.0")]
+        public global::System.Data.Services.Client.DataServiceQuery<DebtDischargeDocument> DebtDischargeDocuments
+        {
+            get
+            {
+                if ((this._DebtDischargeDocuments == null))
+                {
+                    this._DebtDischargeDocuments = base.CreateQuery<DebtDischargeDocument>("DebtDischargeDocuments");
+                }
+                return this._DebtDischargeDocuments;
+            }
+        }
+        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Services.Design", "1.0.0")]
+        private global::System.Data.Services.Client.DataServiceQuery<DebtDischargeDocument> _DebtDischargeDocuments;
         /// <summary>
         /// В схеме отсутствуют комментарии для GearNews.
         /// </summary>
@@ -264,108 +366,6 @@ namespace StoreAppTest.StoreAppDataService
         }
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Services.Design", "1.0.0")]
         private global::System.Data.Services.Client.DataServiceQuery<Supplier> _Suppliers;
-        /// <summary>
-        /// В схеме отсутствуют комментарии для PriceItems.
-        /// </summary>
-        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Services.Design", "1.0.0")]
-        public global::System.Data.Services.Client.DataServiceQuery<PriceItem> PriceItems
-        {
-            get
-            {
-                if ((this._PriceItems == null))
-                {
-                    this._PriceItems = base.CreateQuery<PriceItem>("PriceItems");
-                }
-                return this._PriceItems;
-            }
-        }
-        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Services.Design", "1.0.0")]
-        private global::System.Data.Services.Client.DataServiceQuery<PriceItem> _PriceItems;
-        /// <summary>
-        /// В схеме отсутствуют комментарии для PriceLists.
-        /// </summary>
-        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Services.Design", "1.0.0")]
-        public global::System.Data.Services.Client.DataServiceQuery<PriceList> PriceLists
-        {
-            get
-            {
-                if ((this._PriceLists == null))
-                {
-                    this._PriceLists = base.CreateQuery<PriceList>("PriceLists");
-                }
-                return this._PriceLists;
-            }
-        }
-        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Services.Design", "1.0.0")]
-        private global::System.Data.Services.Client.DataServiceQuery<PriceList> _PriceLists;
-        /// <summary>
-        /// В схеме отсутствуют комментарии для WholesalePrices.
-        /// </summary>
-        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Services.Design", "1.0.0")]
-        public global::System.Data.Services.Client.DataServiceQuery<WholesalePrice> WholesalePrices
-        {
-            get
-            {
-                if ((this._WholesalePrices == null))
-                {
-                    this._WholesalePrices = base.CreateQuery<WholesalePrice>("WholesalePrices");
-                }
-                return this._WholesalePrices;
-            }
-        }
-        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Services.Design", "1.0.0")]
-        private global::System.Data.Services.Client.DataServiceQuery<WholesalePrice> _WholesalePrices;
-        /// <summary>
-        /// В схеме отсутствуют комментарии для Remainders.
-        /// </summary>
-        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Services.Design", "1.0.0")]
-        public global::System.Data.Services.Client.DataServiceQuery<Remainder> Remainders
-        {
-            get
-            {
-                if ((this._Remainders == null))
-                {
-                    this._Remainders = base.CreateQuery<Remainder>("Remainders");
-                }
-                return this._Remainders;
-            }
-        }
-        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Services.Design", "1.0.0")]
-        private global::System.Data.Services.Client.DataServiceQuery<Remainder> _Remainders;
-        /// <summary>
-        /// В схеме отсутствуют комментарии для RemaindersUserChanges.
-        /// </summary>
-        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Services.Design", "1.0.0")]
-        public global::System.Data.Services.Client.DataServiceQuery<RemaindersUserChange> RemaindersUserChanges
-        {
-            get
-            {
-                if ((this._RemaindersUserChanges == null))
-                {
-                    this._RemaindersUserChanges = base.CreateQuery<RemaindersUserChange>("RemaindersUserChanges");
-                }
-                return this._RemaindersUserChanges;
-            }
-        }
-        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Services.Design", "1.0.0")]
-        private global::System.Data.Services.Client.DataServiceQuery<RemaindersUserChange> _RemaindersUserChanges;
-        /// <summary>
-        /// В схеме отсутствуют комментарии для UnitOfMeasures.
-        /// </summary>
-        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Services.Design", "1.0.0")]
-        public global::System.Data.Services.Client.DataServiceQuery<UnitOfMeasure> UnitOfMeasures
-        {
-            get
-            {
-                if ((this._UnitOfMeasures == null))
-                {
-                    this._UnitOfMeasures = base.CreateQuery<UnitOfMeasure>("UnitOfMeasures");
-                }
-                return this._UnitOfMeasures;
-            }
-        }
-        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Services.Design", "1.0.0")]
-        private global::System.Data.Services.Client.DataServiceQuery<UnitOfMeasure> _UnitOfMeasures;
         /// <summary>
         /// В схеме отсутствуют комментарии для PriceChangeReportItems.
         /// </summary>
@@ -655,36 +655,20 @@ namespace StoreAppTest.StoreAppDataService
             base.AddObject("Users", user);
         }
         /// <summary>
-        /// В схеме отсутствуют комментарии для Roles.
+        /// В схеме отсутствуют комментарии для PriceLists.
         /// </summary>
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Services.Design", "1.0.0")]
-        public void AddToRoles(Role role)
+        public void AddToPriceLists(PriceList priceList)
         {
-            base.AddObject("Roles", role);
+            base.AddObject("PriceLists", priceList);
         }
         /// <summary>
-        /// В схеме отсутствуют комментарии для Warehouses.
+        /// В схеме отсутствуют комментарии для PriceItems.
         /// </summary>
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Services.Design", "1.0.0")]
-        public void AddToWarehouses(Warehouse warehouse)
+        public void AddToPriceItems(PriceItem priceItem)
         {
-            base.AddObject("Warehouses", warehouse);
-        }
-        /// <summary>
-        /// В схеме отсутствуют комментарии для DebtDischargeDocuments.
-        /// </summary>
-        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Services.Design", "1.0.0")]
-        public void AddToDebtDischargeDocuments(DebtDischargeDocument debtDischargeDocument)
-        {
-            base.AddObject("DebtDischargeDocuments", debtDischargeDocument);
-        }
-        /// <summary>
-        /// В схеме отсутствуют комментарии для GearCategories.
-        /// </summary>
-        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Services.Design", "1.0.0")]
-        public void AddToGearCategories(GearCategory gearCategory)
-        {
-            base.AddObject("GearCategories", gearCategory);
+            base.AddObject("PriceItems", priceItem);
         }
         /// <summary>
         /// В схеме отсутствуют комментарии для Gears.
@@ -695,12 +679,76 @@ namespace StoreAppTest.StoreAppDataService
             base.AddObject("Gears", gear);
         }
         /// <summary>
+        /// В схеме отсутствуют комментарии для GearCategories.
+        /// </summary>
+        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Services.Design", "1.0.0")]
+        public void AddToGearCategories(GearCategory gearCategory)
+        {
+            base.AddObject("GearCategories", gearCategory);
+        }
+        /// <summary>
         /// В схеме отсутствуют комментарии для Resources.
         /// </summary>
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Services.Design", "1.0.0")]
         public void AddToResources(Resource resource)
         {
             base.AddObject("Resources", resource);
+        }
+        /// <summary>
+        /// В схеме отсутствуют комментарии для WholesalePrices.
+        /// </summary>
+        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Services.Design", "1.0.0")]
+        public void AddToWholesalePrices(WholesalePrice wholesalePrice)
+        {
+            base.AddObject("WholesalePrices", wholesalePrice);
+        }
+        /// <summary>
+        /// В схеме отсутствуют комментарии для Remainders.
+        /// </summary>
+        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Services.Design", "1.0.0")]
+        public void AddToRemainders(Remainder remainder)
+        {
+            base.AddObject("Remainders", remainder);
+        }
+        /// <summary>
+        /// В схеме отсутствуют комментарии для RemaindersUserChanges.
+        /// </summary>
+        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Services.Design", "1.0.0")]
+        public void AddToRemaindersUserChanges(RemaindersUserChange remaindersUserChange)
+        {
+            base.AddObject("RemaindersUserChanges", remaindersUserChange);
+        }
+        /// <summary>
+        /// В схеме отсутствуют комментарии для Warehouses.
+        /// </summary>
+        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Services.Design", "1.0.0")]
+        public void AddToWarehouses(Warehouse warehouse)
+        {
+            base.AddObject("Warehouses", warehouse);
+        }
+        /// <summary>
+        /// В схеме отсутствуют комментарии для UnitOfMeasures.
+        /// </summary>
+        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Services.Design", "1.0.0")]
+        public void AddToUnitOfMeasures(UnitOfMeasure unitOfMeasure)
+        {
+            base.AddObject("UnitOfMeasures", unitOfMeasure);
+        }
+        /// <summary>
+        /// В схеме отсутствуют комментарии для Roles.
+        /// </summary>
+        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Services.Design", "1.0.0")]
+        public void AddToRoles(Role role)
+        {
+            base.AddObject("Roles", role);
+        }
+        /// <summary>
+        /// В схеме отсутствуют комментарии для DebtDischargeDocuments.
+        /// </summary>
+        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Services.Design", "1.0.0")]
+        public void AddToDebtDischargeDocuments(DebtDischargeDocument debtDischargeDocument)
+        {
+            base.AddObject("DebtDischargeDocuments", debtDischargeDocument);
         }
         /// <summary>
         /// В схеме отсутствуют комментарии для GearNews.
@@ -733,54 +781,6 @@ namespace StoreAppTest.StoreAppDataService
         public void AddToSuppliers(Supplier supplier)
         {
             base.AddObject("Suppliers", supplier);
-        }
-        /// <summary>
-        /// В схеме отсутствуют комментарии для PriceItems.
-        /// </summary>
-        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Services.Design", "1.0.0")]
-        public void AddToPriceItems(PriceItem priceItem)
-        {
-            base.AddObject("PriceItems", priceItem);
-        }
-        /// <summary>
-        /// В схеме отсутствуют комментарии для PriceLists.
-        /// </summary>
-        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Services.Design", "1.0.0")]
-        public void AddToPriceLists(PriceList priceList)
-        {
-            base.AddObject("PriceLists", priceList);
-        }
-        /// <summary>
-        /// В схеме отсутствуют комментарии для WholesalePrices.
-        /// </summary>
-        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Services.Design", "1.0.0")]
-        public void AddToWholesalePrices(WholesalePrice wholesalePrice)
-        {
-            base.AddObject("WholesalePrices", wholesalePrice);
-        }
-        /// <summary>
-        /// В схеме отсутствуют комментарии для Remainders.
-        /// </summary>
-        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Services.Design", "1.0.0")]
-        public void AddToRemainders(Remainder remainder)
-        {
-            base.AddObject("Remainders", remainder);
-        }
-        /// <summary>
-        /// В схеме отсутствуют комментарии для RemaindersUserChanges.
-        /// </summary>
-        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Services.Design", "1.0.0")]
-        public void AddToRemaindersUserChanges(RemaindersUserChange remaindersUserChange)
-        {
-            base.AddObject("RemaindersUserChanges", remaindersUserChange);
-        }
-        /// <summary>
-        /// В схеме отсутствуют комментарии для UnitOfMeasures.
-        /// </summary>
-        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Services.Design", "1.0.0")]
-        public void AddToUnitOfMeasures(UnitOfMeasure unitOfMeasure)
-        {
-            base.AddObject("UnitOfMeasures", unitOfMeasure);
         }
         /// <summary>
         /// В схеме отсутствуют комментарии для PriceChangeReportItems.
@@ -922,480 +922,578 @@ namespace StoreAppTest.StoreAppDataService
                 "Namespace=\"StoreAppTest.Web.DataModel\" xmlns=\"http://schemas.microsoft.com/ado/2" +
                 "009/11/edm\"><EntityType Name=\"Customer\"><Key><PropertyRef Name=\"Name\" /></Key><P" +
                 "roperty Name=\"Name\" Type=\"Edm.String\" Nullable=\"false\" MaxLength=\"255\" FixedLeng" +
-                "th=\"false\" Unicode=\"true\" /><Property Name=\"Creator_Id\" Type=\"Edm.String\" Nullab" +
-                "le=\"false\" MaxLength=\"255\" FixedLength=\"false\" Unicode=\"true\" /><NavigationPrope" +
-                "rty Name=\"Creator\" Relationship=\"StoreAppTest.Web.DataModel.Customer_Creator\" To" +
-                "Role=\"Customer_Creator_Target\" FromRole=\"Customer_Creator_Source\" /></EntityType" +
-                "><EntityType Name=\"User\"><Key><PropertyRef Name=\"UserName\" /></Key><Property Nam" +
-                "e=\"UserName\" Type=\"Edm.String\" Nullable=\"false\" MaxLength=\"255\" FixedLength=\"fal" +
-                "se\" Unicode=\"true\" /><Property Name=\"DisplayName\" Type=\"Edm.String\" MaxLength=\"2" +
-                "55\" FixedLength=\"false\" Unicode=\"true\" /><Property Name=\"Warehouse_Id\" Type=\"Edm" +
-                ".String\" MaxLength=\"255\" FixedLength=\"false\" Unicode=\"true\" /><Property Name=\"Pa" +
-                "sswordHash\" Type=\"Edm.Binary\" MaxLength=\"Max\" FixedLength=\"false\" /><Property Na" +
-                "me=\"IsSupplierVisible\" Type=\"Edm.Boolean\" Nullable=\"false\" /><NavigationProperty" +
-                " Name=\"Roles\" Relationship=\"StoreAppTest.Web.DataModel.User_Roles\" ToRole=\"User_" +
-                "Roles_Target\" FromRole=\"User_Roles_Source\" /><NavigationProperty Name=\"Warehouse" +
-                "\" Relationship=\"StoreAppTest.Web.DataModel.User_Warehouse\" ToRole=\"User_Warehous" +
-                "e_Target\" FromRole=\"User_Warehouse_Source\" /></EntityType><EntityType Name=\"Role" +
-                "\"><Key><PropertyRef Name=\"RoleName\" /></Key><Property Name=\"RoleName\" Type=\"Edm." +
-                "String\" Nullable=\"false\" MaxLength=\"255\" FixedLength=\"false\" Unicode=\"true\" /><N" +
-                "avigationProperty Name=\"Users\" Relationship=\"StoreAppTest.Web.DataModel.User_Rol" +
-                "es\" ToRole=\"User_Roles_Source\" FromRole=\"User_Roles_Target\" /></EntityType><Enti" +
-                "tyType Name=\"Warehouse\"><Key><PropertyRef Name=\"Name\" /></Key><Property Name=\"Na" +
-                "me\" Type=\"Edm.String\" Nullable=\"false\" MaxLength=\"255\" FixedLength=\"false\" Unico" +
-                "de=\"true\" /></EntityType><EntityType Name=\"DebtDischargeDocument\"><Key><Property" +
-                "Ref Name=\"Id\" /></Key><Property Name=\"Id\" Type=\"Edm.Int64\" Nullable=\"false\" p6:S" +
-                "toreGeneratedPattern=\"Identity\" xmlns:p6=\"http://schemas.microsoft.com/ado/2009/" +
-                "02/edm/annotation\" /><Property Name=\"DischargeDate\" Type=\"Edm.DateTime\" Nullable" +
-                "=\"false\" /><Property Name=\"Debtor_Id\" Type=\"Edm.String\" Nullable=\"false\" MaxLeng" +
-                "th=\"255\" FixedLength=\"false\" Unicode=\"true\" /><Property Name=\"Amount\" Type=\"Edm." +
-                "Decimal\" Nullable=\"false\" Precision=\"18\" Scale=\"2\" /><Property Name=\"Creator_Id\"" +
-                " Type=\"Edm.String\" Nullable=\"false\" MaxLength=\"255\" FixedLength=\"false\" Unicode=" +
-                "\"true\" /><Property Name=\"IsDischarge\" Type=\"Edm.Boolean\" Nullable=\"false\" /><Nav" +
-                "igationProperty Name=\"Creator\" Relationship=\"StoreAppTest.Web.DataModel.DebtDisc" +
-                "hargeDocument_Creator\" ToRole=\"DebtDischargeDocument_Creator_Target\" FromRole=\"D" +
-                "ebtDischargeDocument_Creator_Source\" /><NavigationProperty Name=\"Debtor\" Relatio" +
-                "nship=\"StoreAppTest.Web.DataModel.DebtDischargeDocument_Debtor\" ToRole=\"DebtDisc" +
-                "hargeDocument_Debtor_Target\" FromRole=\"DebtDischargeDocument_Debtor_Source\" /></" +
-                "EntityType><EntityType Name=\"GearCategory\"><Key><PropertyRef Name=\"Name\" /></Key" +
-                "><Property Name=\"Name\" Type=\"Edm.String\" Nullable=\"false\" MaxLength=\"255\" FixedL" +
-                "ength=\"false\" Unicode=\"true\" /><NavigationProperty Name=\"Gears\" Relationship=\"St" +
-                "oreAppTest.Web.DataModel.GearCategory_Gears\" ToRole=\"GearCategory_Gears_Target\" " +
-                "FromRole=\"GearCategory_Gears_Source\" /></EntityType><EntityType Name=\"Gear\"><Key" +
-                "><PropertyRef Name=\"Id\" /></Key><Property Name=\"Id\" Type=\"Edm.Int64\" Nullable=\"f" +
-                "alse\" p6:StoreGeneratedPattern=\"Identity\" xmlns:p6=\"http://schemas.microsoft.com" +
-                "/ado/2009/02/edm/annotation\" /><Property Name=\"CatalogNumber\" Type=\"Edm.String\" " +
-                "MaxLength=\"255\" FixedLength=\"false\" Unicode=\"true\" /><Property Name=\"Name\" Type=" +
-                "\"Edm.String\" Nullable=\"false\" MaxLength=\"500\" FixedLength=\"false\" Unicode=\"true\"" +
-                " /><Property Name=\"Articul\" Type=\"Edm.String\" MaxLength=\"255\" FixedLength=\"false" +
-                "\" Unicode=\"true\" /><Property Name=\"IsDuplicate\" Type=\"Edm.Boolean\" Nullable=\"fal" +
-                "se\" /><Property Name=\"Category_Id\" Type=\"Edm.String\" Nullable=\"false\" MaxLength=" +
-                "\"255\" FixedLength=\"false\" Unicode=\"true\" /><Property Name=\"RecommendedRemainder\"" +
-                " Type=\"Edm.Decimal\" Nullable=\"false\" Precision=\"18\" Scale=\"2\" /><Property Name=\"" +
-                "LowerLimitRemainder\" Type=\"Edm.Decimal\" Nullable=\"false\" Precision=\"18\" Scale=\"2" +
-                "\" /><Property Name=\"Image_Id\" Type=\"Edm.Int64\" /><NavigationProperty Name=\"GearC" +
-                "ategory\" Relationship=\"StoreAppTest.Web.DataModel.GearCategory_Gears\" ToRole=\"Ge" +
-                "arCategory_Gears_Source\" FromRole=\"GearCategory_Gears_Target\" /><NavigationPrope" +
-                "rty Name=\"Image\" Relationship=\"StoreAppTest.Web.DataModel.Gear_Image\" ToRole=\"Ge" +
-                "ar_Image_Target\" FromRole=\"Gear_Image_Source\" /></EntityType><EntityType Name=\"R" +
-                "esource\"><Key><PropertyRef Name=\"Id\" /></Key><Property Name=\"Id\" Type=\"Edm.Int64" +
-                "\" Nullable=\"false\" p6:StoreGeneratedPattern=\"Identity\" xmlns:p6=\"http://schemas." +
-                "microsoft.com/ado/2009/02/edm/annotation\" /><Property Name=\"ResourceData\" Type=\"" +
-                "Edm.Binary\" MaxLength=\"Max\" FixedLength=\"false\" /></EntityType><EntityType Name=" +
-                "\"GearNew\"><Key><PropertyRef Name=\"Id\" /></Key><Property Name=\"Id\" Type=\"Edm.Int6" +
-                "4\" Nullable=\"false\" p6:StoreGeneratedPattern=\"Identity\" xmlns:p6=\"http://schemas" +
-                ".microsoft.com/ado/2009/02/edm/annotation\" /><Property Name=\"CreatedDate\" Type=\"" +
-                "Edm.DateTime\" Nullable=\"false\" /><Property Name=\"Gear_Id\" Type=\"Edm.Int64\" Nulla" +
-                "ble=\"false\" /><NavigationProperty Name=\"Gear\" Relationship=\"StoreAppTest.Web.Dat" +
-                "aModel.GearNew_Gear\" ToRole=\"GearNew_Gear_Target\" FromRole=\"GearNew_Gear_Source\"" +
-                " /></EntityType><EntityType Name=\"IncomeItem\"><Key><PropertyRef Name=\"Id\" /></Ke" +
-                "y><Property Name=\"Id\" Type=\"Edm.Int64\" Nullable=\"false\" p6:StoreGeneratedPattern" +
-                "=\"Identity\" xmlns:p6=\"http://schemas.microsoft.com/ado/2009/02/edm/annotation\" /" +
-                "><Property Name=\"PriceItem_Id\" Type=\"Edm.Int64\" Nullable=\"false\" /><Property Nam" +
-                "e=\"Amount\" Type=\"Edm.Decimal\" Nullable=\"false\" Precision=\"18\" Scale=\"2\" /><Prope" +
-                "rty Name=\"NewPrice\" Type=\"Edm.Decimal\" Nullable=\"false\" Precision=\"18\" Scale=\"2\"" +
-                " /><Property Name=\"BuyPriceRur\" Type=\"Edm.Decimal\" Nullable=\"false\" Precision=\"1" +
-                "8\" Scale=\"2\" /><Property Name=\"BuyPriceTng\" Type=\"Edm.Decimal\" Nullable=\"false\" " +
-                "Precision=\"18\" Scale=\"2\" /><Property Name=\"Income_Id\" Type=\"Edm.Int64\" Nullable=" +
-                "\"false\" /><NavigationProperty Name=\"Income\" Relationship=\"StoreAppTest.Web.DataM" +
-                "odel.Income_IncomeItems\" ToRole=\"Income_IncomeItems_Source\" FromRole=\"Income_Inc" +
-                "omeItems_Target\" /><NavigationProperty Name=\"PriceItem\" Relationship=\"StoreAppTe" +
-                "st.Web.DataModel.IncomeItem_PriceItem\" ToRole=\"IncomeItem_PriceItem_Target\" From" +
-                "Role=\"IncomeItem_PriceItem_Source\" /></EntityType><EntityType Name=\"Income\"><Key" +
-                "><PropertyRef Name=\"Id\" /></Key><Property Name=\"Id\" Type=\"Edm.Int64\" Nullable=\"f" +
-                "alse\" p6:StoreGeneratedPattern=\"Identity\" xmlns:p6=\"http://schemas.microsoft.com" +
-                "/ado/2009/02/edm/annotation\" /><Property Name=\"IncomeNumber\" Type=\"Edm.String\" N" +
-                "ullable=\"false\" MaxLength=\"255\" FixedLength=\"false\" Unicode=\"true\" /><Property N" +
-                "ame=\"IncomeDate\" Type=\"Edm.DateTime\" Nullable=\"false\" /><Property Name=\"IsAccept" +
-                "\" Type=\"Edm.Boolean\" Nullable=\"false\" /><Property Name=\"AcceptedDate\" Type=\"Edm." +
-                "DateTime\" /><Property Name=\"Supplier_Id\" Type=\"Edm.String\" Nullable=\"false\" MaxL" +
-                "ength=\"255\" FixedLength=\"false\" Unicode=\"true\" /><Property ";
-            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Services.Design", "1.0.0")]
-            private const string ModelPart1 = "Name=\"Creator_Id\" Type=\"Edm.String\" Nullable=\"false\" MaxLength=\"255\" FixedLength=" +
-                "\"false\" Unicode=\"true\" /><Property Name=\"Accepter_Id\" Type=\"Edm.String\" MaxLengt" +
-                "h=\"255\" FixedLength=\"false\" Unicode=\"true\" /><NavigationProperty Name=\"Accepter\"" +
-                " Relationship=\"StoreAppTest.Web.DataModel.Income_Accepter\" ToRole=\"Income_Accept" +
-                "er_Target\" FromRole=\"Income_Accepter_Source\" /><NavigationProperty Name=\"Creator" +
-                "\" Relationship=\"StoreAppTest.Web.DataModel.Income_Creator\" ToRole=\"Income_Creato" +
-                "r_Target\" FromRole=\"Income_Creator_Source\" /><NavigationProperty Name=\"IncomeIte" +
-                "ms\" Relationship=\"StoreAppTest.Web.DataModel.Income_IncomeItems\" ToRole=\"Income_" +
-                "IncomeItems_Target\" FromRole=\"Income_IncomeItems_Source\" /><NavigationProperty N" +
-                "ame=\"Supplier\" Relationship=\"StoreAppTest.Web.DataModel.Income_Supplier\" ToRole=" +
-                "\"Income_Supplier_Target\" FromRole=\"Income_Supplier_Source\" /></EntityType><Entit" +
-                "yType Name=\"Supplier\"><Key><PropertyRef Name=\"Name\" /></Key><Property Name=\"Name" +
-                "\" Type=\"Edm.String\" Nullable=\"false\" MaxLength=\"255\" FixedLength=\"false\" Unicode" +
-                "=\"true\" /><Property Name=\"City\" Type=\"Edm.String\" MaxLength=\"255\" FixedLength=\"f" +
-                "alse\" Unicode=\"true\" /><Property Name=\"Phone\" Type=\"Edm.String\" MaxLength=\"255\" " +
-                "FixedLength=\"false\" Unicode=\"true\" /><Property Name=\"Email\" Type=\"Edm.String\" Ma" +
-                "xLength=\"255\" FixedLength=\"false\" Unicode=\"true\" /><Property Name=\"Manager\" Type" +
-                "=\"Edm.String\" MaxLength=\"255\" FixedLength=\"false\" Unicode=\"true\" /></EntityType>" +
-                "<EntityType Name=\"PriceItem\"><Key><PropertyRef Name=\"Id\" /></Key><Property Name=" +
-                "\"Id\" Type=\"Edm.Int64\" Nullable=\"false\" p6:StoreGeneratedPattern=\"Identity\" xmlns" +
-                ":p6=\"http://schemas.microsoft.com/ado/2009/02/edm/annotation\" /><Property Name=\"" +
-                "Gear_Id\" Type=\"Edm.Int64\" Nullable=\"false\" /><Property Name=\"BuyPriceRur\" Type=\"" +
-                "Edm.Decimal\" Nullable=\"false\" Precision=\"18\" Scale=\"2\" /><Property Name=\"BuyPric" +
-                "eTng\" Type=\"Edm.Decimal\" Nullable=\"false\" Precision=\"18\" Scale=\"2\" /><Property N" +
-                "ame=\"Uom_Id\" Type=\"Edm.String\" Nullable=\"false\" MaxLength=\"255\" FixedLength=\"fal" +
-                "se\" Unicode=\"true\" /><NavigationProperty Name=\"Gear\" Relationship=\"StoreAppTest." +
-                "Web.DataModel.PriceItem_Gear\" ToRole=\"PriceItem_Gear_Target\" FromRole=\"PriceItem" +
-                "_Gear_Source\" /><NavigationProperty Name=\"PriceLists\" Relationship=\"StoreAppTest" +
-                ".Web.DataModel.PriceList_PriceItems\" ToRole=\"PriceList_PriceItems_Source\" FromRo" +
-                "le=\"PriceList_PriceItems_Target\" /><NavigationProperty Name=\"Prices\" Relationshi" +
-                "p=\"StoreAppTest.Web.DataModel.PriceItem_Prices\" ToRole=\"PriceItem_Prices_Target\"" +
-                " FromRole=\"PriceItem_Prices_Source\" /><NavigationProperty Name=\"Remainders\" Rela" +
-                "tionship=\"StoreAppTest.Web.DataModel.PriceItem_Remainders\" ToRole=\"PriceItem_Rem" +
-                "ainders_Target\" FromRole=\"PriceItem_Remainders_Source\" /><NavigationProperty Nam" +
-                "e=\"UnitOfMeasure\" Relationship=\"StoreAppTest.Web.DataModel.PriceItem_UnitOfMeasu" +
-                "re\" ToRole=\"PriceItem_UnitOfMeasure_Target\" FromRole=\"PriceItem_UnitOfMeasure_So" +
-                "urce\" /></EntityType><EntityType Name=\"PriceList\"><Key><PropertyRef Name=\"Name\" " +
-                "/></Key><Property Name=\"Name\" Type=\"Edm.String\" Nullable=\"false\" MaxLength=\"255\"" +
-                " FixedLength=\"false\" Unicode=\"true\" /><Property Name=\"UploadUser_Id\" Type=\"Edm.S" +
-                "tring\" Nullable=\"false\" MaxLength=\"255\" FixedLength=\"false\" Unicode=\"true\" /><Pr" +
-                "operty Name=\"UploadDate\" Type=\"Edm.DateTime\" Nullable=\"false\" /><NavigationPrope" +
-                "rty Name=\"PriceItems\" Relationship=\"StoreAppTest.Web.DataModel.PriceList_PriceIt" +
-                "ems\" ToRole=\"PriceList_PriceItems_Target\" FromRole=\"PriceList_PriceItems_Source\"" +
-                " /><NavigationProperty Name=\"UploadUser\" Relationship=\"StoreAppTest.Web.DataMode" +
-                "l.PriceList_UploadUser\" ToRole=\"PriceList_UploadUser_Target\" FromRole=\"PriceList" +
-                "_UploadUser_Source\" /></EntityType><EntityType Name=\"WholesalePrice\"><Key><Prope" +
-                "rtyRef Name=\"Id\" /></Key><Property Name=\"Id\" Type=\"Edm.Int64\" Nullable=\"false\" p" +
-                "6:StoreGeneratedPattern=\"Identity\" xmlns:p6=\"http://schemas.microsoft.com/ado/20" +
-                "09/02/edm/annotation\" /><Property Name=\"PriceDate\" Type=\"Edm.DateTime\" Nullable=" +
-                "\"false\" /><Property Name=\"PriceItem_Id\" Type=\"Edm.Int64\" Nullable=\"false\" /><Pro" +
-                "perty Name=\"Price\" Type=\"Edm.Decimal\" Nullable=\"false\" Precision=\"18\" Scale=\"2\" " +
-                "/><NavigationProperty Name=\"PriceItem\" Relationship=\"StoreAppTest.Web.DataModel." +
-                "PriceItem_Prices\" ToRole=\"PriceItem_Prices_Source\" FromRole=\"PriceItem_Prices_Ta" +
-                "rget\" /></EntityType><EntityType Name=\"Remainder\"><Key><PropertyRef Name=\"Id\" />" +
-                "</Key><Property Name=\"Id\" Type=\"Edm.Int64\" Nullable=\"false\" p6:StoreGeneratedPat" +
-                "tern=\"Identity\" xmlns:p6=\"http://schemas.microsoft.com/ado/2009/02/edm/annotatio" +
-                "n\" /><Property Name=\"RemainderDate\" Type=\"Edm.DateTime\" Nullable=\"false\" /><Prop" +
-                "erty Name=\"PriceItem_Id\" Type=\"Edm.Int64\" Nullable=\"false\" /><Property Name=\"War" +
-                "ehouse_Id\" Type=\"Edm.String\" Nullable=\"false\" MaxLength=\"255\" FixedLength=\"false" +
-                "\" Unicode=\"true\" /><Property Name=\"Amount\" Type=\"Edm.Decimal\" Nullable=\"false\" P" +
-                "recision=\"18\" Scale=\"2\" /><NavigationProperty Name=\"PriceItem\" Relationship=\"Sto" +
-                "reAppTest.Web.DataModel.PriceItem_Remainders\" ToRole=\"PriceItem_Remainders_Sourc" +
-                "e\" FromRole=\"PriceItem_Remainders_Target\" /><NavigationProperty Name=\"Remainders" +
-                "UserChanges\" Relationship=\"StoreAppTest.Web.DataModel.Remainder_RemaindersUserCh" +
-                "anges\" ToRole=\"Remainder_RemaindersUserChanges_Target\" FromRole=\"Remainder_Remai" +
-                "ndersUserChanges_Source\" /><NavigationProperty Name=\"Warehouse\" Relationship=\"St" +
-                "oreAppTest.Web.DataModel.Remainder_Warehouse\" ToRole=\"Remainder_Warehouse_Target" +
-                "\" FromRole=\"Remainder_Warehouse_Source\" /></EntityType><EntityType Name=\"Remaind" +
-                "ersUserChange\"><Key><PropertyRef Name=\"Id\" /></Key><Property Name=\"Id\" Type=\"Edm" +
-                ".Int64\" Nullable=\"false\" p6:StoreGeneratedPattern=\"Identity\" xmlns:p6=\"http://sc" +
-                "hemas.microsoft.com/ado/2009/02/edm/annotation\" /><Property Name=\"Date\" Type=\"Ed" +
-                "m.DateTime\" Nullable=\"false\" /><Property Name=\"User_Id\" Type=\"Edm.String\" Nullab" +
-                "le=\"false\" MaxLength=\"255\" FixedLength=\"false\" Unicode=\"true\" /><Property Name=\"" +
-                "Remainder_Id\" Type=\"Edm.Int64\" Nullable=\"false\" /><Property Name=\"Amound\" Type=\"" +
-                "Edm.Decimal\" Nullable=\"false\" Precision=\"18\" Scale=\"2\" /><NavigationProperty Nam" +
-                "e=\"Remainder\" Relationship=\"StoreAppTest.Web.DataModel.Remainder_RemaindersUserC" +
-                "hanges\" ToRole=\"Remainder_RemaindersUserChanges_Source\" FromRole=\"Remainder_Rema" +
-                "indersUserChanges_Target\" /><NavigationProperty Name=\"User\" Relationship=\"StoreA" +
-                "ppTest.Web.DataModel.RemaindersUserChange_User\" ToRole=\"RemaindersUserChange_Use" +
-                "r_Target\" FromRole=\"RemaindersUserChange_User_Source\" /></EntityType><EntityType" +
-                " Name=\"UnitOfMeasure\"><Key><PropertyRef Name=\"Name\" /></Key><Property Name=\"Name" +
-                "\" Type=\"Edm.String\" Nullable=\"false\" MaxLength=\"255\" FixedLength=\"false\" Unicode" +
-                "=\"true\" /></EntityType><EntityType Name=\"PriceChangeReportItem\"><Key><PropertyRe" +
-                "f Name=\"Id\" /></Key><Property Name=\"Id\" Type=\"Edm.Int64\" Nullable=\"false\" p6:Sto" +
-                "reGeneratedPattern=\"Identity\" xmlns:p6=\"http://schemas.microsoft.com/ado/2009/02" +
-                "/edm/annotation\" /><Property Name=\"PriceItem_Id\" Type=\"Edm.Int64\" Nullable=\"fals" +
-                "e\" /><Property Name=\"PreviousPrice_Id\" Type=\"Edm.Int64\" Nullable=\"false\" /><Prop" +
-                "erty Name=\"NewPrice_Id\" Type=\"Edm.Int64\" Nullable=\"false\" /><Property Name=\"Pric" +
-                "eChangeReport_Id\" Type=\"Edm.Int64\" Nullable=\"false\" /><NavigationProperty Name=\"" +
-                "NewPrice\" Relationship=\"StoreAppTest.Web.DataModel.PriceChangeReportItem_NewPric" +
-                "e\" ToRole=\"PriceChangeReportItem_NewPrice_Target\" FromRole=\"PriceChangeReportIte" +
-                "m_NewPrice_Source\" /><NavigationProperty Name=\"PreviousPrice\" Relationship=\"Stor" +
-                "eAppTest.Web.DataModel.PriceChangeReportItem_PreviousPrice\" ToRole=\"PriceChangeR" +
-                "eportItem_PreviousPrice_Target\" FromRole=\"PriceChangeReport";
-            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Services.Design", "1.0.0")]
-            private const string ModelPart2 = "Item_PreviousPrice_Source\" /><NavigationProperty Name=\"PriceChangeReport\" Relatio" +
-                "nship=\"StoreAppTest.Web.DataModel.PriceChangeReport_PriceChangeReportItems\" ToRo" +
-                "le=\"PriceChangeReport_PriceChangeReportItems_Source\" FromRole=\"PriceChangeReport" +
-                "_PriceChangeReportItems_Target\" /><NavigationProperty Name=\"PriceItem\" Relations" +
-                "hip=\"StoreAppTest.Web.DataModel.PriceChangeReportItem_PriceItem\" ToRole=\"PriceCh" +
-                "angeReportItem_PriceItem_Target\" FromRole=\"PriceChangeReportItem_PriceItem_Sourc" +
-                "e\" /></EntityType><EntityType Name=\"PriceChangeReport\"><Key><PropertyRef Name=\"I" +
-                "d\" /></Key><Property Name=\"Id\" Type=\"Edm.Int64\" Nullable=\"false\" p6:StoreGenerat" +
-                "edPattern=\"Identity\" xmlns:p6=\"http://schemas.microsoft.com/ado/2009/02/edm/anno" +
-                "tation\" /><Property Name=\"ReportNumber\" Type=\"Edm.String\" Nullable=\"false\" MaxLe" +
-                "ngth=\"255\" FixedLength=\"false\" Unicode=\"true\" /><Property Name=\"ReportDate\" Type" +
-                "=\"Edm.DateTime\" Nullable=\"false\" /><Property Name=\"Creator_Id\" Type=\"Edm.String\"" +
-                " Nullable=\"false\" MaxLength=\"255\" FixedLength=\"false\" Unicode=\"true\" /><Navigati" +
-                "onProperty Name=\"Creator\" Relationship=\"StoreAppTest.Web.DataModel.PriceChangeRe" +
-                "port_Creator\" ToRole=\"PriceChangeReport_Creator_Target\" FromRole=\"PriceChangeRep" +
-                "ort_Creator_Source\" /><NavigationProperty Name=\"PriceChangeReportItems\" Relation" +
-                "ship=\"StoreAppTest.Web.DataModel.PriceChangeReport_PriceChangeReportItems\" ToRol" +
-                "e=\"PriceChangeReport_PriceChangeReportItems_Target\" FromRole=\"PriceChangeReport_" +
-                "PriceChangeReportItems_Source\" /></EntityType><EntityType Name=\"RefundDocument\">" +
-                "<Key><PropertyRef Name=\"Id\" /></Key><Property Name=\"Id\" Type=\"Edm.Int64\" Nullabl" +
-                "e=\"false\" p6:StoreGeneratedPattern=\"Identity\" xmlns:p6=\"http://schemas.microsoft" +
-                ".com/ado/2009/02/edm/annotation\" /><Property Name=\"RefundNumber\" Type=\"Edm.Strin" +
-                "g\" Nullable=\"false\" MaxLength=\"255\" FixedLength=\"false\" Unicode=\"true\" /><Proper" +
-                "ty Name=\"RefundDate\" Type=\"Edm.DateTime\" Nullable=\"false\" /><Property Name=\"Sale" +
-                "Document_Id\" Type=\"Edm.Int64\" Nullable=\"false\" /><Property Name=\"Creator_Id\" Typ" +
-                "e=\"Edm.String\" Nullable=\"false\" MaxLength=\"255\" FixedLength=\"false\" Unicode=\"tru" +
-                "e\" /><Property Name=\"LastChanger_Id\" Type=\"Edm.String\" Nullable=\"false\" MaxLengt" +
-                "h=\"255\" FixedLength=\"false\" Unicode=\"true\" /><NavigationProperty Name=\"Creator\" " +
-                "Relationship=\"StoreAppTest.Web.DataModel.RefundDocument_Creator\" ToRole=\"RefundD" +
-                "ocument_Creator_Target\" FromRole=\"RefundDocument_Creator_Source\" /><NavigationPr" +
-                "operty Name=\"LastChanger\" Relationship=\"StoreAppTest.Web.DataModel.RefundDocumen" +
-                "t_LastChanger\" ToRole=\"RefundDocument_LastChanger_Target\" FromRole=\"RefundDocume" +
-                "nt_LastChanger_Source\" /><NavigationProperty Name=\"RefundItems\" Relationship=\"St" +
-                "oreAppTest.Web.DataModel.RefundDocument_RefundItems\" ToRole=\"RefundDocument_Refu" +
-                "ndItems_Target\" FromRole=\"RefundDocument_RefundItems_Source\" /><NavigationProper" +
-                "ty Name=\"SaleDocument\" Relationship=\"StoreAppTest.Web.DataModel.RefundDocument_S" +
-                "aleDocument\" ToRole=\"RefundDocument_SaleDocument_Target\" FromRole=\"RefundDocumen" +
-                "t_SaleDocument_Source\" /></EntityType><EntityType Name=\"RefundItem\"><Key><Proper" +
+                "th=\"false\" Unicode=\"true\" /><Property Name=\"Details\" Type=\"Edm.String\" MaxLength" +
+                "=\"Max\" FixedLength=\"false\" Unicode=\"true\" /><Property Name=\"BankDetails\" Type=\"E" +
+                "dm.String\" MaxLength=\"Max\" FixedLength=\"false\" Unicode=\"true\" /><Property Name=\"" +
+                "ShipmentAddress\" Type=\"Edm.String\" MaxLength=\"Max\" FixedLength=\"false\" Unicode=\"" +
+                "true\" /><Property Name=\"Creator_Id\" Type=\"Edm.String\" Nullable=\"false\" MaxLength" +
+                "=\"255\" FixedLength=\"false\" Unicode=\"true\" /><NavigationProperty Name=\"Creator\" R" +
+                "elationship=\"StoreAppTest.Web.DataModel.Customer_Creator\" ToRole=\"Customer_Creat" +
+                "or_Target\" FromRole=\"Customer_Creator_Source\" /></EntityType><EntityType Name=\"U" +
+                "ser\"><Key><PropertyRef Name=\"UserName\" /></Key><Property Name=\"UserName\" Type=\"E" +
+                "dm.String\" Nullable=\"false\" MaxLength=\"255\" FixedLength=\"false\" Unicode=\"true\" /" +
+                "><Property Name=\"DisplayName\" Type=\"Edm.String\" MaxLength=\"255\" FixedLength=\"fal" +
+                "se\" Unicode=\"true\" /><Property Name=\"Warehouse_Id\" Type=\"Edm.String\" MaxLength=\"" +
+                "255\" FixedLength=\"false\" Unicode=\"true\" /><Property Name=\"PasswordHash\" Type=\"Ed" +
+                "m.Binary\" MaxLength=\"Max\" FixedLength=\"false\" /><Property Name=\"IsSupplierVisibl" +
+                "e\" Type=\"Edm.Boolean\" Nullable=\"false\" /><NavigationProperty Name=\"PriceLists\" R" +
+                "elationship=\"StoreAppTest.Web.DataModel.User_PriceLists\" ToRole=\"User_PriceLists" +
+                "_Target\" FromRole=\"User_PriceLists_Source\" /><NavigationProperty Name=\"Roles\" Re" +
+                "lationship=\"StoreAppTest.Web.DataModel.User_Roles\" ToRole=\"User_Roles_Target\" Fr" +
+                "omRole=\"User_Roles_Source\" /><NavigationProperty Name=\"Warehouse\" Relationship=\"" +
+                "StoreAppTest.Web.DataModel.User_Warehouse\" ToRole=\"User_Warehouse_Target\" FromRo" +
+                "le=\"User_Warehouse_Source\" /></EntityType><EntityType Name=\"PriceList\"><Key><Pro" +
+                "pertyRef Name=\"Name\" /></Key><Property Name=\"Name\" Type=\"Edm.String\" Nullable=\"f" +
+                "alse\" MaxLength=\"255\" FixedLength=\"false\" Unicode=\"true\" /><Property Name=\"Uploa" +
+                "dUser_Id\" Type=\"Edm.String\" Nullable=\"false\" MaxLength=\"255\" FixedLength=\"false\"" +
+                " Unicode=\"true\" /><Property Name=\"UploadDate\" Type=\"Edm.DateTime\" Nullable=\"fals" +
+                "e\" /><NavigationProperty Name=\"PriceItems\" Relationship=\"StoreAppTest.Web.DataMo" +
+                "del.PriceList_PriceItems\" ToRole=\"PriceList_PriceItems_Target\" FromRole=\"PriceLi" +
+                "st_PriceItems_Source\" /><NavigationProperty Name=\"UploadUser\" Relationship=\"Stor" +
+                "eAppTest.Web.DataModel.PriceList_UploadUser\" ToRole=\"PriceList_UploadUser_Target" +
+                "\" FromRole=\"PriceList_UploadUser_Source\" /><NavigationProperty Name=\"Users\" Rela" +
+                "tionship=\"StoreAppTest.Web.DataModel.User_PriceLists\" ToRole=\"User_PriceLists_So" +
+                "urce\" FromRole=\"User_PriceLists_Target\" /></EntityType><EntityType Name=\"PriceIt" +
+                "em\"><Key><PropertyRef Name=\"Id\" /></Key><Property Name=\"Id\" Type=\"Edm.Int64\" Nul" +
+                "lable=\"false\" p6:StoreGeneratedPattern=\"Identity\" xmlns:p6=\"http://schemas.micro" +
+                "soft.com/ado/2009/02/edm/annotation\" /><Property Name=\"Gear_Id\" Type=\"Edm.Int64\"" +
+                " Nullable=\"false\" /><Property Name=\"BuyPriceRur\" Type=\"Edm.Decimal\" Nullable=\"fa" +
+                "lse\" Precision=\"18\" Scale=\"2\" /><Property Name=\"BuyPriceTng\" Type=\"Edm.Decimal\" " +
+                "Nullable=\"false\" Precision=\"18\" Scale=\"2\" /><Property Name=\"Uom_Id\" Type=\"Edm.St" +
+                "ring\" Nullable=\"false\" MaxLength=\"255\" FixedLength=\"false\" Unicode=\"true\" /><Pro" +
+                "perty Name=\"Barcode1\" Type=\"Edm.String\" MaxLength=\"50\" FixedLength=\"false\" Unico" +
+                "de=\"true\" /><Property Name=\"Barcode2\" Type=\"Edm.String\" MaxLength=\"50\" FixedLeng" +
+                "th=\"false\" Unicode=\"true\" /><Property Name=\"Barcode3\" Type=\"Edm.String\" MaxLengt" +
+                "h=\"50\" FixedLength=\"false\" Unicode=\"true\" /><NavigationProperty Name=\"Gear\" Rela" +
+                "tionship=\"StoreAppTest.Web.DataModel.PriceItem_Gear\" ToRole=\"PriceItem_Gear_Targ" +
+                "et\" FromRole=\"PriceItem_Gear_Source\" /><NavigationProperty Name=\"PriceLists\" Rel" +
+                "ationship=\"StoreAppTest.Web.DataModel.PriceList_PriceItems\" ToRole=\"PriceList_Pr" +
+                "iceItems_Source\" FromRole=\"PriceList_PriceItems_Target\" /><NavigationProperty Na" +
+                "me=\"Prices\" Relationship=\"StoreAppTest.Web.DataModel.PriceItem_Prices\" ToRole=\"P" +
+                "riceItem_Prices_Target\" FromRole=\"PriceItem_Prices_Source\" /><NavigationProperty" +
+                " Name=\"Remainders\" Relationship=\"StoreAppTest.Web.DataModel.PriceItem_Remainders" +
+                "\" ToRole=\"PriceItem_Remainders_Target\" FromRole=\"PriceItem_Remainders_Source\" />" +
+                "<NavigationProperty Name=\"UnitOfMeasure\" Relationship=\"StoreAppTest.Web.DataMode" +
+                "l.PriceItem_UnitOfMeasure\" ToRole=\"PriceItem_UnitOfMeasure_Target\" FromRole=\"Pri" +
+                "ceItem_UnitOfMeasure_Source\" /></EntityType><EntityType Name=\"Gear\"><Key><Proper" +
                 "tyRef Name=\"Id\" /></Key><Property Name=\"Id\" Type=\"Edm.Int64\" Nullable=\"false\" p6" +
                 ":StoreGeneratedPattern=\"Identity\" xmlns:p6=\"http://schemas.microsoft.com/ado/200" +
-                "9/02/edm/annotation\" /><Property Name=\"PriceItem_Id\" Type=\"Edm.Int64\" Nullable=\"" +
-                "false\" /><Property Name=\"SaleItem_Id\" Type=\"Edm.Int64\" Nullable=\"false\" /><Prope" +
-                "rty Name=\"Price\" Type=\"Edm.Decimal\" Nullable=\"false\" Precision=\"18\" Scale=\"2\" />" +
-                "<Property Name=\"Discount\" Type=\"Edm.Decimal\" Nullable=\"false\" Precision=\"18\" Sca" +
-                "le=\"2\" /><Property Name=\"Count\" Type=\"Edm.Decimal\" Nullable=\"false\" Precision=\"1" +
-                "8\" Scale=\"2\" /><Property Name=\"Amount\" Type=\"Edm.Decimal\" Nullable=\"false\" Preci" +
-                "sion=\"18\" Scale=\"2\" /><Property Name=\"RefundDocument_Id\" Type=\"Edm.Int64\" Nullab" +
-                "le=\"false\" /><NavigationProperty Name=\"PriceItem\" Relationship=\"StoreAppTest.Web" +
-                ".DataModel.RefundItem_PriceItem\" ToRole=\"RefundItem_PriceItem_Target\" FromRole=\"" +
-                "RefundItem_PriceItem_Source\" /><NavigationProperty Name=\"RefundDocument\" Relatio" +
-                "nship=\"StoreAppTest.Web.DataModel.RefundDocument_RefundItems\" ToRole=\"RefundDocu" +
-                "ment_RefundItems_Source\" FromRole=\"RefundDocument_RefundItems_Target\" /><Navigat" +
-                "ionProperty Name=\"SaleItem\" Relationship=\"StoreAppTest.Web.DataModel.RefundItem_" +
-                "SaleItem\" ToRole=\"RefundItem_SaleItem_Target\" FromRole=\"RefundItem_SaleItem_Sour" +
-                "ce\" /></EntityType><EntityType Name=\"SaleItem\"><Key><PropertyRef Name=\"Id\" /></K" +
+                "9/02/edm/annotation\" /><Property Name=\"CatalogNumber\" Type=\"Edm.String\" MaxLengt" +
+                "h=\"255\" FixedLength=\"false\" Unicode=\"true\" /><Property Name=\"Name\" Type=\"Edm.Str" +
+                "ing\" Nullable=\"false\" MaxLength=\"500\" FixedLength=\"false\" Unicode=\"true\" /><Prop" +
+                "erty Name=\"Articul\" Type=\"Edm.String\" MaxLength=\"255\" FixedLength=\"false\" Unicod" +
+                "e=\"true\" /><Property Name=\"IsDuplicate\" Type=\"Edm.Boolean\" Nullable=\"false\" /><P" +
+                "roperty Name=\"Category_Id\" Type=\"Edm.String\" Nullable=\"false\" MaxLength=\"255\" Fi" +
+                "xedLength=\"false\" Unicode=\"true\" /><Property Name=\"Image_Id\" Type=\"Edm.Int64\" />" +
+                "<NavigationProperty Name=\"GearCategory\" Relationship=\"StoreAppTest.Web.DataModel" +
+                ".GearCategory_Gears\" ToRole=\"GearCategory_Gears_Source\" FromRole=\"GearCategory_G" +
+                "ears_Target\" /><NavigationProperty Name=\"Image\" Relationship=\"StoreAppTest.Web.D" +
+                "ataModel.Gear_Image\" ToRole=\"Gear_Image_Target\" FromRole=\"Gear_Image_Source\" /><" +
+                "/EntityType><EntityType Name=\"GearCategory\"><Key><PropertyRef Name=\"Name\" /></Ke" +
+                "y><Property Name=\"Name\" Type=\"Edm.String\" Nullable=\"false\" MaxLength=\"255\" Fixed" +
+                "Length=\"false\" Unicode=\"true\" /><NavigationProperty Name=\"Gears\" Relationship=\"S" +
+                "toreAppTest.Web.DataModel.GearCategory_Gears\" ToRole=\"GearCategory_Gears_Target\"" +
+                " FromRole=\"GearCategory_Gears_Source\" /></EntityType><EntityType Name=\"Resource\"" +
+                "><Key><PropertyRef Name=\"Id\" /></Key><Property Name=\"Id\" Type=\"Edm.Int64\" Nullab" +
+                "le=\"false\" p6:StoreGeneratedPattern=\"Identity\" xmlns:p6=\"http://schemas.microsof" +
+                "t.com/ado/2009/02/edm/annotation\" /><Property Name=\"ResourceData\" Type=\"Edm.Bina" +
+                "ry\" MaxLength=\"Max\" FixedLength=\"false\" /></EntityType><EntityType Name=\"Wholesa" +
+                "lePrice\"><Key><PropertyRef Name=\"Id\" /></Key><Property Name=\"Id\" Type=\"Edm.Int64" +
+                "\" Nullable=\"false\" p6:StoreGeneratedPattern=\"Identity\" xmlns:p6=\"http://schemas." +
+                "microsoft.com/ado/2009/02/edm/annotation\" /><Property Name=\"PriceDate\" Type=\"Edm" +
+                ".DateTime\" Nullable=\"false\" /><Property Name=\"PriceItem_Id\" Type=\"Edm.Int64\" Nul" +
+                "lable=\"false\" /><Property Name=\"Price\" Type=\"Edm.Decimal\" Nullable=\"false\" Preci" +
+                "sion=\"18\" Scale=\"2\" /><NavigationProperty Name=\"PriceItem\" Relationship=\"StoreAp" +
+                "pTest.Web.DataModel.PriceItem_Prices\" ToRole=\"PriceItem_Prices_Source\" FromRole=" +
+                "\"PriceItem_Prices_Target\" /></EntityType><EntityType Name=\"Remainder\"><Key><Prop" +
+                "ertyRef Name=\"Id\" /></Key><Property Name=\"Id\" Type=\"Edm.Int64\" Nullable=\"false\" " +
+                "p6:StoreGeneratedPattern=\"Identity\" xmlns:p6=\"http://schemas.microsoft.com/ado/2" +
+                "009/02/edm/annotation\" /><Property Name=\"RemainderDate\" Type=\"Edm.DateTime\" Null" +
+                "able=\"false\" /><Property Name=\"PriceItem_Id\" Type=\"Edm.Int6";
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Services.Design", "1.0.0")]
+            private const string ModelPart1 = "4\" Nullable=\"false\" /><Property Name=\"Warehouse_Id\" Type=\"Edm.String\" Nullable=\"f" +
+                "alse\" MaxLength=\"255\" FixedLength=\"false\" Unicode=\"true\" /><Property Name=\"Amoun" +
+                "t\" Type=\"Edm.Decimal\" Nullable=\"false\" Precision=\"18\" Scale=\"2\" /><Property Name" +
+                "=\"RecommendedRemainder\" Type=\"Edm.Decimal\" Nullable=\"false\" Precision=\"18\" Scale" +
+                "=\"2\" /><Property Name=\"LowerLimitRemainder\" Type=\"Edm.Decimal\" Nullable=\"false\" " +
+                "Precision=\"18\" Scale=\"2\" /><NavigationProperty Name=\"PriceItem\" Relationship=\"St" +
+                "oreAppTest.Web.DataModel.PriceItem_Remainders\" ToRole=\"PriceItem_Remainders_Sour" +
+                "ce\" FromRole=\"PriceItem_Remainders_Target\" /><NavigationProperty Name=\"Remainder" +
+                "sUserChanges\" Relationship=\"StoreAppTest.Web.DataModel.Remainder_RemaindersUserC" +
+                "hanges\" ToRole=\"Remainder_RemaindersUserChanges_Target\" FromRole=\"Remainder_Rema" +
+                "indersUserChanges_Source\" /><NavigationProperty Name=\"Warehouse\" Relationship=\"S" +
+                "toreAppTest.Web.DataModel.Remainder_Warehouse\" ToRole=\"Remainder_Warehouse_Targe" +
+                "t\" FromRole=\"Remainder_Warehouse_Source\" /></EntityType><EntityType Name=\"Remain" +
+                "dersUserChange\"><Key><PropertyRef Name=\"Id\" /></Key><Property Name=\"Id\" Type=\"Ed" +
+                "m.Int64\" Nullable=\"false\" p6:StoreGeneratedPattern=\"Identity\" xmlns:p6=\"http://s" +
+                "chemas.microsoft.com/ado/2009/02/edm/annotation\" /><Property Name=\"Date\" Type=\"E" +
+                "dm.DateTime\" Nullable=\"false\" /><Property Name=\"User_Id\" Type=\"Edm.String\" Nulla" +
+                "ble=\"false\" MaxLength=\"255\" FixedLength=\"false\" Unicode=\"true\" /><Property Name=" +
+                "\"Remainder_Id\" Type=\"Edm.Int64\" Nullable=\"false\" /><Property Name=\"Amound\" Type=" +
+                "\"Edm.Decimal\" Nullable=\"false\" Precision=\"18\" Scale=\"2\" /><NavigationProperty Na" +
+                "me=\"Remainder\" Relationship=\"StoreAppTest.Web.DataModel.Remainder_RemaindersUser" +
+                "Changes\" ToRole=\"Remainder_RemaindersUserChanges_Source\" FromRole=\"Remainder_Rem" +
+                "aindersUserChanges_Target\" /><NavigationProperty Name=\"User\" Relationship=\"Store" +
+                "AppTest.Web.DataModel.RemaindersUserChange_User\" ToRole=\"RemaindersUserChange_Us" +
+                "er_Target\" FromRole=\"RemaindersUserChange_User_Source\" /></EntityType><EntityTyp" +
+                "e Name=\"Warehouse\"><Key><PropertyRef Name=\"Name\" /></Key><Property Name=\"Name\" T" +
+                "ype=\"Edm.String\" Nullable=\"false\" MaxLength=\"255\" FixedLength=\"false\" Unicode=\"t" +
+                "rue\" /></EntityType><EntityType Name=\"UnitOfMeasure\"><Key><PropertyRef Name=\"Nam" +
+                "e\" /></Key><Property Name=\"Name\" Type=\"Edm.String\" Nullable=\"false\" MaxLength=\"2" +
+                "55\" FixedLength=\"false\" Unicode=\"true\" /></EntityType><EntityType Name=\"Role\"><K" +
+                "ey><PropertyRef Name=\"RoleName\" /></Key><Property Name=\"RoleName\" Type=\"Edm.Stri" +
+                "ng\" Nullable=\"false\" MaxLength=\"255\" FixedLength=\"false\" Unicode=\"true\" /><Navig" +
+                "ationProperty Name=\"Users\" Relationship=\"StoreAppTest.Web.DataModel.User_Roles\" " +
+                "ToRole=\"User_Roles_Source\" FromRole=\"User_Roles_Target\" /></EntityType><EntityTy" +
+                "pe Name=\"DebtDischargeDocument\"><Key><PropertyRef Name=\"Id\" /></Key><Property Na" +
+                "me=\"Id\" Type=\"Edm.Int64\" Nullable=\"false\" p6:StoreGeneratedPattern=\"Identity\" xm" +
+                "lns:p6=\"http://schemas.microsoft.com/ado/2009/02/edm/annotation\" /><Property Nam" +
+                "e=\"DischargeDate\" Type=\"Edm.DateTime\" Nullable=\"false\" /><Property Name=\"Debtor_" +
+                "Id\" Type=\"Edm.String\" Nullable=\"false\" MaxLength=\"255\" FixedLength=\"false\" Unico" +
+                "de=\"true\" /><Property Name=\"Amount\" Type=\"Edm.Decimal\" Nullable=\"false\" Precisio" +
+                "n=\"18\" Scale=\"2\" /><Property Name=\"Creator_Id\" Type=\"Edm.String\" Nullable=\"false" +
+                "\" MaxLength=\"255\" FixedLength=\"false\" Unicode=\"true\" /><Property Name=\"IsDischar" +
+                "ge\" Type=\"Edm.Boolean\" Nullable=\"false\" /><NavigationProperty Name=\"Creator\" Rel" +
+                "ationship=\"StoreAppTest.Web.DataModel.DebtDischargeDocument_Creator\" ToRole=\"Deb" +
+                "tDischargeDocument_Creator_Target\" FromRole=\"DebtDischargeDocument_Creator_Sourc" +
+                "e\" /><NavigationProperty Name=\"Debtor\" Relationship=\"StoreAppTest.Web.DataModel." +
+                "DebtDischargeDocument_Debtor\" ToRole=\"DebtDischargeDocument_Debtor_Target\" FromR" +
+                "ole=\"DebtDischargeDocument_Debtor_Source\" /></EntityType><EntityType Name=\"GearN" +
+                "ew\"><Key><PropertyRef Name=\"Id\" /></Key><Property Name=\"Id\" Type=\"Edm.Int64\" Nul" +
+                "lable=\"false\" p6:StoreGeneratedPattern=\"Identity\" xmlns:p6=\"http://schemas.micro" +
+                "soft.com/ado/2009/02/edm/annotation\" /><Property Name=\"CreatedDate\" Type=\"Edm.Da" +
+                "teTime\" Nullable=\"false\" /><Property Name=\"Gear_Id\" Type=\"Edm.Int64\" Nullable=\"f" +
+                "alse\" /><NavigationProperty Name=\"Gear\" Relationship=\"StoreAppTest.Web.DataModel" +
+                ".GearNew_Gear\" ToRole=\"GearNew_Gear_Target\" FromRole=\"GearNew_Gear_Source\" /></E" +
+                "ntityType><EntityType Name=\"IncomeItem\"><Key><PropertyRef Name=\"Id\" /></Key><Pro" +
+                "perty Name=\"Id\" Type=\"Edm.Int64\" Nullable=\"false\" p6:StoreGeneratedPattern=\"Iden" +
+                "tity\" xmlns:p6=\"http://schemas.microsoft.com/ado/2009/02/edm/annotation\" /><Prop" +
+                "erty Name=\"PriceItem_Id\" Type=\"Edm.Int64\" Nullable=\"false\" /><Property Name=\"Amo" +
+                "unt\" Type=\"Edm.Decimal\" Nullable=\"false\" Precision=\"18\" Scale=\"2\" /><Property Na" +
+                "me=\"NewPrice\" Type=\"Edm.Decimal\" Nullable=\"false\" Precision=\"18\" Scale=\"2\" /><Pr" +
+                "operty Name=\"BuyPriceRur\" Type=\"Edm.Decimal\" Nullable=\"false\" Precision=\"18\" Sca" +
+                "le=\"2\" /><Property Name=\"BuyPriceTng\" Type=\"Edm.Decimal\" Nullable=\"false\" Precis" +
+                "ion=\"18\" Scale=\"2\" /><Property Name=\"Income_Id\" Type=\"Edm.Int64\" Nullable=\"false" +
+                "\" /><NavigationProperty Name=\"Income\" Relationship=\"StoreAppTest.Web.DataModel.I" +
+                "ncome_IncomeItems\" ToRole=\"Income_IncomeItems_Source\" FromRole=\"Income_IncomeIte" +
+                "ms_Target\" /><NavigationProperty Name=\"PriceItem\" Relationship=\"StoreAppTest.Web" +
+                ".DataModel.IncomeItem_PriceItem\" ToRole=\"IncomeItem_PriceItem_Target\" FromRole=\"" +
+                "IncomeItem_PriceItem_Source\" /></EntityType><EntityType Name=\"Income\"><Key><Prop" +
+                "ertyRef Name=\"Id\" /></Key><Property Name=\"Id\" Type=\"Edm.Int64\" Nullable=\"false\" " +
+                "p6:StoreGeneratedPattern=\"Identity\" xmlns:p6=\"http://schemas.microsoft.com/ado/2" +
+                "009/02/edm/annotation\" /><Property Name=\"IncomeNumber\" Type=\"Edm.String\" Nullabl" +
+                "e=\"false\" MaxLength=\"255\" FixedLength=\"false\" Unicode=\"true\" /><Property Name=\"I" +
+                "ncomeDate\" Type=\"Edm.DateTime\" Nullable=\"false\" /><Property Name=\"IsAccept\" Type" +
+                "=\"Edm.Boolean\" Nullable=\"false\" /><Property Name=\"AcceptedDate\" Type=\"Edm.DateTi" +
+                "me\" /><Property Name=\"Supplier_Id\" Type=\"Edm.String\" Nullable=\"false\" MaxLength=" +
+                "\"255\" FixedLength=\"false\" Unicode=\"true\" /><Property Name=\"Creator_Id\" Type=\"Edm" +
+                ".String\" Nullable=\"false\" MaxLength=\"255\" FixedLength=\"false\" Unicode=\"true\" /><" +
+                "Property Name=\"Accepter_Id\" Type=\"Edm.String\" MaxLength=\"255\" FixedLength=\"false" +
+                "\" Unicode=\"true\" /><NavigationProperty Name=\"Accepter\" Relationship=\"StoreAppTes" +
+                "t.Web.DataModel.Income_Accepter\" ToRole=\"Income_Accepter_Target\" FromRole=\"Incom" +
+                "e_Accepter_Source\" /><NavigationProperty Name=\"Creator\" Relationship=\"StoreAppTe" +
+                "st.Web.DataModel.Income_Creator\" ToRole=\"Income_Creator_Target\" FromRole=\"Income" +
+                "_Creator_Source\" /><NavigationProperty Name=\"IncomeItems\" Relationship=\"StoreApp" +
+                "Test.Web.DataModel.Income_IncomeItems\" ToRole=\"Income_IncomeItems_Target\" FromRo" +
+                "le=\"Income_IncomeItems_Source\" /><NavigationProperty Name=\"Supplier\" Relationshi" +
+                "p=\"StoreAppTest.Web.DataModel.Income_Supplier\" ToRole=\"Income_Supplier_Target\" F" +
+                "romRole=\"Income_Supplier_Source\" /></EntityType><EntityType Name=\"Supplier\"><Key" +
+                "><PropertyRef Name=\"Name\" /></Key><Property Name=\"Name\" Type=\"Edm.String\" Nullab" +
+                "le=\"false\" MaxLength=\"255\" FixedLength=\"false\" Unicode=\"true\" /><Property Name=\"" +
+                "City\" Type=\"Edm.String\" MaxLength=\"255\" FixedLength=\"false\" Unicode=\"true\" /><Pr" +
+                "operty Name=\"Phone\" Type=\"Edm.String\" MaxLength=\"255\" FixedLength=\"false\" Unicod" +
+                "e=\"true\" /><Property Name=\"Email\" Type=\"Edm.String\" MaxLength=\"255\" FixedLength=" +
+                "\"false\" Unicode=\"true\" /><Property Name=\"Manager\" Type=\"Edm.String\" MaxLength=\"2" +
+                "55\" FixedLength=\"false\" Unicode=\"true\" /></EntityType><Enti";
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Services.Design", "1.0.0")]
+            private const string ModelPart2 = "tyType Name=\"PriceChangeReportItem\"><Key><PropertyRef Name=\"Id\" /></Key><Property" +
+                " Name=\"Id\" Type=\"Edm.Int64\" Nullable=\"false\" p6:StoreGeneratedPattern=\"Identity\"" +
+                " xmlns:p6=\"http://schemas.microsoft.com/ado/2009/02/edm/annotation\" /><Property " +
+                "Name=\"PriceItem_Id\" Type=\"Edm.Int64\" Nullable=\"false\" /><Property Name=\"Previous" +
+                "Price_Id\" Type=\"Edm.Int64\" Nullable=\"false\" /><Property Name=\"NewPrice_Id\" Type=" +
+                "\"Edm.Int64\" Nullable=\"false\" /><Property Name=\"PriceChangeReport_Id\" Type=\"Edm.I" +
+                "nt64\" Nullable=\"false\" /><NavigationProperty Name=\"NewPrice\" Relationship=\"Store" +
+                "AppTest.Web.DataModel.PriceChangeReportItem_NewPrice\" ToRole=\"PriceChangeReportI" +
+                "tem_NewPrice_Target\" FromRole=\"PriceChangeReportItem_NewPrice_Source\" /><Navigat" +
+                "ionProperty Name=\"PreviousPrice\" Relationship=\"StoreAppTest.Web.DataModel.PriceC" +
+                "hangeReportItem_PreviousPrice\" ToRole=\"PriceChangeReportItem_PreviousPrice_Targe" +
+                "t\" FromRole=\"PriceChangeReportItem_PreviousPrice_Source\" /><NavigationProperty N" +
+                "ame=\"PriceChangeReport\" Relationship=\"StoreAppTest.Web.DataModel.PriceChangeRepo" +
+                "rt_PriceChangeReportItems\" ToRole=\"PriceChangeReport_PriceChangeReportItems_Sour" +
+                "ce\" FromRole=\"PriceChangeReport_PriceChangeReportItems_Target\" /><NavigationProp" +
+                "erty Name=\"PriceItem\" Relationship=\"StoreAppTest.Web.DataModel.PriceChangeReport" +
+                "Item_PriceItem\" ToRole=\"PriceChangeReportItem_PriceItem_Target\" FromRole=\"PriceC" +
+                "hangeReportItem_PriceItem_Source\" /></EntityType><EntityType Name=\"PriceChangeRe" +
+                "port\"><Key><PropertyRef Name=\"Id\" /></Key><Property Name=\"Id\" Type=\"Edm.Int64\" N" +
+                "ullable=\"false\" p6:StoreGeneratedPattern=\"Identity\" xmlns:p6=\"http://schemas.mic" +
+                "rosoft.com/ado/2009/02/edm/annotation\" /><Property Name=\"ReportNumber\" Type=\"Edm" +
+                ".String\" Nullable=\"false\" MaxLength=\"255\" FixedLength=\"false\" Unicode=\"true\" /><" +
+                "Property Name=\"ReportDate\" Type=\"Edm.DateTime\" Nullable=\"false\" /><Property Name" +
+                "=\"Creator_Id\" Type=\"Edm.String\" Nullable=\"false\" MaxLength=\"255\" FixedLength=\"fa" +
+                "lse\" Unicode=\"true\" /><NavigationProperty Name=\"Creator\" Relationship=\"StoreAppT" +
+                "est.Web.DataModel.PriceChangeReport_Creator\" ToRole=\"PriceChangeReport_Creator_T" +
+                "arget\" FromRole=\"PriceChangeReport_Creator_Source\" /><NavigationProperty Name=\"P" +
+                "riceChangeReportItems\" Relationship=\"StoreAppTest.Web.DataModel.PriceChangeRepor" +
+                "t_PriceChangeReportItems\" ToRole=\"PriceChangeReport_PriceChangeReportItems_Targe" +
+                "t\" FromRole=\"PriceChangeReport_PriceChangeReportItems_Source\" /></EntityType><En" +
+                "tityType Name=\"RefundDocument\"><Key><PropertyRef Name=\"Id\" /></Key><Property Nam" +
+                "e=\"Id\" Type=\"Edm.Int64\" Nullable=\"false\" p6:StoreGeneratedPattern=\"Identity\" xml" +
+                "ns:p6=\"http://schemas.microsoft.com/ado/2009/02/edm/annotation\" /><Property Name" +
+                "=\"RefundNumber\" Type=\"Edm.String\" Nullable=\"false\" MaxLength=\"255\" FixedLength=\"" +
+                "false\" Unicode=\"true\" /><Property Name=\"RefundDate\" Type=\"Edm.DateTime\" Nullable" +
+                "=\"false\" /><Property Name=\"SaleDocument_Id\" Type=\"Edm.Int64\" Nullable=\"false\" />" +
+                "<Property Name=\"Creator_Id\" Type=\"Edm.String\" Nullable=\"false\" MaxLength=\"255\" F" +
+                "ixedLength=\"false\" Unicode=\"true\" /><Property Name=\"LastChanger_Id\" Type=\"Edm.St" +
+                "ring\" Nullable=\"false\" MaxLength=\"255\" FixedLength=\"false\" Unicode=\"true\" /><Nav" +
+                "igationProperty Name=\"Creator\" Relationship=\"StoreAppTest.Web.DataModel.RefundDo" +
+                "cument_Creator\" ToRole=\"RefundDocument_Creator_Target\" FromRole=\"RefundDocument_" +
+                "Creator_Source\" /><NavigationProperty Name=\"LastChanger\" Relationship=\"StoreAppT" +
+                "est.Web.DataModel.RefundDocument_LastChanger\" ToRole=\"RefundDocument_LastChanger" +
+                "_Target\" FromRole=\"RefundDocument_LastChanger_Source\" /><NavigationProperty Name" +
+                "=\"RefundItems\" Relationship=\"StoreAppTest.Web.DataModel.RefundDocument_RefundIte" +
+                "ms\" ToRole=\"RefundDocument_RefundItems_Target\" FromRole=\"RefundDocument_RefundIt" +
+                "ems_Source\" /><NavigationProperty Name=\"SaleDocument\" Relationship=\"StoreAppTest" +
+                ".Web.DataModel.RefundDocument_SaleDocument\" ToRole=\"RefundDocument_SaleDocument_" +
+                "Target\" FromRole=\"RefundDocument_SaleDocument_Source\" /></EntityType><EntityType" +
+                " Name=\"RefundItem\"><Key><PropertyRef Name=\"Id\" /></Key><Property Name=\"Id\" Type=" +
+                "\"Edm.Int64\" Nullable=\"false\" p6:StoreGeneratedPattern=\"Identity\" xmlns:p6=\"http:" +
+                "//schemas.microsoft.com/ado/2009/02/edm/annotation\" /><Property Name=\"PriceItem_" +
+                "Id\" Type=\"Edm.Int64\" Nullable=\"false\" /><Property Name=\"SaleItem_Id\" Type=\"Edm.I" +
+                "nt64\" Nullable=\"false\" /><Property Name=\"Price\" Type=\"Edm.Decimal\" Nullable=\"fal" +
+                "se\" Precision=\"18\" Scale=\"2\" /><Property Name=\"Discount\" Type=\"Edm.Decimal\" Null" +
+                "able=\"false\" Precision=\"18\" Scale=\"2\" /><Property Name=\"Count\" Type=\"Edm.Decimal" +
+                "\" Nullable=\"false\" Precision=\"18\" Scale=\"2\" /><Property Name=\"Amount\" Type=\"Edm." +
+                "Decimal\" Nullable=\"false\" Precision=\"18\" Scale=\"2\" /><Property Name=\"RefundDocum" +
+                "ent_Id\" Type=\"Edm.Int64\" Nullable=\"false\" /><NavigationProperty Name=\"PriceItem\"" +
+                " Relationship=\"StoreAppTest.Web.DataModel.RefundItem_PriceItem\" ToRole=\"RefundIt" +
+                "em_PriceItem_Target\" FromRole=\"RefundItem_PriceItem_Source\" /><NavigationPropert" +
+                "y Name=\"RefundDocument\" Relationship=\"StoreAppTest.Web.DataModel.RefundDocument_" +
+                "RefundItems\" ToRole=\"RefundDocument_RefundItems_Source\" FromRole=\"RefundDocument" +
+                "_RefundItems_Target\" /><NavigationProperty Name=\"SaleItem\" Relationship=\"StoreAp" +
+                "pTest.Web.DataModel.RefundItem_SaleItem\" ToRole=\"RefundItem_SaleItem_Target\" Fro" +
+                "mRole=\"RefundItem_SaleItem_Source\" /></EntityType><EntityType Name=\"SaleItem\"><K" +
+                "ey><PropertyRef Name=\"Id\" /></Key><Property Name=\"Id\" Type=\"Edm.Int64\" Nullable=" +
+                "\"false\" p6:StoreGeneratedPattern=\"Identity\" xmlns:p6=\"http://schemas.microsoft.c" +
+                "om/ado/2009/02/edm/annotation\" /><Property Name=\"PriceItem_Id\" Type=\"Edm.Int64\" " +
+                "Nullable=\"false\" /><Property Name=\"Price\" Type=\"Edm.Decimal\" Nullable=\"false\" Pr" +
+                "ecision=\"18\" Scale=\"2\" /><Property Name=\"Discount\" Type=\"Edm.Decimal\" Nullable=\"" +
+                "false\" Precision=\"18\" Scale=\"2\" /><Property Name=\"Count\" Type=\"Edm.Decimal\" Null" +
+                "able=\"false\" Precision=\"18\" Scale=\"2\" /><Property Name=\"Amount\" Type=\"Edm.Decima" +
+                "l\" Nullable=\"false\" Precision=\"18\" Scale=\"2\" /><Property Name=\"CatalogNumber\" Ty" +
+                "pe=\"Edm.String\" MaxLength=\"255\" FixedLength=\"false\" Unicode=\"true\" /><Property N" +
+                "ame=\"Name\" Type=\"Edm.String\" MaxLength=\"500\" FixedLength=\"false\" Unicode=\"true\" " +
+                "/><Property Name=\"Articul\" Type=\"Edm.String\" MaxLength=\"255\" FixedLength=\"false\"" +
+                " Unicode=\"true\" /><Property Name=\"IsDuplicate\" Type=\"Edm.Boolean\" Nullable=\"fals" +
+                "e\" /><Property Name=\"SaleDocument_Id\" Type=\"Edm.Int64\" Nullable=\"false\" /><Navig" +
+                "ationProperty Name=\"PriceItem\" Relationship=\"StoreAppTest.Web.DataModel.SaleItem" +
+                "_PriceItem\" ToRole=\"SaleItem_PriceItem_Target\" FromRole=\"SaleItem_PriceItem_Sour" +
+                "ce\" /><NavigationProperty Name=\"SaleDocument\" Relationship=\"StoreAppTest.Web.Dat" +
+                "aModel.SaleDocument_SaleItems\" ToRole=\"SaleDocument_SaleItems_Source\" FromRole=\"" +
+                "SaleDocument_SaleItems_Target\" /></EntityType><EntityType Name=\"SaleDocument\"><K" +
+                "ey><PropertyRef Name=\"Id\" /></Key><Property Name=\"Id\" Type=\"Edm.Int64\" Nullable=" +
+                "\"false\" p6:StoreGeneratedPattern=\"Identity\" xmlns:p6=\"http://schemas.microsoft.c" +
+                "om/ado/2009/02/edm/annotation\" /><Property Name=\"SaleDate\" Type=\"Edm.DateTime\" N" +
+                "ullable=\"false\" /><Property Name=\"Customer_Name\" Type=\"Edm.String\" Nullable=\"fal" +
+                "se\" MaxLength=\"255\" FixedLength=\"false\" Unicode=\"true\" /><Property Name=\"Number\"" +
+                " Type=\"Edm.String\" Nullable=\"false\" MaxLength=\"255\" FixedLength=\"false\" Unicode=" +
+                "\"true\" /><Property Name=\"Creator_Id\" Type=\"Edm.String\" Nullable=\"false\" MaxLengt" +
+                "h=\"255\" FixedLength=\"false\" Unicode=\"true\" /><Property Name=\"LastChanger_Id\" Typ" +
+                "e=\"Edm.String\" Nullable=\"false\" MaxLength=\"255\" FixedLength=\"false\" Unicode=\"tru" +
+                "e\" /><Property Name=\"IsReceiptPrinted\" Type=\"Edm.Boolean\" N";
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Services.Design", "1.0.0")]
+            private const string ModelPart3 = "ullable=\"false\" /><Property Name=\"IsOrder\" Type=\"Edm.Boolean\" Nullable=\"false\" />" +
+                "<Property Name=\"IsInDebt\" Type=\"Edm.Boolean\" Nullable=\"false\" /><Property Name=\"" +
+                "IsInvoice\" Type=\"Edm.Boolean\" Nullable=\"false\" /><Property Name=\"Barcode\" Type=\"" +
+                "Edm.String\" MaxLength=\"Max\" FixedLength=\"false\" Unicode=\"true\" /><NavigationProp" +
+                "erty Name=\"Creator\" Relationship=\"StoreAppTest.Web.DataModel.SaleDocument_Creato" +
+                "r\" ToRole=\"SaleDocument_Creator_Target\" FromRole=\"SaleDocument_Creator_Source\" /" +
+                "><NavigationProperty Name=\"Customer\" Relationship=\"StoreAppTest.Web.DataModel.Sa" +
+                "leDocument_Customer\" ToRole=\"SaleDocument_Customer_Target\" FromRole=\"SaleDocumen" +
+                "t_Customer_Source\" /><NavigationProperty Name=\"LastChanger\" Relationship=\"StoreA" +
+                "ppTest.Web.DataModel.SaleDocument_LastChanger\" ToRole=\"SaleDocument_LastChanger_" +
+                "Target\" FromRole=\"SaleDocument_LastChanger_Source\" /><NavigationProperty Name=\"S" +
+                "aleItems\" Relationship=\"StoreAppTest.Web.DataModel.SaleDocument_SaleItems\" ToRol" +
+                "e=\"SaleDocument_SaleItems_Target\" FromRole=\"SaleDocument_SaleItems_Source\" /></E" +
+                "ntityType><EntityType Name=\"RefundsPerDayItem\"><Key><PropertyRef Name=\"Id\" /></K" +
                 "ey><Property Name=\"Id\" Type=\"Edm.Int64\" Nullable=\"false\" p6:StoreGeneratedPatter" +
                 "n=\"Identity\" xmlns:p6=\"http://schemas.microsoft.com/ado/2009/02/edm/annotation\" " +
-                "/><Property Name=\"PriceItem_Id\" Type=\"Edm.Int64\" Nullable=\"false\" /><Property Na" +
-                "me=\"Price\" Type=\"Edm.Decimal\" Nullable=\"false\" Precision=\"18\" Scale=\"2\" /><Prope" +
-                "rty Name=\"Discount\" Type=\"Edm.Decimal\" Nullable=\"false\" Precision=\"18\" Scale=\"2\"" +
-                " /><Property Name=\"Count\" Type=\"Edm.Decimal\" Nullable=\"false\" Precision=\"18\" Sca" +
-                "le=\"2\" /><Property Name=\"Amount\" Type=\"Edm.Decimal\" Nullable=\"false\" Precision=\"" +
-                "18\" Scale=\"2\" /><Property Name=\"SaleDocument_Id\" Type=\"Edm.Int64\" Nullable=\"fals" +
-                "e\" /><NavigationProperty Name=\"PriceItem\" Relationship=\"StoreAppTest.Web.DataMod" +
-                "el.SaleItem_PriceItem\" ToRole=\"SaleItem_PriceItem_Target\" FromRole=\"SaleItem_Pri" +
-                "ceItem_Source\" /><NavigationProperty Name=\"SaleDocument\" Relationship=\"StoreAppT" +
-                "est.Web.DataModel.SaleDocument_SaleItems\" ToRole=\"SaleDocument_SaleItems_Source\"" +
-                " FromRole=\"SaleDocument_SaleItems_Target\" /></EntityType><EntityType Name=\"SaleD" +
-                "ocument\"><Key><PropertyRef Name=\"Id\" /></Key><Property Name=\"Id\" Type=\"Edm.Int64" +
-                "\" Nullable=\"false\" p6:StoreGeneratedPattern=\"Identity\" xmlns:p6=\"http://schemas." +
-                "microsoft.com/ado/2009/02/edm/annotation\" /><Property Name=\"SaleDate\" Type=\"Edm." +
-                "DateTime\" Nullable=\"false\" /><Property Name=\"Customer_Name\" Type=\"Edm.String\" Nu" +
-                "llable=\"false\" MaxLength=\"255\" FixedLength=\"false\" Unicode=\"true\" /><Property Na" +
-                "me=\"Number\" Type=\"Edm.String\" Nullable=\"false\" MaxLength=\"255\" FixedLength=\"fals" +
-                "e\" Unicode=\"true\" /><Property Name=\"Creator_Id\" Type=\"Edm.String\" Nullable=\"fals" +
-                "e\" MaxLength=\"255\" FixedLength=\"false\" Unicode=\"true\" /><Property Name=\"LastChan" +
-                "ger_Id\" Type=\"Edm.String\" Nullable=\"false\" MaxLength=\"255\" FixedLength=\"false\" U" +
-                "nicode=\"true\" /><Property Name=\"IsReceiptPrinted\" Type=\"Edm.Boolean\" Nullable=\"f" +
-                "alse\" /><Property Name=\"IsOrder\" Type=\"Edm.Boolean\" Nullable=\"false\" /><Property" +
-                " Name=\"IsInDebt\" Type=\"Edm.Boolean\" Nullable=\"false\" /><Property Name=\"IsInvoice" +
-                "\" Type=\"Edm.Boolean\" Nullable=\"false\" /><Property Name=\"Barcode\" Type=\"Edm.Strin" +
-                "g\" MaxLength=\"Max\" FixedLength=\"false\" Unicode=\"true\" /><NavigationProperty Name" +
-                "=\"Creator\" Relationship=\"StoreAppTest.Web.DataModel.SaleDocument_Creator\" ToRole" +
-                "=\"SaleDocument_Creator_Target\" FromRole=\"SaleDocument_Creator_Source\" /><Navigat" +
-                "ionProperty Name=\"Customer\" Relationship=\"StoreAppTest.Web.DataModel.SaleDocumen" +
-                "t_Customer\" ToRole=\"SaleDocument_Customer_Target\" FromRole=\"SaleDocument_Custome" +
-                "r_Source\" /><NavigationProperty Name=\"LastChanger\" Relationship=\"StoreAppTest.We" +
-                "b.DataModel.SaleDocument_LastChanger\" ToRole=\"SaleDocument_LastChanger_Target\" F" +
-                "romRole=\"SaleDocument_LastChanger_Source\" /><NavigationProperty Name=\"SaleItems\"" +
-                " Relationship=\"StoreAppTest.Web.DataModel.SaleDocument_SaleItems\" ToRole=\"SaleDo" +
-                "cument_SaleItems_Target\" FromRole=\"SaleDocument_SaleItems_Source\" /></EntityType" +
-                "><EntityType Name=\"RefundsPerDayItem\"><Key><PropertyRef Name=\"Id\" /></Key><Prope" +
-                "rty Name=\"Id\" Type=\"Edm.Int64\" Nullable=\"false\" p6:StoreGeneratedPattern=\"Identi" +
-                "ty\" xmlns:p6=\"http://schemas.microsoft.com/ado/2009/02/edm/";
-            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Services.Design", "1.0.0")]
-            private const string ModelPart3 = "annotation\" /><Property Name=\"RefundItem_Id\" Type=\"Edm.Int64\" Nullable=\"false\" />" +
-                "<Property Name=\"SaleDocumentsPerDay_Id\" Type=\"Edm.Int64\" Nullable=\"false\" /><Nav" +
-                "igationProperty Name=\"RefundItem\" Relationship=\"StoreAppTest.Web.DataModel.Refun" +
-                "dsPerDayItem_RefundItem\" ToRole=\"RefundsPerDayItem_RefundItem_Target\" FromRole=\"" +
-                "RefundsPerDayItem_RefundItem_Source\" /><NavigationProperty Name=\"SaleDocumentsPe" +
-                "rDay\" Relationship=\"StoreAppTest.Web.DataModel.SaleDocumentsPerDay_RefundsPerDay" +
-                "Items\" ToRole=\"SaleDocumentsPerDay_RefundsPerDayItems_Source\" FromRole=\"SaleDocu" +
-                "mentsPerDay_RefundsPerDayItems_Target\" /></EntityType><EntityType Name=\"SaleDocu" +
-                "mentsPerDay\"><Key><PropertyRef Name=\"Id\" /></Key><Property Name=\"Id\" Type=\"Edm.I" +
-                "nt64\" Nullable=\"false\" p6:StoreGeneratedPattern=\"Identity\" xmlns:p6=\"http://sche" +
-                "mas.microsoft.com/ado/2009/02/edm/annotation\" /><Property Name=\"SaleDocumentsDat" +
-                "e\" Type=\"Edm.DateTime\" Nullable=\"false\" /><Property Name=\"Barcode\" Type=\"Edm.Str" +
-                "ing\" MaxLength=\"Max\" FixedLength=\"false\" Unicode=\"true\" /><Property Name=\"Number" +
-                "\" Type=\"Edm.String\" Nullable=\"false\" MaxLength=\"255\" FixedLength=\"false\" Unicode" +
-                "=\"true\" /><Property Name=\"Creator_Id\" Type=\"Edm.String\" Nullable=\"false\" MaxLeng" +
-                "th=\"255\" FixedLength=\"false\" Unicode=\"true\" /><Property Name=\"IsClosed\" Type=\"Ed" +
-                "m.Boolean\" Nullable=\"false\" /><NavigationProperty Name=\"Creator\" Relationship=\"S" +
-                "toreAppTest.Web.DataModel.SaleDocumentsPerDay_Creator\" ToRole=\"SaleDocumentsPerD" +
-                "ay_Creator_Target\" FromRole=\"SaleDocumentsPerDay_Creator_Source\" /><NavigationPr" +
-                "operty Name=\"RefundsPerDayItems\" Relationship=\"StoreAppTest.Web.DataModel.SaleDo" +
-                "cumentsPerDay_RefundsPerDayItems\" ToRole=\"SaleDocumentsPerDay_RefundsPerDayItems" +
-                "_Target\" FromRole=\"SaleDocumentsPerDay_RefundsPerDayItems_Source\" /><NavigationP" +
-                "roperty Name=\"SalesPerDayItems\" Relationship=\"StoreAppTest.Web.DataModel.SaleDoc" +
-                "umentsPerDay_SalesPerDayItems\" ToRole=\"SaleDocumentsPerDay_SalesPerDayItems_Targ" +
-                "et\" FromRole=\"SaleDocumentsPerDay_SalesPerDayItems_Source\" /></EntityType><Entit" +
-                "yType Name=\"SalesPerDayItem\"><Key><PropertyRef Name=\"Id\" /></Key><Property Name=" +
-                "\"Id\" Type=\"Edm.Int64\" Nullable=\"false\" p6:StoreGeneratedPattern=\"Identity\" xmlns" +
-                ":p6=\"http://schemas.microsoft.com/ado/2009/02/edm/annotation\" /><Property Name=\"" +
-                "SaleItem_Id\" Type=\"Edm.Int64\" Nullable=\"false\" /><Property Name=\"SaleDocumentsPe" +
-                "rDay_Id\" Type=\"Edm.Int64\" Nullable=\"false\" /><NavigationProperty Name=\"SaleDocum" +
-                "entsPerDay\" Relationship=\"StoreAppTest.Web.DataModel.SaleDocumentsPerDay_SalesPe" +
-                "rDayItems\" ToRole=\"SaleDocumentsPerDay_SalesPerDayItems_Source\" FromRole=\"SaleDo" +
-                "cumentsPerDay_SalesPerDayItems_Target\" /><NavigationProperty Name=\"SaleItem\" Rel" +
-                "ationship=\"StoreAppTest.Web.DataModel.SalesPerDayItem_SaleItem\" ToRole=\"SalesPer" +
-                "DayItem_SaleItem_Target\" FromRole=\"SalesPerDayItem_SaleItem_Source\" /></EntityTy" +
-                "pe><EntityType Name=\"WarehouseTransferRequestItem\"><Key><PropertyRef Name=\"Id\" /" +
-                "></Key><Property Name=\"Id\" Type=\"Edm.Int64\" Nullable=\"false\" p6:StoreGeneratedPa" +
-                "ttern=\"Identity\" xmlns:p6=\"http://schemas.microsoft.com/ado/2009/02/edm/annotati" +
-                "on\" /><Property Name=\"PriceItem_Id\" Type=\"Edm.Int64\" Nullable=\"false\" /><Propert" +
-                "y Name=\"Count\" Type=\"Edm.Decimal\" Nullable=\"false\" Precision=\"18\" Scale=\"2\" /><P" +
-                "roperty Name=\"CountAccepted\" Type=\"Edm.Decimal\" Nullable=\"false\" Precision=\"18\" " +
-                "Scale=\"2\" /><Property Name=\"WholesalePrice\" Type=\"Edm.Decimal\" Nullable=\"false\" " +
-                "Precision=\"18\" Scale=\"2\" /><Property Name=\"AcceptedAmount\" Type=\"Edm.Decimal\" Nu" +
-                "llable=\"false\" Precision=\"18\" Scale=\"2\" /><Property Name=\"WarehouseTransferReque" +
-                "st_Id\" Type=\"Edm.Int64\" Nullable=\"false\" /><NavigationProperty Name=\"PriceItem\" " +
-                "Relationship=\"StoreAppTest.Web.DataModel.WarehouseTransferRequestItem_PriceItem\"" +
-                " ToRole=\"WarehouseTransferRequestItem_PriceItem_Target\" FromRole=\"WarehouseTrans" +
-                "ferRequestItem_PriceItem_Source\" /><NavigationProperty Name=\"WarehouseTransferRe" +
-                "quest\" Relationship=\"StoreAppTest.Web.DataModel.WarehouseTransferRequest_Warehou" +
-                "seTransferRequestItemItems\" ToRole=\"WarehouseTransferRequest_WarehouseTransferRe" +
-                "questItemItems_Source\" FromRole=\"WarehouseTransferRequest_WarehouseTransferReque" +
-                "stItemItems_Target\" /></EntityType><EntityType Name=\"WarehouseTransferRequest\"><" +
+                "/><Property Name=\"RefundItem_Id\" Type=\"Edm.Int64\" Nullable=\"false\" /><Property N" +
+                "ame=\"SaleDocumentsPerDay_Id\" Type=\"Edm.Int64\" Nullable=\"false\" /><NavigationProp" +
+                "erty Name=\"RefundItem\" Relationship=\"StoreAppTest.Web.DataModel.RefundsPerDayIte" +
+                "m_RefundItem\" ToRole=\"RefundsPerDayItem_RefundItem_Target\" FromRole=\"RefundsPerD" +
+                "ayItem_RefundItem_Source\" /><NavigationProperty Name=\"SaleDocumentsPerDay\" Relat" +
+                "ionship=\"StoreAppTest.Web.DataModel.RefundsPerDayItem_SaleDocumentsPerDay\" ToRol" +
+                "e=\"RefundsPerDayItem_SaleDocumentsPerDay_Target\" FromRole=\"RefundsPerDayItem_Sal" +
+                "eDocumentsPerDay_Source\" /></EntityType><EntityType Name=\"SaleDocumentsPerDay\"><" +
                 "Key><PropertyRef Name=\"Id\" /></Key><Property Name=\"Id\" Type=\"Edm.Int64\" Nullable" +
                 "=\"false\" p6:StoreGeneratedPattern=\"Identity\" xmlns:p6=\"http://schemas.microsoft." +
-                "com/ado/2009/02/edm/annotation\" /><Property Name=\"RequestNumber\" Type=\"Edm.Strin" +
-                "g\" Nullable=\"false\" MaxLength=\"255\" FixedLength=\"false\" Unicode=\"true\" /><Proper" +
-                "ty Name=\"RequestDate\" Type=\"Edm.DateTime\" Nullable=\"false\" /><Property Name=\"IsA" +
-                "ccept\" Type=\"Edm.Boolean\" Nullable=\"false\" /><Property Name=\"IsReserve\" Type=\"Ed" +
-                "m.Boolean\" Nullable=\"false\" /><Property Name=\"StateChangedDate\" Type=\"Edm.DateTi" +
-                "me\" /><Property Name=\"Status\" Type=\"Edm.String\" MaxLength=\"255\" FixedLength=\"fal" +
-                "se\" Unicode=\"true\" /><Property Name=\"Customer_Id\" Type=\"Edm.String\" Nullable=\"fa" +
-                "lse\" MaxLength=\"255\" FixedLength=\"false\" Unicode=\"true\" /><Property Name=\"Suppli" +
-                "er_Id\" Type=\"Edm.String\" Nullable=\"false\" MaxLength=\"255\" FixedLength=\"false\" Un" +
-                "icode=\"true\" /><Property Name=\"Creator_Id\" Type=\"Edm.String\" Nullable=\"false\" Ma" +
-                "xLength=\"255\" FixedLength=\"false\" Unicode=\"true\" /><Property Name=\"LastChanged_I" +
-                "d\" Type=\"Edm.String\" MaxLength=\"255\" FixedLength=\"false\" Unicode=\"true\" /><Prope" +
-                "rty Name=\"Description\" Type=\"Edm.String\" MaxLength=\"500\" FixedLength=\"false\" Uni" +
-                "code=\"true\" /><NavigationProperty Name=\"Creator\" Relationship=\"StoreAppTest.Web." +
-                "DataModel.WarehouseTransferRequest_Creator\" ToRole=\"WarehouseTransferRequest_Cre" +
-                "ator_Target\" FromRole=\"WarehouseTransferRequest_Creator_Source\" /><NavigationPro" +
-                "perty Name=\"Customer\" Relationship=\"StoreAppTest.Web.DataModel.WarehouseTransfer" +
-                "Request_Customer\" ToRole=\"WarehouseTransferRequest_Customer_Target\" FromRole=\"Wa" +
-                "rehouseTransferRequest_Customer_Source\" /><NavigationProperty Name=\"LastChanged\"" +
-                " Relationship=\"StoreAppTest.Web.DataModel.WarehouseTransferRequest_LastChanged\" " +
-                "ToRole=\"WarehouseTransferRequest_LastChanged_Target\" FromRole=\"WarehouseTransfer" +
-                "Request_LastChanged_Source\" /><NavigationProperty Name=\"Supplier\" Relationship=\"" +
-                "StoreAppTest.Web.DataModel.WarehouseTransferRequest_Supplier\" ToRole=\"WarehouseT" +
-                "ransferRequest_Supplier_Target\" FromRole=\"WarehouseTransferRequest_Supplier_Sour" +
-                "ce\" /><NavigationProperty Name=\"WarehouseTransferRequestItemItems\" Relationship=" +
-                "\"StoreAppTest.Web.DataModel.WarehouseTransferRequest_WarehouseTransferRequestIte" +
-                "mItems\" ToRole=\"WarehouseTransferRequest_WarehouseTransferRequestItemItems_Targe" +
-                "t\" FromRole=\"WarehouseTransferRequest_WarehouseTransferRequestItemItems_Source\" " +
-                "/></EntityType><EntityType Name=\"PriceItemRemainderView\"><Key><PropertyRef Name=" +
-                "\"PriceItem_Id\" /></Key><Property Name=\"PriceItem_Id\" Type=\"Edm.Int64\" Nullable=\"" +
-                "false\" p6:StoreGeneratedPattern=\"None\" xmlns:p6=\"http://schemas.microsoft.com/ad" +
-                "o/2009/02/edm/annotation\" /><Property Name=\"BuyPriceRur\" Type=\"Edm.Decimal\" Null" +
-                "able=\"false\" Precision=\"18\" Scale=\"2\" /><Property Name=\"BuyPriceTng\" Type=\"Edm.D" +
-                "ecimal\" Nullable=\"false\" Precision=\"18\" Scale=\"2\" /><Property Name=\"WholesalePri" +
-                "ce\" Type=\"Edm.Decimal\" Nullable=\"false\" Precision=\"18\" Scale=\"2\" /><Property Nam" +
-                "e=\"Supplier\" Type=\"Edm.String\" MaxLength=\"Max\" FixedLength=\"false\" Unicode=\"true" +
-                "\" /><Property Name=\"Uom\" Type=\"Edm.String\" MaxLength=\"Max\" FixedLength=\"false\" U" +
-                "nicode=\"true\" /><Property Name=\"Gear_Id\" Type=\"Edm.Int64\" Nullable=\"false\" /><Pr" +
-                "operty Name=\"CatalogNumber\" Type=\"Edm.String\" MaxLength=\"Max\" FixedLength=\"false" +
-                "\" Unicode=\"true\" /><Property Name=\"Articul\" Type=\"Edm.Strin";
-            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Services.Design", "1.0.0")]
-            private const string ModelPart4 = "g\" MaxLength=\"Max\" FixedLength=\"false\" Unicode=\"true\" /><Property Name=\"IsDuplica" +
-                "te\" Type=\"Edm.Boolean\" Nullable=\"false\" /><Property Name=\"Gear_Name\" Type=\"Edm.S" +
-                "tring\" MaxLength=\"Max\" FixedLength=\"false\" Unicode=\"true\" /><Property Name=\"Reco" +
-                "mmendedRemainder\" Type=\"Edm.Decimal\" Nullable=\"false\" Precision=\"18\" Scale=\"2\" /" +
-                "><Property Name=\"LowerLimitRemainder\" Type=\"Edm.Decimal\" Nullable=\"false\" Precis" +
-                "ion=\"18\" Scale=\"2\" /><Property Name=\"Remainder_Id\" Type=\"Edm.Int64\" Nullable=\"fa" +
-                "lse\" /><Property Name=\"Warehouse\" Type=\"Edm.String\" MaxLength=\"Max\" FixedLength=" +
-                "\"false\" Unicode=\"true\" /><Property Name=\"RemainderDate\" Type=\"Edm.DateTime\" Null" +
-                "able=\"false\" /><Property Name=\"Remainders\" Type=\"Edm.Decimal\" Nullable=\"false\" P" +
-                "recision=\"18\" Scale=\"2\" /></EntityType><EntityType Name=\"PriceIncomeItemView\"><K" +
-                "ey><PropertyRef Name=\"PriceItem_Id\" /></Key><Property Name=\"PriceItem_Id\" Type=\"" +
-                "Edm.Int64\" Nullable=\"false\" p6:StoreGeneratedPattern=\"None\" xmlns:p6=\"http://sch" +
-                "emas.microsoft.com/ado/2009/02/edm/annotation\" /><Property Name=\"BuyPriceRur\" Ty" +
-                "pe=\"Edm.Decimal\" Nullable=\"false\" Precision=\"18\" Scale=\"2\" /><Property Name=\"Buy" +
-                "PriceTng\" Type=\"Edm.Decimal\" Nullable=\"false\" Precision=\"18\" Scale=\"2\" /><Proper" +
-                "ty Name=\"WholesalePrice\" Type=\"Edm.Decimal\" Nullable=\"false\" Precision=\"18\" Scal" +
-                "e=\"2\" /><Property Name=\"Uom\" Type=\"Edm.String\" MaxLength=\"Max\" FixedLength=\"fals" +
-                "e\" Unicode=\"true\" /><Property Name=\"Gear_Id\" Type=\"Edm.Int64\" Nullable=\"false\" /" +
-                "><Property Name=\"CatalogNumber\" Type=\"Edm.String\" MaxLength=\"Max\" FixedLength=\"f" +
-                "alse\" Unicode=\"true\" /><Property Name=\"Articul\" Type=\"Edm.String\" MaxLength=\"Max" +
-                "\" FixedLength=\"false\" Unicode=\"true\" /><Property Name=\"IsDuplicate\" Type=\"Edm.Bo" +
-                "olean\" Nullable=\"false\" /><Property Name=\"Gear_Name\" Type=\"Edm.String\" MaxLength" +
-                "=\"Max\" FixedLength=\"false\" Unicode=\"true\" /><Property Name=\"RecommendedRemainder" +
+                "com/ado/2009/02/edm/annotation\" /><Property Name=\"SaleDocumentsDate\" Type=\"Edm.D" +
+                "ateTime\" Nullable=\"false\" /><Property Name=\"Barcode\" Type=\"Edm.String\" MaxLength" +
+                "=\"Max\" FixedLength=\"false\" Unicode=\"true\" /><Property Name=\"Number\" Type=\"Edm.St" +
+                "ring\" Nullable=\"false\" MaxLength=\"255\" FixedLength=\"false\" Unicode=\"true\" /><Pro" +
+                "perty Name=\"TotalAmount\" Type=\"Edm.Decimal\" Nullable=\"false\" Precision=\"18\" Scal" +
+                "e=\"2\" /><Property Name=\"TotalRefund\" Type=\"Edm.Decimal\" Nullable=\"false\" Precisi" +
+                "on=\"18\" Scale=\"2\" /><Property Name=\"SubTotal\" Type=\"Edm.Decimal\" Nullable=\"false" +
+                "\" Precision=\"18\" Scale=\"2\" /><Property Name=\"TotalAmountProfit\" Type=\"Edm.Decima" +
+                "l\" Nullable=\"false\" Precision=\"18\" Scale=\"2\" /><Property Name=\"TotalRefundProfit" +
                 "\" Type=\"Edm.Decimal\" Nullable=\"false\" Precision=\"18\" Scale=\"2\" /><Property Name=" +
-                "\"LowerLimitRemainder\" Type=\"Edm.Decimal\" Nullable=\"false\" Precision=\"18\" Scale=\"" +
-                "2\" /><Property Name=\"Remainders\" Type=\"Edm.Decimal\" Nullable=\"false\" Precision=\"" +
-                "18\" Scale=\"2\" /><Property Name=\"Incomes\" Type=\"Edm.Decimal\" Nullable=\"false\" Pre" +
-                "cision=\"18\" Scale=\"2\" /></EntityType><EntityType Name=\"PriceIncomeTotalItemView\"" +
-                "><Key><PropertyRef Name=\"PriceItem_Id\" /></Key><Property Name=\"PriceItem_Id\" Typ" +
-                "e=\"Edm.Int64\" Nullable=\"false\" p6:StoreGeneratedPattern=\"None\" xmlns:p6=\"http://" +
-                "schemas.microsoft.com/ado/2009/02/edm/annotation\" /><Property Name=\"BuyPriceRur\"" +
-                " Type=\"Edm.Decimal\" Nullable=\"false\" Precision=\"18\" Scale=\"2\" /><Property Name=\"" +
-                "BuyPriceTng\" Type=\"Edm.Decimal\" Nullable=\"false\" Precision=\"18\" Scale=\"2\" /><Pro" +
-                "perty Name=\"WholesalePrice\" Type=\"Edm.Decimal\" Nullable=\"false\" Precision=\"18\" S" +
-                "cale=\"2\" /><Property Name=\"Uom\" Type=\"Edm.String\" MaxLength=\"Max\" FixedLength=\"f" +
-                "alse\" Unicode=\"true\" /><Property Name=\"Gear_Id\" Type=\"Edm.Int64\" Nullable=\"false" +
-                "\" /><Property Name=\"CatalogNumber\" Type=\"Edm.String\" MaxLength=\"Max\" FixedLength" +
-                "=\"false\" Unicode=\"true\" /><Property Name=\"Articul\" Type=\"Edm.String\" MaxLength=\"" +
-                "Max\" FixedLength=\"false\" Unicode=\"true\" /><Property Name=\"IsDuplicate\" Type=\"Edm" +
-                ".Boolean\" Nullable=\"false\" /><Property Name=\"Gear_Name\" Type=\"Edm.String\" MaxLen" +
-                "gth=\"Max\" FixedLength=\"false\" Unicode=\"true\" /><Property Name=\"RecommendedRemain" +
-                "der\" Type=\"Edm.Decimal\" Nullable=\"false\" Precision=\"18\" Scale=\"2\" /><Property Na" +
-                "me=\"LowerLimitRemainder\" Type=\"Edm.Decimal\" Nullable=\"false\" Precision=\"18\" Scal" +
-                "e=\"2\" /><Property Name=\"Remainders\" Type=\"Edm.Decimal\" Nullable=\"false\" Precisio" +
-                "n=\"18\" Scale=\"2\" /><Property Name=\"Incomes\" Type=\"Edm.Decimal\" Nullable=\"false\" " +
-                "Precision=\"18\" Scale=\"2\" /><Property Name=\"Income_Id\" Type=\"Edm.Int64\" Nullable=" +
-                "\"false\" /><Property Name=\"IsAccept\" Type=\"Edm.Boolean\" Nullable=\"false\" /><Prope" +
-                "rty Name=\"NewPrice\" Type=\"Edm.Decimal\" Nullable=\"false\" Precision=\"18\" Scale=\"2\"" +
-                " /></EntityType><EntityType Name=\"PriceItemView\"><Key><PropertyRef Name=\"PriceIt" +
-                "em_Id\" /></Key><Property Name=\"PriceItem_Id\" Type=\"Edm.Int64\" Nullable=\"false\" p" +
-                "6:StoreGeneratedPattern=\"None\" xmlns:p6=\"http://schemas.microsoft.com/ado/2009/0" +
-                "2/edm/annotation\" /><Property Name=\"BuyPriceRur\" Type=\"Edm.Decimal\" Nullable=\"fa" +
-                "lse\" Precision=\"18\" Scale=\"2\" /><Property Name=\"BuyPriceTng\" Type=\"Edm.Decimal\" " +
-                "Nullable=\"false\" Precision=\"18\" Scale=\"2\" /><Property Name=\"Uom\" Type=\"Edm.Strin" +
-                "g\" MaxLength=\"Max\" FixedLength=\"false\" Unicode=\"true\" /><Property Name=\"Gear_Id\"" +
-                " Type=\"Edm.Int64\" Nullable=\"false\" /><Property Name=\"CatalogNumber\" Type=\"Edm.St" +
-                "ring\" MaxLength=\"Max\" FixedLength=\"false\" Unicode=\"true\" /><Property Name=\"Artic" +
-                "ul\" Type=\"Edm.String\" MaxLength=\"Max\" FixedLength=\"false\" Unicode=\"true\" /><Prop" +
-                "erty Name=\"IsDuplicate\" Type=\"Edm.Boolean\" Nullable=\"false\" /><Property Name=\"Ge" +
-                "ar_Name\" Type=\"Edm.String\" MaxLength=\"Max\" FixedLength=\"false\" Unicode=\"true\" />" +
-                "<Property Name=\"WholesalePrice\" Type=\"Edm.Decimal\" Nullable=\"false\" Precision=\"1" +
-                "8\" Scale=\"2\" /><Property Name=\"WholesalePriceDate\" Type=\"Edm.DateTime\" Nullable=" +
-                "\"false\" /></EntityType><EntityType Name=\"PriceListItemRemainderView\"><Key><Prope" +
-                "rtyRef Name=\"PriceItem_Id\" /></Key><Property Name=\"PriceItem_Id\" Type=\"Edm.Int64" +
-                "\" Nullable=\"false\" p6:StoreGeneratedPattern=\"None\" xmlns:p6=\"http://schemas.micr" +
-                "osoft.com/ado/2009/02/edm/annotation\" /><Property Name=\"BuyPriceRur\" Type=\"Edm.D" +
-                "ecimal\" Nullable=\"false\" Precision=\"18\" Scale=\"2\" /><Property Name=\"BuyPriceTng\"" +
-                " Type=\"Edm.Decimal\" Nullable=\"false\" Precision=\"18\" Scale=\"2\" /><Property Name=\"" +
-                "WholesalePrice\" Type=\"Edm.Decimal\" Nullable=\"false\" Precision=\"18\" Scale=\"2\" /><" +
-                "Property Name=\"PriceList_Name\" Type=\"Edm.String\" MaxLength=\"Max\" FixedLength=\"fa" +
-                "lse\" Unicode=\"true\" /><Property Name=\"Supplier\" Type=\"Edm.String\" MaxLength=\"Max" +
-                "\" FixedLength=\"false\" Unicode=\"true\" /><Property Name=\"Uom\" Type=\"Edm.String\" Ma" +
-                "xLength=\"Max\" FixedLength=\"false\" Unicode=\"true\" /><Property Name=\"Gear_Id\" Type" +
-                "=\"Edm.Int64\" Nullable=\"false\" /><Property Name=\"CatalogNumber\" Type=\"Edm.String\"" +
-                " MaxLength=\"Max\" FixedLength=\"false\" Unicode=\"true\" /><Property Name=\"Articul\" T" +
-                "ype=\"Edm.String\" MaxLength=\"Max\" FixedLength=\"false\" Unicode=\"true\" /><Property " +
-                "Name=\"IsDuplicate\" Type=\"Edm.Boolean\" Nullable=\"false\" /><Property Name=\"Gear_Na" +
-                "me\" Type=\"Edm.String\" MaxLength=\"Max\" FixedLength=\"false\" Unicode=\"true\" /><Prop" +
-                "erty Name=\"RecommendedRemainder\" Type=\"Edm.Decimal\" Nullable=\"false\" Precision=\"" +
-                "18\" Scale=\"2\" /><Property Name=\"LowerLimitRemainder\" Type=\"Edm.Decimal\" Nullable" +
-                "=\"false\" Precision=\"18\" Scale=\"2\" /><Property Name=\"Remainder_Id\" Type=\"Edm.Int6" +
-                "4\" Nullable=\"false\" /><Property Name=\"Warehouse\" Type=\"Edm.String\" MaxLength=\"Ma" +
-                "x\" FixedLength=\"false\" Unicode=\"true\" /><Property Name=\"RemainderDate\" Type=\"Edm" +
-                ".DateTime\" Nullable=\"false\" /><Property Name=\"Remainders\" Type=\"Edm.Decimal\" Nul" +
-                "lable=\"false\" Precision=\"18\" Scale=\"2\" /></EntityType><Association Name=\"Custome" +
-                "r_Creator\"><End Type=\"StoreAppTest.Web.DataModel.User\" Role=\"Customer_Creator_Ta" +
-                "rget\" Multiplicity=\"1\" /><End Type=\"StoreAppTest.Web.DataModel.Customer\" Role=\"C" +
-                "ustomer_Creator_Source\" Multiplicity=\"*\" /><ReferentialConstraint><Principal Rol" +
-                "e=\"Customer_Creator_Target\"><PropertyRef Name=\"UserName\" /></Principal><Dependen" +
-                "t Role=\"Customer_Creator_Source\"><PropertyRef Name=\"Creator_Id\" /></Dependent></" +
-                "ReferentialConstraint></Association><Association Name=\"User_Roles\"><End Type=\"St" +
-                "oreAppTest.Web.DataModel.Role\" Role=\"User_Roles_Target\" Multiplicity=\"*\" /><End " +
-                "Type=\"StoreAppTest.Web.DataModel.User\" Role=\"User_Roles_Source\" Multiplicity=\"*\"" +
-                " /></Association><Association Name=\"User_Warehouse\"><End Ty";
+                "\"SubTotalProfit\" Type=\"Edm.Decimal\" Nullable=\"false\" Precision=\"18\" Scale=\"2\" />" +
+                "<Property Name=\"Creator_Id\" Type=\"Edm.String\" Nullable=\"false\" MaxLength=\"255\" F" +
+                "ixedLength=\"false\" Unicode=\"true\" /><Property Name=\"IsClosed\" Type=\"Edm.Boolean\"" +
+                " Nullable=\"false\" /><NavigationProperty Name=\"Creator\" Relationship=\"StoreAppTes" +
+                "t.Web.DataModel.SaleDocumentsPerDay_Creator\" ToRole=\"SaleDocumentsPerDay_Creator" +
+                "_Target\" FromRole=\"SaleDocumentsPerDay_Creator_Source\" /><NavigationProperty Nam" +
+                "e=\"SalesPerDayItems\" Relationship=\"StoreAppTest.Web.DataModel.SaleDocumentsPerDa" +
+                "y_SalesPerDayItems\" ToRole=\"SaleDocumentsPerDay_SalesPerDayItems_Target\" FromRol" +
+                "e=\"SaleDocumentsPerDay_SalesPerDayItems_Source\" /></EntityType><EntityType Name=" +
+                "\"SalesPerDayItem\"><Key><PropertyRef Name=\"Id\" /></Key><Property Name=\"Id\" Type=\"" +
+                "Edm.Int64\" Nullable=\"false\" p6:StoreGeneratedPattern=\"Identity\" xmlns:p6=\"http:/" +
+                "/schemas.microsoft.com/ado/2009/02/edm/annotation\" /><Property Name=\"CatalogNumb" +
+                "er\" Type=\"Edm.String\" MaxLength=\"255\" FixedLength=\"false\" Unicode=\"true\" /><Prop" +
+                "erty Name=\"Name\" Type=\"Edm.String\" Nullable=\"false\" MaxLength=\"500\" FixedLength=" +
+                "\"false\" Unicode=\"true\" /><Property Name=\"IsDuplicate\" Type=\"Edm.Boolean\" Nullabl" +
+                "e=\"false\" /><Property Name=\"UnitOfMeasure\" Type=\"Edm.String\" MaxLength=\"Max\" Fix" +
+                "edLength=\"false\" Unicode=\"true\" /><Property Name=\"Price\" Type=\"Edm.Decimal\" Null" +
+                "able=\"false\" Precision=\"18\" Scale=\"2\" /><Property Name=\"Discount\" Type=\"Edm.Deci" +
+                "mal\" Nullable=\"false\" Precision=\"18\" Scale=\"2\" /><Property Name=\"Count\" Type=\"Ed" +
+                "m.Decimal\" Nullable=\"false\" Precision=\"18\" Scale=\"2\" /><Property Name=\"Amount\" T" +
+                "ype=\"Edm.Decimal\" Nullable=\"false\" Precision=\"18\" Scale=\"2\" /><Property Name=\"Re" +
+                "mainders\" Type=\"Edm.Decimal\" Nullable=\"false\" Precision=\"18\" Scale=\"2\" /><Proper" +
+                "ty Name=\"SaleItem_Id\" Type=\"Edm.Int64\" Nullable=\"false\" /><Property Name=\"SaleDo" +
+                "cumentsPerDay_Id\" Type=\"Edm.Int64\" Nullable=\"false\" /><NavigationProperty Name=\"" +
+                "SaleDocumentsPerDay\" Relationship=\"StoreAppTest.Web.DataModel.SaleDocumentsPerDa" +
+                "y_SalesPerDayItems\" ToRole=\"SaleDocumentsPerDay_SalesPerDayItems_Source\" FromRol" +
+                "e=\"SaleDocumentsPerDay_SalesPerDayItems_Target\" /><NavigationProperty Name=\"Sale" +
+                "Item\" Relationship=\"StoreAppTest.Web.DataModel.SalesPerDayItem_SaleItem\" ToRole=" +
+                "\"SalesPerDayItem_SaleItem_Target\" FromRole=\"SalesPerDayItem_SaleItem_Source\" /><" +
+                "/EntityType><EntityType Name=\"WarehouseTransferRequestItem\"><Key><PropertyRef Na" +
+                "me=\"Id\" /></Key><Property Name=\"Id\" Type=\"Edm.Int64\" Nullable=\"false\" p6:StoreGe" +
+                "neratedPattern=\"Identity\" xmlns:p6=\"http://schemas.microsoft.com/ado/2009/02/edm" +
+                "/annotation\" /><Property Name=\"PriceItem_Id\" Type=\"Edm.Int64\" Nullable=\"false\" /" +
+                "><Property Name=\"Count\" Type=\"Edm.Decimal\" Nullable=\"false\" Precision=\"18\" Scale" +
+                "=\"2\" /><Property Name=\"CountAccepted\" Type=\"Edm.Decimal\" Nullable=\"false\" Precis" +
+                "ion=\"18\" Scale=\"2\" /><Property Name=\"WholesalePrice\" Type=\"Edm.Decimal\" Nullable" +
+                "=\"false\" Precision=\"18\" Scale=\"2\" /><Property Name=\"AcceptedAmount\" Type=\"Edm.De" +
+                "cimal\" Nullable=\"false\" Precision=\"18\" Scale=\"2\" /><Property Name=\"WarehouseTran" +
+                "sferRequest_Id\" Type=\"Edm.Int64\" Nullable=\"false\" /><NavigationProperty Name=\"Pr" +
+                "iceItem\" Relationship=\"StoreAppTest.Web.DataModel.WarehouseTransferRequestItem_P" +
+                "riceItem\" ToRole=\"WarehouseTransferRequestItem_PriceItem_Target\" FromRole=\"Wareh" +
+                "ouseTransferRequestItem_PriceItem_Source\" /><NavigationProperty Name=\"WarehouseT" +
+                "ransferRequest\" Relationship=\"StoreAppTest.Web.DataModel.WarehouseTransferReques" +
+                "t_WarehouseTransferRequestItemItems\" ToRole=\"WarehouseTransferRequest_WarehouseT" +
+                "ransferRequestItemItems_Source\" FromRole=\"WarehouseTransferRequest_WarehouseTran" +
+                "sferRequestItemItems_Target\" /></EntityType><EntityType Name=\"WarehouseTransferR" +
+                "equest\"><Key><PropertyRef Name=\"Id\" /></Key><Property Name=\"Id\" Type=\"Edm.Int64\"" +
+                " Nullable=\"false\" p6:StoreGeneratedPattern=\"Identity\" xmlns:p6=\"http://schemas.m" +
+                "icrosoft.com/ado/2009/02/edm/annotation\" /><Property Name=\"RequestNumber\" Type=\"" +
+                "Edm.String\" Nullable=\"false\" MaxLength=\"255\" FixedLength=\"false\" Unicode=\"true\" " +
+                "/><Property Name=\"RequestDate\" Type=\"Edm.DateTime\" Nullable=\"false\" /><Property " +
+                "Name=\"IsAccept\" Type=\"Edm.Boolean\" Nullable=\"false\" /><Property Name=\"IsReserve\"" +
+                " Type=\"Edm.Boolean\" Nullable=\"false\" /><Property Name=\"StateChangedDate\" Type=\"E" +
+                "dm.DateTime\" /><Property Name=\"Status\" Type=\"Edm.String\" MaxLength=\"255\" FixedLe" +
+                "ngth=\"false\" Unicode=\"true\" /><Property Name=\"Customer_Id\" Type=\"Edm.String\" Nul" +
+                "lable=\"false\" MaxLength=\"255\" FixedLength=\"false\" Unicode=\"true\" /><Property Nam" +
+                "e=\"Supplier_Id\" Type=\"Edm.String\" Nullable=\"false\" MaxLength=\"255\" FixedLength=\"" +
+                "false\" Unicode=\"true\" /><Property Name=\"Creator_Id\" Type=\"E";
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Services.Design", "1.0.0")]
-            private const string ModelPart5 = "pe=\"StoreAppTest.Web.DataModel.Warehouse\" Role=\"User_Warehouse_Target\" Multiplici" +
-                "ty=\"0..1\" /><End Type=\"StoreAppTest.Web.DataModel.User\" Role=\"User_Warehouse_Sou" +
-                "rce\" Multiplicity=\"*\" /><ReferentialConstraint><Principal Role=\"User_Warehouse_T" +
-                "arget\"><PropertyRef Name=\"Name\" /></Principal><Dependent Role=\"User_Warehouse_So" +
-                "urce\"><PropertyRef Name=\"Warehouse_Id\" /></Dependent></ReferentialConstraint></A" +
+            private const string ModelPart4 = "dm.String\" Nullable=\"false\" MaxLength=\"255\" FixedLength=\"false\" Unicode=\"true\" />" +
+                "<Property Name=\"LastChanged_Id\" Type=\"Edm.String\" MaxLength=\"255\" FixedLength=\"f" +
+                "alse\" Unicode=\"true\" /><Property Name=\"Description\" Type=\"Edm.String\" MaxLength=" +
+                "\"500\" FixedLength=\"false\" Unicode=\"true\" /><NavigationProperty Name=\"Creator\" Re" +
+                "lationship=\"StoreAppTest.Web.DataModel.WarehouseTransferRequest_Creator\" ToRole=" +
+                "\"WarehouseTransferRequest_Creator_Target\" FromRole=\"WarehouseTransferRequest_Cre" +
+                "ator_Source\" /><NavigationProperty Name=\"Customer\" Relationship=\"StoreAppTest.We" +
+                "b.DataModel.WarehouseTransferRequest_Customer\" ToRole=\"WarehouseTransferRequest_" +
+                "Customer_Target\" FromRole=\"WarehouseTransferRequest_Customer_Source\" /><Navigati" +
+                "onProperty Name=\"LastChanged\" Relationship=\"StoreAppTest.Web.DataModel.Warehouse" +
+                "TransferRequest_LastChanged\" ToRole=\"WarehouseTransferRequest_LastChanged_Target" +
+                "\" FromRole=\"WarehouseTransferRequest_LastChanged_Source\" /><NavigationProperty N" +
+                "ame=\"Supplier\" Relationship=\"StoreAppTest.Web.DataModel.WarehouseTransferRequest" +
+                "_Supplier\" ToRole=\"WarehouseTransferRequest_Supplier_Target\" FromRole=\"Warehouse" +
+                "TransferRequest_Supplier_Source\" /><NavigationProperty Name=\"WarehouseTransferRe" +
+                "questItemItems\" Relationship=\"StoreAppTest.Web.DataModel.WarehouseTransferReques" +
+                "t_WarehouseTransferRequestItemItems\" ToRole=\"WarehouseTransferRequest_WarehouseT" +
+                "ransferRequestItemItems_Target\" FromRole=\"WarehouseTransferRequest_WarehouseTran" +
+                "sferRequestItemItems_Source\" /></EntityType><EntityType Name=\"PriceItemRemainder" +
+                "View\"><Key><PropertyRef Name=\"PriceItem_Id\" /></Key><Property Name=\"PriceItem_Id" +
+                "\" Type=\"Edm.Int64\" Nullable=\"false\" p6:StoreGeneratedPattern=\"None\" xmlns:p6=\"ht" +
+                "tp://schemas.microsoft.com/ado/2009/02/edm/annotation\" /><Property Name=\"BuyPric" +
+                "eRur\" Type=\"Edm.Decimal\" Nullable=\"false\" Precision=\"18\" Scale=\"2\" /><Property N" +
+                "ame=\"BuyPriceTng\" Type=\"Edm.Decimal\" Nullable=\"false\" Precision=\"18\" Scale=\"2\" /" +
+                "><Property Name=\"WholesalePrice\" Type=\"Edm.Decimal\" Nullable=\"false\" Precision=\"" +
+                "18\" Scale=\"2\" /><Property Name=\"Supplier\" Type=\"Edm.String\" MaxLength=\"Max\" Fixe" +
+                "dLength=\"false\" Unicode=\"true\" /><Property Name=\"Uom\" Type=\"Edm.String\" MaxLengt" +
+                "h=\"Max\" FixedLength=\"false\" Unicode=\"true\" /><Property Name=\"Gear_Id\" Type=\"Edm." +
+                "Int64\" Nullable=\"false\" /><Property Name=\"CatalogNumber\" Type=\"Edm.String\" MaxLe" +
+                "ngth=\"Max\" FixedLength=\"false\" Unicode=\"true\" /><Property Name=\"Articul\" Type=\"E" +
+                "dm.String\" MaxLength=\"Max\" FixedLength=\"false\" Unicode=\"true\" /><Property Name=\"" +
+                "IsDuplicate\" Type=\"Edm.Boolean\" Nullable=\"false\" /><Property Name=\"Gear_Name\" Ty" +
+                "pe=\"Edm.String\" MaxLength=\"Max\" FixedLength=\"false\" Unicode=\"true\" /><Property N" +
+                "ame=\"RecommendedRemainder\" Type=\"Edm.Decimal\" Nullable=\"false\" Precision=\"18\" Sc" +
+                "ale=\"2\" /><Property Name=\"LowerLimitRemainder\" Type=\"Edm.Decimal\" Nullable=\"fals" +
+                "e\" Precision=\"18\" Scale=\"2\" /><Property Name=\"Remainder_Id\" Type=\"Edm.Int64\" Nul" +
+                "lable=\"false\" /><Property Name=\"Warehouse\" Type=\"Edm.String\" MaxLength=\"Max\" Fix" +
+                "edLength=\"false\" Unicode=\"true\" /><Property Name=\"RemainderDate\" Type=\"Edm.DateT" +
+                "ime\" Nullable=\"false\" /><Property Name=\"Remainders\" Type=\"Edm.Decimal\" Nullable=" +
+                "\"false\" Precision=\"18\" Scale=\"2\" /></EntityType><EntityType Name=\"PriceIncomeIte" +
+                "mView\"><Key><PropertyRef Name=\"PriceItem_Id\" /></Key><Property Name=\"PriceItem_I" +
+                "d\" Type=\"Edm.Int64\" Nullable=\"false\" p6:StoreGeneratedPattern=\"None\" xmlns:p6=\"h" +
+                "ttp://schemas.microsoft.com/ado/2009/02/edm/annotation\" /><Property Name=\"BuyPri" +
+                "ceRur\" Type=\"Edm.Decimal\" Nullable=\"false\" Precision=\"18\" Scale=\"2\" /><Property " +
+                "Name=\"BuyPriceTng\" Type=\"Edm.Decimal\" Nullable=\"false\" Precision=\"18\" Scale=\"2\" " +
+                "/><Property Name=\"WholesalePrice\" Type=\"Edm.Decimal\" Nullable=\"false\" Precision=" +
+                "\"18\" Scale=\"2\" /><Property Name=\"Uom\" Type=\"Edm.String\" MaxLength=\"Max\" FixedLen" +
+                "gth=\"false\" Unicode=\"true\" /><Property Name=\"Gear_Id\" Type=\"Edm.Int64\" Nullable=" +
+                "\"false\" /><Property Name=\"CatalogNumber\" Type=\"Edm.String\" MaxLength=\"Max\" Fixed" +
+                "Length=\"false\" Unicode=\"true\" /><Property Name=\"Articul\" Type=\"Edm.String\" MaxLe" +
+                "ngth=\"Max\" FixedLength=\"false\" Unicode=\"true\" /><Property Name=\"IsDuplicate\" Typ" +
+                "e=\"Edm.Boolean\" Nullable=\"false\" /><Property Name=\"Gear_Name\" Type=\"Edm.String\" " +
+                "MaxLength=\"Max\" FixedLength=\"false\" Unicode=\"true\" /><Property Name=\"Recommended" +
+                "Remainder\" Type=\"Edm.Decimal\" Nullable=\"false\" Precision=\"18\" Scale=\"2\" /><Prope" +
+                "rty Name=\"LowerLimitRemainder\" Type=\"Edm.Decimal\" Nullable=\"false\" Precision=\"18" +
+                "\" Scale=\"2\" /><Property Name=\"Remainders\" Type=\"Edm.Decimal\" Nullable=\"false\" Pr" +
+                "ecision=\"18\" Scale=\"2\" /><Property Name=\"Incomes\" Type=\"Edm.Decimal\" Nullable=\"f" +
+                "alse\" Precision=\"18\" Scale=\"2\" /></EntityType><EntityType Name=\"PriceIncomeTotal" +
+                "ItemView\"><Key><PropertyRef Name=\"PriceItem_Id\" /></Key><Property Name=\"PriceIte" +
+                "m_Id\" Type=\"Edm.Int64\" Nullable=\"false\" p6:StoreGeneratedPattern=\"None\" xmlns:p6" +
+                "=\"http://schemas.microsoft.com/ado/2009/02/edm/annotation\" /><Property Name=\"Buy" +
+                "PriceRur\" Type=\"Edm.Decimal\" Nullable=\"false\" Precision=\"18\" Scale=\"2\" /><Proper" +
+                "ty Name=\"BuyPriceTng\" Type=\"Edm.Decimal\" Nullable=\"false\" Precision=\"18\" Scale=\"" +
+                "2\" /><Property Name=\"WholesalePrice\" Type=\"Edm.Decimal\" Nullable=\"false\" Precisi" +
+                "on=\"18\" Scale=\"2\" /><Property Name=\"Uom\" Type=\"Edm.String\" MaxLength=\"Max\" Fixed" +
+                "Length=\"false\" Unicode=\"true\" /><Property Name=\"Gear_Id\" Type=\"Edm.Int64\" Nullab" +
+                "le=\"false\" /><Property Name=\"CatalogNumber\" Type=\"Edm.String\" MaxLength=\"Max\" Fi" +
+                "xedLength=\"false\" Unicode=\"true\" /><Property Name=\"Articul\" Type=\"Edm.String\" Ma" +
+                "xLength=\"Max\" FixedLength=\"false\" Unicode=\"true\" /><Property Name=\"IsDuplicate\" " +
+                "Type=\"Edm.Boolean\" Nullable=\"false\" /><Property Name=\"Gear_Name\" Type=\"Edm.Strin" +
+                "g\" MaxLength=\"Max\" FixedLength=\"false\" Unicode=\"true\" /><Property Name=\"Recommen" +
+                "dedRemainder\" Type=\"Edm.Decimal\" Nullable=\"false\" Precision=\"18\" Scale=\"2\" /><Pr" +
+                "operty Name=\"LowerLimitRemainder\" Type=\"Edm.Decimal\" Nullable=\"false\" Precision=" +
+                "\"18\" Scale=\"2\" /><Property Name=\"Remainders\" Type=\"Edm.Decimal\" Nullable=\"false\"" +
+                " Precision=\"18\" Scale=\"2\" /><Property Name=\"Incomes\" Type=\"Edm.Decimal\" Nullable" +
+                "=\"false\" Precision=\"18\" Scale=\"2\" /><Property Name=\"Income_Id\" Type=\"Edm.Int64\" " +
+                "Nullable=\"false\" /><Property Name=\"IsAccept\" Type=\"Edm.Boolean\" Nullable=\"false\"" +
+                " /><Property Name=\"NewPrice\" Type=\"Edm.Decimal\" Nullable=\"false\" Precision=\"18\" " +
+                "Scale=\"2\" /></EntityType><EntityType Name=\"PriceItemView\"><Key><PropertyRef Name" +
+                "=\"PriceItem_Id\" /></Key><Property Name=\"PriceItem_Id\" Type=\"Edm.Int64\" Nullable=" +
+                "\"false\" p6:StoreGeneratedPattern=\"None\" xmlns:p6=\"http://schemas.microsoft.com/a" +
+                "do/2009/02/edm/annotation\" /><Property Name=\"BuyPriceRur\" Type=\"Edm.Decimal\" Nul" +
+                "lable=\"false\" Precision=\"18\" Scale=\"2\" /><Property Name=\"BuyPriceTng\" Type=\"Edm." +
+                "Decimal\" Nullable=\"false\" Precision=\"18\" Scale=\"2\" /><Property Name=\"Uom\" Type=\"" +
+                "Edm.String\" MaxLength=\"Max\" FixedLength=\"false\" Unicode=\"true\" /><Property Name=" +
+                "\"Gear_Id\" Type=\"Edm.Int64\" Nullable=\"false\" /><Property Name=\"CatalogNumber\" Typ" +
+                "e=\"Edm.String\" MaxLength=\"Max\" FixedLength=\"false\" Unicode=\"true\" /><Property Na" +
+                "me=\"Articul\" Type=\"Edm.String\" MaxLength=\"Max\" FixedLength=\"false\" Unicode=\"true" +
+                "\" /><Property Name=\"IsDuplicate\" Type=\"Edm.Boolean\" Nullable=\"false\" /><Property" +
+                " Name=\"Gear_Name\" Type=\"Edm.String\" MaxLength=\"Max\" FixedLength=\"false\" Unicode=" +
+                "\"true\" /><Property Name=\"WholesalePrice\" Type=\"Edm.Decimal\" Nullable=\"false\" Pre" +
+                "cision=\"18\" Scale=\"2\" /><Property Name=\"WholesalePriceDate\" Type=\"Edm.DateTime\" " +
+                "Nullable=\"false\" /></EntityType><EntityType Name=\"PriceListItemRemainderView\"><K" +
+                "ey><PropertyRef Name=\"PriceItem_Id\" /></Key><Property Name=";
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Services.Design", "1.0.0")]
+            private const string ModelPart5 = "\"PriceItem_Id\" Type=\"Edm.Int64\" Nullable=\"false\" p6:StoreGeneratedPattern=\"None\" " +
+                "xmlns:p6=\"http://schemas.microsoft.com/ado/2009/02/edm/annotation\" /><Property N" +
+                "ame=\"BuyPriceRur\" Type=\"Edm.Decimal\" Nullable=\"false\" Precision=\"18\" Scale=\"2\" /" +
+                "><Property Name=\"BuyPriceTng\" Type=\"Edm.Decimal\" Nullable=\"false\" Precision=\"18\"" +
+                " Scale=\"2\" /><Property Name=\"WholesalePrice\" Type=\"Edm.Decimal\" Nullable=\"false\"" +
+                " Precision=\"18\" Scale=\"2\" /><Property Name=\"PriceList_Name\" Type=\"Edm.String\" Ma" +
+                "xLength=\"Max\" FixedLength=\"false\" Unicode=\"true\" /><Property Name=\"Supplier\" Typ" +
+                "e=\"Edm.String\" MaxLength=\"Max\" FixedLength=\"false\" Unicode=\"true\" /><Property Na" +
+                "me=\"Uom\" Type=\"Edm.String\" MaxLength=\"Max\" FixedLength=\"false\" Unicode=\"true\" />" +
+                "<Property Name=\"Gear_Id\" Type=\"Edm.Int64\" Nullable=\"false\" /><Property Name=\"Cat" +
+                "alogNumber\" Type=\"Edm.String\" MaxLength=\"Max\" FixedLength=\"false\" Unicode=\"true\"" +
+                " /><Property Name=\"Articul\" Type=\"Edm.String\" MaxLength=\"Max\" FixedLength=\"false" +
+                "\" Unicode=\"true\" /><Property Name=\"IsDuplicate\" Type=\"Edm.Boolean\" Nullable=\"fal" +
+                "se\" /><Property Name=\"Gear_Name\" Type=\"Edm.String\" MaxLength=\"Max\" FixedLength=\"" +
+                "false\" Unicode=\"true\" /><Property Name=\"RecommendedRemainder\" Type=\"Edm.Decimal\"" +
+                " Nullable=\"false\" Precision=\"18\" Scale=\"2\" /><Property Name=\"LowerLimitRemainder" +
+                "\" Type=\"Edm.Decimal\" Nullable=\"false\" Precision=\"18\" Scale=\"2\" /><Property Name=" +
+                "\"Remainder_Id\" Type=\"Edm.Int64\" Nullable=\"false\" /><Property Name=\"Warehouse\" Ty" +
+                "pe=\"Edm.String\" MaxLength=\"Max\" FixedLength=\"false\" Unicode=\"true\" /><Property N" +
+                "ame=\"RemainderDate\" Type=\"Edm.DateTime\" Nullable=\"false\" /><Property Name=\"Remai" +
+                "nders\" Type=\"Edm.Decimal\" Nullable=\"false\" Precision=\"18\" Scale=\"2\" /></EntityTy" +
+                "pe><Association Name=\"Customer_Creator\"><End Type=\"StoreAppTest.Web.DataModel.Us" +
+                "er\" Role=\"Customer_Creator_Target\" Multiplicity=\"1\" /><End Type=\"StoreAppTest.We" +
+                "b.DataModel.Customer\" Role=\"Customer_Creator_Source\" Multiplicity=\"*\" /><Referen" +
+                "tialConstraint><Principal Role=\"Customer_Creator_Target\"><PropertyRef Name=\"User" +
+                "Name\" /></Principal><Dependent Role=\"Customer_Creator_Source\"><PropertyRef Name=" +
+                "\"Creator_Id\" /></Dependent></ReferentialConstraint></Association><Association Na" +
+                "me=\"User_PriceLists\"><End Type=\"StoreAppTest.Web.DataModel.PriceList\" Role=\"User" +
+                "_PriceLists_Target\" Multiplicity=\"*\" /><End Type=\"StoreAppTest.Web.DataModel.Use" +
+                "r\" Role=\"User_PriceLists_Source\" Multiplicity=\"*\" /></Association><Association N" +
+                "ame=\"User_Roles\"><End Type=\"StoreAppTest.Web.DataModel.Role\" Role=\"User_Roles_Ta" +
+                "rget\" Multiplicity=\"*\" /><End Type=\"StoreAppTest.Web.DataModel.User\" Role=\"User_" +
+                "Roles_Source\" Multiplicity=\"*\" /></Association><Association Name=\"User_Warehouse" +
+                "\"><End Type=\"StoreAppTest.Web.DataModel.Warehouse\" Role=\"User_Warehouse_Target\" " +
+                "Multiplicity=\"0..1\" /><End Type=\"StoreAppTest.Web.DataModel.User\" Role=\"User_War" +
+                "ehouse_Source\" Multiplicity=\"*\" /><ReferentialConstraint><Principal Role=\"User_W" +
+                "arehouse_Target\"><PropertyRef Name=\"Name\" /></Principal><Dependent Role=\"User_Wa" +
+                "rehouse_Source\"><PropertyRef Name=\"Warehouse_Id\" /></Dependent></ReferentialCons" +
+                "traint></Association><Association Name=\"PriceList_PriceItems\"><End Type=\"StoreAp" +
+                "pTest.Web.DataModel.PriceItem\" Role=\"PriceList_PriceItems_Target\" Multiplicity=\"" +
+                "*\" /><End Type=\"StoreAppTest.Web.DataModel.PriceList\" Role=\"PriceList_PriceItems" +
+                "_Source\" Multiplicity=\"*\" /></Association><Association Name=\"PriceList_UploadUse" +
+                "r\"><End Type=\"StoreAppTest.Web.DataModel.User\" Role=\"PriceList_UploadUser_Target" +
+                "\" Multiplicity=\"1\" /><End Type=\"StoreAppTest.Web.DataModel.PriceList\" Role=\"Pric" +
+                "eList_UploadUser_Source\" Multiplicity=\"*\" /><ReferentialConstraint><Principal Ro" +
+                "le=\"PriceList_UploadUser_Target\"><PropertyRef Name=\"UserName\" /></Principal><Dep" +
+                "endent Role=\"PriceList_UploadUser_Source\"><PropertyRef Name=\"UploadUser_Id\" /></" +
+                "Dependent></ReferentialConstraint></Association><Association Name=\"PriceItem_Gea" +
+                "r\"><End Type=\"StoreAppTest.Web.DataModel.Gear\" Role=\"PriceItem_Gear_Target\" Mult" +
+                "iplicity=\"1\" /><End Type=\"StoreAppTest.Web.DataModel.PriceItem\" Role=\"PriceItem_" +
+                "Gear_Source\" Multiplicity=\"*\" /><ReferentialConstraint><Principal Role=\"PriceIte" +
+                "m_Gear_Target\"><PropertyRef Name=\"Id\" /></Principal><Dependent Role=\"PriceItem_G" +
+                "ear_Source\"><PropertyRef Name=\"Gear_Id\" /></Dependent></ReferentialConstraint></" +
+                "Association><Association Name=\"PriceItem_Prices\"><End Type=\"StoreAppTest.Web.Dat" +
+                "aModel.PriceItem\" Role=\"PriceItem_Prices_Source\" Multiplicity=\"1\" /><End Type=\"S" +
+                "toreAppTest.Web.DataModel.WholesalePrice\" Role=\"PriceItem_Prices_Target\" Multipl" +
+                "icity=\"*\" /><ReferentialConstraint><Principal Role=\"PriceItem_Prices_Source\"><Pr" +
+                "opertyRef Name=\"Id\" /></Principal><Dependent Role=\"PriceItem_Prices_Target\"><Pro" +
+                "pertyRef Name=\"PriceItem_Id\" /></Dependent></ReferentialConstraint></Association" +
+                "><Association Name=\"PriceItem_Remainders\"><End Type=\"StoreAppTest.Web.DataModel." +
+                "PriceItem\" Role=\"PriceItem_Remainders_Source\" Multiplicity=\"1\" /><End Type=\"Stor" +
+                "eAppTest.Web.DataModel.Remainder\" Role=\"PriceItem_Remainders_Target\" Multiplicit" +
+                "y=\"*\" /><ReferentialConstraint><Principal Role=\"PriceItem_Remainders_Source\"><Pr" +
+                "opertyRef Name=\"Id\" /></Principal><Dependent Role=\"PriceItem_Remainders_Target\">" +
+                "<PropertyRef Name=\"PriceItem_Id\" /></Dependent></ReferentialConstraint></Associa" +
+                "tion><Association Name=\"PriceItem_UnitOfMeasure\"><End Type=\"StoreAppTest.Web.Dat" +
+                "aModel.UnitOfMeasure\" Role=\"PriceItem_UnitOfMeasure_Target\" Multiplicity=\"1\" /><" +
+                "End Type=\"StoreAppTest.Web.DataModel.PriceItem\" Role=\"PriceItem_UnitOfMeasure_So" +
+                "urce\" Multiplicity=\"*\" /><ReferentialConstraint><Principal Role=\"PriceItem_UnitO" +
+                "fMeasure_Target\"><PropertyRef Name=\"Name\" /></Principal><Dependent Role=\"PriceIt" +
+                "em_UnitOfMeasure_Source\"><PropertyRef Name=\"Uom_Id\" /></Dependent></ReferentialC" +
+                "onstraint></Association><Association Name=\"GearCategory_Gears\"><End Type=\"StoreA" +
+                "ppTest.Web.DataModel.GearCategory\" Role=\"GearCategory_Gears_Source\" Multiplicity" +
+                "=\"1\" /><End Type=\"StoreAppTest.Web.DataModel.Gear\" Role=\"GearCategory_Gears_Targ" +
+                "et\" Multiplicity=\"*\" /><ReferentialConstraint><Principal Role=\"GearCategory_Gear" +
+                "s_Source\"><PropertyRef Name=\"Name\" /></Principal><Dependent Role=\"GearCategory_G" +
+                "ears_Target\"><PropertyRef Name=\"Category_Id\" /></Dependent></ReferentialConstrai" +
+                "nt></Association><Association Name=\"Gear_Image\"><End Type=\"StoreAppTest.Web.Data" +
+                "Model.Resource\" Role=\"Gear_Image_Target\" Multiplicity=\"0..1\" /><End Type=\"StoreA" +
+                "ppTest.Web.DataModel.Gear\" Role=\"Gear_Image_Source\" Multiplicity=\"*\" /><Referent" +
+                "ialConstraint><Principal Role=\"Gear_Image_Target\"><PropertyRef Name=\"Id\" /></Pri" +
+                "ncipal><Dependent Role=\"Gear_Image_Source\"><PropertyRef Name=\"Image_Id\" /></Depe" +
+                "ndent></ReferentialConstraint></Association><Association Name=\"Remainder_Remaind" +
+                "ersUserChanges\"><End Type=\"StoreAppTest.Web.DataModel.Remainder\" Role=\"Remainder" +
+                "_RemaindersUserChanges_Source\" Multiplicity=\"1\" /><End Type=\"StoreAppTest.Web.Da" +
+                "taModel.RemaindersUserChange\" Role=\"Remainder_RemaindersUserChanges_Target\" Mult" +
+                "iplicity=\"*\" /><ReferentialConstraint><Principal Role=\"Remainder_RemaindersUserC" +
+                "hanges_Source\"><PropertyRef Name=\"Id\" /></Principal><Dependent Role=\"Remainder_R" +
+                "emaindersUserChanges_Target\"><PropertyRef Name=\"Remainder_Id\" /></Dependent></Re" +
+                "ferentialConstraint></Association><Association Name=\"Remainder_Warehouse\"><End T" +
+                "ype=\"StoreAppTest.Web.DataModel.Warehouse\" Role=\"Remainder_Warehouse_Target\" Mul" +
+                "tiplicity=\"1\" /><End Type=\"StoreAppTest.Web.DataModel.Remainder\" Role=\"Remainder" +
+                "_Warehouse_Source\" Multiplicity=\"*\" /><ReferentialConstraint><Principal Role=\"Re" +
+                "mainder_Warehouse_Target\"><PropertyRef Name=\"Name\" /></Prin";
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Services.Design", "1.0.0")]
+            private const string ModelPart6 = "cipal><Dependent Role=\"Remainder_Warehouse_Source\"><PropertyRef Name=\"Warehouse_I" +
+                "d\" /></Dependent></ReferentialConstraint></Association><Association Name=\"Remain" +
+                "dersUserChange_User\"><End Type=\"StoreAppTest.Web.DataModel.User\" Role=\"Remainder" +
+                "sUserChange_User_Target\" Multiplicity=\"1\" /><End Type=\"StoreAppTest.Web.DataMode" +
+                "l.RemaindersUserChange\" Role=\"RemaindersUserChange_User_Source\" Multiplicity=\"*\"" +
+                " /><ReferentialConstraint><Principal Role=\"RemaindersUserChange_User_Target\"><Pr" +
+                "opertyRef Name=\"UserName\" /></Principal><Dependent Role=\"RemaindersUserChange_Us" +
+                "er_Source\"><PropertyRef Name=\"User_Id\" /></Dependent></ReferentialConstraint></A" +
                 "ssociation><Association Name=\"DebtDischargeDocument_Creator\"><End Type=\"StoreApp" +
                 "Test.Web.DataModel.User\" Role=\"DebtDischargeDocument_Creator_Target\" Multiplicit" +
                 "y=\"1\" /><End Type=\"StoreAppTest.Web.DataModel.DebtDischargeDocument\" Role=\"DebtD" +
@@ -1409,535 +1507,465 @@ namespace StoreAppTest.StoreAppDataService
                 "ebtor_Source\" Multiplicity=\"*\" /><ReferentialConstraint><Principal Role=\"DebtDis" +
                 "chargeDocument_Debtor_Target\"><PropertyRef Name=\"Name\" /></Principal><Dependent " +
                 "Role=\"DebtDischargeDocument_Debtor_Source\"><PropertyRef Name=\"Debtor_Id\" /></Dep" +
-                "endent></ReferentialConstraint></Association><Association Name=\"GearCategory_Gea" +
-                "rs\"><End Type=\"StoreAppTest.Web.DataModel.GearCategory\" Role=\"GearCategory_Gears" +
-                "_Source\" Multiplicity=\"1\" /><End Type=\"StoreAppTest.Web.DataModel.Gear\" Role=\"Ge" +
-                "arCategory_Gears_Target\" Multiplicity=\"*\" /><ReferentialConstraint><Principal Ro" +
-                "le=\"GearCategory_Gears_Source\"><PropertyRef Name=\"Name\" /></Principal><Dependent" +
-                " Role=\"GearCategory_Gears_Target\"><PropertyRef Name=\"Category_Id\" /></Dependent>" +
-                "</ReferentialConstraint></Association><Association Name=\"Gear_Image\"><End Type=\"" +
-                "StoreAppTest.Web.DataModel.Resource\" Role=\"Gear_Image_Target\" Multiplicity=\"0..1" +
-                "\" /><End Type=\"StoreAppTest.Web.DataModel.Gear\" Role=\"Gear_Image_Source\" Multipl" +
-                "icity=\"*\" /><ReferentialConstraint><Principal Role=\"Gear_Image_Target\"><Property" +
-                "Ref Name=\"Id\" /></Principal><Dependent Role=\"Gear_Image_Source\"><PropertyRef Nam" +
-                "e=\"Image_Id\" /></Dependent></ReferentialConstraint></Association><Association Na" +
-                "me=\"GearNew_Gear\"><End Type=\"StoreAppTest.Web.DataModel.Gear\" Role=\"GearNew_Gear" +
-                "_Target\" Multiplicity=\"1\" /><End Type=\"StoreAppTest.Web.DataModel.GearNew\" Role=" +
-                "\"GearNew_Gear_Source\" Multiplicity=\"*\" /><ReferentialConstraint><Principal Role=" +
-                "\"GearNew_Gear_Target\"><PropertyRef Name=\"Id\" /></Principal><Dependent Role=\"Gear" +
-                "New_Gear_Source\"><PropertyRef Name=\"Gear_Id\" /></Dependent></ReferentialConstrai" +
-                "nt></Association><Association Name=\"Income_IncomeItems\"><End Type=\"StoreAppTest." +
-                "Web.DataModel.Income\" Role=\"Income_IncomeItems_Source\" Multiplicity=\"1\" /><End T" +
-                "ype=\"StoreAppTest.Web.DataModel.IncomeItem\" Role=\"Income_IncomeItems_Target\" Mul" +
-                "tiplicity=\"*\" /><ReferentialConstraint><Principal Role=\"Income_IncomeItems_Sourc" +
-                "e\"><PropertyRef Name=\"Id\" /></Principal><Dependent Role=\"Income_IncomeItems_Targ" +
-                "et\"><PropertyRef Name=\"Income_Id\" /></Dependent></ReferentialConstraint></Associ" +
-                "ation><Association Name=\"IncomeItem_PriceItem\"><End Type=\"StoreAppTest.Web.DataM" +
-                "odel.PriceItem\" Role=\"IncomeItem_PriceItem_Target\" Multiplicity=\"1\" /><End Type=" +
-                "\"StoreAppTest.Web.DataModel.IncomeItem\" Role=\"IncomeItem_PriceItem_Source\" Multi" +
-                "plicity=\"*\" /><ReferentialConstraint><Principal Role=\"IncomeItem_PriceItem_Targe" +
-                "t\"><PropertyRef Name=\"Id\" /></Principal><Dependent Role=\"IncomeItem_PriceItem_So" +
-                "urce\"><PropertyRef Name=\"PriceItem_Id\" /></Dependent></ReferentialConstraint></A" +
-                "ssociation><Association Name=\"Income_Accepter\"><End Type=\"StoreAppTest.Web.DataM" +
-                "odel.User\" Role=\"Income_Accepter_Target\" Multiplicity=\"0..1\" /><End Type=\"StoreA" +
-                "ppTest.Web.DataModel.Income\" Role=\"Income_Accepter_Source\" Multiplicity=\"*\" /><R" +
-                "eferentialConstraint><Principal Role=\"Income_Accepter_Target\"><PropertyRef Name=" +
-                "\"UserName\" /></Principal><Dependent Role=\"Income_Accepter_Source\"><PropertyRef N" +
-                "ame=\"Accepter_Id\" /></Dependent></ReferentialConstraint></Association><Associati" +
-                "on Name=\"Income_Creator\"><End Type=\"StoreAppTest.Web.DataModel.User\" Role=\"Incom" +
-                "e_Creator_Target\" Multiplicity=\"1\" /><End Type=\"StoreAppTest.Web.DataModel.Incom" +
-                "e\" Role=\"Income_Creator_Source\" Multiplicity=\"*\" /><ReferentialConstraint><Princ" +
-                "ipal Role=\"Income_Creator_Target\"><PropertyRef Name=\"UserName\" /></Principal><De" +
-                "pendent Role=\"Income_Creator_Source\"><PropertyRef Name=\"Creator_Id\" /></Dependen" +
-                "t></ReferentialConstraint></Association><Association Name=\"Income_Supplier\"><End" +
-                " Type=\"StoreAppTest.Web.DataModel.Supplier\" Role=\"Income_Supplier_Target\" Multip" +
-                "licity=\"1\" /><End Type=\"StoreAppTest.Web.DataModel.Income\" Role=\"Income_Supplier" +
-                "_Source\" Multiplicity=\"*\" /><ReferentialConstraint><Principal Role=\"Income_Suppl" +
-                "ier_Target\"><PropertyRef Name=\"Name\" /></Principal><Dependent Role=\"Income_Suppl" +
-                "ier_Source\"><PropertyRef Name=\"Supplier_Id\" /></Dependent></ReferentialConstrain" +
-                "t></Association><Association Name=\"PriceItem_Gear\"><End Type=\"StoreAppTest.Web.D" +
-                "ataModel.Gear\" Role=\"PriceItem_Gear_Target\" Multiplicity=\"1\" /><End Type=\"StoreA" +
-                "ppTest.Web.DataModel.PriceItem\" Role=\"PriceItem_Gear_Source\" Multiplicity=\"*\" />" +
-                "<ReferentialConstraint><Principal Role=\"PriceItem_Gear_Target\"><PropertyRef Name" +
-                "=\"Id\" /></Principal><Dependent Role=\"PriceItem_Gear_Source\"><PropertyRef Name=\"G" +
-                "ear_Id\" /></Dependent></ReferentialConstraint></Association><Association Name=\"P" +
-                "riceList_PriceItems\"><End Type=\"StoreAppTest.Web.DataModel.PriceList\" Role=\"Pric" +
-                "eList_PriceItems_Source\" Multiplicity=\"*\" /><End Type=\"StoreAppTest.Web.DataMode" +
-                "l.PriceItem\" Role=\"PriceList_PriceItems_Target\" Multiplicity=\"*\" /></Association" +
-                "><Association Name=\"PriceItem_Prices\"><End Type=\"StoreAppTest.Web.DataModel.Pric" +
-                "eItem\" Role=\"PriceItem_Prices_Source\" Multiplicity=\"1\" /><End Type=\"StoreAppTest" +
-                ".Web.DataModel.WholesalePrice\" Role=\"PriceItem_Prices_Target\" Multiplicity=\"*\" /" +
-                "><ReferentialConstraint><Principal Role=\"PriceItem_Prices_Source\"><PropertyRef N" +
-                "ame=\"Id\" /></Principal><Dependent Role=\"PriceItem_Prices_Target\"><PropertyRef Na" +
-                "me=\"PriceItem_Id\" /></Dependent></ReferentialConstraint></Association><Associati" +
-                "on Name=\"PriceItem_Remainders\"><End Type=\"StoreAppTest.Web.DataModel.PriceItem\" " +
-                "Role=\"PriceItem_Remainders_Source\" Multiplicity=\"1\" /><End Type=\"StoreAppTest.We" +
-                "b.DataModel.Remainder\" Role=\"PriceItem_Remainders_Target\" Multiplicity=\"*\" /><Re" +
-                "ferentialConstraint><Principal Role=\"PriceItem_Remainders_Source\"><PropertyRef N" +
-                "ame=\"Id\" /></Principal><Dependent Role=\"PriceItem_Remainders_Target\"><PropertyRe" +
-                "f Name=\"PriceItem_Id\" /></Dependent></ReferentialConstraint></Association><Assoc" +
-                "iation Name=\"PriceItem_UnitOfMeasure\"><End Type=\"StoreAppTest.Web.DataModel.Unit" +
-                "OfMeasure\" Role=\"PriceItem_UnitOfMeasure_Target\" Multiplicity=\"1\" /><End Type=\"S" +
-                "toreAppTest.Web.DataModel.PriceItem\" Role=\"PriceItem_UnitOfMeasure_Source\" Multi" +
-                "plicity=\"*\" /><ReferentialConstraint><Principal Role=\"PriceItem_UnitOfMeasure_Ta" +
-                "rget\"><PropertyRef Name=\"Name\" /></Principal><Dependent Role=\"PriceItem_UnitOfMe" +
-                "asure_Source\"><PropertyRef Name=\"Uom_Id\" /></Dependent></ReferentialConstraint><" +
-                "/Association><Association Name=\"PriceList_UploadUser\"><End Type=\"StoreAppTest.We" +
-                "b.DataModel.User\" Role=\"PriceList_UploadUser_Target\" Multiplicity=\"1\" /><End Typ" +
-                "e=\"StoreAppTest.Web.DataModel.PriceList\" Role=\"PriceList_Up";
+                "endent></ReferentialConstraint></Association><Association Name=\"GearNew_Gear\"><E" +
+                "nd Type=\"StoreAppTest.Web.DataModel.Gear\" Role=\"GearNew_Gear_Target\" Multiplicit" +
+                "y=\"1\" /><End Type=\"StoreAppTest.Web.DataModel.GearNew\" Role=\"GearNew_Gear_Source" +
+                "\" Multiplicity=\"*\" /><ReferentialConstraint><Principal Role=\"GearNew_Gear_Target" +
+                "\"><PropertyRef Name=\"Id\" /></Principal><Dependent Role=\"GearNew_Gear_Source\"><Pr" +
+                "opertyRef Name=\"Gear_Id\" /></Dependent></ReferentialConstraint></Association><As" +
+                "sociation Name=\"Income_IncomeItems\"><End Type=\"StoreAppTest.Web.DataModel.Income" +
+                "\" Role=\"Income_IncomeItems_Source\" Multiplicity=\"1\" /><End Type=\"StoreAppTest.We" +
+                "b.DataModel.IncomeItem\" Role=\"Income_IncomeItems_Target\" Multiplicity=\"*\" /><Ref" +
+                "erentialConstraint><Principal Role=\"Income_IncomeItems_Source\"><PropertyRef Name" +
+                "=\"Id\" /></Principal><Dependent Role=\"Income_IncomeItems_Target\"><PropertyRef Nam" +
+                "e=\"Income_Id\" /></Dependent></ReferentialConstraint></Association><Association N" +
+                "ame=\"IncomeItem_PriceItem\"><End Type=\"StoreAppTest.Web.DataModel.PriceItem\" Role" +
+                "=\"IncomeItem_PriceItem_Target\" Multiplicity=\"1\" /><End Type=\"StoreAppTest.Web.Da" +
+                "taModel.IncomeItem\" Role=\"IncomeItem_PriceItem_Source\" Multiplicity=\"*\" /><Refer" +
+                "entialConstraint><Principal Role=\"IncomeItem_PriceItem_Target\"><PropertyRef Name" +
+                "=\"Id\" /></Principal><Dependent Role=\"IncomeItem_PriceItem_Source\"><PropertyRef N" +
+                "ame=\"PriceItem_Id\" /></Dependent></ReferentialConstraint></Association><Associat" +
+                "ion Name=\"Income_Accepter\"><End Type=\"StoreAppTest.Web.DataModel.User\" Role=\"Inc" +
+                "ome_Accepter_Target\" Multiplicity=\"0..1\" /><End Type=\"StoreAppTest.Web.DataModel" +
+                ".Income\" Role=\"Income_Accepter_Source\" Multiplicity=\"*\" /><ReferentialConstraint" +
+                "><Principal Role=\"Income_Accepter_Target\"><PropertyRef Name=\"UserName\" /></Princ" +
+                "ipal><Dependent Role=\"Income_Accepter_Source\"><PropertyRef Name=\"Accepter_Id\" />" +
+                "</Dependent></ReferentialConstraint></Association><Association Name=\"Income_Crea" +
+                "tor\"><End Type=\"StoreAppTest.Web.DataModel.User\" Role=\"Income_Creator_Target\" Mu" +
+                "ltiplicity=\"1\" /><End Type=\"StoreAppTest.Web.DataModel.Income\" Role=\"Income_Crea" +
+                "tor_Source\" Multiplicity=\"*\" /><ReferentialConstraint><Principal Role=\"Income_Cr" +
+                "eator_Target\"><PropertyRef Name=\"UserName\" /></Principal><Dependent Role=\"Income" +
+                "_Creator_Source\"><PropertyRef Name=\"Creator_Id\" /></Dependent></ReferentialConst" +
+                "raint></Association><Association Name=\"Income_Supplier\"><End Type=\"StoreAppTest." +
+                "Web.DataModel.Supplier\" Role=\"Income_Supplier_Target\" Multiplicity=\"1\" /><End Ty" +
+                "pe=\"StoreAppTest.Web.DataModel.Income\" Role=\"Income_Supplier_Source\" Multiplicit" +
+                "y=\"*\" /><ReferentialConstraint><Principal Role=\"Income_Supplier_Target\"><Propert" +
+                "yRef Name=\"Name\" /></Principal><Dependent Role=\"Income_Supplier_Source\"><Propert" +
+                "yRef Name=\"Supplier_Id\" /></Dependent></ReferentialConstraint></Association><Ass" +
+                "ociation Name=\"PriceChangeReportItem_NewPrice\"><End Type=\"StoreAppTest.Web.DataM" +
+                "odel.WholesalePrice\" Role=\"PriceChangeReportItem_NewPrice_Target\" Multiplicity=\"" +
+                "1\" /><End Type=\"StoreAppTest.Web.DataModel.PriceChangeReportItem\" Role=\"PriceCha" +
+                "ngeReportItem_NewPrice_Source\" Multiplicity=\"*\" /><ReferentialConstraint><Princi" +
+                "pal Role=\"PriceChangeReportItem_NewPrice_Target\"><PropertyRef Name=\"Id\" /></Prin" +
+                "cipal><Dependent Role=\"PriceChangeReportItem_NewPrice_Source\"><PropertyRef Name=" +
+                "\"NewPrice_Id\" /></Dependent></ReferentialConstraint></Association><Association N" +
+                "ame=\"PriceChangeReportItem_PreviousPrice\"><End Type=\"StoreAppTest.Web.DataModel." +
+                "WholesalePrice\" Role=\"PriceChangeReportItem_PreviousPrice_Target\" Multiplicity=\"" +
+                "1\" /><End Type=\"StoreAppTest.Web.DataModel.PriceChangeReportItem\" Role=\"PriceCha" +
+                "ngeReportItem_PreviousPrice_Source\" Multiplicity=\"*\" /><ReferentialConstraint><P" +
+                "rincipal Role=\"PriceChangeReportItem_PreviousPrice_Target\"><PropertyRef Name=\"Id" +
+                "\" /></Principal><Dependent Role=\"PriceChangeReportItem_PreviousPrice_Source\"><Pr" +
+                "opertyRef Name=\"PreviousPrice_Id\" /></Dependent></ReferentialConstraint></Associ" +
+                "ation><Association Name=\"PriceChangeReport_PriceChangeReportItems\"><End Type=\"St" +
+                "oreAppTest.Web.DataModel.PriceChangeReport\" Role=\"PriceChangeReport_PriceChangeR" +
+                "eportItems_Source\" Multiplicity=\"1\" /><End Type=\"StoreAppTest.Web.DataModel.Pric" +
+                "eChangeReportItem\" Role=\"PriceChangeReport_PriceChangeReportItems_Target\" Multip" +
+                "licity=\"*\" /><ReferentialConstraint><Principal Role=\"PriceChangeReport_PriceChan" +
+                "geReportItems_Source\"><PropertyRef Name=\"Id\" /></Principal><Dependent Role=\"Pric" +
+                "eChangeReport_PriceChangeReportItems_Target\"><PropertyRef Name=\"PriceChangeRepor" +
+                "t_Id\" /></Dependent></ReferentialConstraint></Association><Association Name=\"Pri" +
+                "ceChangeReportItem_PriceItem\"><End Type=\"StoreAppTest.Web.DataModel.PriceItem\" R" +
+                "ole=\"PriceChangeReportItem_PriceItem_Target\" Multiplicity=\"1\" /><End Type=\"Store" +
+                "AppTest.Web.DataModel.PriceChangeReportItem\" Role=\"PriceChangeReportItem_PriceIt" +
+                "em_Source\" Multiplicity=\"*\" /><ReferentialConstraint><Principal Role=\"PriceChang" +
+                "eReportItem_PriceItem_Target\"><PropertyRef Name=\"Id\" /></Principal><Dependent Ro" +
+                "le=\"PriceChangeReportItem_PriceItem_Source\"><PropertyRef Name=\"PriceItem_Id\" /><" +
+                "/Dependent></ReferentialConstraint></Association><Association Name=\"PriceChangeR" +
+                "eport_Creator\"><End Type=\"StoreAppTest.Web.DataModel.User\" Role=\"PriceChangeRepo" +
+                "rt_Creator_Target\" Multiplicity=\"1\" /><End Type=\"StoreAppTest.Web.DataModel.Pric" +
+                "eChangeReport\" Role=\"PriceChangeReport_Creator_Source\" Multiplicity=\"*\" /><Refer" +
+                "entialConstraint><Principal Role=\"PriceChangeReport_Creator_Target\"><PropertyRef" +
+                " Name=\"UserName\" /></Principal><Dependent Role=\"PriceChangeReport_Creator_Source" +
+                "\"><PropertyRef Name=\"Creator_Id\" /></Dependent></ReferentialConstraint></Associa" +
+                "tion><Association Name=\"RefundDocument_Creator\"><End Type=\"StoreAppTest.Web.Data" +
+                "Model.User\" Role=\"RefundDocument_Creator_Target\" Multiplicity=\"1\" /><End Type=\"S" +
+                "toreAppTest.Web.DataModel.RefundDocument\" Role=\"RefundDocum";
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Services.Design", "1.0.0")]
-            private const string ModelPart6 = "loadUser_Source\" Multiplicity=\"*\" /><ReferentialConstraint><Principal Role=\"Price" +
-                "List_UploadUser_Target\"><PropertyRef Name=\"UserName\" /></Principal><Dependent Ro" +
-                "le=\"PriceList_UploadUser_Source\"><PropertyRef Name=\"UploadUser_Id\" /></Dependent" +
-                "></ReferentialConstraint></Association><Association Name=\"Remainder_RemaindersUs" +
-                "erChanges\"><End Type=\"StoreAppTest.Web.DataModel.Remainder\" Role=\"Remainder_Rema" +
-                "indersUserChanges_Source\" Multiplicity=\"1\" /><End Type=\"StoreAppTest.Web.DataMod" +
-                "el.RemaindersUserChange\" Role=\"Remainder_RemaindersUserChanges_Target\" Multiplic" +
-                "ity=\"*\" /><ReferentialConstraint><Principal Role=\"Remainder_RemaindersUserChange" +
-                "s_Source\"><PropertyRef Name=\"Id\" /></Principal><Dependent Role=\"Remainder_Remain" +
-                "dersUserChanges_Target\"><PropertyRef Name=\"Remainder_Id\" /></Dependent></Referen" +
-                "tialConstraint></Association><Association Name=\"Remainder_Warehouse\"><End Type=\"" +
-                "StoreAppTest.Web.DataModel.Warehouse\" Role=\"Remainder_Warehouse_Target\" Multipli" +
-                "city=\"1\" /><End Type=\"StoreAppTest.Web.DataModel.Remainder\" Role=\"Remainder_Ware" +
-                "house_Source\" Multiplicity=\"*\" /><ReferentialConstraint><Principal Role=\"Remaind" +
-                "er_Warehouse_Target\"><PropertyRef Name=\"Name\" /></Principal><Dependent Role=\"Rem" +
-                "ainder_Warehouse_Source\"><PropertyRef Name=\"Warehouse_Id\" /></Dependent></Refere" +
-                "ntialConstraint></Association><Association Name=\"RemaindersUserChange_User\"><End" +
-                " Type=\"StoreAppTest.Web.DataModel.User\" Role=\"RemaindersUserChange_User_Target\" " +
-                "Multiplicity=\"1\" /><End Type=\"StoreAppTest.Web.DataModel.RemaindersUserChange\" R" +
-                "ole=\"RemaindersUserChange_User_Source\" Multiplicity=\"*\" /><ReferentialConstraint" +
-                "><Principal Role=\"RemaindersUserChange_User_Target\"><PropertyRef Name=\"UserName\"" +
-                " /></Principal><Dependent Role=\"RemaindersUserChange_User_Source\"><PropertyRef N" +
-                "ame=\"User_Id\" /></Dependent></ReferentialConstraint></Association><Association N" +
-                "ame=\"PriceChangeReportItem_NewPrice\"><End Type=\"StoreAppTest.Web.DataModel.Whole" +
-                "salePrice\" Role=\"PriceChangeReportItem_NewPrice_Target\" Multiplicity=\"1\" /><End " +
-                "Type=\"StoreAppTest.Web.DataModel.PriceChangeReportItem\" Role=\"PriceChangeReportI" +
-                "tem_NewPrice_Source\" Multiplicity=\"*\" /><ReferentialConstraint><Principal Role=\"" +
-                "PriceChangeReportItem_NewPrice_Target\"><PropertyRef Name=\"Id\" /></Principal><Dep" +
-                "endent Role=\"PriceChangeReportItem_NewPrice_Source\"><PropertyRef Name=\"NewPrice_" +
-                "Id\" /></Dependent></ReferentialConstraint></Association><Association Name=\"Price" +
-                "ChangeReportItem_PreviousPrice\"><End Type=\"StoreAppTest.Web.DataModel.WholesaleP" +
-                "rice\" Role=\"PriceChangeReportItem_PreviousPrice_Target\" Multiplicity=\"1\" /><End " +
-                "Type=\"StoreAppTest.Web.DataModel.PriceChangeReportItem\" Role=\"PriceChangeReportI" +
-                "tem_PreviousPrice_Source\" Multiplicity=\"*\" /><ReferentialConstraint><Principal R" +
-                "ole=\"PriceChangeReportItem_PreviousPrice_Target\"><PropertyRef Name=\"Id\" /></Prin" +
-                "cipal><Dependent Role=\"PriceChangeReportItem_PreviousPrice_Source\"><PropertyRef " +
-                "Name=\"PreviousPrice_Id\" /></Dependent></ReferentialConstraint></Association><Ass" +
-                "ociation Name=\"PriceChangeReport_PriceChangeReportItems\"><End Type=\"StoreAppTest" +
-                ".Web.DataModel.PriceChangeReport\" Role=\"PriceChangeReport_PriceChangeReportItems" +
-                "_Source\" Multiplicity=\"1\" /><End Type=\"StoreAppTest.Web.DataModel.PriceChangeRep" +
-                "ortItem\" Role=\"PriceChangeReport_PriceChangeReportItems_Target\" Multiplicity=\"*\"" +
-                " /><ReferentialConstraint><Principal Role=\"PriceChangeReport_PriceChangeReportIt" +
-                "ems_Source\"><PropertyRef Name=\"Id\" /></Principal><Dependent Role=\"PriceChangeRep" +
-                "ort_PriceChangeReportItems_Target\"><PropertyRef Name=\"PriceChangeReport_Id\" /></" +
-                "Dependent></ReferentialConstraint></Association><Association Name=\"PriceChangeRe" +
-                "portItem_PriceItem\"><End Type=\"StoreAppTest.Web.DataModel.PriceItem\" Role=\"Price" +
-                "ChangeReportItem_PriceItem_Target\" Multiplicity=\"1\" /><End Type=\"StoreAppTest.We" +
-                "b.DataModel.PriceChangeReportItem\" Role=\"PriceChangeReportItem_PriceItem_Source\"" +
-                " Multiplicity=\"*\" /><ReferentialConstraint><Principal Role=\"PriceChangeReportIte" +
-                "m_PriceItem_Target\"><PropertyRef Name=\"Id\" /></Principal><Dependent Role=\"PriceC" +
-                "hangeReportItem_PriceItem_Source\"><PropertyRef Name=\"PriceItem_Id\" /></Dependent" +
-                "></ReferentialConstraint></Association><Association Name=\"PriceChangeReport_Crea" +
-                "tor\"><End Type=\"StoreAppTest.Web.DataModel.User\" Role=\"PriceChangeReport_Creator" +
-                "_Target\" Multiplicity=\"1\" /><End Type=\"StoreAppTest.Web.DataModel.PriceChangeRep" +
-                "ort\" Role=\"PriceChangeReport_Creator_Source\" Multiplicity=\"*\" /><ReferentialCons" +
-                "traint><Principal Role=\"PriceChangeReport_Creator_Target\"><PropertyRef Name=\"Use" +
-                "rName\" /></Principal><Dependent Role=\"PriceChangeReport_Creator_Source\"><Propert" +
-                "yRef Name=\"Creator_Id\" /></Dependent></ReferentialConstraint></Association><Asso" +
-                "ciation Name=\"RefundDocument_Creator\"><End Type=\"StoreAppTest.Web.DataModel.User" +
-                "\" Role=\"RefundDocument_Creator_Target\" Multiplicity=\"1\" /><End Type=\"StoreAppTes" +
-                "t.Web.DataModel.RefundDocument\" Role=\"RefundDocument_Creator_Source\" Multiplicit" +
-                "y=\"*\" /><ReferentialConstraint><Principal Role=\"RefundDocument_Creator_Target\"><" +
-                "PropertyRef Name=\"UserName\" /></Principal><Dependent Role=\"RefundDocument_Creato" +
-                "r_Source\"><PropertyRef Name=\"Creator_Id\" /></Dependent></ReferentialConstraint><" +
-                "/Association><Association Name=\"RefundDocument_LastChanger\"><End Type=\"StoreAppT" +
-                "est.Web.DataModel.User\" Role=\"RefundDocument_LastChanger_Target\" Multiplicity=\"1" +
-                "\" /><End Type=\"StoreAppTest.Web.DataModel.RefundDocument\" Role=\"RefundDocument_L" +
-                "astChanger_Source\" Multiplicity=\"*\" /><ReferentialConstraint><Principal Role=\"Re" +
-                "fundDocument_LastChanger_Target\"><PropertyRef Name=\"UserName\" /></Principal><Dep" +
-                "endent Role=\"RefundDocument_LastChanger_Source\"><PropertyRef Name=\"LastChanger_I" +
-                "d\" /></Dependent></ReferentialConstraint></Association><Association Name=\"Refund" +
-                "Document_RefundItems\"><End Type=\"StoreAppTest.Web.DataModel.RefundDocument\" Role" +
-                "=\"RefundDocument_RefundItems_Source\" Multiplicity=\"1\" /><End Type=\"StoreAppTest." +
-                "Web.DataModel.RefundItem\" Role=\"RefundDocument_RefundItems_Target\" Multiplicity=" +
-                "\"*\" /><ReferentialConstraint><Principal Role=\"RefundDocument_RefundItems_Source\"" +
-                "><PropertyRef Name=\"Id\" /></Principal><Dependent Role=\"RefundDocument_RefundItem" +
-                "s_Target\"><PropertyRef Name=\"RefundDocument_Id\" /></Dependent></ReferentialConst" +
-                "raint></Association><Association Name=\"RefundDocument_SaleDocument\"><End Type=\"S" +
-                "toreAppTest.Web.DataModel.SaleDocument\" Role=\"RefundDocument_SaleDocument_Target" +
-                "\" Multiplicity=\"1\" /><End Type=\"StoreAppTest.Web.DataModel.RefundDocument\" Role=" +
-                "\"RefundDocument_SaleDocument_Source\" Multiplicity=\"*\" /><ReferentialConstraint><" +
-                "Principal Role=\"RefundDocument_SaleDocument_Target\"><PropertyRef Name=\"Id\" /></P" +
-                "rincipal><Dependent Role=\"RefundDocument_SaleDocument_Source\"><PropertyRef Name=" +
-                "\"SaleDocument_Id\" /></Dependent></ReferentialConstraint></Association><Associati" +
-                "on Name=\"RefundItem_PriceItem\"><End Type=\"StoreAppTest.Web.DataModel.PriceItem\" " +
-                "Role=\"RefundItem_PriceItem_Target\" Multiplicity=\"1\" /><End Type=\"StoreAppTest.We" +
-                "b.DataModel.RefundItem\" Role=\"RefundItem_PriceItem_Source\" Multiplicity=\"*\" /><R" +
-                "eferentialConstraint><Principal Role=\"RefundItem_PriceItem_Target\"><PropertyRef " +
-                "Name=\"Id\" /></Principal><Dependent Role=\"RefundItem_PriceItem_Source\"><PropertyR" +
-                "ef Name=\"PriceItem_Id\" /></Dependent></ReferentialConstraint></Association><Asso" +
-                "ciation Name=\"RefundItem_SaleItem\"><End Type=\"StoreAppTest.Web.DataModel.SaleIte" +
-                "m\" Role=\"RefundItem_SaleItem_Target\" Multiplicity=\"1\" /><End Type=\"StoreAppTest." +
-                "Web.DataModel.RefundItem\" Role=\"RefundItem_SaleItem_Source\" Multiplicity=\"*\" /><" +
-                "ReferentialConstraint><Principal Role=\"RefundItem_SaleItem_";
+            private const string ModelPart7 = "ent_Creator_Source\" Multiplicity=\"*\" /><ReferentialConstraint><Principal Role=\"Re" +
+                "fundDocument_Creator_Target\"><PropertyRef Name=\"UserName\" /></Principal><Depende" +
+                "nt Role=\"RefundDocument_Creator_Source\"><PropertyRef Name=\"Creator_Id\" /></Depen" +
+                "dent></ReferentialConstraint></Association><Association Name=\"RefundDocument_Las" +
+                "tChanger\"><End Type=\"StoreAppTest.Web.DataModel.User\" Role=\"RefundDocument_LastC" +
+                "hanger_Target\" Multiplicity=\"1\" /><End Type=\"StoreAppTest.Web.DataModel.RefundDo" +
+                "cument\" Role=\"RefundDocument_LastChanger_Source\" Multiplicity=\"*\" /><Referential" +
+                "Constraint><Principal Role=\"RefundDocument_LastChanger_Target\"><PropertyRef Name" +
+                "=\"UserName\" /></Principal><Dependent Role=\"RefundDocument_LastChanger_Source\"><P" +
+                "ropertyRef Name=\"LastChanger_Id\" /></Dependent></ReferentialConstraint></Associa" +
+                "tion><Association Name=\"RefundDocument_RefundItems\"><End Type=\"StoreAppTest.Web." +
+                "DataModel.RefundDocument\" Role=\"RefundDocument_RefundItems_Source\" Multiplicity=" +
+                "\"1\" /><End Type=\"StoreAppTest.Web.DataModel.RefundItem\" Role=\"RefundDocument_Ref" +
+                "undItems_Target\" Multiplicity=\"*\" /><ReferentialConstraint><Principal Role=\"Refu" +
+                "ndDocument_RefundItems_Source\"><PropertyRef Name=\"Id\" /></Principal><Dependent R" +
+                "ole=\"RefundDocument_RefundItems_Target\"><PropertyRef Name=\"RefundDocument_Id\" />" +
+                "</Dependent></ReferentialConstraint></Association><Association Name=\"RefundDocum" +
+                "ent_SaleDocument\"><End Type=\"StoreAppTest.Web.DataModel.SaleDocument\" Role=\"Refu" +
+                "ndDocument_SaleDocument_Target\" Multiplicity=\"1\" /><End Type=\"StoreAppTest.Web.D" +
+                "ataModel.RefundDocument\" Role=\"RefundDocument_SaleDocument_Source\" Multiplicity=" +
+                "\"*\" /><ReferentialConstraint><Principal Role=\"RefundDocument_SaleDocument_Target" +
+                "\"><PropertyRef Name=\"Id\" /></Principal><Dependent Role=\"RefundDocument_SaleDocum" +
+                "ent_Source\"><PropertyRef Name=\"SaleDocument_Id\" /></Dependent></ReferentialConst" +
+                "raint></Association><Association Name=\"RefundItem_PriceItem\"><End Type=\"StoreApp" +
+                "Test.Web.DataModel.PriceItem\" Role=\"RefundItem_PriceItem_Target\" Multiplicity=\"1" +
+                "\" /><End Type=\"StoreAppTest.Web.DataModel.RefundItem\" Role=\"RefundItem_PriceItem" +
+                "_Source\" Multiplicity=\"*\" /><ReferentialConstraint><Principal Role=\"RefundItem_P" +
+                "riceItem_Target\"><PropertyRef Name=\"Id\" /></Principal><Dependent Role=\"RefundIte" +
+                "m_PriceItem_Source\"><PropertyRef Name=\"PriceItem_Id\" /></Dependent></Referential" +
+                "Constraint></Association><Association Name=\"RefundItem_SaleItem\"><End Type=\"Stor" +
+                "eAppTest.Web.DataModel.SaleItem\" Role=\"RefundItem_SaleItem_Target\" Multiplicity=" +
+                "\"1\" /><End Type=\"StoreAppTest.Web.DataModel.RefundItem\" Role=\"RefundItem_SaleIte" +
+                "m_Source\" Multiplicity=\"*\" /><ReferentialConstraint><Principal Role=\"RefundItem_" +
+                "SaleItem_Target\"><PropertyRef Name=\"Id\" /></Principal><Dependent Role=\"RefundIte" +
+                "m_SaleItem_Source\"><PropertyRef Name=\"SaleItem_Id\" /></Dependent></ReferentialCo" +
+                "nstraint></Association><Association Name=\"SaleItem_PriceItem\"><End Type=\"StoreAp" +
+                "pTest.Web.DataModel.PriceItem\" Role=\"SaleItem_PriceItem_Target\" Multiplicity=\"1\"" +
+                " /><End Type=\"StoreAppTest.Web.DataModel.SaleItem\" Role=\"SaleItem_PriceItem_Sour" +
+                "ce\" Multiplicity=\"*\" /><ReferentialConstraint><Principal Role=\"SaleItem_PriceIte" +
+                "m_Target\"><PropertyRef Name=\"Id\" /></Principal><Dependent Role=\"SaleItem_PriceIt" +
+                "em_Source\"><PropertyRef Name=\"PriceItem_Id\" /></Dependent></ReferentialConstrain" +
+                "t></Association><Association Name=\"SaleDocument_SaleItems\"><End Type=\"StoreAppTe" +
+                "st.Web.DataModel.SaleDocument\" Role=\"SaleDocument_SaleItems_Source\" Multiplicity" +
+                "=\"1\" /><End Type=\"StoreAppTest.Web.DataModel.SaleItem\" Role=\"SaleDocument_SaleIt" +
+                "ems_Target\" Multiplicity=\"*\" /><ReferentialConstraint><Principal Role=\"SaleDocum" +
+                "ent_SaleItems_Source\"><PropertyRef Name=\"Id\" /></Principal><Dependent Role=\"Sale" +
+                "Document_SaleItems_Target\"><PropertyRef Name=\"SaleDocument_Id\" /></Dependent></R" +
+                "eferentialConstraint></Association><Association Name=\"SaleDocument_Creator\"><End" +
+                " Type=\"StoreAppTest.Web.DataModel.User\" Role=\"SaleDocument_Creator_Target\" Multi" +
+                "plicity=\"1\" /><End Type=\"StoreAppTest.Web.DataModel.SaleDocument\" Role=\"SaleDocu" +
+                "ment_Creator_Source\" Multiplicity=\"*\" /><ReferentialConstraint><Principal Role=\"" +
+                "SaleDocument_Creator_Target\"><PropertyRef Name=\"UserName\" /></Principal><Depende" +
+                "nt Role=\"SaleDocument_Creator_Source\"><PropertyRef Name=\"Creator_Id\" /></Depende" +
+                "nt></ReferentialConstraint></Association><Association Name=\"SaleDocument_Custome" +
+                "r\"><End Type=\"StoreAppTest.Web.DataModel.Customer\" Role=\"SaleDocument_Customer_T" +
+                "arget\" Multiplicity=\"1\" /><End Type=\"StoreAppTest.Web.DataModel.SaleDocument\" Ro" +
+                "le=\"SaleDocument_Customer_Source\" Multiplicity=\"*\" /><ReferentialConstraint><Pri" +
+                "ncipal Role=\"SaleDocument_Customer_Target\"><PropertyRef Name=\"Name\" /></Principa" +
+                "l><Dependent Role=\"SaleDocument_Customer_Source\"><PropertyRef Name=\"Customer_Nam" +
+                "e\" /></Dependent></ReferentialConstraint></Association><Association Name=\"SaleDo" +
+                "cument_LastChanger\"><End Type=\"StoreAppTest.Web.DataModel.User\" Role=\"SaleDocume" +
+                "nt_LastChanger_Target\" Multiplicity=\"1\" /><End Type=\"StoreAppTest.Web.DataModel." +
+                "SaleDocument\" Role=\"SaleDocument_LastChanger_Source\" Multiplicity=\"*\" /><Referen" +
+                "tialConstraint><Principal Role=\"SaleDocument_LastChanger_Target\"><PropertyRef Na" +
+                "me=\"UserName\" /></Principal><Dependent Role=\"SaleDocument_LastChanger_Source\"><P" +
+                "ropertyRef Name=\"LastChanger_Id\" /></Dependent></ReferentialConstraint></Associa" +
+                "tion><Association Name=\"RefundsPerDayItem_RefundItem\"><End Type=\"StoreAppTest.We" +
+                "b.DataModel.RefundItem\" Role=\"RefundsPerDayItem_RefundItem_Target\" Multiplicity=" +
+                "\"1\" /><End Type=\"StoreAppTest.Web.DataModel.RefundsPerDayItem\" Role=\"RefundsPerD" +
+                "ayItem_RefundItem_Source\" Multiplicity=\"*\" /><ReferentialConstraint><Principal R" +
+                "ole=\"RefundsPerDayItem_RefundItem_Target\"><PropertyRef Name=\"Id\" /></Principal><" +
+                "Dependent Role=\"RefundsPerDayItem_RefundItem_Source\"><PropertyRef Name=\"RefundIt" +
+                "em_Id\" /></Dependent></ReferentialConstraint></Association><Association Name=\"Re" +
+                "fundsPerDayItem_SaleDocumentsPerDay\"><End Type=\"StoreAppTest.Web.DataModel.SaleD" +
+                "ocumentsPerDay\" Role=\"RefundsPerDayItem_SaleDocumentsPerDay_Target\" Multiplicity" +
+                "=\"1\" /><End Type=\"StoreAppTest.Web.DataModel.RefundsPerDayItem\" Role=\"RefundsPer" +
+                "DayItem_SaleDocumentsPerDay_Source\" Multiplicity=\"*\" /><ReferentialConstraint><P" +
+                "rincipal Role=\"RefundsPerDayItem_SaleDocumentsPerDay_Target\"><PropertyRef Name=\"" +
+                "Id\" /></Principal><Dependent Role=\"RefundsPerDayItem_SaleDocumentsPerDay_Source\"" +
+                "><PropertyRef Name=\"SaleDocumentsPerDay_Id\" /></Dependent></ReferentialConstrain" +
+                "t></Association><Association Name=\"SaleDocumentsPerDay_Creator\"><End Type=\"Store" +
+                "AppTest.Web.DataModel.User\" Role=\"SaleDocumentsPerDay_Creator_Target\" Multiplici" +
+                "ty=\"1\" /><End Type=\"StoreAppTest.Web.DataModel.SaleDocumentsPerDay\" Role=\"SaleDo" +
+                "cumentsPerDay_Creator_Source\" Multiplicity=\"*\" /><ReferentialConstraint><Princip" +
+                "al Role=\"SaleDocumentsPerDay_Creator_Target\"><PropertyRef Name=\"UserName\" /></Pr" +
+                "incipal><Dependent Role=\"SaleDocumentsPerDay_Creator_Source\"><PropertyRef Name=\"" +
+                "Creator_Id\" /></Dependent></ReferentialConstraint></Association><Association Nam" +
+                "e=\"SaleDocumentsPerDay_SalesPerDayItems\"><End Type=\"StoreAppTest.Web.DataModel.S" +
+                "aleDocumentsPerDay\" Role=\"SaleDocumentsPerDay_SalesPerDayItems_Source\" Multiplic" +
+                "ity=\"1\" /><End Type=\"StoreAppTest.Web.DataModel.SalesPerDayItem\" Role=\"SaleDocum" +
+                "entsPerDay_SalesPerDayItems_Target\" Multiplicity=\"*\" /><ReferentialConstraint><P" +
+                "rincipal Role=\"SaleDocumentsPerDay_SalesPerDayItems_Source\"><PropertyRef Name=\"I" +
+                "d\" /></Principal><Dependent Role=\"SaleDocumentsPerDay_SalesPerDayItems_Target\"><" +
+                "PropertyRef Name=\"SaleDocumentsPerDay_Id\" /></Dependent></R";
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Services.Design", "1.0.0")]
-            private const string ModelPart7 = "Target\"><PropertyRef Name=\"Id\" /></Principal><Dependent Role=\"RefundItem_SaleItem" +
-                "_Source\"><PropertyRef Name=\"SaleItem_Id\" /></Dependent></ReferentialConstraint><" +
-                "/Association><Association Name=\"SaleItem_PriceItem\"><End Type=\"StoreAppTest.Web." +
-                "DataModel.PriceItem\" Role=\"SaleItem_PriceItem_Target\" Multiplicity=\"1\" /><End Ty" +
-                "pe=\"StoreAppTest.Web.DataModel.SaleItem\" Role=\"SaleItem_PriceItem_Source\" Multip" +
-                "licity=\"*\" /><ReferentialConstraint><Principal Role=\"SaleItem_PriceItem_Target\">" +
-                "<PropertyRef Name=\"Id\" /></Principal><Dependent Role=\"SaleItem_PriceItem_Source\"" +
-                "><PropertyRef Name=\"PriceItem_Id\" /></Dependent></ReferentialConstraint></Associ" +
-                "ation><Association Name=\"SaleDocument_SaleItems\"><End Type=\"StoreAppTest.Web.Dat" +
-                "aModel.SaleDocument\" Role=\"SaleDocument_SaleItems_Source\" Multiplicity=\"1\" /><En" +
-                "d Type=\"StoreAppTest.Web.DataModel.SaleItem\" Role=\"SaleDocument_SaleItems_Target" +
-                "\" Multiplicity=\"*\" /><ReferentialConstraint><Principal Role=\"SaleDocument_SaleIt" +
-                "ems_Source\"><PropertyRef Name=\"Id\" /></Principal><Dependent Role=\"SaleDocument_S" +
-                "aleItems_Target\"><PropertyRef Name=\"SaleDocument_Id\" /></Dependent></Referential" +
-                "Constraint></Association><Association Name=\"SaleDocument_Creator\"><End Type=\"Sto" +
-                "reAppTest.Web.DataModel.User\" Role=\"SaleDocument_Creator_Target\" Multiplicity=\"1" +
-                "\" /><End Type=\"StoreAppTest.Web.DataModel.SaleDocument\" Role=\"SaleDocument_Creat" +
-                "or_Source\" Multiplicity=\"*\" /><ReferentialConstraint><Principal Role=\"SaleDocume" +
-                "nt_Creator_Target\"><PropertyRef Name=\"UserName\" /></Principal><Dependent Role=\"S" +
-                "aleDocument_Creator_Source\"><PropertyRef Name=\"Creator_Id\" /></Dependent></Refer" +
-                "entialConstraint></Association><Association Name=\"SaleDocument_Customer\"><End Ty" +
-                "pe=\"StoreAppTest.Web.DataModel.Customer\" Role=\"SaleDocument_Customer_Target\" Mul" +
-                "tiplicity=\"1\" /><End Type=\"StoreAppTest.Web.DataModel.SaleDocument\" Role=\"SaleDo" +
-                "cument_Customer_Source\" Multiplicity=\"*\" /><ReferentialConstraint><Principal Rol" +
-                "e=\"SaleDocument_Customer_Target\"><PropertyRef Name=\"Name\" /></Principal><Depende" +
-                "nt Role=\"SaleDocument_Customer_Source\"><PropertyRef Name=\"Customer_Name\" /></Dep" +
-                "endent></ReferentialConstraint></Association><Association Name=\"SaleDocument_Las" +
-                "tChanger\"><End Type=\"StoreAppTest.Web.DataModel.User\" Role=\"SaleDocument_LastCha" +
-                "nger_Target\" Multiplicity=\"1\" /><End Type=\"StoreAppTest.Web.DataModel.SaleDocume" +
-                "nt\" Role=\"SaleDocument_LastChanger_Source\" Multiplicity=\"*\" /><ReferentialConstr" +
-                "aint><Principal Role=\"SaleDocument_LastChanger_Target\"><PropertyRef Name=\"UserNa" +
-                "me\" /></Principal><Dependent Role=\"SaleDocument_LastChanger_Source\"><PropertyRef" +
-                " Name=\"LastChanger_Id\" /></Dependent></ReferentialConstraint></Association><Asso" +
-                "ciation Name=\"RefundsPerDayItem_RefundItem\"><End Type=\"StoreAppTest.Web.DataMode" +
-                "l.RefundItem\" Role=\"RefundsPerDayItem_RefundItem_Target\" Multiplicity=\"1\" /><End" +
-                " Type=\"StoreAppTest.Web.DataModel.RefundsPerDayItem\" Role=\"RefundsPerDayItem_Ref" +
-                "undItem_Source\" Multiplicity=\"*\" /><ReferentialConstraint><Principal Role=\"Refun" +
-                "dsPerDayItem_RefundItem_Target\"><PropertyRef Name=\"Id\" /></Principal><Dependent " +
-                "Role=\"RefundsPerDayItem_RefundItem_Source\"><PropertyRef Name=\"RefundItem_Id\" /><" +
-                "/Dependent></ReferentialConstraint></Association><Association Name=\"SaleDocument" +
-                "sPerDay_RefundsPerDayItems\"><End Type=\"StoreAppTest.Web.DataModel.SaleDocumentsP" +
-                "erDay\" Role=\"SaleDocumentsPerDay_RefundsPerDayItems_Source\" Multiplicity=\"1\" /><" +
-                "End Type=\"StoreAppTest.Web.DataModel.RefundsPerDayItem\" Role=\"SaleDocumentsPerDa" +
-                "y_RefundsPerDayItems_Target\" Multiplicity=\"*\" /><ReferentialConstraint><Principa" +
-                "l Role=\"SaleDocumentsPerDay_RefundsPerDayItems_Source\"><PropertyRef Name=\"Id\" />" +
-                "</Principal><Dependent Role=\"SaleDocumentsPerDay_RefundsPerDayItems_Target\"><Pro" +
-                "pertyRef Name=\"SaleDocumentsPerDay_Id\" /></Dependent></ReferentialConstraint></A" +
-                "ssociation><Association Name=\"SaleDocumentsPerDay_Creator\"><End Type=\"StoreAppTe" +
-                "st.Web.DataModel.User\" Role=\"SaleDocumentsPerDay_Creator_Target\" Multiplicity=\"1" +
-                "\" /><End Type=\"StoreAppTest.Web.DataModel.SaleDocumentsPerDay\" Role=\"SaleDocumen" +
-                "tsPerDay_Creator_Source\" Multiplicity=\"*\" /><ReferentialConstraint><Principal Ro" +
-                "le=\"SaleDocumentsPerDay_Creator_Target\"><PropertyRef Name=\"UserName\" /></Princip" +
-                "al><Dependent Role=\"SaleDocumentsPerDay_Creator_Source\"><PropertyRef Name=\"Creat" +
-                "or_Id\" /></Dependent></ReferentialConstraint></Association><Association Name=\"Sa" +
-                "leDocumentsPerDay_SalesPerDayItems\"><End Type=\"StoreAppTest.Web.DataModel.SaleDo" +
-                "cumentsPerDay\" Role=\"SaleDocumentsPerDay_SalesPerDayItems_Source\" Multiplicity=\"" +
-                "1\" /><End Type=\"StoreAppTest.Web.DataModel.SalesPerDayItem\" Role=\"SaleDocumentsP" +
-                "erDay_SalesPerDayItems_Target\" Multiplicity=\"*\" /><ReferentialConstraint><Princi" +
-                "pal Role=\"SaleDocumentsPerDay_SalesPerDayItems_Source\"><PropertyRef Name=\"Id\" />" +
-                "</Principal><Dependent Role=\"SaleDocumentsPerDay_SalesPerDayItems_Target\"><Prope" +
-                "rtyRef Name=\"SaleDocumentsPerDay_Id\" /></Dependent></ReferentialConstraint></Ass" +
-                "ociation><Association Name=\"SalesPerDayItem_SaleItem\"><End Type=\"StoreAppTest.We" +
-                "b.DataModel.SaleItem\" Role=\"SalesPerDayItem_SaleItem_Target\" Multiplicity=\"1\" />" +
-                "<End Type=\"StoreAppTest.Web.DataModel.SalesPerDayItem\" Role=\"SalesPerDayItem_Sal" +
-                "eItem_Source\" Multiplicity=\"*\" /><ReferentialConstraint><Principal Role=\"SalesPe" +
-                "rDayItem_SaleItem_Target\"><PropertyRef Name=\"Id\" /></Principal><Dependent Role=\"" +
-                "SalesPerDayItem_SaleItem_Source\"><PropertyRef Name=\"SaleItem_Id\" /></Dependent><" +
-                "/ReferentialConstraint></Association><Association Name=\"WarehouseTransferRequest" +
-                "Item_PriceItem\"><End Type=\"StoreAppTest.Web.DataModel.PriceItem\" Role=\"Warehouse" +
-                "TransferRequestItem_PriceItem_Target\" Multiplicity=\"1\" /><End Type=\"StoreAppTest" +
-                ".Web.DataModel.WarehouseTransferRequestItem\" Role=\"WarehouseTransferRequestItem_" +
-                "PriceItem_Source\" Multiplicity=\"*\" /><ReferentialConstraint><Principal Role=\"War" +
-                "ehouseTransferRequestItem_PriceItem_Target\"><PropertyRef Name=\"Id\" /></Principal" +
-                "><Dependent Role=\"WarehouseTransferRequestItem_PriceItem_Source\"><PropertyRef Na" +
-                "me=\"PriceItem_Id\" /></Dependent></ReferentialConstraint></Association><Associati" +
-                "on Name=\"WarehouseTransferRequest_WarehouseTransferRequestItemItems\"><End Type=\"" +
-                "StoreAppTest.Web.DataModel.WarehouseTransferRequest\" Role=\"WarehouseTransferRequ" +
-                "est_WarehouseTransferRequestItemItems_Source\" Multiplicity=\"1\" /><End Type=\"Stor" +
-                "eAppTest.Web.DataModel.WarehouseTransferRequestItem\" Role=\"WarehouseTransferRequ" +
-                "est_WarehouseTransferRequestItemItems_Target\" Multiplicity=\"*\" /><ReferentialCon" +
-                "straint><Principal Role=\"WarehouseTransferRequest_WarehouseTransferRequestItemIt" +
-                "ems_Source\"><PropertyRef Name=\"Id\" /></Principal><Dependent Role=\"WarehouseTrans" +
-                "ferRequest_WarehouseTransferRequestItemItems_Target\"><PropertyRef Name=\"Warehous" +
-                "eTransferRequest_Id\" /></Dependent></ReferentialConstraint></Association><Associ" +
-                "ation Name=\"WarehouseTransferRequest_Creator\"><End Type=\"StoreAppTest.Web.DataMo" +
-                "del.User\" Role=\"WarehouseTransferRequest_Creator_Target\" Multiplicity=\"1\" /><End" +
-                " Type=\"StoreAppTest.Web.DataModel.WarehouseTransferRequest\" Role=\"WarehouseTrans" +
-                "ferRequest_Creator_Source\" Multiplicity=\"*\" /><ReferentialConstraint><Principal " +
-                "Role=\"WarehouseTransferRequest_Creator_Target\"><PropertyRef Name=\"UserName\" /></" +
-                "Principal><Dependent Role=\"WarehouseTransferRequest_Creator_Source\"><PropertyRef" +
-                " Name=\"Creator_Id\" /></Dependent></ReferentialConstraint></Association><Associat" +
-                "ion Name=\"WarehouseTransferRequest_Customer\"><End Type=\"StoreAppTest.Web.DataMod" +
-                "el.Warehouse\" Role=\"WarehouseTransferRequest_Customer_Target\" Multiplicity=\"1\" /" +
-                "><End Type=\"StoreAppTest.Web.DataModel.WarehouseTransferReq";
+            private const string ModelPart8 = "eferentialConstraint></Association><Association Name=\"SalesPerDayItem_SaleItem\"><" +
+                "End Type=\"StoreAppTest.Web.DataModel.SaleItem\" Role=\"SalesPerDayItem_SaleItem_Ta" +
+                "rget\" Multiplicity=\"1\" /><End Type=\"StoreAppTest.Web.DataModel.SalesPerDayItem\" " +
+                "Role=\"SalesPerDayItem_SaleItem_Source\" Multiplicity=\"*\" /><ReferentialConstraint" +
+                "><Principal Role=\"SalesPerDayItem_SaleItem_Target\"><PropertyRef Name=\"Id\" /></Pr" +
+                "incipal><Dependent Role=\"SalesPerDayItem_SaleItem_Source\"><PropertyRef Name=\"Sal" +
+                "eItem_Id\" /></Dependent></ReferentialConstraint></Association><Association Name=" +
+                "\"WarehouseTransferRequestItem_PriceItem\"><End Type=\"StoreAppTest.Web.DataModel.P" +
+                "riceItem\" Role=\"WarehouseTransferRequestItem_PriceItem_Target\" Multiplicity=\"1\" " +
+                "/><End Type=\"StoreAppTest.Web.DataModel.WarehouseTransferRequestItem\" Role=\"Ware" +
+                "houseTransferRequestItem_PriceItem_Source\" Multiplicity=\"*\" /><ReferentialConstr" +
+                "aint><Principal Role=\"WarehouseTransferRequestItem_PriceItem_Target\"><PropertyRe" +
+                "f Name=\"Id\" /></Principal><Dependent Role=\"WarehouseTransferRequestItem_PriceIte" +
+                "m_Source\"><PropertyRef Name=\"PriceItem_Id\" /></Dependent></ReferentialConstraint" +
+                "></Association><Association Name=\"WarehouseTransferRequest_WarehouseTransferRequ" +
+                "estItemItems\"><End Type=\"StoreAppTest.Web.DataModel.WarehouseTransferRequest\" Ro" +
+                "le=\"WarehouseTransferRequest_WarehouseTransferRequestItemItems_Source\" Multiplic" +
+                "ity=\"1\" /><End Type=\"StoreAppTest.Web.DataModel.WarehouseTransferRequestItem\" Ro" +
+                "le=\"WarehouseTransferRequest_WarehouseTransferRequestItemItems_Target\" Multiplic" +
+                "ity=\"*\" /><ReferentialConstraint><Principal Role=\"WarehouseTransferRequest_Wareh" +
+                "ouseTransferRequestItemItems_Source\"><PropertyRef Name=\"Id\" /></Principal><Depen" +
+                "dent Role=\"WarehouseTransferRequest_WarehouseTransferRequestItemItems_Target\"><P" +
+                "ropertyRef Name=\"WarehouseTransferRequest_Id\" /></Dependent></ReferentialConstra" +
+                "int></Association><Association Name=\"WarehouseTransferRequest_Creator\"><End Type" +
+                "=\"StoreAppTest.Web.DataModel.User\" Role=\"WarehouseTransferRequest_Creator_Target" +
+                "\" Multiplicity=\"1\" /><End Type=\"StoreAppTest.Web.DataModel.WarehouseTransferRequ" +
+                "est\" Role=\"WarehouseTransferRequest_Creator_Source\" Multiplicity=\"*\" /><Referent" +
+                "ialConstraint><Principal Role=\"WarehouseTransferRequest_Creator_Target\"><Propert" +
+                "yRef Name=\"UserName\" /></Principal><Dependent Role=\"WarehouseTransferRequest_Cre" +
+                "ator_Source\"><PropertyRef Name=\"Creator_Id\" /></Dependent></ReferentialConstrain" +
+                "t></Association><Association Name=\"WarehouseTransferRequest_Customer\"><End Type=" +
+                "\"StoreAppTest.Web.DataModel.Warehouse\" Role=\"WarehouseTransferRequest_Customer_T" +
+                "arget\" Multiplicity=\"1\" /><End Type=\"StoreAppTest.Web.DataModel.WarehouseTransfe" +
+                "rRequest\" Role=\"WarehouseTransferRequest_Customer_Source\" Multiplicity=\"*\" /><Re" +
+                "ferentialConstraint><Principal Role=\"WarehouseTransferRequest_Customer_Target\"><" +
+                "PropertyRef Name=\"Name\" /></Principal><Dependent Role=\"WarehouseTransferRequest_" +
+                "Customer_Source\"><PropertyRef Name=\"Customer_Id\" /></Dependent></ReferentialCons" +
+                "traint></Association><Association Name=\"WarehouseTransferRequest_LastChanged\"><E" +
+                "nd Type=\"StoreAppTest.Web.DataModel.User\" Role=\"WarehouseTransferRequest_LastCha" +
+                "nged_Target\" Multiplicity=\"0..1\" /><End Type=\"StoreAppTest.Web.DataModel.Warehou" +
+                "seTransferRequest\" Role=\"WarehouseTransferRequest_LastChanged_Source\" Multiplici" +
+                "ty=\"*\" /><ReferentialConstraint><Principal Role=\"WarehouseTransferRequest_LastCh" +
+                "anged_Target\"><PropertyRef Name=\"UserName\" /></Principal><Dependent Role=\"Wareho" +
+                "useTransferRequest_LastChanged_Source\"><PropertyRef Name=\"LastChanged_Id\" /></De" +
+                "pendent></ReferentialConstraint></Association><Association Name=\"WarehouseTransf" +
+                "erRequest_Supplier\"><End Type=\"StoreAppTest.Web.DataModel.Warehouse\" Role=\"Wareh" +
+                "ouseTransferRequest_Supplier_Target\" Multiplicity=\"1\" /><End Type=\"StoreAppTest." +
+                "Web.DataModel.WarehouseTransferRequest\" Role=\"WarehouseTransferRequest_Supplier_" +
+                "Source\" Multiplicity=\"*\" /><ReferentialConstraint><Principal Role=\"WarehouseTran" +
+                "sferRequest_Supplier_Target\"><PropertyRef Name=\"Name\" /></Principal><Dependent R" +
+                "ole=\"WarehouseTransferRequest_Supplier_Source\"><PropertyRef Name=\"Supplier_Id\" /" +
+                "></Dependent></ReferentialConstraint></Association><EntityContainer Name=\"StoreD" +
+                "bContext\" m:IsDefaultEntityContainer=\"true\"><EntitySet Name=\"Customers\" EntityTy" +
+                "pe=\"StoreAppTest.Web.DataModel.Customer\" /><EntitySet Name=\"Users\" EntityType=\"S" +
+                "toreAppTest.Web.DataModel.User\" /><EntitySet Name=\"PriceLists\" EntityType=\"Store" +
+                "AppTest.Web.DataModel.PriceList\" /><EntitySet Name=\"PriceItems\" EntityType=\"Stor" +
+                "eAppTest.Web.DataModel.PriceItem\" /><EntitySet Name=\"Gears\" EntityType=\"StoreApp" +
+                "Test.Web.DataModel.Gear\" /><EntitySet Name=\"GearCategories\" EntityType=\"StoreApp" +
+                "Test.Web.DataModel.GearCategory\" /><EntitySet Name=\"Resources\" EntityType=\"Store" +
+                "AppTest.Web.DataModel.Resource\" /><EntitySet Name=\"WholesalePrices\" EntityType=\"" +
+                "StoreAppTest.Web.DataModel.WholesalePrice\" /><EntitySet Name=\"Remainders\" Entity" +
+                "Type=\"StoreAppTest.Web.DataModel.Remainder\" /><EntitySet Name=\"RemaindersUserCha" +
+                "nges\" EntityType=\"StoreAppTest.Web.DataModel.RemaindersUserChange\" /><EntitySet " +
+                "Name=\"Warehouses\" EntityType=\"StoreAppTest.Web.DataModel.Warehouse\" /><EntitySet" +
+                " Name=\"UnitOfMeasures\" EntityType=\"StoreAppTest.Web.DataModel.UnitOfMeasure\" /><" +
+                "EntitySet Name=\"Roles\" EntityType=\"StoreAppTest.Web.DataModel.Role\" /><EntitySet" +
+                " Name=\"DebtDischargeDocuments\" EntityType=\"StoreAppTest.Web.DataModel.DebtDischa" +
+                "rgeDocument\" /><EntitySet Name=\"GearNews\" EntityType=\"StoreAppTest.Web.DataModel" +
+                ".GearNew\" /><EntitySet Name=\"IncomeItems\" EntityType=\"StoreAppTest.Web.DataModel" +
+                ".IncomeItem\" /><EntitySet Name=\"Incomes\" EntityType=\"StoreAppTest.Web.DataModel." +
+                "Income\" /><EntitySet Name=\"Suppliers\" EntityType=\"StoreAppTest.Web.DataModel.Sup" +
+                "plier\" /><EntitySet Name=\"PriceChangeReportItems\" EntityType=\"StoreAppTest.Web.D" +
+                "ataModel.PriceChangeReportItem\" /><EntitySet Name=\"PriceChangeReports\" EntityTyp" +
+                "e=\"StoreAppTest.Web.DataModel.PriceChangeReport\" /><EntitySet Name=\"RefundDocume" +
+                "nts\" EntityType=\"StoreAppTest.Web.DataModel.RefundDocument\" /><EntitySet Name=\"R" +
+                "efundItems\" EntityType=\"StoreAppTest.Web.DataModel.RefundItem\" /><EntitySet Name" +
+                "=\"SaleItems\" EntityType=\"StoreAppTest.Web.DataModel.SaleItem\" /><EntitySet Name=" +
+                "\"SaleDocuments\" EntityType=\"StoreAppTest.Web.DataModel.SaleDocument\" /><EntitySe" +
+                "t Name=\"RefundsPerDayItems\" EntityType=\"StoreAppTest.Web.DataModel.RefundsPerDay" +
+                "Item\" /><EntitySet Name=\"SaleDocumentsPerDays\" EntityType=\"StoreAppTest.Web.Data" +
+                "Model.SaleDocumentsPerDay\" /><EntitySet Name=\"SalesPerDayItems\" EntityType=\"Stor" +
+                "eAppTest.Web.DataModel.SalesPerDayItem\" /><EntitySet Name=\"WarehouseTransferRequ" +
+                "estItems\" EntityType=\"StoreAppTest.Web.DataModel.WarehouseTransferRequestItem\" /" +
+                "><EntitySet Name=\"WarehouseTransferRequests\" EntityType=\"StoreAppTest.Web.DataMo" +
+                "del.WarehouseTransferRequest\" /><EntitySet Name=\"PriceItemRemainderViews\" Entity" +
+                "Type=\"StoreAppTest.Web.DataModel.PriceItemRemainderView\" /><EntitySet Name=\"Pric" +
+                "eIncomeItemViews\" EntityType=\"StoreAppTest.Web.DataModel.PriceIncomeItemView\" />" +
+                "<EntitySet Name=\"PriceIncomeTotalItemViews\" EntityType=\"StoreAppTest.Web.DataMod" +
+                "el.PriceIncomeTotalItemView\" /><EntitySet Name=\"PriceItemViews\" EntityType=\"Stor" +
+                "eAppTest.Web.DataModel.PriceItemView\" /><EntitySet Name=\"PriceListItemRemainderV" +
+                "iews\" EntityType=\"StoreAppTest.Web.DataModel.PriceListItemRemainderView\" /><Func" +
+                "tionImport Name=\"GetLowerLimitPriceItems\" ReturnType=\"Collection(StoreAppTest.We" +
+                "b.DataModel.PriceItemRemainderView)\" EntitySet=\"PriceItemRemainderViews\" m:HttpM" +
+                "ethod=\"GET\"><Parameter Name=\"priceListName\" Type=\"Edm.Strin";
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Services.Design", "1.0.0")]
-            private const string ModelPart8 = "uest\" Role=\"WarehouseTransferRequest_Customer_Source\" Multiplicity=\"*\" /><Referen" +
-                "tialConstraint><Principal Role=\"WarehouseTransferRequest_Customer_Target\"><Prope" +
-                "rtyRef Name=\"Name\" /></Principal><Dependent Role=\"WarehouseTransferRequest_Custo" +
-                "mer_Source\"><PropertyRef Name=\"Customer_Id\" /></Dependent></ReferentialConstrain" +
-                "t></Association><Association Name=\"WarehouseTransferRequest_LastChanged\"><End Ty" +
-                "pe=\"StoreAppTest.Web.DataModel.User\" Role=\"WarehouseTransferRequest_LastChanged_" +
-                "Target\" Multiplicity=\"0..1\" /><End Type=\"StoreAppTest.Web.DataModel.WarehouseTra" +
-                "nsferRequest\" Role=\"WarehouseTransferRequest_LastChanged_Source\" Multiplicity=\"*" +
-                "\" /><ReferentialConstraint><Principal Role=\"WarehouseTransferRequest_LastChanged" +
-                "_Target\"><PropertyRef Name=\"UserName\" /></Principal><Dependent Role=\"WarehouseTr" +
-                "ansferRequest_LastChanged_Source\"><PropertyRef Name=\"LastChanged_Id\" /></Depende" +
-                "nt></ReferentialConstraint></Association><Association Name=\"WarehouseTransferReq" +
-                "uest_Supplier\"><End Type=\"StoreAppTest.Web.DataModel.Warehouse\" Role=\"WarehouseT" +
-                "ransferRequest_Supplier_Target\" Multiplicity=\"1\" /><End Type=\"StoreAppTest.Web.D" +
-                "ataModel.WarehouseTransferRequest\" Role=\"WarehouseTransferRequest_Supplier_Sourc" +
-                "e\" Multiplicity=\"*\" /><ReferentialConstraint><Principal Role=\"WarehouseTransferR" +
-                "equest_Supplier_Target\"><PropertyRef Name=\"Name\" /></Principal><Dependent Role=\"" +
-                "WarehouseTransferRequest_Supplier_Source\"><PropertyRef Name=\"Supplier_Id\" /></De" +
-                "pendent></ReferentialConstraint></Association><EntityContainer Name=\"StoreDbCont" +
-                "ext\" m:IsDefaultEntityContainer=\"true\"><EntitySet Name=\"Customers\" EntityType=\"S" +
-                "toreAppTest.Web.DataModel.Customer\" /><EntitySet Name=\"Users\" EntityType=\"StoreA" +
-                "ppTest.Web.DataModel.User\" /><EntitySet Name=\"Roles\" EntityType=\"StoreAppTest.We" +
-                "b.DataModel.Role\" /><EntitySet Name=\"Warehouses\" EntityType=\"StoreAppTest.Web.Da" +
-                "taModel.Warehouse\" /><EntitySet Name=\"DebtDischargeDocuments\" EntityType=\"StoreA" +
-                "ppTest.Web.DataModel.DebtDischargeDocument\" /><EntitySet Name=\"GearCategories\" E" +
-                "ntityType=\"StoreAppTest.Web.DataModel.GearCategory\" /><EntitySet Name=\"Gears\" En" +
-                "tityType=\"StoreAppTest.Web.DataModel.Gear\" /><EntitySet Name=\"Resources\" EntityT" +
-                "ype=\"StoreAppTest.Web.DataModel.Resource\" /><EntitySet Name=\"GearNews\" EntityTyp" +
-                "e=\"StoreAppTest.Web.DataModel.GearNew\" /><EntitySet Name=\"IncomeItems\" EntityTyp" +
-                "e=\"StoreAppTest.Web.DataModel.IncomeItem\" /><EntitySet Name=\"Incomes\" EntityType" +
-                "=\"StoreAppTest.Web.DataModel.Income\" /><EntitySet Name=\"Suppliers\" EntityType=\"S" +
-                "toreAppTest.Web.DataModel.Supplier\" /><EntitySet Name=\"PriceItems\" EntityType=\"S" +
-                "toreAppTest.Web.DataModel.PriceItem\" /><EntitySet Name=\"PriceLists\" EntityType=\"" +
-                "StoreAppTest.Web.DataModel.PriceList\" /><EntitySet Name=\"WholesalePrices\" Entity" +
-                "Type=\"StoreAppTest.Web.DataModel.WholesalePrice\" /><EntitySet Name=\"Remainders\" " +
-                "EntityType=\"StoreAppTest.Web.DataModel.Remainder\" /><EntitySet Name=\"RemaindersU" +
-                "serChanges\" EntityType=\"StoreAppTest.Web.DataModel.RemaindersUserChange\" /><Enti" +
-                "tySet Name=\"UnitOfMeasures\" EntityType=\"StoreAppTest.Web.DataModel.UnitOfMeasure" +
-                "\" /><EntitySet Name=\"PriceChangeReportItems\" EntityType=\"StoreAppTest.Web.DataMo" +
-                "del.PriceChangeReportItem\" /><EntitySet Name=\"PriceChangeReports\" EntityType=\"St" +
-                "oreAppTest.Web.DataModel.PriceChangeReport\" /><EntitySet Name=\"RefundDocuments\" " +
-                "EntityType=\"StoreAppTest.Web.DataModel.RefundDocument\" /><EntitySet Name=\"Refund" +
-                "Items\" EntityType=\"StoreAppTest.Web.DataModel.RefundItem\" /><EntitySet Name=\"Sal" +
-                "eItems\" EntityType=\"StoreAppTest.Web.DataModel.SaleItem\" /><EntitySet Name=\"Sale" +
-                "Documents\" EntityType=\"StoreAppTest.Web.DataModel.SaleDocument\" /><EntitySet Nam" +
-                "e=\"RefundsPerDayItems\" EntityType=\"StoreAppTest.Web.DataModel.RefundsPerDayItem\"" +
-                " /><EntitySet Name=\"SaleDocumentsPerDays\" EntityType=\"StoreAppTest.Web.DataModel" +
-                ".SaleDocumentsPerDay\" /><EntitySet Name=\"SalesPerDayItems\" EntityType=\"StoreAppT" +
-                "est.Web.DataModel.SalesPerDayItem\" /><EntitySet Name=\"WarehouseTransferRequestIt" +
-                "ems\" EntityType=\"StoreAppTest.Web.DataModel.WarehouseTransferRequestItem\" /><Ent" +
-                "itySet Name=\"WarehouseTransferRequests\" EntityType=\"StoreAppTest.Web.DataModel.W" +
-                "arehouseTransferRequest\" /><EntitySet Name=\"PriceItemRemainderViews\" EntityType=" +
-                "\"StoreAppTest.Web.DataModel.PriceItemRemainderView\" /><EntitySet Name=\"PriceInco" +
-                "meItemViews\" EntityType=\"StoreAppTest.Web.DataModel.PriceIncomeItemView\" /><Enti" +
-                "tySet Name=\"PriceIncomeTotalItemViews\" EntityType=\"StoreAppTest.Web.DataModel.Pr" +
-                "iceIncomeTotalItemView\" /><EntitySet Name=\"PriceItemViews\" EntityType=\"StoreAppT" +
-                "est.Web.DataModel.PriceItemView\" /><EntitySet Name=\"PriceListItemRemainderViews\"" +
-                " EntityType=\"StoreAppTest.Web.DataModel.PriceListItemRemainderView\" /><FunctionI" +
-                "mport Name=\"GetLowerLimitPriceItems\" ReturnType=\"Collection(StoreAppTest.Web.Dat" +
-                "aModel.PriceItemRemainderView)\" EntitySet=\"PriceItemRemainderViews\" m:HttpMethod" +
+            private const string ModelPart9 = "g\" /></FunctionImport><FunctionImport Name=\"GetNewsPriceItems\" ReturnType=\"Collec" +
+                "tion(StoreAppTest.Web.DataModel.PriceItemRemainderView)\" EntitySet=\"PriceItemRem" +
+                "ainderViews\" m:HttpMethod=\"GET\"><Parameter Name=\"priceListName\" Type=\"Edm.String" +
+                "\" /></FunctionImport><FunctionImport Name=\"GetSucksPriceItems\" ReturnType=\"Colle" +
+                "ction(StoreAppTest.Web.DataModel.PriceItemRemainderView)\" EntitySet=\"PriceItemRe" +
+                "mainderViews\" m:HttpMethod=\"GET\"><Parameter Name=\"priceListName\" Type=\"Edm.Strin" +
+                "g\" /></FunctionImport><FunctionImport Name=\"GetIncomesPriceItems\" ReturnType=\"Co" +
+                "llection(StoreAppTest.Web.DataModel.PriceItemRemainderView)\" EntitySet=\"PriceIte" +
+                "mRemainderViews\" m:HttpMethod=\"GET\"><Parameter Name=\"priceListName\" Type=\"Edm.St" +
+                "ring\" /></FunctionImport><FunctionImport Name=\"GetAllPriceItems\" ReturnType=\"Col" +
+                "lection(StoreAppTest.Web.DataModel.PriceItemRemainderView)\" EntitySet=\"PriceItem" +
+                "RemainderViews\" m:HttpMethod=\"GET\"><Parameter Name=\"priceListName\" Type=\"Edm.Str" +
+                "ing\" /></FunctionImport><FunctionImport Name=\"GetLightPriceItemList\" ReturnType=" +
+                "\"Collection(StoreAppTest.Web.DataModel.PriceItemRemainderView)\" EntitySet=\"Price" +
+                "ItemRemainderViews\" m:HttpMethod=\"GET\"><Parameter Name=\"priceListName\" Type=\"Edm" +
+                ".String\" /><Parameter Name=\"warehouse\" Type=\"Edm.String\" /></FunctionImport><Fun" +
+                "ctionImport Name=\"GetNotAcceptedIncomes\" ReturnType=\"Collection(StoreAppTest.Web" +
+                ".DataModel.PriceIncomeItemView)\" EntitySet=\"PriceIncomeItemViews\" m:HttpMethod=\"" +
+                "GET\"><Parameter Name=\"priceListName\" Type=\"Edm.String\" /></FunctionImport><Funct" +
+                "ionImport Name=\"GetTotalIncomes\" ReturnType=\"Collection(StoreAppTest.Web.DataMod" +
+                "el.PriceIncomeTotalItemView)\" EntitySet=\"PriceIncomeTotalItemViews\" m:HttpMethod" +
                 "=\"GET\"><Parameter Name=\"priceListName\" Type=\"Edm.String\" /></FunctionImport><Fun" +
-                "ctionImport Name=\"GetNewsPriceItems\" ReturnType=\"Collection(StoreAppTest.Web.Dat" +
-                "aModel.PriceItemRemainderView)\" EntitySet=\"PriceItemRemainderViews\" m:HttpMethod" +
-                "=\"GET\"><Parameter Name=\"priceListName\" Type=\"Edm.String\" /></FunctionImport><Fun" +
-                "ctionImport Name=\"GetSucksPriceItems\" ReturnType=\"Collection(StoreAppTest.Web.Da" +
-                "taModel.PriceItemRemainderView)\" EntitySet=\"PriceItemRemainderViews\" m:HttpMetho" +
-                "d=\"GET\"><Parameter Name=\"priceListName\" Type=\"Edm.String\" /></FunctionImport><Fu" +
-                "nctionImport Name=\"GetIncomesPriceItems\" ReturnType=\"Collection(StoreAppTest.Web" +
-                ".DataModel.PriceItemRemainderView)\" EntitySet=\"PriceItemRemainderViews\" m:HttpMe" +
-                "thod=\"GET\"><Parameter Name=\"priceListName\" Type=\"Edm.String\" /></FunctionImport>" +
-                "<FunctionImport Name=\"GetAllPriceItems\" ReturnType=\"Collection(StoreAppTest.Web." +
-                "DataModel.PriceItemRemainderView)\" EntitySet=\"PriceItemRemainderViews\" m:HttpMet" +
-                "hod=\"GET\"><Parameter Name=\"priceListName\" Type=\"Edm.String\" /></FunctionImport><" +
-                "FunctionImport Name=\"GetLightPriceItemList\" ReturnType=\"Collection(StoreAppTest." +
+                "ctionImport Name=\"GetLightAllPriceItemList\" ReturnType=\"Collection(StoreAppTest." +
                 "Web.DataModel.PriceItemRemainderView)\" EntitySet=\"PriceItemRemainderViews\" m:Htt" +
-                "pMethod=\"GET\"><Parameter Name=\"priceListName\" Type=\"Edm.String\" /><Parameter Nam" +
-                "e=\"warehouse\" Type=\"Edm.String\" /></FunctionImport><FunctionImport Name=\"GetNotA" +
-                "cceptedIncomes\" ReturnType=\"Collection(StoreAppTest.Web.DataModel.PriceIncomeIte" +
-                "mView)\" EntitySet=\"PriceIncomeItemViews\" m:HttpMethod=\"GET\"><Parameter Name=\"pri" +
-                "ceListName\" Type=\"Edm.String\" /></FunctionImport><FunctionImport Name=\"GetTotalI" +
-                "ncomes\" ReturnType=\"Collection(StoreAppTest.Web.DataModel.PriceIncomeTotalItemVi" +
-                "ew)\" EntitySet=\"PriceIncomeTotalItemViews\" m:HttpMethod=\"GET\"><Parameter Name=\"p" +
-                "riceListName\" Type=\"Edm.String\" /></FunctionImport><FunctionImport Name=\"GetLigh" +
-                "tAllPriceItemList\" ReturnType=\"Collection(StoreAppTest.Web.DataModel.PriceItemRe" +
-                "mainderView)\" EntitySet=\"PriceItemRemainderViews\" m:HttpMethod=\"GET\"><Parameter " +
-                "Name=\"warehouse\" Type=\"Edm.String\" /></FunctionImport><AssociationSet Name=\"Cust" +
-                "omer_Creator\" Association=\"StoreAppTest.Web.DataModel.Customer_Creator\"><End Rol" +
-                "e=\"Customer_Creator_Source\" EntitySet=\"Customers\" /><End Role=\"Customer_Creator_" +
-                "Target\" EntitySet=\"Users\" /></AssociationSet><AssociationSet Name=\"User_Roles\" A" +
-                "ssociation=\"StoreAppTest.Web.DataModel.User_Roles\"><End Role=\"User_Roles_Source\"" +
-                " EntitySet=\"Users\" /><End Role=\"User_Roles_Target\" EntitySet=\"Roles\" /></Associa" +
-                "tionSet><AssociationSet Name=\"User_Warehouse\" Association=\"StoreAppTest.Web.Data" +
-                "Model.User_Warehouse\"><End Role=\"User_Warehouse_Source\" EntitySet=\"Users\" /><End" +
-                " Role=\"User_Warehouse_Target\" EntitySet=\"Warehouses\" /></As";
+                "pMethod=\"GET\"><Parameter Name=\"warehouse\" Type=\"Edm.String\" /></FunctionImport><" +
+                "AssociationSet Name=\"Customer_Creator\" Association=\"StoreAppTest.Web.DataModel.C" +
+                "ustomer_Creator\"><End Role=\"Customer_Creator_Source\" EntitySet=\"Customers\" /><En" +
+                "d Role=\"Customer_Creator_Target\" EntitySet=\"Users\" /></AssociationSet><Associati" +
+                "onSet Name=\"User_PriceLists\" Association=\"StoreAppTest.Web.DataModel.User_PriceL" +
+                "ists\"><End Role=\"User_PriceLists_Source\" EntitySet=\"Users\" /><End Role=\"User_Pri" +
+                "ceLists_Target\" EntitySet=\"PriceLists\" /></AssociationSet><AssociationSet Name=\"" +
+                "User_Roles\" Association=\"StoreAppTest.Web.DataModel.User_Roles\"><End Role=\"User_" +
+                "Roles_Source\" EntitySet=\"Users\" /><End Role=\"User_Roles_Target\" EntitySet=\"Roles" +
+                "\" /></AssociationSet><AssociationSet Name=\"User_Warehouse\" Association=\"StoreApp" +
+                "Test.Web.DataModel.User_Warehouse\"><End Role=\"User_Warehouse_Source\" EntitySet=\"" +
+                "Users\" /><End Role=\"User_Warehouse_Target\" EntitySet=\"Warehouses\" /></Associatio" +
+                "nSet><AssociationSet Name=\"PriceList_PriceItems\" Association=\"StoreAppTest.Web.D" +
+                "ataModel.PriceList_PriceItems\"><End Role=\"PriceList_PriceItems_Source\" EntitySet" +
+                "=\"PriceLists\" /><End Role=\"PriceList_PriceItems_Target\" EntitySet=\"PriceItems\" /" +
+                "></AssociationSet><AssociationSet Name=\"PriceList_UploadUser\" Association=\"Store" +
+                "AppTest.Web.DataModel.PriceList_UploadUser\"><End Role=\"PriceList_UploadUser_Sour" +
+                "ce\" EntitySet=\"PriceLists\" /><End Role=\"PriceList_UploadUser_Target\" EntitySet=\"" +
+                "Users\" /></AssociationSet><AssociationSet Name=\"PriceItem_Gear\" Association=\"Sto" +
+                "reAppTest.Web.DataModel.PriceItem_Gear\"><End Role=\"PriceItem_Gear_Source\" Entity" +
+                "Set=\"PriceItems\" /><End Role=\"PriceItem_Gear_Target\" EntitySet=\"Gears\" /></Assoc" +
+                "iationSet><AssociationSet Name=\"PriceItem_Prices\" Association=\"StoreAppTest.Web." +
+                "DataModel.PriceItem_Prices\"><End Role=\"PriceItem_Prices_Source\" EntitySet=\"Price" +
+                "Items\" /><End Role=\"PriceItem_Prices_Target\" EntitySet=\"WholesalePrices\" /></Ass" +
+                "ociationSet><AssociationSet Name=\"PriceItem_Remainders\" Association=\"StoreAppTes" +
+                "t.Web.DataModel.PriceItem_Remainders\"><End Role=\"PriceItem_Remainders_Source\" En" +
+                "titySet=\"PriceItems\" /><End Role=\"PriceItem_Remainders_Target\" EntitySet=\"Remain" +
+                "ders\" /></AssociationSet><AssociationSet Name=\"PriceItem_UnitOfMeasure\" Associat" +
+                "ion=\"StoreAppTest.Web.DataModel.PriceItem_UnitOfMeasure\"><End Role=\"PriceItem_Un" +
+                "itOfMeasure_Source\" EntitySet=\"PriceItems\" /><End Role=\"PriceItem_UnitOfMeasure_" +
+                "Target\" EntitySet=\"UnitOfMeasures\" /></AssociationSet><AssociationSet Name=\"Gear" +
+                "Category_Gears\" Association=\"StoreAppTest.Web.DataModel.GearCategory_Gears\"><End" +
+                " Role=\"GearCategory_Gears_Target\" EntitySet=\"Gears\" /><End Role=\"GearCategory_Ge" +
+                "ars_Source\" EntitySet=\"GearCategories\" /></AssociationSet><AssociationSet Name=\"" +
+                "Gear_Image\" Association=\"StoreAppTest.Web.DataModel.Gear_Image\"><End Role=\"Gear_" +
+                "Image_Source\" EntitySet=\"Gears\" /><End Role=\"Gear_Image_Target\" EntitySet=\"Resou" +
+                "rces\" /></AssociationSet><AssociationSet Name=\"Remainder_RemaindersUserChanges\" " +
+                "Association=\"StoreAppTest.Web.DataModel.Remainder_RemaindersUserChanges\"><End Ro" +
+                "le=\"Remainder_RemaindersUserChanges_Source\" EntitySet=\"Remainders\" /><End Role=\"" +
+                "Remainder_RemaindersUserChanges_Target\" EntitySet=\"RemaindersUserChanges\" /></As" +
+                "sociationSet><AssociationSet Name=\"Remainder_Warehouse\" Association=\"StoreAppTes" +
+                "t.Web.DataModel.Remainder_Warehouse\"><End Role=\"Remainder_Warehouse_Source\" Enti" +
+                "tySet=\"Remainders\" /><End Role=\"Remainder_Warehouse_Target\" EntitySet=\"Warehouse" +
+                "s\" /></AssociationSet><AssociationSet Name=\"RemaindersUserChange_User\" Associati" +
+                "on=\"StoreAppTest.Web.DataModel.RemaindersUserChange_User\"><End Role=\"RemaindersU" +
+                "serChange_User_Source\" EntitySet=\"RemaindersUserChanges\" /><End Role=\"Remainders" +
+                "UserChange_User_Target\" EntitySet=\"Users\" /></AssociationSet><AssociationSet Nam" +
+                "e=\"DebtDischargeDocument_Creator\" Association=\"StoreAppTest.Web.DataModel.DebtDi" +
+                "schargeDocument_Creator\"><End Role=\"DebtDischargeDocument_Creator_Source\" Entity" +
+                "Set=\"DebtDischargeDocuments\" /><End Role=\"DebtDischargeDocument_Creator_Target\" " +
+                "EntitySet=\"Users\" /></AssociationSet><AssociationSet Name=\"DebtDischargeDocument" +
+                "_Debtor\" Association=\"StoreAppTest.Web.DataModel.DebtDischargeDocument_Debtor\"><" +
+                "End Role=\"DebtDischargeDocument_Debtor_Source\" EntitySet=\"DebtDischargeDocuments" +
+                "\" /><End Role=\"DebtDischargeDocument_Debtor_Target\" EntitySet=\"Customers\" /></As" +
+                "sociationSet><AssociationSet Name=\"GearNew_Gear\" Association=\"StoreAppTest.Web.D" +
+                "ataModel.GearNew_Gear\"><End Role=\"GearNew_Gear_Source\" EntitySet=\"GearNews\" /><E" +
+                "nd Role=\"GearNew_Gear_Target\" EntitySet=\"Gears\" /></AssociationSet><AssociationS" +
+                "et Name=\"Income_IncomeItems\" Association=\"StoreAppTest.Web.DataModel.Income_Inco" +
+                "meItems\"><End Role=\"Income_IncomeItems_Target\" EntitySet=\"IncomeItems\" /><End Ro" +
+                "le=\"Income_IncomeItems_Source\" EntitySet=\"Incomes\" /></AssociationSet><Associati" +
+                "onSet Name=\"IncomeItem_PriceItem\" Association=\"StoreAppTest.Web.DataModel.Income" +
+                "Item_PriceItem\"><End Role=\"IncomeItem_PriceItem_Source\" EntitySet=\"IncomeItems\" " +
+                "/><End Role=\"IncomeItem_PriceItem_Target\" EntitySet=\"PriceItems\" /></Association" +
+                "Set><AssociationSet Name=\"Income_Accepter\" Association=\"StoreAppTest.Web.DataMod" +
+                "el.Income_Accepter\"><End Role=\"Income_Accepter_Source\" EntitySet=\"Incomes\" /><En" +
+                "d Role=\"Income_Accepter_Target\" EntitySet=\"Users\" /></AssociationSet><Associatio" +
+                "nSet Name=\"Income_Creator\" Association=\"StoreAppTest.Web.DataModel.Income_Creato" +
+                "r\"><End Role=\"Income_Creator_Source\" EntitySet=\"Incomes\" /><End Role=\"Income_Cre" +
+                "ator_Target\" EntitySet=\"Users\" /></AssociationSet><AssociationSet Name=\"Income_S" +
+                "upplier\" Association=\"StoreAppTest.Web.DataModel.Income_Sup";
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Services.Design", "1.0.0")]
-            private const string ModelPart9 = "sociationSet><AssociationSet Name=\"DebtDischargeDocument_Creator\" Association=\"St" +
-                "oreAppTest.Web.DataModel.DebtDischargeDocument_Creator\"><End Role=\"DebtDischarge" +
-                "Document_Creator_Source\" EntitySet=\"DebtDischargeDocuments\" /><End Role=\"DebtDis" +
-                "chargeDocument_Creator_Target\" EntitySet=\"Users\" /></AssociationSet><Association" +
-                "Set Name=\"DebtDischargeDocument_Debtor\" Association=\"StoreAppTest.Web.DataModel." +
-                "DebtDischargeDocument_Debtor\"><End Role=\"DebtDischargeDocument_Debtor_Source\" En" +
-                "titySet=\"DebtDischargeDocuments\" /><End Role=\"DebtDischargeDocument_Debtor_Targe" +
-                "t\" EntitySet=\"Customers\" /></AssociationSet><AssociationSet Name=\"GearCategory_G" +
-                "ears\" Association=\"StoreAppTest.Web.DataModel.GearCategory_Gears\"><End Role=\"Gea" +
-                "rCategory_Gears_Source\" EntitySet=\"GearCategories\" /><End Role=\"GearCategory_Gea" +
-                "rs_Target\" EntitySet=\"Gears\" /></AssociationSet><AssociationSet Name=\"Gear_Image" +
-                "\" Association=\"StoreAppTest.Web.DataModel.Gear_Image\"><End Role=\"Gear_Image_Sour" +
-                "ce\" EntitySet=\"Gears\" /><End Role=\"Gear_Image_Target\" EntitySet=\"Resources\" /></" +
-                "AssociationSet><AssociationSet Name=\"GearNew_Gear\" Association=\"StoreAppTest.Web" +
-                ".DataModel.GearNew_Gear\"><End Role=\"GearNew_Gear_Source\" EntitySet=\"GearNews\" />" +
-                "<End Role=\"GearNew_Gear_Target\" EntitySet=\"Gears\" /></AssociationSet><Associatio" +
-                "nSet Name=\"Income_IncomeItems\" Association=\"StoreAppTest.Web.DataModel.Income_In" +
-                "comeItems\"><End Role=\"Income_IncomeItems_Target\" EntitySet=\"IncomeItems\" /><End " +
-                "Role=\"Income_IncomeItems_Source\" EntitySet=\"Incomes\" /></AssociationSet><Associa" +
-                "tionSet Name=\"IncomeItem_PriceItem\" Association=\"StoreAppTest.Web.DataModel.Inco" +
-                "meItem_PriceItem\"><End Role=\"IncomeItem_PriceItem_Source\" EntitySet=\"IncomeItems" +
-                "\" /><End Role=\"IncomeItem_PriceItem_Target\" EntitySet=\"PriceItems\" /></Associati" +
-                "onSet><AssociationSet Name=\"Income_Accepter\" Association=\"StoreAppTest.Web.DataM" +
-                "odel.Income_Accepter\"><End Role=\"Income_Accepter_Source\" EntitySet=\"Incomes\" /><" +
-                "End Role=\"Income_Accepter_Target\" EntitySet=\"Users\" /></AssociationSet><Associat" +
-                "ionSet Name=\"Income_Creator\" Association=\"StoreAppTest.Web.DataModel.Income_Crea" +
-                "tor\"><End Role=\"Income_Creator_Source\" EntitySet=\"Incomes\" /><End Role=\"Income_C" +
-                "reator_Target\" EntitySet=\"Users\" /></AssociationSet><AssociationSet Name=\"Income" +
-                "_Supplier\" Association=\"StoreAppTest.Web.DataModel.Income_Supplier\"><End Role=\"I" +
-                "ncome_Supplier_Source\" EntitySet=\"Incomes\" /><End Role=\"Income_Supplier_Target\" " +
-                "EntitySet=\"Suppliers\" /></AssociationSet><AssociationSet Name=\"PriceItem_Gear\" A" +
-                "ssociation=\"StoreAppTest.Web.DataModel.PriceItem_Gear\"><End Role=\"PriceItem_Gear" +
-                "_Source\" EntitySet=\"PriceItems\" /><End Role=\"PriceItem_Gear_Target\" EntitySet=\"G" +
-                "ears\" /></AssociationSet><AssociationSet Name=\"PriceList_PriceItems\" Association" +
-                "=\"StoreAppTest.Web.DataModel.PriceList_PriceItems\"><End Role=\"PriceList_PriceIte" +
-                "ms_Target\" EntitySet=\"PriceItems\" /><End Role=\"PriceList_PriceItems_Source\" Enti" +
-                "tySet=\"PriceLists\" /></AssociationSet><AssociationSet Name=\"PriceItem_Prices\" As" +
-                "sociation=\"StoreAppTest.Web.DataModel.PriceItem_Prices\"><End Role=\"PriceItem_Pri" +
-                "ces_Source\" EntitySet=\"PriceItems\" /><End Role=\"PriceItem_Prices_Target\" EntityS" +
-                "et=\"WholesalePrices\" /></AssociationSet><AssociationSet Name=\"PriceItem_Remainde" +
-                "rs\" Association=\"StoreAppTest.Web.DataModel.PriceItem_Remainders\"><End Role=\"Pri" +
-                "ceItem_Remainders_Source\" EntitySet=\"PriceItems\" /><End Role=\"PriceItem_Remainde" +
-                "rs_Target\" EntitySet=\"Remainders\" /></AssociationSet><AssociationSet Name=\"Price" +
-                "Item_UnitOfMeasure\" Association=\"StoreAppTest.Web.DataModel.PriceItem_UnitOfMeas" +
-                "ure\"><End Role=\"PriceItem_UnitOfMeasure_Source\" EntitySet=\"PriceItems\" /><End Ro" +
-                "le=\"PriceItem_UnitOfMeasure_Target\" EntitySet=\"UnitOfMeasures\" /></AssociationSe" +
-                "t><AssociationSet Name=\"PriceList_UploadUser\" Association=\"StoreAppTest.Web.Data" +
-                "Model.PriceList_UploadUser\"><End Role=\"PriceList_UploadUser_Source\" EntitySet=\"P" +
-                "riceLists\" /><End Role=\"PriceList_UploadUser_Target\" EntitySet=\"Users\" /></Assoc" +
-                "iationSet><AssociationSet Name=\"Remainder_RemaindersUserChanges\" Association=\"St" +
-                "oreAppTest.Web.DataModel.Remainder_RemaindersUserChanges\"><End Role=\"Remainder_R" +
-                "emaindersUserChanges_Source\" EntitySet=\"Remainders\" /><End Role=\"Remainder_Remai" +
-                "ndersUserChanges_Target\" EntitySet=\"RemaindersUserChanges\" /></AssociationSet><A" +
-                "ssociationSet Name=\"Remainder_Warehouse\" Association=\"StoreAppTest.Web.DataModel" +
-                ".Remainder_Warehouse\"><End Role=\"Remainder_Warehouse_Source\" EntitySet=\"Remainde" +
-                "rs\" /><End Role=\"Remainder_Warehouse_Target\" EntitySet=\"Warehouses\" /></Associat" +
-                "ionSet><AssociationSet Name=\"RemaindersUserChange_User\" Association=\"StoreAppTes" +
-                "t.Web.DataModel.RemaindersUserChange_User\"><End Role=\"RemaindersUserChange_User_" +
-                "Source\" EntitySet=\"RemaindersUserChanges\" /><End Role=\"RemaindersUserChange_User" +
-                "_Target\" EntitySet=\"Users\" /></AssociationSet><AssociationSet Name=\"PriceChangeR" +
-                "eportItem_NewPrice\" Association=\"StoreAppTest.Web.DataModel.PriceChangeReportIte" +
-                "m_NewPrice\"><End Role=\"PriceChangeReportItem_NewPrice_Source\" EntitySet=\"PriceCh" +
-                "angeReportItems\" /><End Role=\"PriceChangeReportItem_NewPrice_Target\" EntitySet=\"" +
-                "WholesalePrices\" /></AssociationSet><AssociationSet Name=\"PriceChangeReportItem_" +
-                "PreviousPrice\" Association=\"StoreAppTest.Web.DataModel.PriceChangeReportItem_Pre" +
-                "viousPrice\"><End Role=\"PriceChangeReportItem_PreviousPrice_Source\" EntitySet=\"Pr" +
-                "iceChangeReportItems\" /><End Role=\"PriceChangeReportItem_PreviousPrice_Target\" E" +
-                "ntitySet=\"WholesalePrices\" /></AssociationSet><AssociationSet Name=\"PriceChangeR" +
-                "eport_PriceChangeReportItems\" Association=\"StoreAppTest.Web.DataModel.PriceChang" +
-                "eReport_PriceChangeReportItems\"><End Role=\"PriceChangeReport_PriceChangeReportIt" +
-                "ems_Target\" EntitySet=\"PriceChangeReportItems\" /><End Role=\"PriceChangeReport_Pr" +
-                "iceChangeReportItems_Source\" EntitySet=\"PriceChangeReports\" /></AssociationSet><" +
-                "AssociationSet Name=\"PriceChangeReportItem_PriceItem\" Association=\"StoreAppTest." +
-                "Web.DataModel.PriceChangeReportItem_PriceItem\"><End Role=\"PriceChangeReportItem_" +
-                "PriceItem_Source\" EntitySet=\"PriceChangeReportItems\" /><End Role=\"PriceChangeRep" +
-                "ortItem_PriceItem_Target\" EntitySet=\"PriceItems\" /></AssociationSet><Association" +
-                "Set Name=\"PriceChangeReport_Creator\" Association=\"StoreAppTest.Web.DataModel.Pri" +
-                "ceChangeReport_Creator\"><End Role=\"PriceChangeReport_Creator_Source\" EntitySet=\"" +
-                "PriceChangeReports\" /><End Role=\"PriceChangeReport_Creator_Target\" EntitySet=\"Us" +
-                "ers\" /></AssociationSet><AssociationSet Name=\"RefundDocument_Creator\" Associatio" +
-                "n=\"StoreAppTest.Web.DataModel.RefundDocument_Creator\"><End Role=\"RefundDocument_" +
-                "Creator_Source\" EntitySet=\"RefundDocuments\" /><End Role=\"RefundDocument_Creator_" +
-                "Target\" EntitySet=\"Users\" /></AssociationSet><AssociationSet Name=\"RefundDocumen" +
-                "t_LastChanger\" Association=\"StoreAppTest.Web.DataModel.RefundDocument_LastChange" +
-                "r\"><End Role=\"RefundDocument_LastChanger_Source\" EntitySet=\"RefundDocuments\" /><" +
-                "End Role=\"RefundDocument_LastChanger_Target\" EntitySet=\"Users\" /></AssociationSe" +
-                "t><AssociationSet Name=\"RefundDocument_RefundItems\" Association=\"StoreAppTest.We" +
-                "b.DataModel.RefundDocument_RefundItems\"><End Role=\"RefundDocument_RefundItems_So" +
-                "urce\" EntitySet=\"RefundDocuments\" /><End Role=\"RefundDocument_RefundItems_Target" +
-                "\" EntitySet=\"RefundItems\" /></AssociationSet><AssociationSet Name=\"RefundDocumen" +
-                "t_SaleDocument\" Association=\"StoreAppTest.Web.DataModel.RefundDocument_SaleDocum" +
-                "ent\"><End Role=\"RefundDocument_SaleDocument_Source\" EntitySet=\"RefundDocuments\" " +
-                "/><End Role=\"RefundDocument_SaleDocument_Target\" EntitySet=\"SaleDocuments\" /></A" +
-                "ssociationSet><AssociationSet Name=\"RefundItem_PriceItem\" A";
+            private const string ModelPart10 = "plier\"><End Role=\"Income_Supplier_Source\" EntitySet=\"Incomes\" /><End Role=\"Income" +
+                "_Supplier_Target\" EntitySet=\"Suppliers\" /></AssociationSet><AssociationSet Name=" +
+                "\"PriceChangeReportItem_NewPrice\" Association=\"StoreAppTest.Web.DataModel.PriceCh" +
+                "angeReportItem_NewPrice\"><End Role=\"PriceChangeReportItem_NewPrice_Source\" Entit" +
+                "ySet=\"PriceChangeReportItems\" /><End Role=\"PriceChangeReportItem_NewPrice_Target" +
+                "\" EntitySet=\"WholesalePrices\" /></AssociationSet><AssociationSet Name=\"PriceChan" +
+                "geReportItem_PreviousPrice\" Association=\"StoreAppTest.Web.DataModel.PriceChangeR" +
+                "eportItem_PreviousPrice\"><End Role=\"PriceChangeReportItem_PreviousPrice_Source\" " +
+                "EntitySet=\"PriceChangeReportItems\" /><End Role=\"PriceChangeReportItem_PreviousPr" +
+                "ice_Target\" EntitySet=\"WholesalePrices\" /></AssociationSet><AssociationSet Name=" +
+                "\"PriceChangeReport_PriceChangeReportItems\" Association=\"StoreAppTest.Web.DataMod" +
+                "el.PriceChangeReport_PriceChangeReportItems\"><End Role=\"PriceChangeReport_PriceC" +
+                "hangeReportItems_Target\" EntitySet=\"PriceChangeReportItems\" /><End Role=\"PriceCh" +
+                "angeReport_PriceChangeReportItems_Source\" EntitySet=\"PriceChangeReports\" /></Ass" +
+                "ociationSet><AssociationSet Name=\"PriceChangeReportItem_PriceItem\" Association=\"" +
+                "StoreAppTest.Web.DataModel.PriceChangeReportItem_PriceItem\"><End Role=\"PriceChan" +
+                "geReportItem_PriceItem_Source\" EntitySet=\"PriceChangeReportItems\" /><End Role=\"P" +
+                "riceChangeReportItem_PriceItem_Target\" EntitySet=\"PriceItems\" /></AssociationSet" +
+                "><AssociationSet Name=\"PriceChangeReport_Creator\" Association=\"StoreAppTest.Web." +
+                "DataModel.PriceChangeReport_Creator\"><End Role=\"PriceChangeReport_Creator_Source" +
+                "\" EntitySet=\"PriceChangeReports\" /><End Role=\"PriceChangeReport_Creator_Target\" " +
+                "EntitySet=\"Users\" /></AssociationSet><AssociationSet Name=\"RefundDocument_Creato" +
+                "r\" Association=\"StoreAppTest.Web.DataModel.RefundDocument_Creator\"><End Role=\"Re" +
+                "fundDocument_Creator_Source\" EntitySet=\"RefundDocuments\" /><End Role=\"RefundDocu" +
+                "ment_Creator_Target\" EntitySet=\"Users\" /></AssociationSet><AssociationSet Name=\"" +
+                "RefundDocument_LastChanger\" Association=\"StoreAppTest.Web.DataModel.RefundDocume" +
+                "nt_LastChanger\"><End Role=\"RefundDocument_LastChanger_Source\" EntitySet=\"RefundD" +
+                "ocuments\" /><End Role=\"RefundDocument_LastChanger_Target\" EntitySet=\"Users\" /></" +
+                "AssociationSet><AssociationSet Name=\"RefundDocument_RefundItems\" Association=\"St" +
+                "oreAppTest.Web.DataModel.RefundDocument_RefundItems\"><End Role=\"RefundDocument_R" +
+                "efundItems_Source\" EntitySet=\"RefundDocuments\" /><End Role=\"RefundDocument_Refun" +
+                "dItems_Target\" EntitySet=\"RefundItems\" /></AssociationSet><AssociationSet Name=\"" +
+                "RefundDocument_SaleDocument\" Association=\"StoreAppTest.Web.DataModel.RefundDocum" +
+                "ent_SaleDocument\"><End Role=\"RefundDocument_SaleDocument_Source\" EntitySet=\"Refu" +
+                "ndDocuments\" /><End Role=\"RefundDocument_SaleDocument_Target\" EntitySet=\"SaleDoc" +
+                "uments\" /></AssociationSet><AssociationSet Name=\"RefundItem_PriceItem\" Associati" +
+                "on=\"StoreAppTest.Web.DataModel.RefundItem_PriceItem\"><End Role=\"RefundItem_Price" +
+                "Item_Source\" EntitySet=\"RefundItems\" /><End Role=\"RefundItem_PriceItem_Target\" E" +
+                "ntitySet=\"PriceItems\" /></AssociationSet><AssociationSet Name=\"RefundItem_SaleIt" +
+                "em\" Association=\"StoreAppTest.Web.DataModel.RefundItem_SaleItem\"><End Role=\"Refu" +
+                "ndItem_SaleItem_Source\" EntitySet=\"RefundItems\" /><End Role=\"RefundItem_SaleItem" +
+                "_Target\" EntitySet=\"SaleItems\" /></AssociationSet><AssociationSet Name=\"SaleItem" +
+                "_PriceItem\" Association=\"StoreAppTest.Web.DataModel.SaleItem_PriceItem\"><End Rol" +
+                "e=\"SaleItem_PriceItem_Source\" EntitySet=\"SaleItems\" /><End Role=\"SaleItem_PriceI" +
+                "tem_Target\" EntitySet=\"PriceItems\" /></AssociationSet><AssociationSet Name=\"Sale" +
+                "Document_SaleItems\" Association=\"StoreAppTest.Web.DataModel.SaleDocument_SaleIte" +
+                "ms\"><End Role=\"SaleDocument_SaleItems_Target\" EntitySet=\"SaleItems\" /><End Role=" +
+                "\"SaleDocument_SaleItems_Source\" EntitySet=\"SaleDocuments\" /></AssociationSet><As" +
+                "sociationSet Name=\"SaleDocument_Creator\" Association=\"StoreAppTest.Web.DataModel" +
+                ".SaleDocument_Creator\"><End Role=\"SaleDocument_Creator_Source\" EntitySet=\"SaleDo" +
+                "cuments\" /><End Role=\"SaleDocument_Creator_Target\" EntitySet=\"Users\" /></Associa" +
+                "tionSet><AssociationSet Name=\"SaleDocument_Customer\" Association=\"StoreAppTest.W" +
+                "eb.DataModel.SaleDocument_Customer\"><End Role=\"SaleDocument_Customer_Source\" Ent" +
+                "itySet=\"SaleDocuments\" /><End Role=\"SaleDocument_Customer_Target\" EntitySet=\"Cus" +
+                "tomers\" /></AssociationSet><AssociationSet Name=\"SaleDocument_LastChanger\" Assoc" +
+                "iation=\"StoreAppTest.Web.DataModel.SaleDocument_LastChanger\"><End Role=\"SaleDocu" +
+                "ment_LastChanger_Source\" EntitySet=\"SaleDocuments\" /><End Role=\"SaleDocument_Las" +
+                "tChanger_Target\" EntitySet=\"Users\" /></AssociationSet><AssociationSet Name=\"Refu" +
+                "ndsPerDayItem_RefundItem\" Association=\"StoreAppTest.Web.DataModel.RefundsPerDayI" +
+                "tem_RefundItem\"><End Role=\"RefundsPerDayItem_RefundItem_Source\" EntitySet=\"Refun" +
+                "dsPerDayItems\" /><End Role=\"RefundsPerDayItem_RefundItem_Target\" EntitySet=\"Refu" +
+                "ndItems\" /></AssociationSet><AssociationSet Name=\"RefundsPerDayItem_SaleDocument" +
+                "sPerDay\" Association=\"StoreAppTest.Web.DataModel.RefundsPerDayItem_SaleDocuments" +
+                "PerDay\"><End Role=\"RefundsPerDayItem_SaleDocumentsPerDay_Source\" EntitySet=\"Refu" +
+                "ndsPerDayItems\" /><End Role=\"RefundsPerDayItem_SaleDocumentsPerDay_Target\" Entit" +
+                "ySet=\"SaleDocumentsPerDays\" /></AssociationSet><AssociationSet Name=\"SaleDocumen" +
+                "tsPerDay_Creator\" Association=\"StoreAppTest.Web.DataModel.SaleDocumentsPerDay_Cr" +
+                "eator\"><End Role=\"SaleDocumentsPerDay_Creator_Source\" EntitySet=\"SaleDocumentsPe" +
+                "rDays\" /><End Role=\"SaleDocumentsPerDay_Creator_Target\" EntitySet=\"Users\" /></As" +
+                "sociationSet><AssociationSet Name=\"SaleDocumentsPerDay_SalesPerDayItems\" Associa" +
+                "tion=\"StoreAppTest.Web.DataModel.SaleDocumentsPerDay_SalesPerDayItems\"><End Role" +
+                "=\"SaleDocumentsPerDay_SalesPerDayItems_Source\" EntitySet=\"SaleDocumentsPerDays\" " +
+                "/><End Role=\"SaleDocumentsPerDay_SalesPerDayItems_Target\" EntitySet=\"SalesPerDay" +
+                "Items\" /></AssociationSet><AssociationSet Name=\"SalesPerDayItem_SaleItem\" Associ" +
+                "ation=\"StoreAppTest.Web.DataModel.SalesPerDayItem_SaleItem\"><End Role=\"SalesPerD" +
+                "ayItem_SaleItem_Source\" EntitySet=\"SalesPerDayItems\" /><End Role=\"SalesPerDayIte" +
+                "m_SaleItem_Target\" EntitySet=\"SaleItems\" /></AssociationSet><AssociationSet Name" +
+                "=\"WarehouseTransferRequestItem_PriceItem\" Association=\"StoreAppTest.Web.DataMode" +
+                "l.WarehouseTransferRequestItem_PriceItem\"><End Role=\"WarehouseTransferRequestIte" +
+                "m_PriceItem_Source\" EntitySet=\"WarehouseTransferRequestItems\" /><End Role=\"Wareh" +
+                "ouseTransferRequestItem_PriceItem_Target\" EntitySet=\"PriceItems\" /></Association" +
+                "Set><AssociationSet Name=\"WarehouseTransferRequest_WarehouseTransferRequestItemI" +
+                "tems\" Association=\"StoreAppTest.Web.DataModel.WarehouseTransferRequest_Warehouse" +
+                "TransferRequestItemItems\"><End Role=\"WarehouseTransferRequest_WarehouseTransferR" +
+                "equestItemItems_Target\" EntitySet=\"WarehouseTransferRequestItems\" /><End Role=\"W" +
+                "arehouseTransferRequest_WarehouseTransferRequestItemItems_Source\" EntitySet=\"War" +
+                "ehouseTransferRequests\" /></AssociationSet><AssociationSet Name=\"WarehouseTransf" +
+                "erRequest_Creator\" Association=\"StoreAppTest.Web.DataModel.WarehouseTransferRequ" +
+                "est_Creator\"><End Role=\"WarehouseTransferRequest_Creator_Source\" EntitySet=\"Ware" +
+                "houseTransferRequests\" /><End Role=\"WarehouseTransferRequest_Creator_Target\" Ent" +
+                "itySet=\"Users\" /></AssociationSet><AssociationSet Name=\"WarehouseTransferRequest" +
+                "_Customer\" Association=\"StoreAppTest.Web.DataModel.WarehouseTransferRequest_Cust" +
+                "omer\"><End Role=\"WarehouseTransferRequest_Customer_Source\" EntitySet=\"WarehouseT" +
+                "ransferRequests\" /><End Role=\"WarehouseTransferRequest_Cust";
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Services.Design", "1.0.0")]
-            private const string ModelPart10 = "ssociation=\"StoreAppTest.Web.DataModel.RefundItem_PriceItem\"><End Role=\"RefundIte" +
-                "m_PriceItem_Source\" EntitySet=\"RefundItems\" /><End Role=\"RefundItem_PriceItem_Ta" +
-                "rget\" EntitySet=\"PriceItems\" /></AssociationSet><AssociationSet Name=\"RefundItem" +
-                "_SaleItem\" Association=\"StoreAppTest.Web.DataModel.RefundItem_SaleItem\"><End Rol" +
-                "e=\"RefundItem_SaleItem_Source\" EntitySet=\"RefundItems\" /><End Role=\"RefundItem_S" +
-                "aleItem_Target\" EntitySet=\"SaleItems\" /></AssociationSet><AssociationSet Name=\"S" +
-                "aleItem_PriceItem\" Association=\"StoreAppTest.Web.DataModel.SaleItem_PriceItem\"><" +
-                "End Role=\"SaleItem_PriceItem_Source\" EntitySet=\"SaleItems\" /><End Role=\"SaleItem" +
-                "_PriceItem_Target\" EntitySet=\"PriceItems\" /></AssociationSet><AssociationSet Nam" +
-                "e=\"SaleDocument_SaleItems\" Association=\"StoreAppTest.Web.DataModel.SaleDocument_" +
-                "SaleItems\"><End Role=\"SaleDocument_SaleItems_Target\" EntitySet=\"SaleItems\" /><En" +
-                "d Role=\"SaleDocument_SaleItems_Source\" EntitySet=\"SaleDocuments\" /></Association" +
-                "Set><AssociationSet Name=\"SaleDocument_Creator\" Association=\"StoreAppTest.Web.Da" +
-                "taModel.SaleDocument_Creator\"><End Role=\"SaleDocument_Creator_Source\" EntitySet=" +
-                "\"SaleDocuments\" /><End Role=\"SaleDocument_Creator_Target\" EntitySet=\"Users\" /></" +
-                "AssociationSet><AssociationSet Name=\"SaleDocument_Customer\" Association=\"StoreAp" +
-                "pTest.Web.DataModel.SaleDocument_Customer\"><End Role=\"SaleDocument_Customer_Sour" +
-                "ce\" EntitySet=\"SaleDocuments\" /><End Role=\"SaleDocument_Customer_Target\" EntityS" +
-                "et=\"Customers\" /></AssociationSet><AssociationSet Name=\"SaleDocument_LastChanger" +
-                "\" Association=\"StoreAppTest.Web.DataModel.SaleDocument_LastChanger\"><End Role=\"S" +
-                "aleDocument_LastChanger_Source\" EntitySet=\"SaleDocuments\" /><End Role=\"SaleDocum" +
-                "ent_LastChanger_Target\" EntitySet=\"Users\" /></AssociationSet><AssociationSet Nam" +
-                "e=\"RefundsPerDayItem_RefundItem\" Association=\"StoreAppTest.Web.DataModel.Refunds" +
-                "PerDayItem_RefundItem\"><End Role=\"RefundsPerDayItem_RefundItem_Source\" EntitySet" +
-                "=\"RefundsPerDayItems\" /><End Role=\"RefundsPerDayItem_RefundItem_Target\" EntitySe" +
-                "t=\"RefundItems\" /></AssociationSet><AssociationSet Name=\"SaleDocumentsPerDay_Ref" +
-                "undsPerDayItems\" Association=\"StoreAppTest.Web.DataModel.SaleDocumentsPerDay_Ref" +
-                "undsPerDayItems\"><End Role=\"SaleDocumentsPerDay_RefundsPerDayItems_Target\" Entit" +
-                "ySet=\"RefundsPerDayItems\" /><End Role=\"SaleDocumentsPerDay_RefundsPerDayItems_So" +
-                "urce\" EntitySet=\"SaleDocumentsPerDays\" /></AssociationSet><AssociationSet Name=\"" +
-                "SaleDocumentsPerDay_Creator\" Association=\"StoreAppTest.Web.DataModel.SaleDocumen" +
-                "tsPerDay_Creator\"><End Role=\"SaleDocumentsPerDay_Creator_Source\" EntitySet=\"Sale" +
-                "DocumentsPerDays\" /><End Role=\"SaleDocumentsPerDay_Creator_Target\" EntitySet=\"Us" +
-                "ers\" /></AssociationSet><AssociationSet Name=\"SaleDocumentsPerDay_SalesPerDayIte" +
-                "ms\" Association=\"StoreAppTest.Web.DataModel.SaleDocumentsPerDay_SalesPerDayItems" +
-                "\"><End Role=\"SaleDocumentsPerDay_SalesPerDayItems_Source\" EntitySet=\"SaleDocumen" +
-                "tsPerDays\" /><End Role=\"SaleDocumentsPerDay_SalesPerDayItems_Target\" EntitySet=\"" +
-                "SalesPerDayItems\" /></AssociationSet><AssociationSet Name=\"SalesPerDayItem_SaleI" +
-                "tem\" Association=\"StoreAppTest.Web.DataModel.SalesPerDayItem_SaleItem\"><End Role" +
-                "=\"SalesPerDayItem_SaleItem_Source\" EntitySet=\"SalesPerDayItems\" /><End Role=\"Sal" +
-                "esPerDayItem_SaleItem_Target\" EntitySet=\"SaleItems\" /></AssociationSet><Associat" +
-                "ionSet Name=\"WarehouseTransferRequestItem_PriceItem\" Association=\"StoreAppTest.W" +
-                "eb.DataModel.WarehouseTransferRequestItem_PriceItem\"><End Role=\"WarehouseTransfe" +
-                "rRequestItem_PriceItem_Source\" EntitySet=\"WarehouseTransferRequestItems\" /><End " +
-                "Role=\"WarehouseTransferRequestItem_PriceItem_Target\" EntitySet=\"PriceItems\" /></" +
-                "AssociationSet><AssociationSet Name=\"WarehouseTransferRequest_WarehouseTransferR" +
-                "equestItemItems\" Association=\"StoreAppTest.Web.DataModel.WarehouseTransferReques" +
-                "t_WarehouseTransferRequestItemItems\"><End Role=\"WarehouseTransferRequest_Warehou" +
-                "seTransferRequestItemItems_Target\" EntitySet=\"WarehouseTransferRequestItems\" /><" +
-                "End Role=\"WarehouseTransferRequest_WarehouseTransferRequestItemItems_Source\" Ent" +
-                "itySet=\"WarehouseTransferRequests\" /></AssociationSet><AssociationSet Name=\"Ware" +
-                "houseTransferRequest_Creator\" Association=\"StoreAppTest.Web.DataModel.WarehouseT" +
-                "ransferRequest_Creator\"><End Role=\"WarehouseTransferRequest_Creator_Source\" Enti" +
-                "tySet=\"WarehouseTransferRequests\" /><End Role=\"WarehouseTransferRequest_Creator_" +
-                "Target\" EntitySet=\"Users\" /></AssociationSet><AssociationSet Name=\"WarehouseTran" +
-                "sferRequest_Customer\" Association=\"StoreAppTest.Web.DataModel.WarehouseTransferR" +
-                "equest_Customer\"><End Role=\"WarehouseTransferRequest_Customer_Source\" EntitySet=" +
-                "\"WarehouseTransferRequests\" /><End Role=\"WarehouseTransferRequest_Customer_Targe" +
-                "t\" EntitySet=\"Warehouses\" /></AssociationSet><AssociationSet Name=\"WarehouseTran" +
-                "sferRequest_LastChanged\" Association=\"StoreAppTest.Web.DataModel.WarehouseTransf" +
-                "erRequest_LastChanged\"><End Role=\"WarehouseTransferRequest_LastChanged_Source\" E" +
-                "ntitySet=\"WarehouseTransferRequests\" /><End Role=\"WarehouseTransferRequest_LastC" +
-                "hanged_Target\" EntitySet=\"Users\" /></AssociationSet><AssociationSet Name=\"Wareho" +
-                "useTransferRequest_Supplier\" Association=\"StoreAppTest.Web.DataModel.WarehouseTr" +
-                "ansferRequest_Supplier\"><End Role=\"WarehouseTransferRequest_Supplier_Source\" Ent" +
-                "itySet=\"WarehouseTransferRequests\" /><End Role=\"WarehouseTransferRequest_Supplie" +
-                "r_Target\" EntitySet=\"Warehouses\" /></AssociationSet></EntityContainer></Schema><" +
-                "/edmx:DataServices></edmx:Edmx>";
+            private const string ModelPart11 = @"omer_Target"" EntitySet=""Warehouses"" /></AssociationSet><AssociationSet Name=""WarehouseTransferRequest_LastChanged"" Association=""StoreAppTest.Web.DataModel.WarehouseTransferRequest_LastChanged""><End Role=""WarehouseTransferRequest_LastChanged_Source"" EntitySet=""WarehouseTransferRequests"" /><End Role=""WarehouseTransferRequest_LastChanged_Target"" EntitySet=""Users"" /></AssociationSet><AssociationSet Name=""WarehouseTransferRequest_Supplier"" Association=""StoreAppTest.Web.DataModel.WarehouseTransferRequest_Supplier""><End Role=""WarehouseTransferRequest_Supplier_Source"" EntitySet=""WarehouseTransferRequests"" /><End Role=""WarehouseTransferRequest_Supplier_Target"" EntitySet=""Warehouses"" /></AssociationSet></EntityContainer></Schema></edmx:DataServices></edmx:Edmx>";
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Services.Design", "1.0.0")]
             private static string GetConcatenatedEdmxString()
             {
-                return string.Concat(ModelPart0, ModelPart1, ModelPart2, ModelPart3, ModelPart4, ModelPart5, ModelPart6, ModelPart7, ModelPart8, ModelPart9, ModelPart10);
+                return string.Concat(ModelPart0, ModelPart1, ModelPart2, ModelPart3, ModelPart4, ModelPart5, ModelPart6, ModelPart7, ModelPart8, ModelPart9, ModelPart10, ModelPart11);
             }
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Services.Design", "1.0.0")]
             public static global::Microsoft.Data.Edm.IEdmModel GetInstance()
@@ -2010,6 +2038,72 @@ namespace StoreAppTest.StoreAppDataService
         private string _Name;
         partial void OnNameChanging(string value);
         partial void OnNameChanged();
+        /// <summary>
+        /// В схеме отсутствуют комментарии для свойства Details.
+        /// </summary>
+        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Services.Design", "1.0.0")]
+        public string Details
+        {
+            get
+            {
+                return this._Details;
+            }
+            set
+            {
+                this.OnDetailsChanging(value);
+                this._Details = value;
+                this.OnDetailsChanged();
+                this.OnPropertyChanged("Details");
+            }
+        }
+        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Services.Design", "1.0.0")]
+        private string _Details;
+        partial void OnDetailsChanging(string value);
+        partial void OnDetailsChanged();
+        /// <summary>
+        /// В схеме отсутствуют комментарии для свойства BankDetails.
+        /// </summary>
+        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Services.Design", "1.0.0")]
+        public string BankDetails
+        {
+            get
+            {
+                return this._BankDetails;
+            }
+            set
+            {
+                this.OnBankDetailsChanging(value);
+                this._BankDetails = value;
+                this.OnBankDetailsChanged();
+                this.OnPropertyChanged("BankDetails");
+            }
+        }
+        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Services.Design", "1.0.0")]
+        private string _BankDetails;
+        partial void OnBankDetailsChanging(string value);
+        partial void OnBankDetailsChanged();
+        /// <summary>
+        /// В схеме отсутствуют комментарии для свойства ShipmentAddress.
+        /// </summary>
+        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Services.Design", "1.0.0")]
+        public string ShipmentAddress
+        {
+            get
+            {
+                return this._ShipmentAddress;
+            }
+            set
+            {
+                this.OnShipmentAddressChanging(value);
+                this._ShipmentAddress = value;
+                this.OnShipmentAddressChanged();
+                this.OnPropertyChanged("ShipmentAddress");
+            }
+        }
+        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Services.Design", "1.0.0")]
+        private string _ShipmentAddress;
+        partial void OnShipmentAddressChanging(string value);
+        partial void OnShipmentAddressChanged();
         /// <summary>
         /// В схеме отсутствуют комментарии для свойства Creator_Id.
         /// </summary>
@@ -2202,6 +2296,24 @@ namespace StoreAppTest.StoreAppDataService
         partial void OnIsSupplierVisibleChanging(bool value);
         partial void OnIsSupplierVisibleChanged();
         /// <summary>
+        /// В схеме отсутствуют комментарии для PriceLists.
+        /// </summary>
+        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Services.Design", "1.0.0")]
+        public global::System.Data.Services.Client.DataServiceCollection<PriceList> PriceLists
+        {
+            get
+            {
+                return this._PriceLists;
+            }
+            set
+            {
+                this._PriceLists = value;
+                this.OnPropertyChanged("PriceLists");
+            }
+        }
+        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Services.Design", "1.0.0")]
+        private global::System.Data.Services.Client.DataServiceCollection<PriceList> _PriceLists = new global::System.Data.Services.Client.DataServiceCollection<PriceList>(null, global::System.Data.Services.Client.TrackingMode.None);
+        /// <summary>
         /// В схеме отсутствуют комментарии для Roles.
         /// </summary>
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Services.Design", "1.0.0")]
@@ -2237,6 +2349,1541 @@ namespace StoreAppTest.StoreAppDataService
         }
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Services.Design", "1.0.0")]
         private Warehouse _Warehouse;
+        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Services.Design", "1.0.0")]
+        public event global::System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
+        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Services.Design", "1.0.0")]
+        protected virtual void OnPropertyChanged(string property)
+        {
+            if ((this.PropertyChanged != null))
+            {
+                this.PropertyChanged(this, new global::System.ComponentModel.PropertyChangedEventArgs(property));
+            }
+        }
+    }
+    /// <summary>
+    /// В схеме отсутствуют комментарии для StoreAppTest.Web.DataModel.PriceList.
+    /// </summary>
+    /// <KeyProperties>
+    /// Name
+    /// </KeyProperties>
+    [global::System.Data.Services.Common.EntitySetAttribute("PriceLists")]
+    [global::System.Data.Services.Common.DataServiceKeyAttribute("Name")]
+    public partial class PriceList : global::System.ComponentModel.INotifyPropertyChanged
+    {
+        /// <summary>
+        /// Создайте новый объект PriceList.
+        /// </summary>
+        /// <param name="name">Начальное значение Name.</param>
+        /// <param name="uploadUser_Id">Начальное значение UploadUser_Id.</param>
+        /// <param name="uploadDate">Начальное значение UploadDate.</param>
+        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Services.Design", "1.0.0")]
+        public static PriceList CreatePriceList(string name, string uploadUser_Id, global::System.DateTime uploadDate)
+        {
+            PriceList priceList = new PriceList();
+            priceList.Name = name;
+            priceList.UploadUser_Id = uploadUser_Id;
+            priceList.UploadDate = uploadDate;
+            return priceList;
+        }
+        /// <summary>
+        /// В схеме отсутствуют комментарии для свойства Name.
+        /// </summary>
+        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Services.Design", "1.0.0")]
+        public string Name
+        {
+            get
+            {
+                return this._Name;
+            }
+            set
+            {
+                this.OnNameChanging(value);
+                this._Name = value;
+                this.OnNameChanged();
+                this.OnPropertyChanged("Name");
+            }
+        }
+        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Services.Design", "1.0.0")]
+        private string _Name;
+        partial void OnNameChanging(string value);
+        partial void OnNameChanged();
+        /// <summary>
+        /// В схеме отсутствуют комментарии для свойства UploadUser_Id.
+        /// </summary>
+        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Services.Design", "1.0.0")]
+        public string UploadUser_Id
+        {
+            get
+            {
+                return this._UploadUser_Id;
+            }
+            set
+            {
+                this.OnUploadUser_IdChanging(value);
+                this._UploadUser_Id = value;
+                this.OnUploadUser_IdChanged();
+                this.OnPropertyChanged("UploadUser_Id");
+            }
+        }
+        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Services.Design", "1.0.0")]
+        private string _UploadUser_Id;
+        partial void OnUploadUser_IdChanging(string value);
+        partial void OnUploadUser_IdChanged();
+        /// <summary>
+        /// В схеме отсутствуют комментарии для свойства UploadDate.
+        /// </summary>
+        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Services.Design", "1.0.0")]
+        public global::System.DateTime UploadDate
+        {
+            get
+            {
+                return this._UploadDate;
+            }
+            set
+            {
+                this.OnUploadDateChanging(value);
+                this._UploadDate = value;
+                this.OnUploadDateChanged();
+                this.OnPropertyChanged("UploadDate");
+            }
+        }
+        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Services.Design", "1.0.0")]
+        private global::System.DateTime _UploadDate;
+        partial void OnUploadDateChanging(global::System.DateTime value);
+        partial void OnUploadDateChanged();
+        /// <summary>
+        /// В схеме отсутствуют комментарии для PriceItems.
+        /// </summary>
+        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Services.Design", "1.0.0")]
+        public global::System.Data.Services.Client.DataServiceCollection<PriceItem> PriceItems
+        {
+            get
+            {
+                return this._PriceItems;
+            }
+            set
+            {
+                this._PriceItems = value;
+                this.OnPropertyChanged("PriceItems");
+            }
+        }
+        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Services.Design", "1.0.0")]
+        private global::System.Data.Services.Client.DataServiceCollection<PriceItem> _PriceItems = new global::System.Data.Services.Client.DataServiceCollection<PriceItem>(null, global::System.Data.Services.Client.TrackingMode.None);
+        /// <summary>
+        /// В схеме отсутствуют комментарии для UploadUser.
+        /// </summary>
+        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Services.Design", "1.0.0")]
+        public User UploadUser
+        {
+            get
+            {
+                return this._UploadUser;
+            }
+            set
+            {
+                this._UploadUser = value;
+                this.OnPropertyChanged("UploadUser");
+            }
+        }
+        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Services.Design", "1.0.0")]
+        private User _UploadUser;
+        /// <summary>
+        /// В схеме отсутствуют комментарии для Users.
+        /// </summary>
+        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Services.Design", "1.0.0")]
+        public global::System.Data.Services.Client.DataServiceCollection<User> Users
+        {
+            get
+            {
+                return this._Users;
+            }
+            set
+            {
+                this._Users = value;
+                this.OnPropertyChanged("Users");
+            }
+        }
+        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Services.Design", "1.0.0")]
+        private global::System.Data.Services.Client.DataServiceCollection<User> _Users = new global::System.Data.Services.Client.DataServiceCollection<User>(null, global::System.Data.Services.Client.TrackingMode.None);
+        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Services.Design", "1.0.0")]
+        public event global::System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
+        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Services.Design", "1.0.0")]
+        protected virtual void OnPropertyChanged(string property)
+        {
+            if ((this.PropertyChanged != null))
+            {
+                this.PropertyChanged(this, new global::System.ComponentModel.PropertyChangedEventArgs(property));
+            }
+        }
+    }
+    /// <summary>
+    /// В схеме отсутствуют комментарии для StoreAppTest.Web.DataModel.PriceItem.
+    /// </summary>
+    /// <KeyProperties>
+    /// Id
+    /// </KeyProperties>
+    [global::System.Data.Services.Common.EntitySetAttribute("PriceItems")]
+    [global::System.Data.Services.Common.DataServiceKeyAttribute("Id")]
+    public partial class PriceItem : global::System.ComponentModel.INotifyPropertyChanged
+    {
+        /// <summary>
+        /// Создайте новый объект PriceItem.
+        /// </summary>
+        /// <param name="ID">Начальное значение Id.</param>
+        /// <param name="gear_Id">Начальное значение Gear_Id.</param>
+        /// <param name="buyPriceRur">Начальное значение BuyPriceRur.</param>
+        /// <param name="buyPriceTng">Начальное значение BuyPriceTng.</param>
+        /// <param name="uom_Id">Начальное значение Uom_Id.</param>
+        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Services.Design", "1.0.0")]
+        public static PriceItem CreatePriceItem(long ID, long gear_Id, decimal buyPriceRur, decimal buyPriceTng, string uom_Id)
+        {
+            PriceItem priceItem = new PriceItem();
+            priceItem.Id = ID;
+            priceItem.Gear_Id = gear_Id;
+            priceItem.BuyPriceRur = buyPriceRur;
+            priceItem.BuyPriceTng = buyPriceTng;
+            priceItem.Uom_Id = uom_Id;
+            return priceItem;
+        }
+        /// <summary>
+        /// В схеме отсутствуют комментарии для свойства Id.
+        /// </summary>
+        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Services.Design", "1.0.0")]
+        public long Id
+        {
+            get
+            {
+                return this._Id;
+            }
+            set
+            {
+                this.OnIdChanging(value);
+                this._Id = value;
+                this.OnIdChanged();
+                this.OnPropertyChanged("Id");
+            }
+        }
+        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Services.Design", "1.0.0")]
+        private long _Id;
+        partial void OnIdChanging(long value);
+        partial void OnIdChanged();
+        /// <summary>
+        /// В схеме отсутствуют комментарии для свойства Gear_Id.
+        /// </summary>
+        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Services.Design", "1.0.0")]
+        public long Gear_Id
+        {
+            get
+            {
+                return this._Gear_Id;
+            }
+            set
+            {
+                this.OnGear_IdChanging(value);
+                this._Gear_Id = value;
+                this.OnGear_IdChanged();
+                this.OnPropertyChanged("Gear_Id");
+            }
+        }
+        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Services.Design", "1.0.0")]
+        private long _Gear_Id;
+        partial void OnGear_IdChanging(long value);
+        partial void OnGear_IdChanged();
+        /// <summary>
+        /// В схеме отсутствуют комментарии для свойства BuyPriceRur.
+        /// </summary>
+        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Services.Design", "1.0.0")]
+        public decimal BuyPriceRur
+        {
+            get
+            {
+                return this._BuyPriceRur;
+            }
+            set
+            {
+                this.OnBuyPriceRurChanging(value);
+                this._BuyPriceRur = value;
+                this.OnBuyPriceRurChanged();
+                this.OnPropertyChanged("BuyPriceRur");
+            }
+        }
+        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Services.Design", "1.0.0")]
+        private decimal _BuyPriceRur;
+        partial void OnBuyPriceRurChanging(decimal value);
+        partial void OnBuyPriceRurChanged();
+        /// <summary>
+        /// В схеме отсутствуют комментарии для свойства BuyPriceTng.
+        /// </summary>
+        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Services.Design", "1.0.0")]
+        public decimal BuyPriceTng
+        {
+            get
+            {
+                return this._BuyPriceTng;
+            }
+            set
+            {
+                this.OnBuyPriceTngChanging(value);
+                this._BuyPriceTng = value;
+                this.OnBuyPriceTngChanged();
+                this.OnPropertyChanged("BuyPriceTng");
+            }
+        }
+        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Services.Design", "1.0.0")]
+        private decimal _BuyPriceTng;
+        partial void OnBuyPriceTngChanging(decimal value);
+        partial void OnBuyPriceTngChanged();
+        /// <summary>
+        /// В схеме отсутствуют комментарии для свойства Uom_Id.
+        /// </summary>
+        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Services.Design", "1.0.0")]
+        public string Uom_Id
+        {
+            get
+            {
+                return this._Uom_Id;
+            }
+            set
+            {
+                this.OnUom_IdChanging(value);
+                this._Uom_Id = value;
+                this.OnUom_IdChanged();
+                this.OnPropertyChanged("Uom_Id");
+            }
+        }
+        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Services.Design", "1.0.0")]
+        private string _Uom_Id;
+        partial void OnUom_IdChanging(string value);
+        partial void OnUom_IdChanged();
+        /// <summary>
+        /// В схеме отсутствуют комментарии для свойства Barcode1.
+        /// </summary>
+        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Services.Design", "1.0.0")]
+        public string Barcode1
+        {
+            get
+            {
+                return this._Barcode1;
+            }
+            set
+            {
+                this.OnBarcode1Changing(value);
+                this._Barcode1 = value;
+                this.OnBarcode1Changed();
+                this.OnPropertyChanged("Barcode1");
+            }
+        }
+        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Services.Design", "1.0.0")]
+        private string _Barcode1;
+        partial void OnBarcode1Changing(string value);
+        partial void OnBarcode1Changed();
+        /// <summary>
+        /// В схеме отсутствуют комментарии для свойства Barcode2.
+        /// </summary>
+        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Services.Design", "1.0.0")]
+        public string Barcode2
+        {
+            get
+            {
+                return this._Barcode2;
+            }
+            set
+            {
+                this.OnBarcode2Changing(value);
+                this._Barcode2 = value;
+                this.OnBarcode2Changed();
+                this.OnPropertyChanged("Barcode2");
+            }
+        }
+        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Services.Design", "1.0.0")]
+        private string _Barcode2;
+        partial void OnBarcode2Changing(string value);
+        partial void OnBarcode2Changed();
+        /// <summary>
+        /// В схеме отсутствуют комментарии для свойства Barcode3.
+        /// </summary>
+        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Services.Design", "1.0.0")]
+        public string Barcode3
+        {
+            get
+            {
+                return this._Barcode3;
+            }
+            set
+            {
+                this.OnBarcode3Changing(value);
+                this._Barcode3 = value;
+                this.OnBarcode3Changed();
+                this.OnPropertyChanged("Barcode3");
+            }
+        }
+        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Services.Design", "1.0.0")]
+        private string _Barcode3;
+        partial void OnBarcode3Changing(string value);
+        partial void OnBarcode3Changed();
+        /// <summary>
+        /// В схеме отсутствуют комментарии для Gear.
+        /// </summary>
+        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Services.Design", "1.0.0")]
+        public Gear Gear
+        {
+            get
+            {
+                return this._Gear;
+            }
+            set
+            {
+                this._Gear = value;
+                this.OnPropertyChanged("Gear");
+            }
+        }
+        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Services.Design", "1.0.0")]
+        private Gear _Gear;
+        /// <summary>
+        /// В схеме отсутствуют комментарии для PriceLists.
+        /// </summary>
+        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Services.Design", "1.0.0")]
+        public global::System.Data.Services.Client.DataServiceCollection<PriceList> PriceLists
+        {
+            get
+            {
+                return this._PriceLists;
+            }
+            set
+            {
+                this._PriceLists = value;
+                this.OnPropertyChanged("PriceLists");
+            }
+        }
+        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Services.Design", "1.0.0")]
+        private global::System.Data.Services.Client.DataServiceCollection<PriceList> _PriceLists = new global::System.Data.Services.Client.DataServiceCollection<PriceList>(null, global::System.Data.Services.Client.TrackingMode.None);
+        /// <summary>
+        /// В схеме отсутствуют комментарии для Prices.
+        /// </summary>
+        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Services.Design", "1.0.0")]
+        public global::System.Data.Services.Client.DataServiceCollection<WholesalePrice> Prices
+        {
+            get
+            {
+                return this._Prices;
+            }
+            set
+            {
+                this._Prices = value;
+                this.OnPropertyChanged("Prices");
+            }
+        }
+        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Services.Design", "1.0.0")]
+        private global::System.Data.Services.Client.DataServiceCollection<WholesalePrice> _Prices = new global::System.Data.Services.Client.DataServiceCollection<WholesalePrice>(null, global::System.Data.Services.Client.TrackingMode.None);
+        /// <summary>
+        /// В схеме отсутствуют комментарии для Remainders.
+        /// </summary>
+        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Services.Design", "1.0.0")]
+        public global::System.Data.Services.Client.DataServiceCollection<Remainder> Remainders
+        {
+            get
+            {
+                return this._Remainders;
+            }
+            set
+            {
+                this._Remainders = value;
+                this.OnPropertyChanged("Remainders");
+            }
+        }
+        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Services.Design", "1.0.0")]
+        private global::System.Data.Services.Client.DataServiceCollection<Remainder> _Remainders = new global::System.Data.Services.Client.DataServiceCollection<Remainder>(null, global::System.Data.Services.Client.TrackingMode.None);
+        /// <summary>
+        /// В схеме отсутствуют комментарии для UnitOfMeasure.
+        /// </summary>
+        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Services.Design", "1.0.0")]
+        public UnitOfMeasure UnitOfMeasure
+        {
+            get
+            {
+                return this._UnitOfMeasure;
+            }
+            set
+            {
+                this._UnitOfMeasure = value;
+                this.OnPropertyChanged("UnitOfMeasure");
+            }
+        }
+        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Services.Design", "1.0.0")]
+        private UnitOfMeasure _UnitOfMeasure;
+        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Services.Design", "1.0.0")]
+        public event global::System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
+        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Services.Design", "1.0.0")]
+        protected virtual void OnPropertyChanged(string property)
+        {
+            if ((this.PropertyChanged != null))
+            {
+                this.PropertyChanged(this, new global::System.ComponentModel.PropertyChangedEventArgs(property));
+            }
+        }
+    }
+    /// <summary>
+    /// В схеме отсутствуют комментарии для StoreAppTest.Web.DataModel.Gear.
+    /// </summary>
+    /// <KeyProperties>
+    /// Id
+    /// </KeyProperties>
+    [global::System.Data.Services.Common.EntitySetAttribute("Gears")]
+    [global::System.Data.Services.Common.DataServiceKeyAttribute("Id")]
+    public partial class Gear : global::System.ComponentModel.INotifyPropertyChanged
+    {
+        /// <summary>
+        /// Создайте новый объект Gear.
+        /// </summary>
+        /// <param name="ID">Начальное значение Id.</param>
+        /// <param name="name">Начальное значение Name.</param>
+        /// <param name="isDuplicate">Начальное значение IsDuplicate.</param>
+        /// <param name="category_Id">Начальное значение Category_Id.</param>
+        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Services.Design", "1.0.0")]
+        public static Gear CreateGear(long ID, string name, bool isDuplicate, string category_Id)
+        {
+            Gear gear = new Gear();
+            gear.Id = ID;
+            gear.Name = name;
+            gear.IsDuplicate = isDuplicate;
+            gear.Category_Id = category_Id;
+            return gear;
+        }
+        /// <summary>
+        /// В схеме отсутствуют комментарии для свойства Id.
+        /// </summary>
+        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Services.Design", "1.0.0")]
+        public long Id
+        {
+            get
+            {
+                return this._Id;
+            }
+            set
+            {
+                this.OnIdChanging(value);
+                this._Id = value;
+                this.OnIdChanged();
+                this.OnPropertyChanged("Id");
+            }
+        }
+        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Services.Design", "1.0.0")]
+        private long _Id;
+        partial void OnIdChanging(long value);
+        partial void OnIdChanged();
+        /// <summary>
+        /// В схеме отсутствуют комментарии для свойства CatalogNumber.
+        /// </summary>
+        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Services.Design", "1.0.0")]
+        public string CatalogNumber
+        {
+            get
+            {
+                return this._CatalogNumber;
+            }
+            set
+            {
+                this.OnCatalogNumberChanging(value);
+                this._CatalogNumber = value;
+                this.OnCatalogNumberChanged();
+                this.OnPropertyChanged("CatalogNumber");
+            }
+        }
+        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Services.Design", "1.0.0")]
+        private string _CatalogNumber;
+        partial void OnCatalogNumberChanging(string value);
+        partial void OnCatalogNumberChanged();
+        /// <summary>
+        /// В схеме отсутствуют комментарии для свойства Name.
+        /// </summary>
+        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Services.Design", "1.0.0")]
+        public string Name
+        {
+            get
+            {
+                return this._Name;
+            }
+            set
+            {
+                this.OnNameChanging(value);
+                this._Name = value;
+                this.OnNameChanged();
+                this.OnPropertyChanged("Name");
+            }
+        }
+        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Services.Design", "1.0.0")]
+        private string _Name;
+        partial void OnNameChanging(string value);
+        partial void OnNameChanged();
+        /// <summary>
+        /// В схеме отсутствуют комментарии для свойства Articul.
+        /// </summary>
+        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Services.Design", "1.0.0")]
+        public string Articul
+        {
+            get
+            {
+                return this._Articul;
+            }
+            set
+            {
+                this.OnArticulChanging(value);
+                this._Articul = value;
+                this.OnArticulChanged();
+                this.OnPropertyChanged("Articul");
+            }
+        }
+        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Services.Design", "1.0.0")]
+        private string _Articul;
+        partial void OnArticulChanging(string value);
+        partial void OnArticulChanged();
+        /// <summary>
+        /// В схеме отсутствуют комментарии для свойства IsDuplicate.
+        /// </summary>
+        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Services.Design", "1.0.0")]
+        public bool IsDuplicate
+        {
+            get
+            {
+                return this._IsDuplicate;
+            }
+            set
+            {
+                this.OnIsDuplicateChanging(value);
+                this._IsDuplicate = value;
+                this.OnIsDuplicateChanged();
+                this.OnPropertyChanged("IsDuplicate");
+            }
+        }
+        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Services.Design", "1.0.0")]
+        private bool _IsDuplicate;
+        partial void OnIsDuplicateChanging(bool value);
+        partial void OnIsDuplicateChanged();
+        /// <summary>
+        /// В схеме отсутствуют комментарии для свойства Category_Id.
+        /// </summary>
+        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Services.Design", "1.0.0")]
+        public string Category_Id
+        {
+            get
+            {
+                return this._Category_Id;
+            }
+            set
+            {
+                this.OnCategory_IdChanging(value);
+                this._Category_Id = value;
+                this.OnCategory_IdChanged();
+                this.OnPropertyChanged("Category_Id");
+            }
+        }
+        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Services.Design", "1.0.0")]
+        private string _Category_Id;
+        partial void OnCategory_IdChanging(string value);
+        partial void OnCategory_IdChanged();
+        /// <summary>
+        /// В схеме отсутствуют комментарии для свойства Image_Id.
+        /// </summary>
+        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Services.Design", "1.0.0")]
+        public global::System.Nullable<long> Image_Id
+        {
+            get
+            {
+                return this._Image_Id;
+            }
+            set
+            {
+                this.OnImage_IdChanging(value);
+                this._Image_Id = value;
+                this.OnImage_IdChanged();
+                this.OnPropertyChanged("Image_Id");
+            }
+        }
+        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Services.Design", "1.0.0")]
+        private global::System.Nullable<long> _Image_Id;
+        partial void OnImage_IdChanging(global::System.Nullable<long> value);
+        partial void OnImage_IdChanged();
+        /// <summary>
+        /// В схеме отсутствуют комментарии для GearCategory.
+        /// </summary>
+        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Services.Design", "1.0.0")]
+        public GearCategory GearCategory
+        {
+            get
+            {
+                return this._GearCategory;
+            }
+            set
+            {
+                this._GearCategory = value;
+                this.OnPropertyChanged("GearCategory");
+            }
+        }
+        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Services.Design", "1.0.0")]
+        private GearCategory _GearCategory;
+        /// <summary>
+        /// В схеме отсутствуют комментарии для Image.
+        /// </summary>
+        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Services.Design", "1.0.0")]
+        public Resource Image
+        {
+            get
+            {
+                return this._Image;
+            }
+            set
+            {
+                this._Image = value;
+                this.OnPropertyChanged("Image");
+            }
+        }
+        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Services.Design", "1.0.0")]
+        private Resource _Image;
+        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Services.Design", "1.0.0")]
+        public event global::System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
+        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Services.Design", "1.0.0")]
+        protected virtual void OnPropertyChanged(string property)
+        {
+            if ((this.PropertyChanged != null))
+            {
+                this.PropertyChanged(this, new global::System.ComponentModel.PropertyChangedEventArgs(property));
+            }
+        }
+    }
+    /// <summary>
+    /// В схеме отсутствуют комментарии для StoreAppTest.Web.DataModel.GearCategory.
+    /// </summary>
+    /// <KeyProperties>
+    /// Name
+    /// </KeyProperties>
+    [global::System.Data.Services.Common.EntitySetAttribute("GearCategories")]
+    [global::System.Data.Services.Common.DataServiceKeyAttribute("Name")]
+    public partial class GearCategory : global::System.ComponentModel.INotifyPropertyChanged
+    {
+        /// <summary>
+        /// Создайте новый объект GearCategory.
+        /// </summary>
+        /// <param name="name">Начальное значение Name.</param>
+        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Services.Design", "1.0.0")]
+        public static GearCategory CreateGearCategory(string name)
+        {
+            GearCategory gearCategory = new GearCategory();
+            gearCategory.Name = name;
+            return gearCategory;
+        }
+        /// <summary>
+        /// В схеме отсутствуют комментарии для свойства Name.
+        /// </summary>
+        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Services.Design", "1.0.0")]
+        public string Name
+        {
+            get
+            {
+                return this._Name;
+            }
+            set
+            {
+                this.OnNameChanging(value);
+                this._Name = value;
+                this.OnNameChanged();
+                this.OnPropertyChanged("Name");
+            }
+        }
+        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Services.Design", "1.0.0")]
+        private string _Name;
+        partial void OnNameChanging(string value);
+        partial void OnNameChanged();
+        /// <summary>
+        /// В схеме отсутствуют комментарии для Gears.
+        /// </summary>
+        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Services.Design", "1.0.0")]
+        public global::System.Data.Services.Client.DataServiceCollection<Gear> Gears
+        {
+            get
+            {
+                return this._Gears;
+            }
+            set
+            {
+                this._Gears = value;
+                this.OnPropertyChanged("Gears");
+            }
+        }
+        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Services.Design", "1.0.0")]
+        private global::System.Data.Services.Client.DataServiceCollection<Gear> _Gears = new global::System.Data.Services.Client.DataServiceCollection<Gear>(null, global::System.Data.Services.Client.TrackingMode.None);
+        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Services.Design", "1.0.0")]
+        public event global::System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
+        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Services.Design", "1.0.0")]
+        protected virtual void OnPropertyChanged(string property)
+        {
+            if ((this.PropertyChanged != null))
+            {
+                this.PropertyChanged(this, new global::System.ComponentModel.PropertyChangedEventArgs(property));
+            }
+        }
+    }
+    /// <summary>
+    /// В схеме отсутствуют комментарии для StoreAppTest.Web.DataModel.Resource.
+    /// </summary>
+    /// <KeyProperties>
+    /// Id
+    /// </KeyProperties>
+    [global::System.Data.Services.Common.EntitySetAttribute("Resources")]
+    [global::System.Data.Services.Common.DataServiceKeyAttribute("Id")]
+    public partial class Resource : global::System.ComponentModel.INotifyPropertyChanged
+    {
+        /// <summary>
+        /// Создайте новый объект Resource.
+        /// </summary>
+        /// <param name="ID">Начальное значение Id.</param>
+        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Services.Design", "1.0.0")]
+        public static Resource CreateResource(long ID)
+        {
+            Resource resource = new Resource();
+            resource.Id = ID;
+            return resource;
+        }
+        /// <summary>
+        /// В схеме отсутствуют комментарии для свойства Id.
+        /// </summary>
+        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Services.Design", "1.0.0")]
+        public long Id
+        {
+            get
+            {
+                return this._Id;
+            }
+            set
+            {
+                this.OnIdChanging(value);
+                this._Id = value;
+                this.OnIdChanged();
+                this.OnPropertyChanged("Id");
+            }
+        }
+        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Services.Design", "1.0.0")]
+        private long _Id;
+        partial void OnIdChanging(long value);
+        partial void OnIdChanged();
+        /// <summary>
+        /// В схеме отсутствуют комментарии для свойства ResourceData.
+        /// </summary>
+        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Services.Design", "1.0.0")]
+        public byte[] ResourceData
+        {
+            get
+            {
+                if ((this._ResourceData != null))
+                {
+                    return ((byte[])(this._ResourceData.Clone()));
+                }
+                else
+                {
+                    return null;
+                }
+            }
+            set
+            {
+                this.OnResourceDataChanging(value);
+                this._ResourceData = value;
+                this.OnResourceDataChanged();
+                this.OnPropertyChanged("ResourceData");
+            }
+        }
+        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Services.Design", "1.0.0")]
+        private byte[] _ResourceData;
+        partial void OnResourceDataChanging(byte[] value);
+        partial void OnResourceDataChanged();
+        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Services.Design", "1.0.0")]
+        public event global::System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
+        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Services.Design", "1.0.0")]
+        protected virtual void OnPropertyChanged(string property)
+        {
+            if ((this.PropertyChanged != null))
+            {
+                this.PropertyChanged(this, new global::System.ComponentModel.PropertyChangedEventArgs(property));
+            }
+        }
+    }
+    /// <summary>
+    /// В схеме отсутствуют комментарии для StoreAppTest.Web.DataModel.WholesalePrice.
+    /// </summary>
+    /// <KeyProperties>
+    /// Id
+    /// </KeyProperties>
+    [global::System.Data.Services.Common.EntitySetAttribute("WholesalePrices")]
+    [global::System.Data.Services.Common.DataServiceKeyAttribute("Id")]
+    public partial class WholesalePrice : global::System.ComponentModel.INotifyPropertyChanged
+    {
+        /// <summary>
+        /// Создайте новый объект WholesalePrice.
+        /// </summary>
+        /// <param name="ID">Начальное значение Id.</param>
+        /// <param name="priceDate">Начальное значение PriceDate.</param>
+        /// <param name="priceItem_Id">Начальное значение PriceItem_Id.</param>
+        /// <param name="price">Начальное значение Price.</param>
+        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Services.Design", "1.0.0")]
+        public static WholesalePrice CreateWholesalePrice(long ID, global::System.DateTime priceDate, long priceItem_Id, decimal price)
+        {
+            WholesalePrice wholesalePrice = new WholesalePrice();
+            wholesalePrice.Id = ID;
+            wholesalePrice.PriceDate = priceDate;
+            wholesalePrice.PriceItem_Id = priceItem_Id;
+            wholesalePrice.Price = price;
+            return wholesalePrice;
+        }
+        /// <summary>
+        /// В схеме отсутствуют комментарии для свойства Id.
+        /// </summary>
+        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Services.Design", "1.0.0")]
+        public long Id
+        {
+            get
+            {
+                return this._Id;
+            }
+            set
+            {
+                this.OnIdChanging(value);
+                this._Id = value;
+                this.OnIdChanged();
+                this.OnPropertyChanged("Id");
+            }
+        }
+        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Services.Design", "1.0.0")]
+        private long _Id;
+        partial void OnIdChanging(long value);
+        partial void OnIdChanged();
+        /// <summary>
+        /// В схеме отсутствуют комментарии для свойства PriceDate.
+        /// </summary>
+        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Services.Design", "1.0.0")]
+        public global::System.DateTime PriceDate
+        {
+            get
+            {
+                return this._PriceDate;
+            }
+            set
+            {
+                this.OnPriceDateChanging(value);
+                this._PriceDate = value;
+                this.OnPriceDateChanged();
+                this.OnPropertyChanged("PriceDate");
+            }
+        }
+        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Services.Design", "1.0.0")]
+        private global::System.DateTime _PriceDate;
+        partial void OnPriceDateChanging(global::System.DateTime value);
+        partial void OnPriceDateChanged();
+        /// <summary>
+        /// В схеме отсутствуют комментарии для свойства PriceItem_Id.
+        /// </summary>
+        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Services.Design", "1.0.0")]
+        public long PriceItem_Id
+        {
+            get
+            {
+                return this._PriceItem_Id;
+            }
+            set
+            {
+                this.OnPriceItem_IdChanging(value);
+                this._PriceItem_Id = value;
+                this.OnPriceItem_IdChanged();
+                this.OnPropertyChanged("PriceItem_Id");
+            }
+        }
+        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Services.Design", "1.0.0")]
+        private long _PriceItem_Id;
+        partial void OnPriceItem_IdChanging(long value);
+        partial void OnPriceItem_IdChanged();
+        /// <summary>
+        /// В схеме отсутствуют комментарии для свойства Price.
+        /// </summary>
+        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Services.Design", "1.0.0")]
+        public decimal Price
+        {
+            get
+            {
+                return this._Price;
+            }
+            set
+            {
+                this.OnPriceChanging(value);
+                this._Price = value;
+                this.OnPriceChanged();
+                this.OnPropertyChanged("Price");
+            }
+        }
+        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Services.Design", "1.0.0")]
+        private decimal _Price;
+        partial void OnPriceChanging(decimal value);
+        partial void OnPriceChanged();
+        /// <summary>
+        /// В схеме отсутствуют комментарии для PriceItem.
+        /// </summary>
+        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Services.Design", "1.0.0")]
+        public PriceItem PriceItem
+        {
+            get
+            {
+                return this._PriceItem;
+            }
+            set
+            {
+                this._PriceItem = value;
+                this.OnPropertyChanged("PriceItem");
+            }
+        }
+        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Services.Design", "1.0.0")]
+        private PriceItem _PriceItem;
+        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Services.Design", "1.0.0")]
+        public event global::System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
+        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Services.Design", "1.0.0")]
+        protected virtual void OnPropertyChanged(string property)
+        {
+            if ((this.PropertyChanged != null))
+            {
+                this.PropertyChanged(this, new global::System.ComponentModel.PropertyChangedEventArgs(property));
+            }
+        }
+    }
+    /// <summary>
+    /// В схеме отсутствуют комментарии для StoreAppTest.Web.DataModel.Remainder.
+    /// </summary>
+    /// <KeyProperties>
+    /// Id
+    /// </KeyProperties>
+    [global::System.Data.Services.Common.EntitySetAttribute("Remainders")]
+    [global::System.Data.Services.Common.DataServiceKeyAttribute("Id")]
+    public partial class Remainder : global::System.ComponentModel.INotifyPropertyChanged
+    {
+        /// <summary>
+        /// Создайте новый объект Remainder.
+        /// </summary>
+        /// <param name="ID">Начальное значение Id.</param>
+        /// <param name="remainderDate">Начальное значение RemainderDate.</param>
+        /// <param name="priceItem_Id">Начальное значение PriceItem_Id.</param>
+        /// <param name="warehouse_Id">Начальное значение Warehouse_Id.</param>
+        /// <param name="amount">Начальное значение Amount.</param>
+        /// <param name="recommendedRemainder">Начальное значение RecommendedRemainder.</param>
+        /// <param name="lowerLimitRemainder">Начальное значение LowerLimitRemainder.</param>
+        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Services.Design", "1.0.0")]
+        public static Remainder CreateRemainder(long ID, global::System.DateTime remainderDate, long priceItem_Id, string warehouse_Id, decimal amount, decimal recommendedRemainder, decimal lowerLimitRemainder)
+        {
+            Remainder remainder = new Remainder();
+            remainder.Id = ID;
+            remainder.RemainderDate = remainderDate;
+            remainder.PriceItem_Id = priceItem_Id;
+            remainder.Warehouse_Id = warehouse_Id;
+            remainder.Amount = amount;
+            remainder.RecommendedRemainder = recommendedRemainder;
+            remainder.LowerLimitRemainder = lowerLimitRemainder;
+            return remainder;
+        }
+        /// <summary>
+        /// В схеме отсутствуют комментарии для свойства Id.
+        /// </summary>
+        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Services.Design", "1.0.0")]
+        public long Id
+        {
+            get
+            {
+                return this._Id;
+            }
+            set
+            {
+                this.OnIdChanging(value);
+                this._Id = value;
+                this.OnIdChanged();
+                this.OnPropertyChanged("Id");
+            }
+        }
+        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Services.Design", "1.0.0")]
+        private long _Id;
+        partial void OnIdChanging(long value);
+        partial void OnIdChanged();
+        /// <summary>
+        /// В схеме отсутствуют комментарии для свойства RemainderDate.
+        /// </summary>
+        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Services.Design", "1.0.0")]
+        public global::System.DateTime RemainderDate
+        {
+            get
+            {
+                return this._RemainderDate;
+            }
+            set
+            {
+                this.OnRemainderDateChanging(value);
+                this._RemainderDate = value;
+                this.OnRemainderDateChanged();
+                this.OnPropertyChanged("RemainderDate");
+            }
+        }
+        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Services.Design", "1.0.0")]
+        private global::System.DateTime _RemainderDate;
+        partial void OnRemainderDateChanging(global::System.DateTime value);
+        partial void OnRemainderDateChanged();
+        /// <summary>
+        /// В схеме отсутствуют комментарии для свойства PriceItem_Id.
+        /// </summary>
+        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Services.Design", "1.0.0")]
+        public long PriceItem_Id
+        {
+            get
+            {
+                return this._PriceItem_Id;
+            }
+            set
+            {
+                this.OnPriceItem_IdChanging(value);
+                this._PriceItem_Id = value;
+                this.OnPriceItem_IdChanged();
+                this.OnPropertyChanged("PriceItem_Id");
+            }
+        }
+        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Services.Design", "1.0.0")]
+        private long _PriceItem_Id;
+        partial void OnPriceItem_IdChanging(long value);
+        partial void OnPriceItem_IdChanged();
+        /// <summary>
+        /// В схеме отсутствуют комментарии для свойства Warehouse_Id.
+        /// </summary>
+        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Services.Design", "1.0.0")]
+        public string Warehouse_Id
+        {
+            get
+            {
+                return this._Warehouse_Id;
+            }
+            set
+            {
+                this.OnWarehouse_IdChanging(value);
+                this._Warehouse_Id = value;
+                this.OnWarehouse_IdChanged();
+                this.OnPropertyChanged("Warehouse_Id");
+            }
+        }
+        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Services.Design", "1.0.0")]
+        private string _Warehouse_Id;
+        partial void OnWarehouse_IdChanging(string value);
+        partial void OnWarehouse_IdChanged();
+        /// <summary>
+        /// В схеме отсутствуют комментарии для свойства Amount.
+        /// </summary>
+        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Services.Design", "1.0.0")]
+        public decimal Amount
+        {
+            get
+            {
+                return this._Amount;
+            }
+            set
+            {
+                this.OnAmountChanging(value);
+                this._Amount = value;
+                this.OnAmountChanged();
+                this.OnPropertyChanged("Amount");
+            }
+        }
+        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Services.Design", "1.0.0")]
+        private decimal _Amount;
+        partial void OnAmountChanging(decimal value);
+        partial void OnAmountChanged();
+        /// <summary>
+        /// В схеме отсутствуют комментарии для свойства RecommendedRemainder.
+        /// </summary>
+        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Services.Design", "1.0.0")]
+        public decimal RecommendedRemainder
+        {
+            get
+            {
+                return this._RecommendedRemainder;
+            }
+            set
+            {
+                this.OnRecommendedRemainderChanging(value);
+                this._RecommendedRemainder = value;
+                this.OnRecommendedRemainderChanged();
+                this.OnPropertyChanged("RecommendedRemainder");
+            }
+        }
+        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Services.Design", "1.0.0")]
+        private decimal _RecommendedRemainder;
+        partial void OnRecommendedRemainderChanging(decimal value);
+        partial void OnRecommendedRemainderChanged();
+        /// <summary>
+        /// В схеме отсутствуют комментарии для свойства LowerLimitRemainder.
+        /// </summary>
+        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Services.Design", "1.0.0")]
+        public decimal LowerLimitRemainder
+        {
+            get
+            {
+                return this._LowerLimitRemainder;
+            }
+            set
+            {
+                this.OnLowerLimitRemainderChanging(value);
+                this._LowerLimitRemainder = value;
+                this.OnLowerLimitRemainderChanged();
+                this.OnPropertyChanged("LowerLimitRemainder");
+            }
+        }
+        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Services.Design", "1.0.0")]
+        private decimal _LowerLimitRemainder;
+        partial void OnLowerLimitRemainderChanging(decimal value);
+        partial void OnLowerLimitRemainderChanged();
+        /// <summary>
+        /// В схеме отсутствуют комментарии для PriceItem.
+        /// </summary>
+        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Services.Design", "1.0.0")]
+        public PriceItem PriceItem
+        {
+            get
+            {
+                return this._PriceItem;
+            }
+            set
+            {
+                this._PriceItem = value;
+                this.OnPropertyChanged("PriceItem");
+            }
+        }
+        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Services.Design", "1.0.0")]
+        private PriceItem _PriceItem;
+        /// <summary>
+        /// В схеме отсутствуют комментарии для RemaindersUserChanges.
+        /// </summary>
+        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Services.Design", "1.0.0")]
+        public global::System.Data.Services.Client.DataServiceCollection<RemaindersUserChange> RemaindersUserChanges
+        {
+            get
+            {
+                return this._RemaindersUserChanges;
+            }
+            set
+            {
+                this._RemaindersUserChanges = value;
+                this.OnPropertyChanged("RemaindersUserChanges");
+            }
+        }
+        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Services.Design", "1.0.0")]
+        private global::System.Data.Services.Client.DataServiceCollection<RemaindersUserChange> _RemaindersUserChanges = new global::System.Data.Services.Client.DataServiceCollection<RemaindersUserChange>(null, global::System.Data.Services.Client.TrackingMode.None);
+        /// <summary>
+        /// В схеме отсутствуют комментарии для Warehouse.
+        /// </summary>
+        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Services.Design", "1.0.0")]
+        public Warehouse Warehouse
+        {
+            get
+            {
+                return this._Warehouse;
+            }
+            set
+            {
+                this._Warehouse = value;
+                this.OnPropertyChanged("Warehouse");
+            }
+        }
+        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Services.Design", "1.0.0")]
+        private Warehouse _Warehouse;
+        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Services.Design", "1.0.0")]
+        public event global::System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
+        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Services.Design", "1.0.0")]
+        protected virtual void OnPropertyChanged(string property)
+        {
+            if ((this.PropertyChanged != null))
+            {
+                this.PropertyChanged(this, new global::System.ComponentModel.PropertyChangedEventArgs(property));
+            }
+        }
+    }
+    /// <summary>
+    /// В схеме отсутствуют комментарии для StoreAppTest.Web.DataModel.RemaindersUserChange.
+    /// </summary>
+    /// <KeyProperties>
+    /// Id
+    /// </KeyProperties>
+    [global::System.Data.Services.Common.EntitySetAttribute("RemaindersUserChanges")]
+    [global::System.Data.Services.Common.DataServiceKeyAttribute("Id")]
+    public partial class RemaindersUserChange : global::System.ComponentModel.INotifyPropertyChanged
+    {
+        /// <summary>
+        /// Создайте новый объект RemaindersUserChange.
+        /// </summary>
+        /// <param name="ID">Начальное значение Id.</param>
+        /// <param name="date">Начальное значение Date.</param>
+        /// <param name="user_Id">Начальное значение User_Id.</param>
+        /// <param name="remainder_Id">Начальное значение Remainder_Id.</param>
+        /// <param name="amound">Начальное значение Amound.</param>
+        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Services.Design", "1.0.0")]
+        public static RemaindersUserChange CreateRemaindersUserChange(long ID, global::System.DateTime date, string user_Id, long remainder_Id, decimal amound)
+        {
+            RemaindersUserChange remaindersUserChange = new RemaindersUserChange();
+            remaindersUserChange.Id = ID;
+            remaindersUserChange.Date = date;
+            remaindersUserChange.User_Id = user_Id;
+            remaindersUserChange.Remainder_Id = remainder_Id;
+            remaindersUserChange.Amound = amound;
+            return remaindersUserChange;
+        }
+        /// <summary>
+        /// В схеме отсутствуют комментарии для свойства Id.
+        /// </summary>
+        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Services.Design", "1.0.0")]
+        public long Id
+        {
+            get
+            {
+                return this._Id;
+            }
+            set
+            {
+                this.OnIdChanging(value);
+                this._Id = value;
+                this.OnIdChanged();
+                this.OnPropertyChanged("Id");
+            }
+        }
+        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Services.Design", "1.0.0")]
+        private long _Id;
+        partial void OnIdChanging(long value);
+        partial void OnIdChanged();
+        /// <summary>
+        /// В схеме отсутствуют комментарии для свойства Date.
+        /// </summary>
+        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Services.Design", "1.0.0")]
+        public global::System.DateTime Date
+        {
+            get
+            {
+                return this._Date;
+            }
+            set
+            {
+                this.OnDateChanging(value);
+                this._Date = value;
+                this.OnDateChanged();
+                this.OnPropertyChanged("Date");
+            }
+        }
+        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Services.Design", "1.0.0")]
+        private global::System.DateTime _Date;
+        partial void OnDateChanging(global::System.DateTime value);
+        partial void OnDateChanged();
+        /// <summary>
+        /// В схеме отсутствуют комментарии для свойства User_Id.
+        /// </summary>
+        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Services.Design", "1.0.0")]
+        public string User_Id
+        {
+            get
+            {
+                return this._User_Id;
+            }
+            set
+            {
+                this.OnUser_IdChanging(value);
+                this._User_Id = value;
+                this.OnUser_IdChanged();
+                this.OnPropertyChanged("User_Id");
+            }
+        }
+        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Services.Design", "1.0.0")]
+        private string _User_Id;
+        partial void OnUser_IdChanging(string value);
+        partial void OnUser_IdChanged();
+        /// <summary>
+        /// В схеме отсутствуют комментарии для свойства Remainder_Id.
+        /// </summary>
+        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Services.Design", "1.0.0")]
+        public long Remainder_Id
+        {
+            get
+            {
+                return this._Remainder_Id;
+            }
+            set
+            {
+                this.OnRemainder_IdChanging(value);
+                this._Remainder_Id = value;
+                this.OnRemainder_IdChanged();
+                this.OnPropertyChanged("Remainder_Id");
+            }
+        }
+        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Services.Design", "1.0.0")]
+        private long _Remainder_Id;
+        partial void OnRemainder_IdChanging(long value);
+        partial void OnRemainder_IdChanged();
+        /// <summary>
+        /// В схеме отсутствуют комментарии для свойства Amound.
+        /// </summary>
+        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Services.Design", "1.0.0")]
+        public decimal Amound
+        {
+            get
+            {
+                return this._Amound;
+            }
+            set
+            {
+                this.OnAmoundChanging(value);
+                this._Amound = value;
+                this.OnAmoundChanged();
+                this.OnPropertyChanged("Amound");
+            }
+        }
+        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Services.Design", "1.0.0")]
+        private decimal _Amound;
+        partial void OnAmoundChanging(decimal value);
+        partial void OnAmoundChanged();
+        /// <summary>
+        /// В схеме отсутствуют комментарии для Remainder.
+        /// </summary>
+        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Services.Design", "1.0.0")]
+        public Remainder Remainder
+        {
+            get
+            {
+                return this._Remainder;
+            }
+            set
+            {
+                this._Remainder = value;
+                this.OnPropertyChanged("Remainder");
+            }
+        }
+        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Services.Design", "1.0.0")]
+        private Remainder _Remainder;
+        /// <summary>
+        /// В схеме отсутствуют комментарии для User.
+        /// </summary>
+        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Services.Design", "1.0.0")]
+        public User User
+        {
+            get
+            {
+                return this._User;
+            }
+            set
+            {
+                this._User = value;
+                this.OnPropertyChanged("User");
+            }
+        }
+        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Services.Design", "1.0.0")]
+        private User _User;
+        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Services.Design", "1.0.0")]
+        public event global::System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
+        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Services.Design", "1.0.0")]
+        protected virtual void OnPropertyChanged(string property)
+        {
+            if ((this.PropertyChanged != null))
+            {
+                this.PropertyChanged(this, new global::System.ComponentModel.PropertyChangedEventArgs(property));
+            }
+        }
+    }
+    /// <summary>
+    /// В схеме отсутствуют комментарии для StoreAppTest.Web.DataModel.Warehouse.
+    /// </summary>
+    /// <KeyProperties>
+    /// Name
+    /// </KeyProperties>
+    [global::System.Data.Services.Common.EntitySetAttribute("Warehouses")]
+    [global::System.Data.Services.Common.DataServiceKeyAttribute("Name")]
+    public partial class Warehouse : global::System.ComponentModel.INotifyPropertyChanged
+    {
+        /// <summary>
+        /// Создайте новый объект Warehouse.
+        /// </summary>
+        /// <param name="name">Начальное значение Name.</param>
+        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Services.Design", "1.0.0")]
+        public static Warehouse CreateWarehouse(string name)
+        {
+            Warehouse warehouse = new Warehouse();
+            warehouse.Name = name;
+            return warehouse;
+        }
+        /// <summary>
+        /// В схеме отсутствуют комментарии для свойства Name.
+        /// </summary>
+        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Services.Design", "1.0.0")]
+        public string Name
+        {
+            get
+            {
+                return this._Name;
+            }
+            set
+            {
+                this.OnNameChanging(value);
+                this._Name = value;
+                this.OnNameChanged();
+                this.OnPropertyChanged("Name");
+            }
+        }
+        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Services.Design", "1.0.0")]
+        private string _Name;
+        partial void OnNameChanging(string value);
+        partial void OnNameChanged();
+        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Services.Design", "1.0.0")]
+        public event global::System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
+        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Services.Design", "1.0.0")]
+        protected virtual void OnPropertyChanged(string property)
+        {
+            if ((this.PropertyChanged != null))
+            {
+                this.PropertyChanged(this, new global::System.ComponentModel.PropertyChangedEventArgs(property));
+            }
+        }
+    }
+    /// <summary>
+    /// В схеме отсутствуют комментарии для StoreAppTest.Web.DataModel.UnitOfMeasure.
+    /// </summary>
+    /// <KeyProperties>
+    /// Name
+    /// </KeyProperties>
+    [global::System.Data.Services.Common.EntitySetAttribute("UnitOfMeasures")]
+    [global::System.Data.Services.Common.DataServiceKeyAttribute("Name")]
+    public partial class UnitOfMeasure : global::System.ComponentModel.INotifyPropertyChanged
+    {
+        /// <summary>
+        /// Создайте новый объект UnitOfMeasure.
+        /// </summary>
+        /// <param name="name">Начальное значение Name.</param>
+        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Services.Design", "1.0.0")]
+        public static UnitOfMeasure CreateUnitOfMeasure(string name)
+        {
+            UnitOfMeasure unitOfMeasure = new UnitOfMeasure();
+            unitOfMeasure.Name = name;
+            return unitOfMeasure;
+        }
+        /// <summary>
+        /// В схеме отсутствуют комментарии для свойства Name.
+        /// </summary>
+        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Services.Design", "1.0.0")]
+        public string Name
+        {
+            get
+            {
+                return this._Name;
+            }
+            set
+            {
+                this.OnNameChanging(value);
+                this._Name = value;
+                this.OnNameChanged();
+                this.OnPropertyChanged("Name");
+            }
+        }
+        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Services.Design", "1.0.0")]
+        private string _Name;
+        partial void OnNameChanging(string value);
+        partial void OnNameChanged();
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Services.Design", "1.0.0")]
         public event global::System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Services.Design", "1.0.0")]
@@ -2309,60 +3956,6 @@ namespace StoreAppTest.StoreAppDataService
         }
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Services.Design", "1.0.0")]
         private global::System.Data.Services.Client.DataServiceCollection<User> _Users = new global::System.Data.Services.Client.DataServiceCollection<User>(null, global::System.Data.Services.Client.TrackingMode.None);
-        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Services.Design", "1.0.0")]
-        public event global::System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
-        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Services.Design", "1.0.0")]
-        protected virtual void OnPropertyChanged(string property)
-        {
-            if ((this.PropertyChanged != null))
-            {
-                this.PropertyChanged(this, new global::System.ComponentModel.PropertyChangedEventArgs(property));
-            }
-        }
-    }
-    /// <summary>
-    /// В схеме отсутствуют комментарии для StoreAppTest.Web.DataModel.Warehouse.
-    /// </summary>
-    /// <KeyProperties>
-    /// Name
-    /// </KeyProperties>
-    [global::System.Data.Services.Common.EntitySetAttribute("Warehouses")]
-    [global::System.Data.Services.Common.DataServiceKeyAttribute("Name")]
-    public partial class Warehouse : global::System.ComponentModel.INotifyPropertyChanged
-    {
-        /// <summary>
-        /// Создайте новый объект Warehouse.
-        /// </summary>
-        /// <param name="name">Начальное значение Name.</param>
-        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Services.Design", "1.0.0")]
-        public static Warehouse CreateWarehouse(string name)
-        {
-            Warehouse warehouse = new Warehouse();
-            warehouse.Name = name;
-            return warehouse;
-        }
-        /// <summary>
-        /// В схеме отсутствуют комментарии для свойства Name.
-        /// </summary>
-        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Services.Design", "1.0.0")]
-        public string Name
-        {
-            get
-            {
-                return this._Name;
-            }
-            set
-            {
-                this.OnNameChanging(value);
-                this._Name = value;
-                this.OnNameChanged();
-                this.OnPropertyChanged("Name");
-            }
-        }
-        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Services.Design", "1.0.0")]
-        private string _Name;
-        partial void OnNameChanging(string value);
-        partial void OnNameChanged();
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Services.Design", "1.0.0")]
         public event global::System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Services.Design", "1.0.0")]
@@ -2573,437 +4166,6 @@ namespace StoreAppTest.StoreAppDataService
         }
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Services.Design", "1.0.0")]
         private Customer _Debtor;
-        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Services.Design", "1.0.0")]
-        public event global::System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
-        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Services.Design", "1.0.0")]
-        protected virtual void OnPropertyChanged(string property)
-        {
-            if ((this.PropertyChanged != null))
-            {
-                this.PropertyChanged(this, new global::System.ComponentModel.PropertyChangedEventArgs(property));
-            }
-        }
-    }
-    /// <summary>
-    /// В схеме отсутствуют комментарии для StoreAppTest.Web.DataModel.GearCategory.
-    /// </summary>
-    /// <KeyProperties>
-    /// Name
-    /// </KeyProperties>
-    [global::System.Data.Services.Common.EntitySetAttribute("GearCategories")]
-    [global::System.Data.Services.Common.DataServiceKeyAttribute("Name")]
-    public partial class GearCategory : global::System.ComponentModel.INotifyPropertyChanged
-    {
-        /// <summary>
-        /// Создайте новый объект GearCategory.
-        /// </summary>
-        /// <param name="name">Начальное значение Name.</param>
-        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Services.Design", "1.0.0")]
-        public static GearCategory CreateGearCategory(string name)
-        {
-            GearCategory gearCategory = new GearCategory();
-            gearCategory.Name = name;
-            return gearCategory;
-        }
-        /// <summary>
-        /// В схеме отсутствуют комментарии для свойства Name.
-        /// </summary>
-        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Services.Design", "1.0.0")]
-        public string Name
-        {
-            get
-            {
-                return this._Name;
-            }
-            set
-            {
-                this.OnNameChanging(value);
-                this._Name = value;
-                this.OnNameChanged();
-                this.OnPropertyChanged("Name");
-            }
-        }
-        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Services.Design", "1.0.0")]
-        private string _Name;
-        partial void OnNameChanging(string value);
-        partial void OnNameChanged();
-        /// <summary>
-        /// В схеме отсутствуют комментарии для Gears.
-        /// </summary>
-        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Services.Design", "1.0.0")]
-        public global::System.Data.Services.Client.DataServiceCollection<Gear> Gears
-        {
-            get
-            {
-                return this._Gears;
-            }
-            set
-            {
-                this._Gears = value;
-                this.OnPropertyChanged("Gears");
-            }
-        }
-        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Services.Design", "1.0.0")]
-        private global::System.Data.Services.Client.DataServiceCollection<Gear> _Gears = new global::System.Data.Services.Client.DataServiceCollection<Gear>(null, global::System.Data.Services.Client.TrackingMode.None);
-        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Services.Design", "1.0.0")]
-        public event global::System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
-        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Services.Design", "1.0.0")]
-        protected virtual void OnPropertyChanged(string property)
-        {
-            if ((this.PropertyChanged != null))
-            {
-                this.PropertyChanged(this, new global::System.ComponentModel.PropertyChangedEventArgs(property));
-            }
-        }
-    }
-    /// <summary>
-    /// В схеме отсутствуют комментарии для StoreAppTest.Web.DataModel.Gear.
-    /// </summary>
-    /// <KeyProperties>
-    /// Id
-    /// </KeyProperties>
-    [global::System.Data.Services.Common.EntitySetAttribute("Gears")]
-    [global::System.Data.Services.Common.DataServiceKeyAttribute("Id")]
-    public partial class Gear : global::System.ComponentModel.INotifyPropertyChanged
-    {
-        /// <summary>
-        /// Создайте новый объект Gear.
-        /// </summary>
-        /// <param name="ID">Начальное значение Id.</param>
-        /// <param name="name">Начальное значение Name.</param>
-        /// <param name="isDuplicate">Начальное значение IsDuplicate.</param>
-        /// <param name="category_Id">Начальное значение Category_Id.</param>
-        /// <param name="recommendedRemainder">Начальное значение RecommendedRemainder.</param>
-        /// <param name="lowerLimitRemainder">Начальное значение LowerLimitRemainder.</param>
-        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Services.Design", "1.0.0")]
-        public static Gear CreateGear(long ID, string name, bool isDuplicate, string category_Id, decimal recommendedRemainder, decimal lowerLimitRemainder)
-        {
-            Gear gear = new Gear();
-            gear.Id = ID;
-            gear.Name = name;
-            gear.IsDuplicate = isDuplicate;
-            gear.Category_Id = category_Id;
-            gear.RecommendedRemainder = recommendedRemainder;
-            gear.LowerLimitRemainder = lowerLimitRemainder;
-            return gear;
-        }
-        /// <summary>
-        /// В схеме отсутствуют комментарии для свойства Id.
-        /// </summary>
-        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Services.Design", "1.0.0")]
-        public long Id
-        {
-            get
-            {
-                return this._Id;
-            }
-            set
-            {
-                this.OnIdChanging(value);
-                this._Id = value;
-                this.OnIdChanged();
-                this.OnPropertyChanged("Id");
-            }
-        }
-        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Services.Design", "1.0.0")]
-        private long _Id;
-        partial void OnIdChanging(long value);
-        partial void OnIdChanged();
-        /// <summary>
-        /// В схеме отсутствуют комментарии для свойства CatalogNumber.
-        /// </summary>
-        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Services.Design", "1.0.0")]
-        public string CatalogNumber
-        {
-            get
-            {
-                return this._CatalogNumber;
-            }
-            set
-            {
-                this.OnCatalogNumberChanging(value);
-                this._CatalogNumber = value;
-                this.OnCatalogNumberChanged();
-                this.OnPropertyChanged("CatalogNumber");
-            }
-        }
-        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Services.Design", "1.0.0")]
-        private string _CatalogNumber;
-        partial void OnCatalogNumberChanging(string value);
-        partial void OnCatalogNumberChanged();
-        /// <summary>
-        /// В схеме отсутствуют комментарии для свойства Name.
-        /// </summary>
-        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Services.Design", "1.0.0")]
-        public string Name
-        {
-            get
-            {
-                return this._Name;
-            }
-            set
-            {
-                this.OnNameChanging(value);
-                this._Name = value;
-                this.OnNameChanged();
-                this.OnPropertyChanged("Name");
-            }
-        }
-        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Services.Design", "1.0.0")]
-        private string _Name;
-        partial void OnNameChanging(string value);
-        partial void OnNameChanged();
-        /// <summary>
-        /// В схеме отсутствуют комментарии для свойства Articul.
-        /// </summary>
-        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Services.Design", "1.0.0")]
-        public string Articul
-        {
-            get
-            {
-                return this._Articul;
-            }
-            set
-            {
-                this.OnArticulChanging(value);
-                this._Articul = value;
-                this.OnArticulChanged();
-                this.OnPropertyChanged("Articul");
-            }
-        }
-        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Services.Design", "1.0.0")]
-        private string _Articul;
-        partial void OnArticulChanging(string value);
-        partial void OnArticulChanged();
-        /// <summary>
-        /// В схеме отсутствуют комментарии для свойства IsDuplicate.
-        /// </summary>
-        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Services.Design", "1.0.0")]
-        public bool IsDuplicate
-        {
-            get
-            {
-                return this._IsDuplicate;
-            }
-            set
-            {
-                this.OnIsDuplicateChanging(value);
-                this._IsDuplicate = value;
-                this.OnIsDuplicateChanged();
-                this.OnPropertyChanged("IsDuplicate");
-            }
-        }
-        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Services.Design", "1.0.0")]
-        private bool _IsDuplicate;
-        partial void OnIsDuplicateChanging(bool value);
-        partial void OnIsDuplicateChanged();
-        /// <summary>
-        /// В схеме отсутствуют комментарии для свойства Category_Id.
-        /// </summary>
-        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Services.Design", "1.0.0")]
-        public string Category_Id
-        {
-            get
-            {
-                return this._Category_Id;
-            }
-            set
-            {
-                this.OnCategory_IdChanging(value);
-                this._Category_Id = value;
-                this.OnCategory_IdChanged();
-                this.OnPropertyChanged("Category_Id");
-            }
-        }
-        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Services.Design", "1.0.0")]
-        private string _Category_Id;
-        partial void OnCategory_IdChanging(string value);
-        partial void OnCategory_IdChanged();
-        /// <summary>
-        /// В схеме отсутствуют комментарии для свойства RecommendedRemainder.
-        /// </summary>
-        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Services.Design", "1.0.0")]
-        public decimal RecommendedRemainder
-        {
-            get
-            {
-                return this._RecommendedRemainder;
-            }
-            set
-            {
-                this.OnRecommendedRemainderChanging(value);
-                this._RecommendedRemainder = value;
-                this.OnRecommendedRemainderChanged();
-                this.OnPropertyChanged("RecommendedRemainder");
-            }
-        }
-        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Services.Design", "1.0.0")]
-        private decimal _RecommendedRemainder;
-        partial void OnRecommendedRemainderChanging(decimal value);
-        partial void OnRecommendedRemainderChanged();
-        /// <summary>
-        /// В схеме отсутствуют комментарии для свойства LowerLimitRemainder.
-        /// </summary>
-        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Services.Design", "1.0.0")]
-        public decimal LowerLimitRemainder
-        {
-            get
-            {
-                return this._LowerLimitRemainder;
-            }
-            set
-            {
-                this.OnLowerLimitRemainderChanging(value);
-                this._LowerLimitRemainder = value;
-                this.OnLowerLimitRemainderChanged();
-                this.OnPropertyChanged("LowerLimitRemainder");
-            }
-        }
-        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Services.Design", "1.0.0")]
-        private decimal _LowerLimitRemainder;
-        partial void OnLowerLimitRemainderChanging(decimal value);
-        partial void OnLowerLimitRemainderChanged();
-        /// <summary>
-        /// В схеме отсутствуют комментарии для свойства Image_Id.
-        /// </summary>
-        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Services.Design", "1.0.0")]
-        public global::System.Nullable<long> Image_Id
-        {
-            get
-            {
-                return this._Image_Id;
-            }
-            set
-            {
-                this.OnImage_IdChanging(value);
-                this._Image_Id = value;
-                this.OnImage_IdChanged();
-                this.OnPropertyChanged("Image_Id");
-            }
-        }
-        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Services.Design", "1.0.0")]
-        private global::System.Nullable<long> _Image_Id;
-        partial void OnImage_IdChanging(global::System.Nullable<long> value);
-        partial void OnImage_IdChanged();
-        /// <summary>
-        /// В схеме отсутствуют комментарии для GearCategory.
-        /// </summary>
-        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Services.Design", "1.0.0")]
-        public GearCategory GearCategory
-        {
-            get
-            {
-                return this._GearCategory;
-            }
-            set
-            {
-                this._GearCategory = value;
-                this.OnPropertyChanged("GearCategory");
-            }
-        }
-        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Services.Design", "1.0.0")]
-        private GearCategory _GearCategory;
-        /// <summary>
-        /// В схеме отсутствуют комментарии для Image.
-        /// </summary>
-        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Services.Design", "1.0.0")]
-        public Resource Image
-        {
-            get
-            {
-                return this._Image;
-            }
-            set
-            {
-                this._Image = value;
-                this.OnPropertyChanged("Image");
-            }
-        }
-        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Services.Design", "1.0.0")]
-        private Resource _Image;
-        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Services.Design", "1.0.0")]
-        public event global::System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
-        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Services.Design", "1.0.0")]
-        protected virtual void OnPropertyChanged(string property)
-        {
-            if ((this.PropertyChanged != null))
-            {
-                this.PropertyChanged(this, new global::System.ComponentModel.PropertyChangedEventArgs(property));
-            }
-        }
-    }
-    /// <summary>
-    /// В схеме отсутствуют комментарии для StoreAppTest.Web.DataModel.Resource.
-    /// </summary>
-    /// <KeyProperties>
-    /// Id
-    /// </KeyProperties>
-    [global::System.Data.Services.Common.EntitySetAttribute("Resources")]
-    [global::System.Data.Services.Common.DataServiceKeyAttribute("Id")]
-    public partial class Resource : global::System.ComponentModel.INotifyPropertyChanged
-    {
-        /// <summary>
-        /// Создайте новый объект Resource.
-        /// </summary>
-        /// <param name="ID">Начальное значение Id.</param>
-        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Services.Design", "1.0.0")]
-        public static Resource CreateResource(long ID)
-        {
-            Resource resource = new Resource();
-            resource.Id = ID;
-            return resource;
-        }
-        /// <summary>
-        /// В схеме отсутствуют комментарии для свойства Id.
-        /// </summary>
-        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Services.Design", "1.0.0")]
-        public long Id
-        {
-            get
-            {
-                return this._Id;
-            }
-            set
-            {
-                this.OnIdChanging(value);
-                this._Id = value;
-                this.OnIdChanged();
-                this.OnPropertyChanged("Id");
-            }
-        }
-        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Services.Design", "1.0.0")]
-        private long _Id;
-        partial void OnIdChanging(long value);
-        partial void OnIdChanged();
-        /// <summary>
-        /// В схеме отсутствуют комментарии для свойства ResourceData.
-        /// </summary>
-        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Services.Design", "1.0.0")]
-        public byte[] ResourceData
-        {
-            get
-            {
-                if ((this._ResourceData != null))
-                {
-                    return ((byte[])(this._ResourceData.Clone()));
-                }
-                else
-                {
-                    return null;
-                }
-            }
-            set
-            {
-                this.OnResourceDataChanging(value);
-                this._ResourceData = value;
-                this.OnResourceDataChanged();
-                this.OnPropertyChanged("ResourceData");
-            }
-        }
-        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Services.Design", "1.0.0")]
-        private byte[] _ResourceData;
-        partial void OnResourceDataChanging(byte[] value);
-        partial void OnResourceDataChanged();
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Services.Design", "1.0.0")]
         public event global::System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Services.Design", "1.0.0")]
@@ -3790,972 +4952,6 @@ namespace StoreAppTest.StoreAppDataService
         private string _Manager;
         partial void OnManagerChanging(string value);
         partial void OnManagerChanged();
-        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Services.Design", "1.0.0")]
-        public event global::System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
-        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Services.Design", "1.0.0")]
-        protected virtual void OnPropertyChanged(string property)
-        {
-            if ((this.PropertyChanged != null))
-            {
-                this.PropertyChanged(this, new global::System.ComponentModel.PropertyChangedEventArgs(property));
-            }
-        }
-    }
-    /// <summary>
-    /// В схеме отсутствуют комментарии для StoreAppTest.Web.DataModel.PriceItem.
-    /// </summary>
-    /// <KeyProperties>
-    /// Id
-    /// </KeyProperties>
-    [global::System.Data.Services.Common.EntitySetAttribute("PriceItems")]
-    [global::System.Data.Services.Common.DataServiceKeyAttribute("Id")]
-    public partial class PriceItem : global::System.ComponentModel.INotifyPropertyChanged
-    {
-        /// <summary>
-        /// Создайте новый объект PriceItem.
-        /// </summary>
-        /// <param name="ID">Начальное значение Id.</param>
-        /// <param name="gear_Id">Начальное значение Gear_Id.</param>
-        /// <param name="buyPriceRur">Начальное значение BuyPriceRur.</param>
-        /// <param name="buyPriceTng">Начальное значение BuyPriceTng.</param>
-        /// <param name="uom_Id">Начальное значение Uom_Id.</param>
-        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Services.Design", "1.0.0")]
-        public static PriceItem CreatePriceItem(long ID, long gear_Id, decimal buyPriceRur, decimal buyPriceTng, string uom_Id)
-        {
-            PriceItem priceItem = new PriceItem();
-            priceItem.Id = ID;
-            priceItem.Gear_Id = gear_Id;
-            priceItem.BuyPriceRur = buyPriceRur;
-            priceItem.BuyPriceTng = buyPriceTng;
-            priceItem.Uom_Id = uom_Id;
-            return priceItem;
-        }
-        /// <summary>
-        /// В схеме отсутствуют комментарии для свойства Id.
-        /// </summary>
-        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Services.Design", "1.0.0")]
-        public long Id
-        {
-            get
-            {
-                return this._Id;
-            }
-            set
-            {
-                this.OnIdChanging(value);
-                this._Id = value;
-                this.OnIdChanged();
-                this.OnPropertyChanged("Id");
-            }
-        }
-        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Services.Design", "1.0.0")]
-        private long _Id;
-        partial void OnIdChanging(long value);
-        partial void OnIdChanged();
-        /// <summary>
-        /// В схеме отсутствуют комментарии для свойства Gear_Id.
-        /// </summary>
-        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Services.Design", "1.0.0")]
-        public long Gear_Id
-        {
-            get
-            {
-                return this._Gear_Id;
-            }
-            set
-            {
-                this.OnGear_IdChanging(value);
-                this._Gear_Id = value;
-                this.OnGear_IdChanged();
-                this.OnPropertyChanged("Gear_Id");
-            }
-        }
-        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Services.Design", "1.0.0")]
-        private long _Gear_Id;
-        partial void OnGear_IdChanging(long value);
-        partial void OnGear_IdChanged();
-        /// <summary>
-        /// В схеме отсутствуют комментарии для свойства BuyPriceRur.
-        /// </summary>
-        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Services.Design", "1.0.0")]
-        public decimal BuyPriceRur
-        {
-            get
-            {
-                return this._BuyPriceRur;
-            }
-            set
-            {
-                this.OnBuyPriceRurChanging(value);
-                this._BuyPriceRur = value;
-                this.OnBuyPriceRurChanged();
-                this.OnPropertyChanged("BuyPriceRur");
-            }
-        }
-        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Services.Design", "1.0.0")]
-        private decimal _BuyPriceRur;
-        partial void OnBuyPriceRurChanging(decimal value);
-        partial void OnBuyPriceRurChanged();
-        /// <summary>
-        /// В схеме отсутствуют комментарии для свойства BuyPriceTng.
-        /// </summary>
-        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Services.Design", "1.0.0")]
-        public decimal BuyPriceTng
-        {
-            get
-            {
-                return this._BuyPriceTng;
-            }
-            set
-            {
-                this.OnBuyPriceTngChanging(value);
-                this._BuyPriceTng = value;
-                this.OnBuyPriceTngChanged();
-                this.OnPropertyChanged("BuyPriceTng");
-            }
-        }
-        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Services.Design", "1.0.0")]
-        private decimal _BuyPriceTng;
-        partial void OnBuyPriceTngChanging(decimal value);
-        partial void OnBuyPriceTngChanged();
-        /// <summary>
-        /// В схеме отсутствуют комментарии для свойства Uom_Id.
-        /// </summary>
-        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Services.Design", "1.0.0")]
-        public string Uom_Id
-        {
-            get
-            {
-                return this._Uom_Id;
-            }
-            set
-            {
-                this.OnUom_IdChanging(value);
-                this._Uom_Id = value;
-                this.OnUom_IdChanged();
-                this.OnPropertyChanged("Uom_Id");
-            }
-        }
-        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Services.Design", "1.0.0")]
-        private string _Uom_Id;
-        partial void OnUom_IdChanging(string value);
-        partial void OnUom_IdChanged();
-        /// <summary>
-        /// В схеме отсутствуют комментарии для Gear.
-        /// </summary>
-        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Services.Design", "1.0.0")]
-        public Gear Gear
-        {
-            get
-            {
-                return this._Gear;
-            }
-            set
-            {
-                this._Gear = value;
-                this.OnPropertyChanged("Gear");
-            }
-        }
-        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Services.Design", "1.0.0")]
-        private Gear _Gear;
-        /// <summary>
-        /// В схеме отсутствуют комментарии для PriceLists.
-        /// </summary>
-        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Services.Design", "1.0.0")]
-        public global::System.Data.Services.Client.DataServiceCollection<PriceList> PriceLists
-        {
-            get
-            {
-                return this._PriceLists;
-            }
-            set
-            {
-                this._PriceLists = value;
-                this.OnPropertyChanged("PriceLists");
-            }
-        }
-        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Services.Design", "1.0.0")]
-        private global::System.Data.Services.Client.DataServiceCollection<PriceList> _PriceLists = new global::System.Data.Services.Client.DataServiceCollection<PriceList>(null, global::System.Data.Services.Client.TrackingMode.None);
-        /// <summary>
-        /// В схеме отсутствуют комментарии для Prices.
-        /// </summary>
-        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Services.Design", "1.0.0")]
-        public global::System.Data.Services.Client.DataServiceCollection<WholesalePrice> Prices
-        {
-            get
-            {
-                return this._Prices;
-            }
-            set
-            {
-                this._Prices = value;
-                this.OnPropertyChanged("Prices");
-            }
-        }
-        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Services.Design", "1.0.0")]
-        private global::System.Data.Services.Client.DataServiceCollection<WholesalePrice> _Prices = new global::System.Data.Services.Client.DataServiceCollection<WholesalePrice>(null, global::System.Data.Services.Client.TrackingMode.None);
-        /// <summary>
-        /// В схеме отсутствуют комментарии для Remainders.
-        /// </summary>
-        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Services.Design", "1.0.0")]
-        public global::System.Data.Services.Client.DataServiceCollection<Remainder> Remainders
-        {
-            get
-            {
-                return this._Remainders;
-            }
-            set
-            {
-                this._Remainders = value;
-                this.OnPropertyChanged("Remainders");
-            }
-        }
-        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Services.Design", "1.0.0")]
-        private global::System.Data.Services.Client.DataServiceCollection<Remainder> _Remainders = new global::System.Data.Services.Client.DataServiceCollection<Remainder>(null, global::System.Data.Services.Client.TrackingMode.None);
-        /// <summary>
-        /// В схеме отсутствуют комментарии для UnitOfMeasure.
-        /// </summary>
-        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Services.Design", "1.0.0")]
-        public UnitOfMeasure UnitOfMeasure
-        {
-            get
-            {
-                return this._UnitOfMeasure;
-            }
-            set
-            {
-                this._UnitOfMeasure = value;
-                this.OnPropertyChanged("UnitOfMeasure");
-            }
-        }
-        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Services.Design", "1.0.0")]
-        private UnitOfMeasure _UnitOfMeasure;
-        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Services.Design", "1.0.0")]
-        public event global::System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
-        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Services.Design", "1.0.0")]
-        protected virtual void OnPropertyChanged(string property)
-        {
-            if ((this.PropertyChanged != null))
-            {
-                this.PropertyChanged(this, new global::System.ComponentModel.PropertyChangedEventArgs(property));
-            }
-        }
-    }
-    /// <summary>
-    /// В схеме отсутствуют комментарии для StoreAppTest.Web.DataModel.PriceList.
-    /// </summary>
-    /// <KeyProperties>
-    /// Name
-    /// </KeyProperties>
-    [global::System.Data.Services.Common.EntitySetAttribute("PriceLists")]
-    [global::System.Data.Services.Common.DataServiceKeyAttribute("Name")]
-    public partial class PriceList : global::System.ComponentModel.INotifyPropertyChanged
-    {
-        /// <summary>
-        /// Создайте новый объект PriceList.
-        /// </summary>
-        /// <param name="name">Начальное значение Name.</param>
-        /// <param name="uploadUser_Id">Начальное значение UploadUser_Id.</param>
-        /// <param name="uploadDate">Начальное значение UploadDate.</param>
-        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Services.Design", "1.0.0")]
-        public static PriceList CreatePriceList(string name, string uploadUser_Id, global::System.DateTime uploadDate)
-        {
-            PriceList priceList = new PriceList();
-            priceList.Name = name;
-            priceList.UploadUser_Id = uploadUser_Id;
-            priceList.UploadDate = uploadDate;
-            return priceList;
-        }
-        /// <summary>
-        /// В схеме отсутствуют комментарии для свойства Name.
-        /// </summary>
-        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Services.Design", "1.0.0")]
-        public string Name
-        {
-            get
-            {
-                return this._Name;
-            }
-            set
-            {
-                this.OnNameChanging(value);
-                this._Name = value;
-                this.OnNameChanged();
-                this.OnPropertyChanged("Name");
-            }
-        }
-        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Services.Design", "1.0.0")]
-        private string _Name;
-        partial void OnNameChanging(string value);
-        partial void OnNameChanged();
-        /// <summary>
-        /// В схеме отсутствуют комментарии для свойства UploadUser_Id.
-        /// </summary>
-        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Services.Design", "1.0.0")]
-        public string UploadUser_Id
-        {
-            get
-            {
-                return this._UploadUser_Id;
-            }
-            set
-            {
-                this.OnUploadUser_IdChanging(value);
-                this._UploadUser_Id = value;
-                this.OnUploadUser_IdChanged();
-                this.OnPropertyChanged("UploadUser_Id");
-            }
-        }
-        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Services.Design", "1.0.0")]
-        private string _UploadUser_Id;
-        partial void OnUploadUser_IdChanging(string value);
-        partial void OnUploadUser_IdChanged();
-        /// <summary>
-        /// В схеме отсутствуют комментарии для свойства UploadDate.
-        /// </summary>
-        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Services.Design", "1.0.0")]
-        public global::System.DateTime UploadDate
-        {
-            get
-            {
-                return this._UploadDate;
-            }
-            set
-            {
-                this.OnUploadDateChanging(value);
-                this._UploadDate = value;
-                this.OnUploadDateChanged();
-                this.OnPropertyChanged("UploadDate");
-            }
-        }
-        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Services.Design", "1.0.0")]
-        private global::System.DateTime _UploadDate;
-        partial void OnUploadDateChanging(global::System.DateTime value);
-        partial void OnUploadDateChanged();
-        /// <summary>
-        /// В схеме отсутствуют комментарии для PriceItems.
-        /// </summary>
-        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Services.Design", "1.0.0")]
-        public global::System.Data.Services.Client.DataServiceCollection<PriceItem> PriceItems
-        {
-            get
-            {
-                return this._PriceItems;
-            }
-            set
-            {
-                this._PriceItems = value;
-                this.OnPropertyChanged("PriceItems");
-            }
-        }
-        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Services.Design", "1.0.0")]
-        private global::System.Data.Services.Client.DataServiceCollection<PriceItem> _PriceItems = new global::System.Data.Services.Client.DataServiceCollection<PriceItem>(null, global::System.Data.Services.Client.TrackingMode.None);
-        /// <summary>
-        /// В схеме отсутствуют комментарии для UploadUser.
-        /// </summary>
-        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Services.Design", "1.0.0")]
-        public User UploadUser
-        {
-            get
-            {
-                return this._UploadUser;
-            }
-            set
-            {
-                this._UploadUser = value;
-                this.OnPropertyChanged("UploadUser");
-            }
-        }
-        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Services.Design", "1.0.0")]
-        private User _UploadUser;
-        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Services.Design", "1.0.0")]
-        public event global::System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
-        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Services.Design", "1.0.0")]
-        protected virtual void OnPropertyChanged(string property)
-        {
-            if ((this.PropertyChanged != null))
-            {
-                this.PropertyChanged(this, new global::System.ComponentModel.PropertyChangedEventArgs(property));
-            }
-        }
-    }
-    /// <summary>
-    /// В схеме отсутствуют комментарии для StoreAppTest.Web.DataModel.WholesalePrice.
-    /// </summary>
-    /// <KeyProperties>
-    /// Id
-    /// </KeyProperties>
-    [global::System.Data.Services.Common.EntitySetAttribute("WholesalePrices")]
-    [global::System.Data.Services.Common.DataServiceKeyAttribute("Id")]
-    public partial class WholesalePrice : global::System.ComponentModel.INotifyPropertyChanged
-    {
-        /// <summary>
-        /// Создайте новый объект WholesalePrice.
-        /// </summary>
-        /// <param name="ID">Начальное значение Id.</param>
-        /// <param name="priceDate">Начальное значение PriceDate.</param>
-        /// <param name="priceItem_Id">Начальное значение PriceItem_Id.</param>
-        /// <param name="price">Начальное значение Price.</param>
-        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Services.Design", "1.0.0")]
-        public static WholesalePrice CreateWholesalePrice(long ID, global::System.DateTime priceDate, long priceItem_Id, decimal price)
-        {
-            WholesalePrice wholesalePrice = new WholesalePrice();
-            wholesalePrice.Id = ID;
-            wholesalePrice.PriceDate = priceDate;
-            wholesalePrice.PriceItem_Id = priceItem_Id;
-            wholesalePrice.Price = price;
-            return wholesalePrice;
-        }
-        /// <summary>
-        /// В схеме отсутствуют комментарии для свойства Id.
-        /// </summary>
-        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Services.Design", "1.0.0")]
-        public long Id
-        {
-            get
-            {
-                return this._Id;
-            }
-            set
-            {
-                this.OnIdChanging(value);
-                this._Id = value;
-                this.OnIdChanged();
-                this.OnPropertyChanged("Id");
-            }
-        }
-        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Services.Design", "1.0.0")]
-        private long _Id;
-        partial void OnIdChanging(long value);
-        partial void OnIdChanged();
-        /// <summary>
-        /// В схеме отсутствуют комментарии для свойства PriceDate.
-        /// </summary>
-        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Services.Design", "1.0.0")]
-        public global::System.DateTime PriceDate
-        {
-            get
-            {
-                return this._PriceDate;
-            }
-            set
-            {
-                this.OnPriceDateChanging(value);
-                this._PriceDate = value;
-                this.OnPriceDateChanged();
-                this.OnPropertyChanged("PriceDate");
-            }
-        }
-        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Services.Design", "1.0.0")]
-        private global::System.DateTime _PriceDate;
-        partial void OnPriceDateChanging(global::System.DateTime value);
-        partial void OnPriceDateChanged();
-        /// <summary>
-        /// В схеме отсутствуют комментарии для свойства PriceItem_Id.
-        /// </summary>
-        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Services.Design", "1.0.0")]
-        public long PriceItem_Id
-        {
-            get
-            {
-                return this._PriceItem_Id;
-            }
-            set
-            {
-                this.OnPriceItem_IdChanging(value);
-                this._PriceItem_Id = value;
-                this.OnPriceItem_IdChanged();
-                this.OnPropertyChanged("PriceItem_Id");
-            }
-        }
-        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Services.Design", "1.0.0")]
-        private long _PriceItem_Id;
-        partial void OnPriceItem_IdChanging(long value);
-        partial void OnPriceItem_IdChanged();
-        /// <summary>
-        /// В схеме отсутствуют комментарии для свойства Price.
-        /// </summary>
-        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Services.Design", "1.0.0")]
-        public decimal Price
-        {
-            get
-            {
-                return this._Price;
-            }
-            set
-            {
-                this.OnPriceChanging(value);
-                this._Price = value;
-                this.OnPriceChanged();
-                this.OnPropertyChanged("Price");
-            }
-        }
-        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Services.Design", "1.0.0")]
-        private decimal _Price;
-        partial void OnPriceChanging(decimal value);
-        partial void OnPriceChanged();
-        /// <summary>
-        /// В схеме отсутствуют комментарии для PriceItem.
-        /// </summary>
-        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Services.Design", "1.0.0")]
-        public PriceItem PriceItem
-        {
-            get
-            {
-                return this._PriceItem;
-            }
-            set
-            {
-                this._PriceItem = value;
-                this.OnPropertyChanged("PriceItem");
-            }
-        }
-        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Services.Design", "1.0.0")]
-        private PriceItem _PriceItem;
-        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Services.Design", "1.0.0")]
-        public event global::System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
-        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Services.Design", "1.0.0")]
-        protected virtual void OnPropertyChanged(string property)
-        {
-            if ((this.PropertyChanged != null))
-            {
-                this.PropertyChanged(this, new global::System.ComponentModel.PropertyChangedEventArgs(property));
-            }
-        }
-    }
-    /// <summary>
-    /// В схеме отсутствуют комментарии для StoreAppTest.Web.DataModel.Remainder.
-    /// </summary>
-    /// <KeyProperties>
-    /// Id
-    /// </KeyProperties>
-    [global::System.Data.Services.Common.EntitySetAttribute("Remainders")]
-    [global::System.Data.Services.Common.DataServiceKeyAttribute("Id")]
-    public partial class Remainder : global::System.ComponentModel.INotifyPropertyChanged
-    {
-        /// <summary>
-        /// Создайте новый объект Remainder.
-        /// </summary>
-        /// <param name="ID">Начальное значение Id.</param>
-        /// <param name="remainderDate">Начальное значение RemainderDate.</param>
-        /// <param name="priceItem_Id">Начальное значение PriceItem_Id.</param>
-        /// <param name="warehouse_Id">Начальное значение Warehouse_Id.</param>
-        /// <param name="amount">Начальное значение Amount.</param>
-        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Services.Design", "1.0.0")]
-        public static Remainder CreateRemainder(long ID, global::System.DateTime remainderDate, long priceItem_Id, string warehouse_Id, decimal amount)
-        {
-            Remainder remainder = new Remainder();
-            remainder.Id = ID;
-            remainder.RemainderDate = remainderDate;
-            remainder.PriceItem_Id = priceItem_Id;
-            remainder.Warehouse_Id = warehouse_Id;
-            remainder.Amount = amount;
-            return remainder;
-        }
-        /// <summary>
-        /// В схеме отсутствуют комментарии для свойства Id.
-        /// </summary>
-        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Services.Design", "1.0.0")]
-        public long Id
-        {
-            get
-            {
-                return this._Id;
-            }
-            set
-            {
-                this.OnIdChanging(value);
-                this._Id = value;
-                this.OnIdChanged();
-                this.OnPropertyChanged("Id");
-            }
-        }
-        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Services.Design", "1.0.0")]
-        private long _Id;
-        partial void OnIdChanging(long value);
-        partial void OnIdChanged();
-        /// <summary>
-        /// В схеме отсутствуют комментарии для свойства RemainderDate.
-        /// </summary>
-        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Services.Design", "1.0.0")]
-        public global::System.DateTime RemainderDate
-        {
-            get
-            {
-                return this._RemainderDate;
-            }
-            set
-            {
-                this.OnRemainderDateChanging(value);
-                this._RemainderDate = value;
-                this.OnRemainderDateChanged();
-                this.OnPropertyChanged("RemainderDate");
-            }
-        }
-        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Services.Design", "1.0.0")]
-        private global::System.DateTime _RemainderDate;
-        partial void OnRemainderDateChanging(global::System.DateTime value);
-        partial void OnRemainderDateChanged();
-        /// <summary>
-        /// В схеме отсутствуют комментарии для свойства PriceItem_Id.
-        /// </summary>
-        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Services.Design", "1.0.0")]
-        public long PriceItem_Id
-        {
-            get
-            {
-                return this._PriceItem_Id;
-            }
-            set
-            {
-                this.OnPriceItem_IdChanging(value);
-                this._PriceItem_Id = value;
-                this.OnPriceItem_IdChanged();
-                this.OnPropertyChanged("PriceItem_Id");
-            }
-        }
-        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Services.Design", "1.0.0")]
-        private long _PriceItem_Id;
-        partial void OnPriceItem_IdChanging(long value);
-        partial void OnPriceItem_IdChanged();
-        /// <summary>
-        /// В схеме отсутствуют комментарии для свойства Warehouse_Id.
-        /// </summary>
-        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Services.Design", "1.0.0")]
-        public string Warehouse_Id
-        {
-            get
-            {
-                return this._Warehouse_Id;
-            }
-            set
-            {
-                this.OnWarehouse_IdChanging(value);
-                this._Warehouse_Id = value;
-                this.OnWarehouse_IdChanged();
-                this.OnPropertyChanged("Warehouse_Id");
-            }
-        }
-        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Services.Design", "1.0.0")]
-        private string _Warehouse_Id;
-        partial void OnWarehouse_IdChanging(string value);
-        partial void OnWarehouse_IdChanged();
-        /// <summary>
-        /// В схеме отсутствуют комментарии для свойства Amount.
-        /// </summary>
-        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Services.Design", "1.0.0")]
-        public decimal Amount
-        {
-            get
-            {
-                return this._Amount;
-            }
-            set
-            {
-                this.OnAmountChanging(value);
-                this._Amount = value;
-                this.OnAmountChanged();
-                this.OnPropertyChanged("Amount");
-            }
-        }
-        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Services.Design", "1.0.0")]
-        private decimal _Amount;
-        partial void OnAmountChanging(decimal value);
-        partial void OnAmountChanged();
-        /// <summary>
-        /// В схеме отсутствуют комментарии для PriceItem.
-        /// </summary>
-        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Services.Design", "1.0.0")]
-        public PriceItem PriceItem
-        {
-            get
-            {
-                return this._PriceItem;
-            }
-            set
-            {
-                this._PriceItem = value;
-                this.OnPropertyChanged("PriceItem");
-            }
-        }
-        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Services.Design", "1.0.0")]
-        private PriceItem _PriceItem;
-        /// <summary>
-        /// В схеме отсутствуют комментарии для RemaindersUserChanges.
-        /// </summary>
-        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Services.Design", "1.0.0")]
-        public global::System.Data.Services.Client.DataServiceCollection<RemaindersUserChange> RemaindersUserChanges
-        {
-            get
-            {
-                return this._RemaindersUserChanges;
-            }
-            set
-            {
-                this._RemaindersUserChanges = value;
-                this.OnPropertyChanged("RemaindersUserChanges");
-            }
-        }
-        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Services.Design", "1.0.0")]
-        private global::System.Data.Services.Client.DataServiceCollection<RemaindersUserChange> _RemaindersUserChanges = new global::System.Data.Services.Client.DataServiceCollection<RemaindersUserChange>(null, global::System.Data.Services.Client.TrackingMode.None);
-        /// <summary>
-        /// В схеме отсутствуют комментарии для Warehouse.
-        /// </summary>
-        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Services.Design", "1.0.0")]
-        public Warehouse Warehouse
-        {
-            get
-            {
-                return this._Warehouse;
-            }
-            set
-            {
-                this._Warehouse = value;
-                this.OnPropertyChanged("Warehouse");
-            }
-        }
-        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Services.Design", "1.0.0")]
-        private Warehouse _Warehouse;
-        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Services.Design", "1.0.0")]
-        public event global::System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
-        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Services.Design", "1.0.0")]
-        protected virtual void OnPropertyChanged(string property)
-        {
-            if ((this.PropertyChanged != null))
-            {
-                this.PropertyChanged(this, new global::System.ComponentModel.PropertyChangedEventArgs(property));
-            }
-        }
-    }
-    /// <summary>
-    /// В схеме отсутствуют комментарии для StoreAppTest.Web.DataModel.RemaindersUserChange.
-    /// </summary>
-    /// <KeyProperties>
-    /// Id
-    /// </KeyProperties>
-    [global::System.Data.Services.Common.EntitySetAttribute("RemaindersUserChanges")]
-    [global::System.Data.Services.Common.DataServiceKeyAttribute("Id")]
-    public partial class RemaindersUserChange : global::System.ComponentModel.INotifyPropertyChanged
-    {
-        /// <summary>
-        /// Создайте новый объект RemaindersUserChange.
-        /// </summary>
-        /// <param name="ID">Начальное значение Id.</param>
-        /// <param name="date">Начальное значение Date.</param>
-        /// <param name="user_Id">Начальное значение User_Id.</param>
-        /// <param name="remainder_Id">Начальное значение Remainder_Id.</param>
-        /// <param name="amound">Начальное значение Amound.</param>
-        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Services.Design", "1.0.0")]
-        public static RemaindersUserChange CreateRemaindersUserChange(long ID, global::System.DateTime date, string user_Id, long remainder_Id, decimal amound)
-        {
-            RemaindersUserChange remaindersUserChange = new RemaindersUserChange();
-            remaindersUserChange.Id = ID;
-            remaindersUserChange.Date = date;
-            remaindersUserChange.User_Id = user_Id;
-            remaindersUserChange.Remainder_Id = remainder_Id;
-            remaindersUserChange.Amound = amound;
-            return remaindersUserChange;
-        }
-        /// <summary>
-        /// В схеме отсутствуют комментарии для свойства Id.
-        /// </summary>
-        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Services.Design", "1.0.0")]
-        public long Id
-        {
-            get
-            {
-                return this._Id;
-            }
-            set
-            {
-                this.OnIdChanging(value);
-                this._Id = value;
-                this.OnIdChanged();
-                this.OnPropertyChanged("Id");
-            }
-        }
-        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Services.Design", "1.0.0")]
-        private long _Id;
-        partial void OnIdChanging(long value);
-        partial void OnIdChanged();
-        /// <summary>
-        /// В схеме отсутствуют комментарии для свойства Date.
-        /// </summary>
-        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Services.Design", "1.0.0")]
-        public global::System.DateTime Date
-        {
-            get
-            {
-                return this._Date;
-            }
-            set
-            {
-                this.OnDateChanging(value);
-                this._Date = value;
-                this.OnDateChanged();
-                this.OnPropertyChanged("Date");
-            }
-        }
-        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Services.Design", "1.0.0")]
-        private global::System.DateTime _Date;
-        partial void OnDateChanging(global::System.DateTime value);
-        partial void OnDateChanged();
-        /// <summary>
-        /// В схеме отсутствуют комментарии для свойства User_Id.
-        /// </summary>
-        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Services.Design", "1.0.0")]
-        public string User_Id
-        {
-            get
-            {
-                return this._User_Id;
-            }
-            set
-            {
-                this.OnUser_IdChanging(value);
-                this._User_Id = value;
-                this.OnUser_IdChanged();
-                this.OnPropertyChanged("User_Id");
-            }
-        }
-        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Services.Design", "1.0.0")]
-        private string _User_Id;
-        partial void OnUser_IdChanging(string value);
-        partial void OnUser_IdChanged();
-        /// <summary>
-        /// В схеме отсутствуют комментарии для свойства Remainder_Id.
-        /// </summary>
-        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Services.Design", "1.0.0")]
-        public long Remainder_Id
-        {
-            get
-            {
-                return this._Remainder_Id;
-            }
-            set
-            {
-                this.OnRemainder_IdChanging(value);
-                this._Remainder_Id = value;
-                this.OnRemainder_IdChanged();
-                this.OnPropertyChanged("Remainder_Id");
-            }
-        }
-        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Services.Design", "1.0.0")]
-        private long _Remainder_Id;
-        partial void OnRemainder_IdChanging(long value);
-        partial void OnRemainder_IdChanged();
-        /// <summary>
-        /// В схеме отсутствуют комментарии для свойства Amound.
-        /// </summary>
-        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Services.Design", "1.0.0")]
-        public decimal Amound
-        {
-            get
-            {
-                return this._Amound;
-            }
-            set
-            {
-                this.OnAmoundChanging(value);
-                this._Amound = value;
-                this.OnAmoundChanged();
-                this.OnPropertyChanged("Amound");
-            }
-        }
-        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Services.Design", "1.0.0")]
-        private decimal _Amound;
-        partial void OnAmoundChanging(decimal value);
-        partial void OnAmoundChanged();
-        /// <summary>
-        /// В схеме отсутствуют комментарии для Remainder.
-        /// </summary>
-        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Services.Design", "1.0.0")]
-        public Remainder Remainder
-        {
-            get
-            {
-                return this._Remainder;
-            }
-            set
-            {
-                this._Remainder = value;
-                this.OnPropertyChanged("Remainder");
-            }
-        }
-        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Services.Design", "1.0.0")]
-        private Remainder _Remainder;
-        /// <summary>
-        /// В схеме отсутствуют комментарии для User.
-        /// </summary>
-        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Services.Design", "1.0.0")]
-        public User User
-        {
-            get
-            {
-                return this._User;
-            }
-            set
-            {
-                this._User = value;
-                this.OnPropertyChanged("User");
-            }
-        }
-        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Services.Design", "1.0.0")]
-        private User _User;
-        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Services.Design", "1.0.0")]
-        public event global::System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
-        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Services.Design", "1.0.0")]
-        protected virtual void OnPropertyChanged(string property)
-        {
-            if ((this.PropertyChanged != null))
-            {
-                this.PropertyChanged(this, new global::System.ComponentModel.PropertyChangedEventArgs(property));
-            }
-        }
-    }
-    /// <summary>
-    /// В схеме отсутствуют комментарии для StoreAppTest.Web.DataModel.UnitOfMeasure.
-    /// </summary>
-    /// <KeyProperties>
-    /// Name
-    /// </KeyProperties>
-    [global::System.Data.Services.Common.EntitySetAttribute("UnitOfMeasures")]
-    [global::System.Data.Services.Common.DataServiceKeyAttribute("Name")]
-    public partial class UnitOfMeasure : global::System.ComponentModel.INotifyPropertyChanged
-    {
-        /// <summary>
-        /// Создайте новый объект UnitOfMeasure.
-        /// </summary>
-        /// <param name="name">Начальное значение Name.</param>
-        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Services.Design", "1.0.0")]
-        public static UnitOfMeasure CreateUnitOfMeasure(string name)
-        {
-            UnitOfMeasure unitOfMeasure = new UnitOfMeasure();
-            unitOfMeasure.Name = name;
-            return unitOfMeasure;
-        }
-        /// <summary>
-        /// В схеме отсутствуют комментарии для свойства Name.
-        /// </summary>
-        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Services.Design", "1.0.0")]
-        public string Name
-        {
-            get
-            {
-                return this._Name;
-            }
-            set
-            {
-                this.OnNameChanging(value);
-                this._Name = value;
-                this.OnNameChanged();
-                this.OnPropertyChanged("Name");
-            }
-        }
-        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Services.Design", "1.0.0")]
-        private string _Name;
-        partial void OnNameChanging(string value);
-        partial void OnNameChanged();
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Services.Design", "1.0.0")]
         public event global::System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Services.Design", "1.0.0")]
@@ -5692,9 +5888,10 @@ namespace StoreAppTest.StoreAppDataService
         /// <param name="discount">Начальное значение Discount.</param>
         /// <param name="count">Начальное значение Count.</param>
         /// <param name="amount">Начальное значение Amount.</param>
+        /// <param name="isDuplicate">Начальное значение IsDuplicate.</param>
         /// <param name="saleDocument_Id">Начальное значение SaleDocument_Id.</param>
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Services.Design", "1.0.0")]
-        public static SaleItem CreateSaleItem(long ID, long priceItem_Id, decimal price, decimal discount, decimal count, decimal amount, long saleDocument_Id)
+        public static SaleItem CreateSaleItem(long ID, long priceItem_Id, decimal price, decimal discount, decimal count, decimal amount, bool isDuplicate, long saleDocument_Id)
         {
             SaleItem saleItem = new SaleItem();
             saleItem.Id = ID;
@@ -5703,6 +5900,7 @@ namespace StoreAppTest.StoreAppDataService
             saleItem.Discount = discount;
             saleItem.Count = count;
             saleItem.Amount = amount;
+            saleItem.IsDuplicate = isDuplicate;
             saleItem.SaleDocument_Id = saleDocument_Id;
             return saleItem;
         }
@@ -5838,6 +6036,94 @@ namespace StoreAppTest.StoreAppDataService
         private decimal _Amount;
         partial void OnAmountChanging(decimal value);
         partial void OnAmountChanged();
+        /// <summary>
+        /// В схеме отсутствуют комментарии для свойства CatalogNumber.
+        /// </summary>
+        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Services.Design", "1.0.0")]
+        public string CatalogNumber
+        {
+            get
+            {
+                return this._CatalogNumber;
+            }
+            set
+            {
+                this.OnCatalogNumberChanging(value);
+                this._CatalogNumber = value;
+                this.OnCatalogNumberChanged();
+                this.OnPropertyChanged("CatalogNumber");
+            }
+        }
+        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Services.Design", "1.0.0")]
+        private string _CatalogNumber;
+        partial void OnCatalogNumberChanging(string value);
+        partial void OnCatalogNumberChanged();
+        /// <summary>
+        /// В схеме отсутствуют комментарии для свойства Name.
+        /// </summary>
+        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Services.Design", "1.0.0")]
+        public string Name
+        {
+            get
+            {
+                return this._Name;
+            }
+            set
+            {
+                this.OnNameChanging(value);
+                this._Name = value;
+                this.OnNameChanged();
+                this.OnPropertyChanged("Name");
+            }
+        }
+        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Services.Design", "1.0.0")]
+        private string _Name;
+        partial void OnNameChanging(string value);
+        partial void OnNameChanged();
+        /// <summary>
+        /// В схеме отсутствуют комментарии для свойства Articul.
+        /// </summary>
+        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Services.Design", "1.0.0")]
+        public string Articul
+        {
+            get
+            {
+                return this._Articul;
+            }
+            set
+            {
+                this.OnArticulChanging(value);
+                this._Articul = value;
+                this.OnArticulChanged();
+                this.OnPropertyChanged("Articul");
+            }
+        }
+        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Services.Design", "1.0.0")]
+        private string _Articul;
+        partial void OnArticulChanging(string value);
+        partial void OnArticulChanged();
+        /// <summary>
+        /// В схеме отсутствуют комментарии для свойства IsDuplicate.
+        /// </summary>
+        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Services.Design", "1.0.0")]
+        public bool IsDuplicate
+        {
+            get
+            {
+                return this._IsDuplicate;
+            }
+            set
+            {
+                this.OnIsDuplicateChanging(value);
+                this._IsDuplicate = value;
+                this.OnIsDuplicateChanged();
+                this.OnPropertyChanged("IsDuplicate");
+            }
+        }
+        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Services.Design", "1.0.0")]
+        private bool _IsDuplicate;
+        partial void OnIsDuplicateChanging(bool value);
+        partial void OnIsDuplicateChanged();
         /// <summary>
         /// В схеме отсутствуют комментарии для свойства SaleDocument_Id.
         /// </summary>
@@ -6425,15 +6711,27 @@ namespace StoreAppTest.StoreAppDataService
         /// <param name="ID">Начальное значение Id.</param>
         /// <param name="saleDocumentsDate">Начальное значение SaleDocumentsDate.</param>
         /// <param name="number">Начальное значение Number.</param>
+        /// <param name="totalAmount">Начальное значение TotalAmount.</param>
+        /// <param name="totalRefund">Начальное значение TotalRefund.</param>
+        /// <param name="subTotal">Начальное значение SubTotal.</param>
+        /// <param name="totalAmountProfit">Начальное значение TotalAmountProfit.</param>
+        /// <param name="totalRefundProfit">Начальное значение TotalRefundProfit.</param>
+        /// <param name="subTotalProfit">Начальное значение SubTotalProfit.</param>
         /// <param name="creator_Id">Начальное значение Creator_Id.</param>
         /// <param name="isClosed">Начальное значение IsClosed.</param>
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Services.Design", "1.0.0")]
-        public static SaleDocumentsPerDay CreateSaleDocumentsPerDay(long ID, global::System.DateTime saleDocumentsDate, string number, string creator_Id, bool isClosed)
+        public static SaleDocumentsPerDay CreateSaleDocumentsPerDay(long ID, global::System.DateTime saleDocumentsDate, string number, decimal totalAmount, decimal totalRefund, decimal subTotal, decimal totalAmountProfit, decimal totalRefundProfit, decimal subTotalProfit, string creator_Id, bool isClosed)
         {
             SaleDocumentsPerDay saleDocumentsPerDay = new SaleDocumentsPerDay();
             saleDocumentsPerDay.Id = ID;
             saleDocumentsPerDay.SaleDocumentsDate = saleDocumentsDate;
             saleDocumentsPerDay.Number = number;
+            saleDocumentsPerDay.TotalAmount = totalAmount;
+            saleDocumentsPerDay.TotalRefund = totalRefund;
+            saleDocumentsPerDay.SubTotal = subTotal;
+            saleDocumentsPerDay.TotalAmountProfit = totalAmountProfit;
+            saleDocumentsPerDay.TotalRefundProfit = totalRefundProfit;
+            saleDocumentsPerDay.SubTotalProfit = subTotalProfit;
             saleDocumentsPerDay.Creator_Id = creator_Id;
             saleDocumentsPerDay.IsClosed = isClosed;
             return saleDocumentsPerDay;
@@ -6527,6 +6825,138 @@ namespace StoreAppTest.StoreAppDataService
         partial void OnNumberChanging(string value);
         partial void OnNumberChanged();
         /// <summary>
+        /// В схеме отсутствуют комментарии для свойства TotalAmount.
+        /// </summary>
+        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Services.Design", "1.0.0")]
+        public decimal TotalAmount
+        {
+            get
+            {
+                return this._TotalAmount;
+            }
+            set
+            {
+                this.OnTotalAmountChanging(value);
+                this._TotalAmount = value;
+                this.OnTotalAmountChanged();
+                this.OnPropertyChanged("TotalAmount");
+            }
+        }
+        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Services.Design", "1.0.0")]
+        private decimal _TotalAmount;
+        partial void OnTotalAmountChanging(decimal value);
+        partial void OnTotalAmountChanged();
+        /// <summary>
+        /// В схеме отсутствуют комментарии для свойства TotalRefund.
+        /// </summary>
+        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Services.Design", "1.0.0")]
+        public decimal TotalRefund
+        {
+            get
+            {
+                return this._TotalRefund;
+            }
+            set
+            {
+                this.OnTotalRefundChanging(value);
+                this._TotalRefund = value;
+                this.OnTotalRefundChanged();
+                this.OnPropertyChanged("TotalRefund");
+            }
+        }
+        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Services.Design", "1.0.0")]
+        private decimal _TotalRefund;
+        partial void OnTotalRefundChanging(decimal value);
+        partial void OnTotalRefundChanged();
+        /// <summary>
+        /// В схеме отсутствуют комментарии для свойства SubTotal.
+        /// </summary>
+        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Services.Design", "1.0.0")]
+        public decimal SubTotal
+        {
+            get
+            {
+                return this._SubTotal;
+            }
+            set
+            {
+                this.OnSubTotalChanging(value);
+                this._SubTotal = value;
+                this.OnSubTotalChanged();
+                this.OnPropertyChanged("SubTotal");
+            }
+        }
+        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Services.Design", "1.0.0")]
+        private decimal _SubTotal;
+        partial void OnSubTotalChanging(decimal value);
+        partial void OnSubTotalChanged();
+        /// <summary>
+        /// В схеме отсутствуют комментарии для свойства TotalAmountProfit.
+        /// </summary>
+        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Services.Design", "1.0.0")]
+        public decimal TotalAmountProfit
+        {
+            get
+            {
+                return this._TotalAmountProfit;
+            }
+            set
+            {
+                this.OnTotalAmountProfitChanging(value);
+                this._TotalAmountProfit = value;
+                this.OnTotalAmountProfitChanged();
+                this.OnPropertyChanged("TotalAmountProfit");
+            }
+        }
+        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Services.Design", "1.0.0")]
+        private decimal _TotalAmountProfit;
+        partial void OnTotalAmountProfitChanging(decimal value);
+        partial void OnTotalAmountProfitChanged();
+        /// <summary>
+        /// В схеме отсутствуют комментарии для свойства TotalRefundProfit.
+        /// </summary>
+        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Services.Design", "1.0.0")]
+        public decimal TotalRefundProfit
+        {
+            get
+            {
+                return this._TotalRefundProfit;
+            }
+            set
+            {
+                this.OnTotalRefundProfitChanging(value);
+                this._TotalRefundProfit = value;
+                this.OnTotalRefundProfitChanged();
+                this.OnPropertyChanged("TotalRefundProfit");
+            }
+        }
+        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Services.Design", "1.0.0")]
+        private decimal _TotalRefundProfit;
+        partial void OnTotalRefundProfitChanging(decimal value);
+        partial void OnTotalRefundProfitChanged();
+        /// <summary>
+        /// В схеме отсутствуют комментарии для свойства SubTotalProfit.
+        /// </summary>
+        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Services.Design", "1.0.0")]
+        public decimal SubTotalProfit
+        {
+            get
+            {
+                return this._SubTotalProfit;
+            }
+            set
+            {
+                this.OnSubTotalProfitChanging(value);
+                this._SubTotalProfit = value;
+                this.OnSubTotalProfitChanged();
+                this.OnPropertyChanged("SubTotalProfit");
+            }
+        }
+        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Services.Design", "1.0.0")]
+        private decimal _SubTotalProfit;
+        partial void OnSubTotalProfitChanging(decimal value);
+        partial void OnSubTotalProfitChanged();
+        /// <summary>
         /// В схеме отсутствуют комментарии для свойства Creator_Id.
         /// </summary>
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Services.Design", "1.0.0")]
@@ -6589,24 +7019,6 @@ namespace StoreAppTest.StoreAppDataService
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Services.Design", "1.0.0")]
         private User _Creator;
         /// <summary>
-        /// В схеме отсутствуют комментарии для RefundsPerDayItems.
-        /// </summary>
-        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Services.Design", "1.0.0")]
-        public global::System.Data.Services.Client.DataServiceCollection<RefundsPerDayItem> RefundsPerDayItems
-        {
-            get
-            {
-                return this._RefundsPerDayItems;
-            }
-            set
-            {
-                this._RefundsPerDayItems = value;
-                this.OnPropertyChanged("RefundsPerDayItems");
-            }
-        }
-        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Services.Design", "1.0.0")]
-        private global::System.Data.Services.Client.DataServiceCollection<RefundsPerDayItem> _RefundsPerDayItems = new global::System.Data.Services.Client.DataServiceCollection<RefundsPerDayItem>(null, global::System.Data.Services.Client.TrackingMode.None);
-        /// <summary>
         /// В схеме отсутствуют комментарии для SalesPerDayItems.
         /// </summary>
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Services.Design", "1.0.0")]
@@ -6649,13 +7061,27 @@ namespace StoreAppTest.StoreAppDataService
         /// Создайте новый объект SalesPerDayItem.
         /// </summary>
         /// <param name="ID">Начальное значение Id.</param>
+        /// <param name="name">Начальное значение Name.</param>
+        /// <param name="isDuplicate">Начальное значение IsDuplicate.</param>
+        /// <param name="price">Начальное значение Price.</param>
+        /// <param name="discount">Начальное значение Discount.</param>
+        /// <param name="count">Начальное значение Count.</param>
+        /// <param name="amount">Начальное значение Amount.</param>
+        /// <param name="remainders">Начальное значение Remainders.</param>
         /// <param name="saleItem_Id">Начальное значение SaleItem_Id.</param>
         /// <param name="saleDocumentsPerDay_Id">Начальное значение SaleDocumentsPerDay_Id.</param>
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Services.Design", "1.0.0")]
-        public static SalesPerDayItem CreateSalesPerDayItem(long ID, long saleItem_Id, long saleDocumentsPerDay_Id)
+        public static SalesPerDayItem CreateSalesPerDayItem(long ID, string name, bool isDuplicate, decimal price, decimal discount, decimal count, decimal amount, decimal remainders, long saleItem_Id, long saleDocumentsPerDay_Id)
         {
             SalesPerDayItem salesPerDayItem = new SalesPerDayItem();
             salesPerDayItem.Id = ID;
+            salesPerDayItem.Name = name;
+            salesPerDayItem.IsDuplicate = isDuplicate;
+            salesPerDayItem.Price = price;
+            salesPerDayItem.Discount = discount;
+            salesPerDayItem.Count = count;
+            salesPerDayItem.Amount = amount;
+            salesPerDayItem.Remainders = remainders;
             salesPerDayItem.SaleItem_Id = saleItem_Id;
             salesPerDayItem.SaleDocumentsPerDay_Id = saleDocumentsPerDay_Id;
             return salesPerDayItem;
@@ -6682,6 +7108,204 @@ namespace StoreAppTest.StoreAppDataService
         private long _Id;
         partial void OnIdChanging(long value);
         partial void OnIdChanged();
+        /// <summary>
+        /// В схеме отсутствуют комментарии для свойства CatalogNumber.
+        /// </summary>
+        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Services.Design", "1.0.0")]
+        public string CatalogNumber
+        {
+            get
+            {
+                return this._CatalogNumber;
+            }
+            set
+            {
+                this.OnCatalogNumberChanging(value);
+                this._CatalogNumber = value;
+                this.OnCatalogNumberChanged();
+                this.OnPropertyChanged("CatalogNumber");
+            }
+        }
+        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Services.Design", "1.0.0")]
+        private string _CatalogNumber;
+        partial void OnCatalogNumberChanging(string value);
+        partial void OnCatalogNumberChanged();
+        /// <summary>
+        /// В схеме отсутствуют комментарии для свойства Name.
+        /// </summary>
+        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Services.Design", "1.0.0")]
+        public string Name
+        {
+            get
+            {
+                return this._Name;
+            }
+            set
+            {
+                this.OnNameChanging(value);
+                this._Name = value;
+                this.OnNameChanged();
+                this.OnPropertyChanged("Name");
+            }
+        }
+        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Services.Design", "1.0.0")]
+        private string _Name;
+        partial void OnNameChanging(string value);
+        partial void OnNameChanged();
+        /// <summary>
+        /// В схеме отсутствуют комментарии для свойства IsDuplicate.
+        /// </summary>
+        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Services.Design", "1.0.0")]
+        public bool IsDuplicate
+        {
+            get
+            {
+                return this._IsDuplicate;
+            }
+            set
+            {
+                this.OnIsDuplicateChanging(value);
+                this._IsDuplicate = value;
+                this.OnIsDuplicateChanged();
+                this.OnPropertyChanged("IsDuplicate");
+            }
+        }
+        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Services.Design", "1.0.0")]
+        private bool _IsDuplicate;
+        partial void OnIsDuplicateChanging(bool value);
+        partial void OnIsDuplicateChanged();
+        /// <summary>
+        /// В схеме отсутствуют комментарии для свойства UnitOfMeasure.
+        /// </summary>
+        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Services.Design", "1.0.0")]
+        public string UnitOfMeasure
+        {
+            get
+            {
+                return this._UnitOfMeasure;
+            }
+            set
+            {
+                this.OnUnitOfMeasureChanging(value);
+                this._UnitOfMeasure = value;
+                this.OnUnitOfMeasureChanged();
+                this.OnPropertyChanged("UnitOfMeasure");
+            }
+        }
+        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Services.Design", "1.0.0")]
+        private string _UnitOfMeasure;
+        partial void OnUnitOfMeasureChanging(string value);
+        partial void OnUnitOfMeasureChanged();
+        /// <summary>
+        /// В схеме отсутствуют комментарии для свойства Price.
+        /// </summary>
+        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Services.Design", "1.0.0")]
+        public decimal Price
+        {
+            get
+            {
+                return this._Price;
+            }
+            set
+            {
+                this.OnPriceChanging(value);
+                this._Price = value;
+                this.OnPriceChanged();
+                this.OnPropertyChanged("Price");
+            }
+        }
+        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Services.Design", "1.0.0")]
+        private decimal _Price;
+        partial void OnPriceChanging(decimal value);
+        partial void OnPriceChanged();
+        /// <summary>
+        /// В схеме отсутствуют комментарии для свойства Discount.
+        /// </summary>
+        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Services.Design", "1.0.0")]
+        public decimal Discount
+        {
+            get
+            {
+                return this._Discount;
+            }
+            set
+            {
+                this.OnDiscountChanging(value);
+                this._Discount = value;
+                this.OnDiscountChanged();
+                this.OnPropertyChanged("Discount");
+            }
+        }
+        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Services.Design", "1.0.0")]
+        private decimal _Discount;
+        partial void OnDiscountChanging(decimal value);
+        partial void OnDiscountChanged();
+        /// <summary>
+        /// В схеме отсутствуют комментарии для свойства Count.
+        /// </summary>
+        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Services.Design", "1.0.0")]
+        public decimal Count
+        {
+            get
+            {
+                return this._Count;
+            }
+            set
+            {
+                this.OnCountChanging(value);
+                this._Count = value;
+                this.OnCountChanged();
+                this.OnPropertyChanged("Count");
+            }
+        }
+        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Services.Design", "1.0.0")]
+        private decimal _Count;
+        partial void OnCountChanging(decimal value);
+        partial void OnCountChanged();
+        /// <summary>
+        /// В схеме отсутствуют комментарии для свойства Amount.
+        /// </summary>
+        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Services.Design", "1.0.0")]
+        public decimal Amount
+        {
+            get
+            {
+                return this._Amount;
+            }
+            set
+            {
+                this.OnAmountChanging(value);
+                this._Amount = value;
+                this.OnAmountChanged();
+                this.OnPropertyChanged("Amount");
+            }
+        }
+        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Services.Design", "1.0.0")]
+        private decimal _Amount;
+        partial void OnAmountChanging(decimal value);
+        partial void OnAmountChanged();
+        /// <summary>
+        /// В схеме отсутствуют комментарии для свойства Remainders.
+        /// </summary>
+        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Services.Design", "1.0.0")]
+        public decimal Remainders
+        {
+            get
+            {
+                return this._Remainders;
+            }
+            set
+            {
+                this.OnRemaindersChanging(value);
+                this._Remainders = value;
+                this.OnRemaindersChanged();
+                this.OnPropertyChanged("Remainders");
+            }
+        }
+        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Services.Design", "1.0.0")]
+        private decimal _Remainders;
+        partial void OnRemaindersChanging(decimal value);
+        partial void OnRemaindersChanged();
         /// <summary>
         /// В схеме отсутствуют комментарии для свойства SaleItem_Id.
         /// </summary>

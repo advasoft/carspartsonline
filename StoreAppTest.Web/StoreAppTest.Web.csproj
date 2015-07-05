@@ -190,6 +190,7 @@
       <Link>Utilities\DateTimeHelper.cs</Link>
     </Compile>
     <Compile Include="App_Start\WebApiConfig.cs" />
+    <Compile Include="Controllers\IntegrationController.cs" />
     <Compile Include="Controllers\PriceListsController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
@@ -217,7 +218,9 @@
       <SubType>Designer</SubType>
     </None>
     <None Include="Properties\PublishProfiles\local.pubxml" />
+    <None Include="Properties\PublishProfiles\local_path.pubxml" />
     <None Include="Properties\PublishProfiles\smartasp_Ftp.pubxml" />
+    <None Include="Properties\PublishProfiles\smartasp_real_ftp.pubxml" />
     <None Include="Properties\PublishProfiles\storeapptest.pubxml" />
     <Content Include="UploadHandler.ashx" />
     <None Include="Web.Debug.config">
@@ -233,7 +236,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Code\" />
-    <Folder Include="DataModel\" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Properties\licenses.licx" />

@@ -218,6 +218,9 @@
     <Compile Include="Controls\PriceChangesReportControl.xaml.cs">
       <DependentUpon>PriceChangesReportControl.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Controls\SelectPriceListControl.xaml.cs">
+      <DependentUpon>SelectPriceListControl.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Controls\SelectPriceControl.xaml.cs">
       <DependentUpon>SelectPriceControl.xaml</DependentUpon>
     </Compile>
@@ -230,10 +233,14 @@
     <Compile Include="Controls\UserEditControl.xaml.cs">
       <DependentUpon>UserEditControl.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Controls\SelectSalesDocumentControl.xaml.cs">
+      <DependentUpon>SelectSalesDocumentControl.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Convertors\BoolToBoolReverseConverter.cs" />
     <Compile Include="Convertors\BoolToVisibilityReverseConverter.cs" />
     <Compile Include="Convertors\DebtStatusToColorConverter.cs" />
     <Compile Include="Convertors\PeriodTypesToBoolConverter.cs" />
+    <Compile Include="Event\RefundOpenNeedEvent.cs" />
     <Compile Include="Event\RealizationPerDayOpenNeedEvent.cs" />
     <Compile Include="Event\NewWarehouseTransferRequestAdded.cs" />
     <Compile Include="Event\NewWarehouseTransferRequestNeedEvent.cs" />
@@ -242,6 +249,11 @@
     <Compile Include="Event\WarehouseTransferReceivedRequestEvent.cs" />
     <Compile Include="Event\WarehouseTransferRequestItemChangedEvent.cs" />
     <Compile Include="Event\WarehouseTransferSendedRequestEvent.cs" />
+    <Compile Include="Model\SelectPriceListControlViewModel.cs" />
+    <Compile Include="Model\SelectSalesDocumentControlViewModel.cs" />
+    <Compile Include="Print\SalesInvoiceReportControl.xaml.cs">
+      <DependentUpon>SalesInvoiceReportControl.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Print\RealizationPerDayReportControl.xaml.cs">
       <DependentUpon>RealizationPerDayReportControl.xaml</DependentUpon>
     </Compile>
@@ -260,15 +272,30 @@
     <Compile Include="Print\WarehouseRequestReportControl.xaml.cs">
       <DependentUpon>WarehouseRequestReportControl.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Print\ProductTagReportControl.xaml.cs">
+      <DependentUpon>ProductTagReportControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Print\InvoiceReportControl.xaml.cs">
+      <DependentUpon>InvoiceReportControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Print\OrdertReportControl.xaml.cs">
+      <DependentUpon>OrdertReportControl.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Utilities\DateTimeHelper.cs" />
+    <Compile Include="Utilities\DocumentNumberHelper.cs" />
     <Compile Include="ViewModels\Tasks\CashFlowByCashierViewModel.cs" />
     <Compile Include="ViewModels\Tasks\CashFlowViewModel.cs" />
+    <Compile Include="ViewModels\Tasks\RefundReadOnlyViewModel.cs" />
     <Compile Include="ViewModels\Tasks\RealizationPerDayReadOnlyViewModel.cs" />
+    <Compile Include="ViewModels\Tasks\RefundListViewModel.cs" />
     <Compile Include="ViewModels\Tasks\RemaindersWarehouseAmountViewModel.cs" />
     <Compile Include="ViewModels\Tasks\RealizationPerDyaListViewModel.cs" />
     <Compile Include="ViewModels\Tasks\WarehouseTransferRequestViewModel.cs" />
     <Compile Include="Views\Tasks\CashFlowPage.xaml.cs">
       <DependentUpon>CashFlowPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Tasks\RefundList.xaml.cs">
+      <DependentUpon>RefundList.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\Tasks\RemaindersWarehouseAmountView.xaml.cs">
       <DependentUpon>RemaindersWarehouseAmountView.xaml</DependentUpon>
@@ -458,6 +485,10 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
+    <Page Include="Controls\SelectPriceListControl.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="Controls\SelectPriceControl.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -473,6 +504,14 @@
     <Page Include="Controls\UserEditControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\SelectSalesDocumentControl.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Print\SalesInvoiceReportControl.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
     </Page>
     <Page Include="Print\RealizationPerDayReportControl.xaml">
       <SubType>Designer</SubType>
@@ -498,9 +537,25 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
+    <Page Include="Print\ProductTagReportControl.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Print\InvoiceReportControl.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Print\OrdertReportControl.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="Views\Tasks\CashFlowPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\Tasks\RefundList.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
     </Page>
     <Page Include="Views\Tasks\RemaindersWarehouseAmountView.xaml">
       <SubType>Designer</SubType>
@@ -656,6 +711,8 @@
     <Resource Include="Assets\Images\1431924800_floppy-48.png" />
     <Resource Include="Assets\Images\1431932023_647403-email-48.png" />
     <Resource Include="Assets\Images\1433854257_database_refresh.png" />
+    <Resource Include="Assets\Images\1435282594_barcode_2.png" />
+    <Resource Include="Assets\Images\1435940275_misc_23.png" />
     <Content Include="Libs\MSPToolkit.dll">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>

@@ -12,7 +12,6 @@ namespace StoreAppTest.Web.DataModel
         public SaleDocumentsPerDay()
         {
             SalesPerDayItems = new HashSet<SalesPerDayItem>();
-            RefundsPerDayItems = new HashSet<RefundsPerDayItem>();
         }
 
         [Key]
@@ -32,6 +31,30 @@ namespace StoreAppTest.Web.DataModel
 
         [DataMember]
         [Required]
+        public decimal TotalAmount { get; set; }
+
+        [DataMember]
+        [Required]
+        public decimal TotalRefund { get; set; }
+
+        [DataMember]
+        [Required]
+        public decimal SubTotal { get; set; }
+
+        [DataMember]
+        [Required]
+        public decimal TotalAmountProfit { get; set; }
+
+        [DataMember]
+        [Required]
+        public decimal TotalRefundProfit { get; set; }
+
+        [DataMember]
+        [Required]
+        public decimal SubTotalProfit { get; set; }
+
+        [DataMember]
+        [Required]
         [StringLength(255)]
         //[ForeignKey("Creator")]
         public string Creator_Id { get; set; }
@@ -44,8 +67,7 @@ namespace StoreAppTest.Web.DataModel
 
         [DataMember]
         public virtual ICollection<SalesPerDayItem> SalesPerDayItems { get; set; }
-        [DataMember]
-        public virtual ICollection<RefundsPerDayItem> RefundsPerDayItems { get; set; }
+
 
     }
 }

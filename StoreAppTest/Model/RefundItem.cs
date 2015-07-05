@@ -11,6 +11,7 @@
         public int Number { get; set; }
         public string Uom { get; set; }
         public long SaleItem_Id { get; set; }
+        public int SaledCount { get; set; }
 
         public int Discount
         {
@@ -27,7 +28,7 @@
         {
             get
             {
-                return _retailPrice - (Discount / SoldCount);
+                return _retailPrice - (Discount / SaledCount);
             }
             set
             {

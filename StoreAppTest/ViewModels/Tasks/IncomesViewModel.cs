@@ -545,11 +545,11 @@ namespace StoreAppTest.ViewModels
                 Application.Current.Host.Source.Port,
                 "/StoreAppDataService.svc/");
 
-
             Task.Factory.StartNew(() =>
             {
                 try
                 {
+
 
                     StoreDbContext ctx = new StoreDbContext(
                         new Uri(uri
@@ -560,7 +560,7 @@ namespace StoreAppTest.ViewModels
                     //        UriKind.Absolute));
 
                     RemaindersClient client = new RemaindersClient(_priceListName, AtFromDate, AtToDate);
-                    var qr = client.GetIncomes();
+                    var qr = client.GetIncomes(App.CurrentUser.Warehouse_Id, App.CurrentUser.UserName, AtFromDate, AtToDate);
 
                     //foreach (var priceItemRemainderView in 
                     var query = from p in qr

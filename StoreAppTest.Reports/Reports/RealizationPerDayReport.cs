@@ -24,6 +24,9 @@ namespace StoreAppTest.Reports
             int totalSales = 0;
             int totalRefund = 0;
             int subtotal = 0;
+            int totalSalesProfit = 0;
+            int totalRefundProfit = 0;
+            int subtotalProfit = 0;
             int totalByPrice = 0;
 
             var context = new StoreDbContext();
@@ -37,16 +40,16 @@ namespace StoreAppTest.Reports
                 var dischargesSource = context.DebtDischargeDocuments
                             .Where(w => w.DischargeDate >= strt && w.DischargeDate <= endd && w.IsDischarge).ToList();
                 var discharges = (from d in dischargesSource
-                    group d by new
-                    {
-                        Debtor = d.Debtor_Id
-                    }
-                    into ds
-                    select new DebtDischargeDocument()
-                    {
-                        Amount = ds.Sum(s => s.Amount),
-                        Debtor_Id = ds.Key.Debtor
-                    }).ToList();
+                                  group d by new
+                                  {
+                                      Debtor = d.Debtor_Id
+                                  }
+                                      into ds
+                                      select new DebtDischargeDocument()
+                                      {
+                                          Amount = ds.Sum(s => s.Amount),
+                                          Debtor_Id = ds.Key.Debtor
+                                      }).ToList();
 
 
 
@@ -65,29 +68,18 @@ namespace StoreAppTest.Reports
                     var saleItems = saleDocumentsPerDay.SalesPerDayItems;
                     foreach (var salesPerDayItem in saleItems)
                     {
-                        int debtDisc = 0;
-                        var debtor =
-                            discharges.Where(w => w.Debtor_Id == salesPerDayItem.SaleItem.SaleDocument.Customer_Name)
-                                .FirstOrDefault();
-                        if (debtor != null)
-                        {
-                            debtDisc = (int)debtor.Amount;
-                        }
                         var item = new RealizationPerDayReportItem()
                         {
-                            Amount = (int) salesPerDayItem.SaleItem.Amount,
-                            CatalogNumber = salesPerDayItem.SaleItem.PriceItem.Gear.CatalogNumber,
-                            Name = salesPerDayItem.SaleItem.PriceItem.Gear.Name,
-                            Count = (int) salesPerDayItem.SaleItem.Count,
-                            IsInDebd = salesPerDayItem.SaleItem.SaleDocument.IsInDebt,
-                            //DebtDischarge = salesPerDayItem.SaleItem.SaleDocument.IsInDebt ? debtDisc : 0,
-                            //Debtor =
-                            //    salesPerDayItem.SaleItem.SaleDocument.IsInDebt
-                            //        ? salesPerDayItem.SaleItem.SaleDocument.Customer_Name
-                            //        : "",
-                            Discount = (int) salesPerDayItem.SaleItem.Discount,
-                            Price = (int) salesPerDayItem.SaleItem.Price,
-                            Uom = salesPerDayItem.SaleItem.PriceItem.Uom_Id
+                            Amount = (int) salesPerDayItem.Amount,
+                            CatalogNumber = salesPerDayItem.CatalogNumber,
+                            Name = salesPerDayItem.Name,
+                            Count = (int) salesPerDayItem.Count,
+                            Discount = (int) salesPerDayItem.Discount,
+                            Price = (int) (salesPerDayItem.Amount / salesPerDayItem.Count),
+                            Uom = salesPerDayItem.UnitOfMeasure,
+                            PriceListName = salesPerDayItem.SaleItem.PriceItem.PriceLists.FirstOrDefault().Name,
+                            WholesalePrice = (int)salesPerDayItem.SaleItem.PriceItem.Prices.Where(p => p.PriceDate <= saleDocumentsPerDay.SaleDocumentsDate).OrderByDescending(o => o.PriceDate).First().Price
+                            
                         };
 
                         doc.Items.Add(item);
@@ -104,38 +96,27 @@ namespace StoreAppTest.Reports
                     }
                     documents.Add(doc);
 
-                    totalSales = (int)
-                        (saleDocumentsPerDay.SalesPerDayItems.Where(w => !w.SaleItem.SaleDocument.IsInDebt)
-                            .Sum(s => s.SaleItem.Amount) + discharges.Sum(d => d.Amount));
+                    totalSales = (int)saleDocumentsPerDay.TotalAmount;
 
-                    totalRefund = (int)
-                        saleDocumentsPerDay.RefundsPerDayItems.Where(
-                            w => !w.RefundItem.RefundDocument.SaleDocument.IsInDebt).Sum(s => s.RefundItem.Amount);
+                    totalRefund = (int)saleDocumentsPerDay.TotalRefund;
 
                     subtotal = totalSales - totalRefund;
 
-                    totalByPrice =
-                        (int) saleDocumentsPerDay.SalesPerDayItems.Where(w => !w.SaleItem.SaleDocument.IsInDebt)
-                            .Sum(s => s.SaleItem.Count * s.SaleItem.PriceItem.Prices.OrderByDescending(o => o.PriceDate).First().Price);
+                    totalSalesProfit = (int) saleDocumentsPerDay.TotalAmountProfit;
+                    totalRefundProfit = (int) saleDocumentsPerDay.TotalRefundProfit;
+                    subtotalProfit = (int)saleDocumentsPerDay.SubTotalProfit;
+
                 }
-                //totalSales = documents.Sum(s => s.SalesPerDayItems.Sum(d => d.SaleItem.Amount));
-                //totalRefund = documents.Sum(s => s.RefundsPerDayItems.Sum(d => d.RefundItem.Amount));
-                //subtotal = totalSales - totalRefund;
-                //totalByPrice =
-                //    documents.Sum(
-                //        s =>
-                //            s.SalesPerDayItems.Sum(
-                //                d =>
-                //                    d.SaleItem.Count*
-                //                    d.SaleItem.PriceItem.Prices.OrderByDescending(o => o.PriceDate).First().Price));
 
             }
 
-            //xrRefund.Text = 
             xrTotal.Text = totalSales.ToString();
             xrRefund.Text = totalRefund.ToString();
             xrSubtotal.Text = subtotal.ToString();
-            xrTotalByPrice.Text = totalByPrice.ToString();
+            //xrTotalByPrice.Text = totalByPrice.ToString();
+            xrTotalProfit.Text = totalSalesProfit.ToString();
+            xrRefundProfit.Text = totalRefundProfit.ToString();
+            xrSubtotalProfit.Text = subtotalProfit.ToString();
 
             DataSource = documents;
 
@@ -157,6 +138,24 @@ namespace StoreAppTest.Reports
         public string Debtor { get; set; }
         public int DebtDischarge { get; set; }
         public bool IsInDebd { get; set; }
+        public string PriceListName { get; set; }
+        public int WholesalePrice { get; set; }
+
+        public int TotalByWholePrice
+        {
+            get
+            {
+                return (int) ((WholesalePrice*Count));
+            }
+        }
+
+        public int Profit
+        {
+            get
+            {
+                return Amount - TotalByWholePrice;
+            }
+        }
     }
 
     public class RealizationPerDayReportDocument

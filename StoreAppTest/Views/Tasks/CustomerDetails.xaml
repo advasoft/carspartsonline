@@ -4,7 +4,7 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:dxe="http://schemas.devexpress.com/winfx/2008/xaml/editors" x:Class="StoreAppTest.Views.CustomerDetails"
-    mc:Ignorable="d" d:DesignWidth="400" Height="194" >
+    mc:Ignorable="d" d:DesignWidth="400" Height="494" >
 
     <Grid x:Name="LayoutRoot" Background="White">
         <Grid.ColumnDefinitions>
@@ -14,11 +14,13 @@
         <Grid.RowDefinitions>
             <RowDefinition Height="22"/>
             <RowDefinition Height="42"/>
+            <RowDefinition Height="124"/>
+            <RowDefinition Height="124"/>
             <RowDefinition/>
             <RowDefinition Height="52"/>
         </Grid.RowDefinitions>
         <TextBlock Margin="10,0,0,0" Grid.Row="1" TextWrapping="Wrap" Text="Название:" VerticalAlignment="Top" FontSize="14" Height="42"/>
-        <Grid Grid.Row="3" Grid.ColumnSpan="2">
+        <Grid Grid.Row="5" Grid.ColumnSpan="2">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition/>
                 <ColumnDefinition Width="100"/>
@@ -57,6 +59,12 @@
         </Grid>
 
         <dxe:TextEdit Grid.Column="1" Margin="5,0,20,0" Grid.Row="1" VerticalAlignment="Top" Height="32" FontSize="14" EditValue="{Binding Name, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+        <TextBlock Margin="10,0,0,0" Grid.Row="2" TextWrapping="Wrap" Text="Реквизиты:" VerticalAlignment="Top" FontSize="14" Height="42"/>
+        <dxe:TextEdit Grid.Column="1" Margin="5,0,20,0" Grid.Row="2" VerticalAlignment="Top" Height="114" FontSize="14" EditValue="{Binding Details, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" TextWrapping="Wrap"/>
+        <TextBlock Margin="10,0,0,0" Grid.Row="3" TextWrapping="Wrap" Text="Банковские реквизиты:" VerticalAlignment="Top" FontSize="14" Height="71"/>
+        <dxe:TextEdit Grid.Column="1" Margin="5,0,20,0" Grid.Row="3" VerticalAlignment="Top" Height="114" FontSize="14" EditValue="{Binding BankDetails, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" TextWrapping="Wrap"/>
+        <TextBlock Margin="10,0,0,0" Grid.Row="4" TextWrapping="Wrap" Text="Пункт назначения:" VerticalAlignment="Top" FontSize="14" Height="71"/>
+        <dxe:TextEdit Grid.Column="1" Margin="5,0,20,0" Grid.Row="4" VerticalAlignment="Top" Height="114" FontSize="14" EditValue="{Binding ShipmentAddress, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" TextWrapping="Wrap"/>
 
     </Grid>
 </UserControl>
