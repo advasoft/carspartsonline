@@ -5,6 +5,7 @@ namespace StoreAppTest.Web.DataModel
     using System.ComponentModel.DataAnnotations;
     using System.Runtime.Serialization;
 
+    [Serializable]
     [DataContract]
     public class RemaindersUserChange
     {

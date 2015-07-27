@@ -67,7 +67,7 @@
         public int Number { get; set; }
         public string Uom { get; set; }
         public long PriceItem_Id { get; set; }
-        public StoreAppDataService.PriceItem PriceItemData { get; set; }
+        public Client.Model.PriceItem PriceItemData { get; set; }
 
         private int _price = 0;
         public int Price

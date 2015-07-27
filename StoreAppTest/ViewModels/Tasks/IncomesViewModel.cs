@@ -10,18 +10,20 @@ namespace StoreAppTest.ViewModels
     using System.Windows;
     using System.Windows.Controls;
     using System.Windows.Input;
+    using Client;
+    using Client.Model;
     using Controls;
     using Event;
     using GalaSoft.MvvmLight.Threading;
+    using Microsoft.Practices.ObjectBuilder2;
     using Microsoft.Practices.Prism.PubSubEvents;
     using Microsoft.Practices.ServiceLocation;
     using Model;
     using Print;
-    using StoreAppDataService;
     using Utilities;
     using Views;
     using IncomeItem = Model.IncomeItem;
-    using PriceChangeReportItem = StoreAppDataService.PriceChangeReportItem;
+    using PriceChangeReportItem = Client.Model.PriceChangeReportItem;
 
     public class IncomesViewModel : ViewModelBase
     {
@@ -168,26 +170,29 @@ namespace StoreAppTest.ViewModels
             {
 
 
-                string uri = string.Concat(
-                    Application.Current.Host.Source.Scheme, "://",
-                    Application.Current.Host.Source.Host, ":",
-                    Application.Current.Host.Source.Port,
-                    "/StoreAppDataService.svc/");
+                //string uri = string.Concat(
+                //    Application.Current.Host.Source.Scheme, "://",
+                //    Application.Current.Host.Source.Host, ":",
+                //    Application.Current.Host.Source.Port,
+                //    "/StoreAppDataService.svc/");
 
-                StoreDbContext ctx = new StoreDbContext(
-                    new Uri(uri
-                        , UriKind.Absolute));
+                //StoreDbContext ctx = new StoreDbContext(
+                //    new Uri(uri
+                //        , UriKind.Absolute));
 
 
                 IncomeViewModell vm = new IncomeViewModell(_priceListName);
                 vm.SelectedSupplier = SelectedSupplier;
 
-                var incomeDb =
-                    ctx.ExecuteSyncronous(ctx.Incomes.OrderByDescending(s => s.Id)).FirstOrDefault();
-                if (incomeDb != null)
+                //var incomeDb =
+                //    ctx.ExecuteSyncronous(ctx.Incomes.OrderByDescending(s => s.Id)).FirstOrDefault();
+                var client = new StoreapptestClient();
+                var lastNum = client.GetLastIncomeNumber();
+
+                if (!string.IsNullOrEmpty(lastNum))
                 {
                     int lastNumber = 0;
-                    if (int.TryParse(incomeDb.IncomeNumber, out lastNumber))
+                    if (int.TryParse(lastNum, out lastNumber))
                     {
                         vm.IncomeNumber = (++lastNumber).ToString();
                     }
@@ -237,21 +242,24 @@ namespace StoreAppTest.ViewModels
                 var selected = SelectedIncomeItems.First();
                 if(selected.IsAccepted) return;
                 
-                string uri = string.Concat(
-                    Application.Current.Host.Source.Scheme, "://",
-                    Application.Current.Host.Source.Host, ":",
-                    Application.Current.Host.Source.Port,
-                    "/StoreAppDataService.svc/");
+                //string uri = string.Concat(
+                //    Application.Current.Host.Source.Scheme, "://",
+                //    Application.Current.Host.Source.Host, ":",
+                //    Application.Current.Host.Source.Port,
+                //    "/StoreAppDataService.svc/");
 
-                StoreDbContext ctx = new StoreDbContext(
-                    new Uri(uri
-                        , UriKind.Absolute));
+                //StoreDbContext ctx = new StoreDbContext(
+                //    new Uri(uri
+                //        , UriKind.Absolute));
 
                 try
                 {
 
-                    var incomeDb =
-                        ctx.ExecuteSyncronous(ctx.Incomes.Expand("IncomeItems/PriceItem").Where(i => i.Id == selected.Income_ID)).FirstOrDefault();
+                    //var incomeDb =
+                    //    ctx.ExecuteSyncronous(ctx.Incomes.Expand("IncomeItems/PriceItem").Where(i => i.Id == selected.Income_ID)).FirstOrDefault();
+
+                    var client = new StoreapptestClient();
+                    var incomeDb = client.GetIncomeByKey(selected.Income_ID);
 
                     var acceptIncomeItems = IncomeItems.Where(i => i.Income_ID == selected.Income_ID).ToList();
 
@@ -274,59 +282,68 @@ namespace StoreAppTest.ViewModels
                             incomeDb.IsAccept = true;
                             incomeDb.Accepter_Id = App.CurrentUser.UserName;
                             
-                            ctx.ChangeState(incomeDb, EntityStates.Modified);
-                            ctx.SaveChangesSynchronous();
+                            ////ctx.ChangeState(incomeDb, EntityStates.Modified);
+                            ////ctx.SaveChangesSynchronous();
+                            //client.SaveIncome(incomeDb);
 
-                            foreach (var ii in incomeDb.IncomeItems)
-                            {
-                                ii.PriceItem.BuyPriceRur = ii.BuyPriceRur;
-                                ii.PriceItem.BuyPriceTng = ii.BuyPriceTng;
+                            //foreach (var ii in incomeDb.IncomeItems)
+                            //{
+                            //    ii.PriceItem.BuyPriceRur = ii.BuyPriceRur;
+                            //    ii.PriceItem.BuyPriceTng = ii.BuyPriceTng;
 
-                                ctx.ChangeState(ii.PriceItem, EntityStates.Modified);
-                            }
-                            ctx.SaveChangesSynchronous();
+                            //    //ctx.ChangeState(ii.PriceItem, EntityStates.Modified);
+                            //    client.SavePriceItem(ii.PriceItem);
+                            //}
+                            ////ctx.SaveChangesSynchronous();
+
+                            var incomeContainer = new AcceptIncomeContainer();
+                            incomeContainer.Income = incomeDb;
+                            incomeContainer.IncomeItems = acceptIncomeItems;
+                            incomeContainer.Warehouse = App.CurrentUser.Warehouse_Id;
+
+                            client.AcceptIncome(incomeContainer);
 
                             foreach (var acceptIncomeItem in acceptIncomeItems)
                             {
                                 var findedIncomeItem = 
                                 IncomeItems.Where(i => i.Income_ID == acceptIncomeItem.Income_ID)
                                     .FirstOrDefault();
-                                var rem =
-                                    ctx.ExecuteSyncronous(
-                                        ctx.Remainders.Where(
-                                            r =>
-                                                r.PriceItem_Id == acceptIncomeItem.PriceItem_Id &&
-                                                r.Warehouse_Id == App.CurrentUser.Warehouse_Id)).FirstOrDefault();
+                                //var rem =
+                                //    ctx.ExecuteSyncronous(
+                                //        ctx.Remainders.Where(
+                                //            r =>
+                                //                r.PriceItem_Id == acceptIncomeItem.PriceItem_Id &&
+                                //                r.Warehouse_Id == App.CurrentUser.Warehouse_Id)).FirstOrDefault();
 
-                                if (rem == null)
-                                {
-                                    rem = new Remainder();
-                                    rem.Amount = acceptIncomeItem.Incomes;
-                                    rem.RemainderDate = DateTimeHelper.GetNowKz();
-                                    rem.PriceItem_Id = acceptIncomeItem.PriceItem_Id;
-                                    rem.Warehouse_Id = App.CurrentUser.Warehouse_Id;
-                                    ctx.AddToRemainders(rem);
-                                }
-                                else
-                                {
-                                    rem.Amount += acceptIncomeItem.Incomes;
-                                    rem.RemainderDate = DateTimeHelper.GetNowKz();
-                                    ctx.ChangeState(rem, EntityStates.Modified);
-                                }
-                                WholesalePrice rp = new WholesalePrice();
-                                rp.Price = acceptIncomeItem.NewPrice;
-                                rp.PriceDate = DateTimeHelper.GetNowKz();
-                                rp.PriceItem_Id = acceptIncomeItem.PriceItem_Id;
-                                ctx.AddToWholesalePrices(rp);
-                                ctx.SaveChangesSynchronous();
+                                //if (rem == null)
+                                //{
+                                //    rem = new Remainder();
+                                //    rem.Amount = acceptIncomeItem.Incomes;
+                                //    rem.RemainderDate = DateTimeHelper.GetNowKz();
+                                //    rem.PriceItem_Id = acceptIncomeItem.PriceItem_Id;
+                                //    rem.Warehouse_Id = App.CurrentUser.Warehouse_Id;
+                                //    ctx.AddToRemainders(rem);
+                                //}
+                                //else
+                                //{
+                                //    rem.Amount += acceptIncomeItem.Incomes;
+                                //    rem.RemainderDate = DateTimeHelper.GetNowKz();
+                                //    ctx.ChangeState(rem, EntityStates.Modified);
+                                //}
+                                //WholesalePrice rp = new WholesalePrice();
+                                //rp.Price = acceptIncomeItem.NewPrice;
+                                //rp.PriceDate = DateTimeHelper.GetNowKz();
+                                //rp.PriceItem_Id = acceptIncomeItem.PriceItem_Id;
+                                //ctx.AddToWholesalePrices(rp);
+                                //ctx.SaveChangesSynchronous();
 
                                 findedIncomeItem.IsAccepted = true;
                                 findedIncomeItem.Remainders += acceptIncomeItem.Incomes;
                                 findedIncomeItem.WholesalePrice = acceptIncomeItem.NewPrice;
                                 acceptIncomeItem.IsAccepted = true;
                             }
-                            ctx.SaveChangesSynchronous();
-                            CreatePriceChangeReport(incomeDb.Id);
+                            //ctx.SaveChangesSynchronous();
+                            //CreatePriceChangeReport(incomeDb.Id);
                         }
                     };
 
@@ -350,26 +367,29 @@ namespace StoreAppTest.ViewModels
                 var selected = SelectedIncomeItems.First();
                 if (!selected.IsAccepted) return;
 
-                string uri = string.Concat(
-                    Application.Current.Host.Source.Scheme, "://",
-                    Application.Current.Host.Source.Host, ":",
-                    Application.Current.Host.Source.Port,
-                    "/StoreAppDataService.svc/");
+                //string uri = string.Concat(
+                //    Application.Current.Host.Source.Scheme, "://",
+                //    Application.Current.Host.Source.Host, ":",
+                //    Application.Current.Host.Source.Port,
+                //    "/StoreAppDataService.svc/");
 
-                StoreDbContext ctx = new StoreDbContext(
-                    new Uri(uri
-                        , UriKind.Absolute));
+                //StoreDbContext ctx = new StoreDbContext(
+                //    new Uri(uri
+                //        , UriKind.Absolute));
 
+                var client = new StoreapptestClient();
                 var acceptIncomeItems = IncomeItems.Where(i => i.Income_ID == selected.Income_ID).ToList();
 
                 PriceChangeReportViewModel vm = new PriceChangeReportViewModel(_priceListName, acceptIncomeItems);
 
-                var priceReportDb =
-                    ctx.ExecuteSyncronous(ctx.PriceChangeReports.OrderByDescending(s => s.Id)).FirstOrDefault();
-                if (priceReportDb != null)
+                //var priceReportDb =
+                //    ctx.ExecuteSyncronous(ctx.PriceChangeReports.OrderByDescending(s => s.Id)).FirstOrDefault();
+                var lastNum = client.GetLastPriceChangeReportNumber();
+
+                if (!string.IsNullOrEmpty(lastNum))
                 {
                     int lastNumber = 0;
-                    if (int.TryParse(priceReportDb.ReportNumber, out lastNumber))
+                    if (int.TryParse(lastNum, out lastNumber))
                     {
                         vm.PriceReportNumber = (++lastNumber).ToString();
                     }
@@ -408,111 +428,113 @@ namespace StoreAppTest.ViewModels
         }
         #endregion
 
-        private void CreatePriceChangeReport(long incomeId)
-        {
-            string uri = string.Concat(
-                Application.Current.Host.Source.Scheme, "://",
-                Application.Current.Host.Source.Host, ":",
-                Application.Current.Host.Source.Port,
-                "/StoreAppDataService.svc/");
+        //private void CreatePriceChangeReport(long incomeId)
+        //{
+        //    string uri = string.Concat(
+        //        Application.Current.Host.Source.Scheme, "://",
+        //        Application.Current.Host.Source.Host, ":",
+        //        Application.Current.Host.Source.Port,
+        //        "/StoreAppDataService.svc/");
 
-            Task.Factory.StartNew(() =>
-            {
-                StoreDbContext ctx = new StoreDbContext(
-                    new Uri(uri
-                        , UriKind.Absolute));
+        //    Task.Factory.StartNew(() =>
+        //    {
+        //        StoreDbContext ctx = new StoreDbContext(
+        //            new Uri(uri
+        //                , UriKind.Absolute));
 
-                var acceptIncomeItems = IncomeItems.Where(i => i.Income_ID == incomeId).ToList();
+        //        var acceptIncomeItems = IncomeItems.Where(i => i.Income_ID == incomeId).ToList();
 
-                var now = DateTimeHelper.GetNowKz();
+        //        var now = DateTimeHelper.GetNowKz();
 
-                StoreAppDataService.PriceChangeReport rep = new StoreAppDataService.PriceChangeReport();
-                rep.Creator_Id = App.CurrentUser.UserName;
-                rep.ReportDate = now;
+        //        StoreAppDataService.PriceChangeReport rep = new StoreAppDataService.PriceChangeReport();
+        //        rep.Creator_Id = App.CurrentUser.UserName;
+        //        rep.ReportDate = now;
 
-                var priceReportDb =
-                    ctx.ExecuteSyncronous(ctx.PriceChangeReports.OrderByDescending(s => s.Id)).FirstOrDefault();
-                if (priceReportDb != null)
-                {
-                    int lastNumber = 0;
-                    if (int.TryParse(priceReportDb.ReportNumber, out lastNumber))
-                    {
-                        rep.ReportNumber = (++lastNumber).ToString();
-                    }
-                }
-                else
-                {
-                    rep.ReportNumber = "1";
-                }
-
-
-                ctx.AddToPriceChangeReports(rep);
-                ctx.SaveChangesSynchronous();
+        //        var priceReportDb =
+        //            ctx.ExecuteSyncronous(ctx.PriceChangeReports.OrderByDescending(s => s.Id)).FirstOrDefault();
+        //        if (priceReportDb != null)
+        //        {
+        //            int lastNumber = 0;
+        //            if (int.TryParse(priceReportDb.ReportNumber, out lastNumber))
+        //            {
+        //                rep.ReportNumber = (++lastNumber).ToString();
+        //            }
+        //        }
+        //        else
+        //        {
+        //            rep.ReportNumber = "1";
+        //        }
 
 
-                foreach (var acceptIncomeItem in acceptIncomeItems)
-                {
-                    var item = acceptIncomeItem;
-                    var prices =
-                        ctx.ExecuteSyncronous(ctx.WholesalePrices.Where(r => r.PriceItem_Id == item.PriceItem_Id))
-                            .ToList();
+        //        ctx.AddToPriceChangeReports(rep);
+        //        ctx.SaveChangesSynchronous();
 
-                    decimal previousPrice = 0;
-                    WholesalePrice currentRetailPrice = prices.OrderByDescending(d => d.PriceDate).First();
-                    WholesalePrice previousRetailPrice = null;
-                    if (prices.Count > 1)
-                    {
-                        previousRetailPrice = prices.OrderByDescending(d => d.PriceDate).Skip(1).First();
-                        previousPrice = previousRetailPrice.Price;
 
-                    }
-                    else
-                    {
-                        previousRetailPrice = currentRetailPrice;
-                    }
+        //        foreach (var acceptIncomeItem in acceptIncomeItems)
+        //        {
+        //            var item = acceptIncomeItem;
+        //            var prices =
+        //                ctx.ExecuteSyncronous(ctx.WholesalePrices.Where(r => r.PriceItem_Id == item.PriceItem_Id))
+        //                    .ToList();
 
-                    PriceChangeReportItem repItem = new PriceChangeReportItem()
-                    {
-                        PriceItem_Id = acceptIncomeItem.PriceItem_Id,
-                        PreviousPrice_Id = previousRetailPrice.Id,
-                        NewPrice_Id = currentRetailPrice.Id,
-                        PriceChangeReport_Id = rep.Id
-                    };
+        //            decimal previousPrice = 0;
+        //            WholesalePrice currentRetailPrice = prices.OrderByDescending(d => d.PriceDate).First();
+        //            WholesalePrice previousRetailPrice = null;
+        //            if (prices.Count > 1)
+        //            {
+        //                previousRetailPrice = prices.OrderByDescending(d => d.PriceDate).Skip(1).First();
+        //                previousPrice = previousRetailPrice.Price;
 
-                    ctx.AddToPriceChangeReportItems(repItem);
+        //            }
+        //            else
+        //            {
+        //                previousRetailPrice = currentRetailPrice;
+        //            }
 
-                    rep.PriceChangeReportItems.Add(repItem);
+        //            PriceChangeReportItem repItem = new PriceChangeReportItem()
+        //            {
+        //                PriceItem_Id = acceptIncomeItem.PriceItem_Id,
+        //                PreviousPrice_Id = previousRetailPrice.Id,
+        //                NewPrice_Id = currentRetailPrice.Id,
+        //                PriceChangeReport_Id = rep.Id
+        //            };
 
-                }
+        //            ctx.AddToPriceChangeReportItems(repItem);
 
-                ctx.SaveChangesSynchronous();
+        //            rep.PriceChangeReportItems.Add(repItem);
 
-            });
-        }
+        //        }
+
+        //        ctx.SaveChangesSynchronous();
+
+        //    });
+        //}
 
         private void UpdateSuppliersList()
         {
 
-            string uri = string.Concat(
-                Application.Current.Host.Source.Scheme, "://",
-                Application.Current.Host.Source.Host, ":",
-                Application.Current.Host.Source.Port,
-                "/StoreAppDataService.svc/");
+            //string uri = string.Concat(
+            //    Application.Current.Host.Source.Scheme, "://",
+            //    Application.Current.Host.Source.Host, ":",
+            //    Application.Current.Host.Source.Port,
+            //    "/StoreAppDataService.svc/");
 
             Task.Factory.StartNew(() =>
             {
-                StoreDbContext ctx = new StoreDbContext(
-                    new Uri(uri
-                        , UriKind.Absolute));
+                //StoreDbContext ctx = new StoreDbContext(
+                //    new Uri(uri
+                //        , UriKind.Absolute));
 
-                var customersDb =
-                    ctx.ExecuteSyncronous(ctx.Suppliers).ToList();
+                //var customersDb =
+                //    ctx.ExecuteSyncronous(ctx.Suppliers).ToList();
 
+                var client = new StoreapptestClient();
+                var suppliers = client.GetSuppliers();
                 DispatcherHelper.CheckBeginInvokeOnUI(() =>
                 {
                     SupplierList.Clear();
 
-                    customersDb.ForEach(i =>
+                    suppliers.ForEach(i =>
                     {
                         SupplierList.Add(i);
                     });
@@ -538,12 +560,13 @@ namespace StoreAppTest.ViewModels
         {
             IsLoading = true;
 
+            //string uri = string.Concat(
+            //    Application.Current.Host.Source.Scheme, "://",
+            //    Application.Current.Host.Source.Host, ":",
+            //    Application.Current.Host.Source.Port,
+            //    "/StoreAppDataService.svc/");
 
-            string uri = string.Concat(
-                Application.Current.Host.Source.Scheme, "://",
-                Application.Current.Host.Source.Host, ":",
-                Application.Current.Host.Source.Port,
-                "/StoreAppDataService.svc/");
+            IncomeItems.Clear();
 
             Task.Factory.StartNew(() =>
             {
@@ -551,67 +574,71 @@ namespace StoreAppTest.ViewModels
                 {
 
 
-                    StoreDbContext ctx = new StoreDbContext(
-                        new Uri(uri
-                            , UriKind.Absolute));
+                    ////StoreDbContext ctx = new StoreDbContext(
+                    ////    new Uri(uri
+                    ////        , UriKind.Absolute));
 
-                    //var qr = ctx.ExecuteSyncronous<PriceIncomeTotalItemView>(
-                    //    new Uri(string.Format("{0}GetTotalIncomes?priceListName='{1}'", uri, _priceListName),
-                    //        UriKind.Absolute));
+                    ////var qr = ctx.ExecuteSyncronous<PriceIncomeTotalItemView>(
+                    ////    new Uri(string.Format("{0}GetTotalIncomes?priceListName='{1}'", uri, _priceListName),
+                    ////        UriKind.Absolute));
 
-                    RemaindersClient client = new RemaindersClient(_priceListName, AtFromDate, AtToDate);
-                    var qr = client.GetIncomes(App.CurrentUser.Warehouse_Id, App.CurrentUser.UserName, AtFromDate, AtToDate);
+                    //RemaindersClient client = new RemaindersClient(_priceListName, AtFromDate, AtToDate);
+                    //var qr = client.GetIncomes(App.CurrentUser.Warehouse_Id, App.CurrentUser.UserName, AtFromDate, AtToDate);
 
-                    //foreach (var priceItemRemainderView in 
-                    var query = from p in qr
-                                group p by new
-                                {
-                                    Articul = p.Articul,
-                                    CatalogNumber = p.CatalogNumber,
-                                    Income_ID = p.Income_Id,
-                                    IsDuplicate = p.IsDuplicate ? "*" : "",
-                                    Gear_Id = p.Gear_Id,
-                                    Name = p.Gear_Name,
-                                    PriceItem_Id = p.PriceItem_Id,
-                                    Uom = p.Uom,
-                                    IsAccepted = p.IsAccept
-                                }
-                                    into grp
-                                    select new IncomeItem()
+                    ////foreach (var priceItemRemainderView in 
+                    //var query = from p in qr
+                    //            group p by new
+                    //            {
+                    //                Articul = p.Articul,
+                    //                CatalogNumber = p.CatalogNumber,
+                    //                Income_ID = p.Income_Id,
+                    //                IsDuplicate = p.IsDuplicate ? "*" : "",
+                    //                Gear_Id = p.Gear_Id,
+                    //                Name = p.Gear_Name,
+                    //                PriceItem_Id = p.PriceItem_Id,
+                    //                Uom = p.Uom,
+                    //                IsAccepted = p.IsAccept
+                    //            }
+                    //                into grp
+                    //                select new IncomeItem()
 
-                                    //).Select(new IncomeItem()
-                                    {
-                                        Number = IncomeItems.Select(s => s.Number).LastOrDefault() + 1,
-                                        Articul = grp.Key.Articul,
-                                        BuyPriceRur = (int)grp.Average(a => a.BuyPriceRur),
-                                        BuyPriceTng = (int)grp.Average(a => a.BuyPriceTng),
-                                        CatalogNumber = grp.Key.CatalogNumber,
-                                        Incomes = (int)grp.Average(s => s.Incomes),
-                                        Income_ID = grp.Key.Income_ID,
-                                        IsDuplicate = grp.Key.IsDuplicate,
-                                        Gear_Id = grp.Key.Gear_Id,
-                                        Name = grp.Key.Name,
-                                        LowerLimitRemainder = grp.Average(a => a.LowerLimitRemainder),
-                                        RecommendedRemainder = grp.Average(a => a.RecommendedRemainder),
-                                        NewPrice = (int)grp.Average(a => a.NewPrice),
-                                        PriceItem_Id = grp.Key.PriceItem_Id,
-                                        Uom = grp.Key.Uom,
-                                        WholesalePrice = (int)grp.Average(a => a.WholesalePrice),
-                                        Remainders = (int)grp.Average(s => s.Remainders),
-                                        IsAccepted = grp.Key.IsAccepted
-                                    };
+                    //                //).Select(new IncomeItem()
+                    //                {
+                    //                    Number = IncomeItems.Select(s => s.Number).LastOrDefault() + 1,
+                    //                    Articul = grp.Key.Articul,
+                    //                    BuyPriceRur = (int)grp.Average(a => a.BuyPriceRur),
+                    //                    BuyPriceTng = (int)grp.Average(a => a.BuyPriceTng),
+                    //                    CatalogNumber = grp.Key.CatalogNumber,
+                    //                    Incomes = (int)grp.Average(s => s.Incomes),
+                    //                    Income_ID = grp.Key.Income_ID,
+                    //                    IsDuplicate = grp.Key.IsDuplicate,
+                    //                    Gear_Id = grp.Key.Gear_Id,
+                    //                    Name = grp.Key.Name,
+                    //                    LowerLimitRemainder = grp.Average(a => a.LowerLimitRemainder),
+                    //                    RecommendedRemainder = grp.Average(a => a.RecommendedRemainder),
+                    //                    NewPrice = (int)grp.Average(a => a.NewPrice),
+                    //                    PriceItem_Id = grp.Key.PriceItem_Id,
+                    //                    Uom = grp.Key.Uom,
+                    //                    WholesalePrice = (int)grp.Average(a => a.WholesalePrice),
+                    //                    Remainders = (int)grp.Average(s => s.Remainders),
+                    //                    IsAccepted = grp.Key.IsAccepted
+                    //                };
 
-                    var incomeItems = query as IList<IncomeItem> ?? query.ToList();
-                    foreach (var grp in incomeItems.GroupBy(g => g.Income_ID))
-                    {
-                        var grp1 = grp;
-                        var inc = ctx.ExecuteSyncronous(ctx.Incomes.Where(w => w.Id == grp1.Key)).FirstOrDefault();
-                        foreach (var incomeItem in grp1)
-                        {
-                            incomeItem.Income = string.Format("Оприходование № {0} от {1:dd.MM.yyyy}",
-                                inc.IncomeNumber, inc.IncomeDate);
-                        }
-                    }
+                    //var incomeItems = query as IList<IncomeItem> ?? query.ToList();
+                    //foreach (var grp in incomeItems.GroupBy(g => g.Income_ID))
+                    //{
+                    //    var grp1 = grp;
+                    //    var inc = ctx.ExecuteSyncronous(ctx.Incomes.Where(w => w.Id == grp1.Key)).FirstOrDefault();
+                    //    foreach (var incomeItem in grp1)
+                    //    {
+                    //        incomeItem.Income = string.Format("Оприходование № {0} от {1:dd.MM.yyyy}",
+                    //            inc.IncomeNumber, inc.IncomeDate);
+                    //    }
+                    //}
+                    var client = new StoreapptestClient();
+                    var incomeItems = client.GetIncomeItems(AtFromDate, AtToDate, _priceListName,
+                        App.CurrentUser.UserName, App.CurrentUser.Warehouse_Id).OrderByDescending(o => o.IncomeDate);
+
                     foreach (var incomeItem in incomeItems)
                     {
                         var item = incomeItem;

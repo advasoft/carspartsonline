@@ -3,7 +3,7 @@
 namespace StoreAppTest.Model
 {
     using System.Collections.ObjectModel;
-    using StoreAppDataService;
+    using Client.Model;
 
     public class UserModel : Notified
     {

@@ -9,6 +9,8 @@ namespace StoreAppTest.Web
     {
         public static void Register(HttpConfiguration config)
         {
+            //GlobalConfiguration.Configuration.Formatters.XmlFormatter.UseXmlSerializer = true;
+
             config.MapHttpAttributeRoutes();
 
             config.Routes.MapHttpRoute(
@@ -17,7 +19,13 @@ namespace StoreAppTest.Web
                 defaults: new { id = RouteParameter.Optional , action = RouteParameter.Optional}
             );
 
-            config.Formatters.JsonFormatter.SupportedMediaTypes.Add(new MediaTypeHeaderValue("text/html"));
+            config.Formatters.JsonFormatter.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore;
+            //config.Formatters.JsonFormatter.SupportedMediaTypes.Add(new MediaTypeHeaderValue("text/html"));
+            config.Formatters.JsonFormatter.SupportedMediaTypes.Add(new MediaTypeHeaderValue("application/json"));
+            //config.Formatters.XmlFormatter.SupportedMediaTypes.Add(new MediaTypeHeaderValue("application/xml"));
+            //config.Formatters.XmlFormatter.SupportedMediaTypes.Add(new MediaTypeHeaderValue("text/xml"));
+            //config.Formatters.XmlFormatter.UseXmlSerializer = true;
+
         }
     }
 }

@@ -6,8 +6,9 @@
     using System.Linq;
     using System.Threading.Tasks;
     using System.Windows;
+    using Client;
+    using Client.Model;
     using GalaSoft.MvvmLight.Threading;
-    using StoreAppDataService;
     using Utilities;
     using ViewModels;
 
@@ -76,12 +77,14 @@
                 "/StoreAppDataService.svc/");
 
 
-            StoreDbContext ctx = new StoreDbContext(
-                new Uri(uri
-                    , UriKind.Absolute));
+            //StoreDbContext ctx = new StoreDbContext(
+            //    new Uri(uri
+            //        , UriKind.Absolute));
 
-            PriceLists = new ObservableCollection<PriceList>(ctx.ExecuteSyncronous(ctx.PriceLists).ToList());
+            var client = new StoreapptestClient();
 
+            //PriceLists = new ObservableCollection<PriceList>(ctx.ExecuteSyncronous(ctx.PriceLists).ToList());
+            PriceLists = new ObservableCollection<PriceList>(client.GetPriceLists());
             if (string.IsNullOrEmpty(PriceListName))
             {
                 if (PriceLists.Count > 0)
@@ -114,9 +117,9 @@
                 try
                 {
 
-                    StoreDbContext ctx = new StoreDbContext(
-                        new Uri(uri
-                            , UriKind.Absolute));
+                    //StoreDbContext ctx = new StoreDbContext(
+                    //    new Uri(uri
+                    //        , UriKind.Absolute));
 
 
                     if (string.IsNullOrEmpty(PriceListName))
@@ -125,21 +128,25 @@
                     }
                     IList<PriceItemRemainderView> pricelistitems = new List<PriceItemRemainderView>();
 
+                    var client = new StoreapptestClient();
+
                     string queryString = "";
                     if (!string.IsNullOrEmpty(Warehouse))
                     {
-                        queryString = string.Format("{0}GetLightPriceItemList?priceListName='{1}'&warehouse='{2}'", uri,
-                            PriceListName, App.CurrentUser.Warehouse.Name);
+                        //queryString = string.Format("{0}GetLightPriceItemList?priceListName='{1}'&warehouse='{2}'", uri,
+                        //    PriceListName, App.CurrentUser.Warehouse.Name);
+                        pricelistitems = client.GetIncomes(PriceListName, App.CurrentUser.Warehouse.Name).ToList();
                     }
                     else
                     {
-                        queryString = string.Format("{0}GetLightPriceItemList?priceListName='{1}'", uri, PriceListName);
+                        //queryString = string.Format("{0}GetLightPriceItemList?priceListName='{1}'", uri, PriceListName);
+                        pricelistitems = client.GetIncomes(PriceListName, "").ToList();
                     }
-                    var qr = ctx.ExecuteSyncronous<PriceItemRemainderView>(
-                        new Uri(queryString,
-                            UriKind.Absolute));
+                    //var qr = ctx.ExecuteSyncronous<PriceItemRemainderView>(
+                    //    new Uri(queryString,
+                    //        UriKind.Absolute));
 
-                    pricelistitems = qr.ToList();
+                    //pricelistitems = qr.ToList();
 
                     foreach (var priceItemRemainderView in pricelistitems)
                     {

@@ -4,7 +4,8 @@
     using System.Collections.ObjectModel;
     using System.Linq;
     using System.Windows;
-    using StoreAppDataService;
+    using Client;
+    using Client.Model;
     using Utilities;
     using ViewModels;
 
@@ -44,12 +45,14 @@
                 "/StoreAppDataService.svc/");
 
 
-            StoreDbContext ctx = new StoreDbContext(
-                new Uri(uri
-                    , UriKind.Absolute));
+            //StoreDbContext ctx = new StoreDbContext(
+            //    new Uri(uri
+            //        , UriKind.Absolute));
 
-            PriceLists = new ObservableCollection<PriceList>(ctx.ExecuteSyncronous(ctx.PriceLists).ToList());
+            var client = new StoreapptestClient();
 
+            //PriceLists = new ObservableCollection<PriceList>(ctx.ExecuteSyncronous(ctx.PriceLists).ToList());
+            PriceLists = new ObservableCollection<PriceList>(client.GetPriceLists());
             if (string.IsNullOrEmpty(PriceListName))
             {
                 if (PriceLists.Count > 0)

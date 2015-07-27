@@ -8,11 +8,11 @@ namespace StoreAppTest.Utilities
     using System.Threading;
     using System.Threading.Tasks;
     using System.Windows;
+    using Client.Model;
     using GalaSoft.MvvmLight.Threading;
     using Kent.Boogaart.KBCsv;
     using MSPToolkit.Encodings;
     using Newtonsoft.Json;
-    using StoreAppDataService;
 
     public class PriceListLoader : IDisposable
     {

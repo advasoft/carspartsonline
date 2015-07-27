@@ -9,6 +9,8 @@ namespace StoreAppTest.ViewModels
     using System.Threading.Tasks;
     using System.Windows;
     using System.Windows.Input;
+    using Client;
+    using Client.Model;
     using Controls;
     using Event;
     using GalaSoft.MvvmLight.Threading;
@@ -16,7 +18,6 @@ namespace StoreAppTest.ViewModels
     using Microsoft.Practices.Prism.PubSubEvents;
     using Microsoft.Practices.ServiceLocation;
     using Model;
-    using StoreAppDataService;
     using Utilities;
 
     public class ActDebtorsViewModel : ViewModelBase
@@ -128,22 +129,29 @@ namespace StoreAppTest.ViewModels
                         doc.DischargeDate = DateTimeHelper.GetNowKz();
                         //doc.SaleDocument_Id = SelectedSaleDocument.SaleDocumentData.Id;
                         
-                        string uri = string.Concat(
-                            Application.Current.Host.Source.Scheme, "://",
-                            Application.Current.Host.Source.Host, ":",
-                            Application.Current.Host.Source.Port,
-                            "/StoreAppDataService.svc/");
+                        //string uri = string.Concat(
+                        //    Application.Current.Host.Source.Scheme, "://",
+                        //    Application.Current.Host.Source.Host, ":",
+                        //    Application.Current.Host.Source.Port,
+                        //    "/StoreAppDataService.svc/");
 
 
                         //Task.Factory.StartNew(() =>
                         //{
-                            StoreDbContext ctx = new StoreDbContext(
-                                new Uri(uri
-                                    , UriKind.Absolute));
 
-                            ctx.AddToDebtDischargeDocuments(doc);
-                            ctx.SaveChangesSynchronous();
 
+
+                            //StoreDbContext ctx = new StoreDbContext(
+                            //    new Uri(uri
+                            //        , UriKind.Absolute));
+
+                            //ctx.AddToDebtDischargeDocuments(doc);
+                            //ctx.SaveChangesSynchronous();
+
+
+
+                        StoreapptestClient client = new StoreapptestClient();
+                        client.AddDebt(doc);
                             //DispatcherHelper.CheckBeginInvokeOnUI(() =>
                             //{
                                 DebtChangeAmount = 0;
@@ -214,21 +222,28 @@ namespace StoreAppTest.ViewModels
                         doc.DischargeDate = DateTimeHelper.GetNowKz();
                         //doc.SaleDocument_Id = SelectedSaleDocument.SaleDocumentData.Id;
 
-                        string uri = string.Concat(
-                            Application.Current.Host.Source.Scheme, "://",
-                            Application.Current.Host.Source.Host, ":",
-                            Application.Current.Host.Source.Port,
-                            "/StoreAppDataService.svc/");
+                        //string uri = string.Concat(
+                        //    Application.Current.Host.Source.Scheme, "://",
+                        //    Application.Current.Host.Source.Host, ":",
+                        //    Application.Current.Host.Source.Port,
+                        //    "/StoreAppDataService.svc/");
 
 
                         //Task.Factory.StartNew(() =>
                         //{
-                            StoreDbContext ctx = new StoreDbContext(
-                                new Uri(uri
-                                    , UriKind.Absolute));
 
-                            ctx.AddToDebtDischargeDocuments(doc);
-                            ctx.SaveChangesSynchronous();
+
+
+                            //StoreDbContext ctx = new StoreDbContext(
+                            //    new Uri(uri
+                            //        , UriKind.Absolute));
+
+                            //ctx.AddToDebtDischargeDocuments(doc);
+                            //ctx.SaveChangesSynchronous();
+
+
+                            StoreapptestClient client = new StoreapptestClient();
+                            client.AddDebt(doc);
 
                             //DispatcherHelper.CheckBeginInvokeOnUI(() =>
                             //{
@@ -270,30 +285,35 @@ namespace StoreAppTest.ViewModels
         private void UpdateSalesDocumentsList()
         {
 
-            string uri = string.Concat(
-                Application.Current.Host.Source.Scheme, "://",
-                Application.Current.Host.Source.Host, ":",
-                Application.Current.Host.Source.Port,
-                "/StoreAppDataService.svc/");
+            //string uri = string.Concat(
+            //    Application.Current.Host.Source.Scheme, "://",
+            //    Application.Current.Host.Source.Host, ":",
+            //    Application.Current.Host.Source.Port,
+            //    "/StoreAppDataService.svc/");
 
             Task.Factory.StartNew(() =>
             {
-                StoreDbContext ctx = new StoreDbContext(
-                    new Uri(uri
-                        , UriKind.Absolute));
+                //StoreDbContext ctx = new StoreDbContext(
+                //    new Uri(uri
+                //        , UriKind.Absolute));
 
-                var query = ctx.SaleDocuments.Expand("SaleItems,Customer").Where(f => !f.IsOrder && f.IsInDebt && f.Creator_Id == App.CurrentUser.UserName);
+                //var query = ctx.SaleDocuments.Expand("SaleItems,Customer").Where(f => !f.IsOrder && f.IsInDebt && f.Creator_Id == App.CurrentUser.UserName);
+                var client = new StoreapptestClient();
+                var query = client.GetUserDebtReceipts(App.CurrentUser.UserName);
+
                 if (_customer != null)
-                    query = query.Where(q => q.Customer_Name == _customer.Name);
+                    query = client.GetUserDebtReceipts(App.CurrentUser.UserName, _customer.Name);
 
-                var salesDb =
-                    ctx.ExecuteSyncronous(query).ToList();
+                //var salesDb =
+                //    ctx.ExecuteSyncronous(query).ToList();
+                var salesDb = query;
 
-                IList<StoreAppDataService.RefundItem> refs = default(IList<StoreAppDataService.RefundItem>);
+                IList<Client.Model.RefundItem> refs = default(IList<Client.Model.RefundItem>);
 
-                var refundsDb =
-                    ctx.ExecuteSyncronous(ctx.RefundDocuments.Expand("RefundItems").Where(f => !f.SaleDocument.IsOrder && f.SaleDocument.IsInDebt && f.Creator_Id == App.CurrentUser.UserName))
-                        .ToList();
+                //var refundsDb =
+                //    ctx.ExecuteSyncronous(ctx.RefundDocuments.Expand("RefundItems").Where(f => !f.SaleDocument.IsOrder && f.SaleDocument.IsInDebt && f.Creator_Id == App.CurrentUser.UserName))
+                //        .ToList();
+                var refundsDb = client.GetUserDebtRefunds(App.CurrentUser.UserName);
 
                 if (refundsDb != null)
                 {
@@ -342,38 +362,49 @@ namespace StoreAppTest.ViewModels
 
             DebtorItems.Clear();
 
-            uri = string.Concat(
-                Application.Current.Host.Source.Scheme, "://",
-                Application.Current.Host.Source.Host, ":",
-                Application.Current.Host.Source.Port,
-                "/StoreAppDataService.svc/");
+            //uri = string.Concat(
+            //    Application.Current.Host.Source.Scheme, "://",
+            //    Application.Current.Host.Source.Host, ":",
+            //    Application.Current.Host.Source.Port,
+            //    "/StoreAppDataService.svc/");
 
             Task.Factory.StartNew(() =>
             {
-                StoreDbContext ctx = new StoreDbContext(
-                    new Uri(uri
-                        , UriKind.Absolute));
+                //StoreDbContext ctx = new StoreDbContext(
+                //    new Uri(uri
+                //        , UriKind.Absolute));
 
                 List<SaleDocument> salesDb = null;
-                var query = ctx.SaleDocuments.Expand("SaleItems,Customer").Where(f => f.IsInDebt && f.Creator_Id == App.CurrentUser.UserName);
-                if (_customer != null)
-                    query = query.Where(c => c.Customer_Name == _customer.Name);
+
+                //var query = ctx.SaleDocuments.Expand("SaleItems,Customer").Where(f => f.IsInDebt && f.Creator_Id == App.CurrentUser.UserName);
+
+                //if (_customer != null)
+                //    query = query.Where(c => c.Customer_Name == _customer.Name);
                 //if (SelectedSaleDocument != null)
                 //    query = query.Where(q => q.Id == SelectedSaleDocument.SaleDocumentData.Id);
 
-                salesDb =
-                    ctx.ExecuteSyncronous(query).ToList();
+                var client = new StoreapptestClient();
+                var query = client.GetUserDebtReceipts(App.CurrentUser.UserName);
+
+                if (_customer != null)
+                    query = client.GetUserDebtReceipts(App.CurrentUser.UserName, _customer.Name);
+
+
+                //salesDb =
+                //    ctx.ExecuteSyncronous(query).ToList();
+                salesDb = query.ToList();
 
                 //var returns =
                 //    ctx.ExecuteSyncronous(ctx.RefundDocuments.Where(f => f.SaleDocument.IsInDebt && f.Creator_Id == App.CurrentUser.UserName))
                 //        .Select(s => s.SaleDocument_Id)
                 //        .ToList();
 
-                IList<StoreAppDataService.RefundItem> refs = default(IList<StoreAppDataService.RefundItem>);
+                IList<Client.Model.RefundItem> refs = default(IList<Client.Model.RefundItem>);
 
-                var refundsDb =
-                    ctx.ExecuteSyncronous(ctx.RefundDocuments.Expand("RefundItems").Where(f => f.SaleDocument.IsInDebt && f.Creator_Id == App.CurrentUser.UserName))
-                        .ToList();
+                //var refundsDb =
+                //    ctx.ExecuteSyncronous(ctx.RefundDocuments.Expand("RefundItems").Where(f => f.SaleDocument.IsInDebt && f.Creator_Id == App.CurrentUser.UserName))
+                //        .ToList();
+                var refundsDb = client.GetUserDebtRefunds(App.CurrentUser.UserName);
 
                 if (refundsDb != null)
                 {
@@ -412,15 +443,19 @@ namespace StoreAppTest.ViewModels
 
 
                 List<DebtDischargeDocument> dischDb = null;
-                IQueryable<DebtDischargeDocument> queryDisch = ctx.DebtDischargeDocuments.Where(f => f.Creator_Id == App.CurrentUser.UserName);
+
+                //IQueryable<DebtDischargeDocument> queryDisch = ctx.DebtDischargeDocuments.Where(f => f.Creator_Id == App.CurrentUser.UserName);
+                IEnumerable<DebtDischargeDocument> queryDisch =
+                    client.GetUserDebtDischargeDocuments(App.CurrentUser.UserName);
 
                 if (_customer != null)
                     queryDisch = queryDisch.Where(c => c.Debtor_Id == _customer.Name);
                 //if (SelectedSaleDocument != null)
                 //    queryDisch = queryDisch.Where(q => q.SaleDocument_Id == SelectedSaleDocument.SaleDocumentData.Id);
 
-                dischDb =
-                    ctx.ExecuteSyncronous(queryDisch).ToList();
+                //dischDb =
+                //    ctx.ExecuteSyncronous(queryDisch).ToList();
+                dischDb = queryDisch.ToList();
 
                 dischDb.ForEach(i =>
                 {

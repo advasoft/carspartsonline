@@ -11,6 +11,8 @@ namespace StoreAppTest.ViewModels
     using System.Windows;
     using System.Windows.Controls;
     using System.Windows.Input;
+    using Client;
+    using Client.Model;
     using Controls;
     using Event;
     using GalaSoft.MvvmLight.Threading;
@@ -19,7 +21,6 @@ namespace StoreAppTest.ViewModels
     using Microsoft.Practices.ServiceLocation;
     using Model;
     using Print;
-    using StoreAppDataService;
     using Utilities;
     using Views;
     using IncomeItem = Model.IncomeItem;
@@ -215,6 +216,38 @@ namespace StoreAppTest.ViewModels
             }
         }
 
+        private bool _PrintReceiver;
+        public bool PrintReceiver
+        {
+            get { return _PrintReceiver; }
+            set
+            {
+                _PrintReceiver = value;
+                OnPropertyChanged("PrintReceiver");
+            }
+        }
+
+        private bool _ReceiverDifferent;
+        public bool ReceiverDifferent
+        {
+            get { return _ReceiverDifferent; }
+            set
+            {
+                _ReceiverDifferent = value;
+                OnPropertyChanged("ReceiverDifferent");
+            }
+        }
+        private string _Receiver;
+        public string Receiver
+        {
+            get { return _Receiver; }
+            set
+            {
+                _Receiver = value;
+                OnPropertyChanged("Receiver");
+            }
+        }
+
 
         private bool _SelectAll;
         public bool SelectAll
@@ -343,34 +376,34 @@ namespace StoreAppTest.ViewModels
             {
                 Saving = true;
 
-                string uri = string.Concat(
-                    Application.Current.Host.Source.Scheme, "://",
-                    Application.Current.Host.Source.Host, ":",
-                    Application.Current.Host.Source.Port,
-                    "/StoreAppDataService.svc/");
+                //string uri = string.Concat(
+                //    Application.Current.Host.Source.Scheme, "://",
+                //    Application.Current.Host.Source.Host, ":",
+                //    Application.Current.Host.Source.Port,
+                //    "/StoreAppDataService.svc/");
 
                 Task.Factory.StartNew(() =>
                 {
                     try
                     {
 
-                        StoreDbContext ctx = new StoreDbContext(
-                            new Uri(uri
-                                , UriKind.Absolute));
+                        //StoreDbContext ctx = new StoreDbContext(
+                        //    new Uri(uri
+                        //        , UriKind.Absolute));
 
-                        //var realizationDb =
-                        //ctx.ExecuteSyncronous(ctx.SaleDocuments.OrderByDescending(s => s.Number)).FirstOrDefault();
-                        //if (realizationDb != null)
-                        //{
-                        //    int lastNumber = 0;
-                        //    if (int.TryParse(realizationDb.Number, out lastNumber))
-                        //    {
-                        //        DispatcherHelper.CheckBeginInvokeOnUI(() =>
-                        //        {
-                        //            ReceiptNumber = (++lastNumber).ToString();
-                        //        });
-                        //    }
-                        //}
+                        ////var realizationDb =
+                        ////ctx.ExecuteSyncronous(ctx.SaleDocuments.OrderByDescending(s => s.Number)).FirstOrDefault();
+                        ////if (realizationDb != null)
+                        ////{
+                        ////    int lastNumber = 0;
+                        ////    if (int.TryParse(realizationDb.Number, out lastNumber))
+                        ////    {
+                        ////        DispatcherHelper.CheckBeginInvokeOnUI(() =>
+                        ////        {
+                        ////            ReceiptNumber = (++lastNumber).ToString();
+                        ////        });
+                        ////    }
+                        ////}
 
                         if (!ReceiptItems.All(i => i.SoldCount != 0))
                         {
@@ -410,7 +443,7 @@ namespace StoreAppTest.ViewModels
                                     {
                                         Task.Factory.StartNew(() =>
                                         {
-                                            SaveReceipt(ctx);
+                                            SaveReceipt();
                                         });
                                     }
                                     else
@@ -423,7 +456,7 @@ namespace StoreAppTest.ViewModels
                         }
                         else
                         {
-                            SaveReceipt(ctx);
+                            SaveReceipt();
                             #region old
                             //foreach (var receiptItem in ReceiptItems)
                             //{
@@ -720,7 +753,7 @@ namespace StoreAppTest.ViewModels
             {
                 if (IsInvoice)
                 {
-                    InvoiceReportControl control = new InvoiceReportControl(SavedDocumentId, IsRefund, Contract, PaymentType, TtnNumber);
+                    InvoiceReportControl control = new InvoiceReportControl(SavedDocumentId, IsRefund, Contract, PaymentType, TtnNumber, PrintReceiver, ReceiverDifferent, Receiver);
                     control.Show();
                 }
                 else if (IsOrder)
@@ -754,25 +787,26 @@ namespace StoreAppTest.ViewModels
         private void UpdateCustomersList()
         {
 
-            string uri = string.Concat(
-                Application.Current.Host.Source.Scheme, "://",
-                Application.Current.Host.Source.Host, ":",
-                Application.Current.Host.Source.Port,
-                "/StoreAppDataService.svc/");
+            //string uri = string.Concat(
+            //    Application.Current.Host.Source.Scheme, "://",
+            //    Application.Current.Host.Source.Host, ":",
+            //    Application.Current.Host.Source.Port,
+            //    "/StoreAppDataService.svc/");
 
             Task.Factory.StartNew(() =>
             {
-                StoreDbContext ctx = new StoreDbContext(
-                    new Uri(uri
-                        , UriKind.Absolute));
+                //StoreDbContext ctx = new StoreDbContext(
+                //    new Uri(uri
+                //        , UriKind.Absolute));
 
+                var client = new StoreapptestClient();
                 var customersDb =
-                    ctx.ExecuteSyncronous(
-                        ctx.Customers.Where(
-                            c =>
-                                c.Creator_Id == App.CurrentUser.UserName || c.Creator_Id == "admin" ||
-                                (c.Name == "Розничный покупатель" || c.Name == "Клиент интернет-магазина"))).ToList();
-
+                    //ctx.ExecuteSyncronous(
+                    //    ctx.Customers.Where(
+                    //        c =>
+                    //            c.Creator_Id == App.CurrentUser.UserName || c.Creator_Id == "admin" ||
+                    //            (c.Name == "Розничный покупатель" || c.Name == "Клиент интернет-магазина"))).ToList();
+                    client.GetCustomers(App.CurrentUser.UserName);
 
                 DispatcherHelper.CheckBeginInvokeOnUI(() =>
                 {
@@ -812,7 +846,7 @@ namespace StoreAppTest.ViewModels
             return builder.ToString();
         }
 
-        private void SaveReceipt(StoreDbContext ctx)
+        private void SaveReceipt()
         {
             foreach (var receiptItem in ReceiptItems)
             {
@@ -859,9 +893,13 @@ namespace StoreAppTest.ViewModels
             {
                 i.ReceiptItemChanged -= i_ReceiptItemChanged;
             });
+
+            var client = new StoreapptestClient();
+
             var receipt = new SaleDocument();
             //receipt.Creator = App.CurrentUser;
             receipt.Creator_Id = App.CurrentUser.UserName;
+            receipt.Creator = App.CurrentUser;
             receipt.Customer = Customer;
             receipt.Customer_Name = Customer.Name;
             receipt.IsInDebt = InDebt;
@@ -873,8 +911,8 @@ namespace StoreAppTest.ViewModels
             receipt.SaleDate = DateTimeHelper.GetNowKz();
             receipt.Barcode = GetBarcode();
 
-            ctx.AddToSaleDocuments(receipt);
-            ctx.SaveChangesSynchronous();
+            //ctx.AddToSaleDocuments(receipt);
+            //ctx.SaveChangesSynchronous();
 
             foreach (var receiptItem in ReceiptItems)
             {
@@ -885,6 +923,7 @@ namespace StoreAppTest.ViewModels
                     Discount = receiptItem.Discount,
                     Price = receiptItem.Price,
                     PriceItem_Id = receiptItem.PriceItem_Id,
+                    PriceItem = receiptItem.PriceItemData,
                     //PriceItem = receiptItem.PriceItemData,
                     SaleDocument = receipt,
                     SaleDocument_Id = receipt.Id,
@@ -894,65 +933,67 @@ namespace StoreAppTest.ViewModels
                     IsDuplicate = receiptItem.IsDuplicate == "*" ? true : false
                     
                 };
-                var rem =
-                    ctx.ExecuteSyncronous(
-                        ctx.Remainders.Where(
-                            w =>
-                                w.Warehouse_Id == App.CurrentUser.Warehouse_Id &&
-                                w.PriceItem_Id == item.PriceItem_Id))
-                        .FirstOrDefault();
+                //var rem =
+                //    ctx.ExecuteSyncronous(
+                //        ctx.Remainders.Where(
+                //            w =>
+                //                w.Warehouse_Id == App.CurrentUser.Warehouse_Id &&
+                //                w.PriceItem_Id == item.PriceItem_Id))
+                //        .FirstOrDefault();
 
-                if (!receipt.IsOrder)
-                {
-                    if (rem == null)
-                    {
-                        rem = new Remainder();
-                        rem.PriceItem_Id = receiptItem.PriceItem_Id;
-                        rem.RemainderDate = DateTimeHelper.GetNowKz();
-                        rem.Warehouse_Id = App.CurrentUser.Warehouse_Id;
-                        rem.Amount -= item.Count;
-                        ctx.AddToRemainders(rem);
-                    }
-                    else
-                    {
-                        //var rem =
-                        //    item.PriceItem.Remainders.Where(w => w.Warehouse_Id == App.CurrentUser.Warehouse_Id)
-                        //        .FirstOrDefault();
-                        rem.Amount -= item.Count;
-                        rem.RemainderDate = DateTimeHelper.GetNowKz();
-                        ctx.ChangeState(rem, EntityStates.Modified);
-                    }
-                    //ctx.AttachTo("Remainders", rem);
+                //if (!receipt.IsOrder)
+                //{
+                //    if (rem == null)
+                //    {
+                //        rem = new Remainder();
+                //        rem.PriceItem_Id = receiptItem.PriceItem_Id;
+                //        rem.RemainderDate = DateTimeHelper.GetNowKz();
+                //        rem.Warehouse_Id = App.CurrentUser.Warehouse_Id;
+                //        rem.Amount -= item.Count;
+                //        ctx.AddToRemainders(rem);
+                //    }
+                //    else
+                //    {
+                //        //var rem =
+                //        //    item.PriceItem.Remainders.Where(w => w.Warehouse_Id == App.CurrentUser.Warehouse_Id)
+                //        //        .FirstOrDefault();
+                //        rem.Amount -= item.Count;
+                //        rem.RemainderDate = DateTimeHelper.GetNowKz();
+                //        ctx.ChangeState(rem, EntityStates.Modified);
+                //    }
+                //    //ctx.AttachTo("Remainders", rem);
 
-                }
+                //}
                 if (receiptItem.PriceItemData == null)
                 {
-                    receiptItem.PriceItemData = new StoreAppDataService.PriceItem()
+                    receiptItem.PriceItemData = new Client.Model.PriceItem()
                     {
                         Id = receiptItem.PriceItem_Id
                     };
                 }
-                receiptItem.PriceItemData.Remainders.Add(rem);
+                //receiptItem.PriceItemData.Remainders.Add(rem);
 
                 receipt.SaleItems.Add(item);
-                ctx.AddToSaleItems(item);
+                //ctx.AddToSaleItems(item);
 
-                if (rem.PriceItem == null)
-                {
-                    rem.PriceItem = receiptItem.PriceItemData;
-                }
+                //if (rem.PriceItem == null)
+                //{
+                //    rem.PriceItem = receiptItem.PriceItemData;
+                //}
             }
 
-            ctx.SaveChangesSynchronous();
+            //ctx.SaveChangesSynchronous();
 
+
+            receipt.Id = client.SaveRecipe(receipt);
             var receiptItems = new List<PriceItem>();
             foreach (var receiptItem in ReceiptItems)
             {
-                var rems = receiptItem.PriceItemData.Remainders.FirstOrDefault();
+                //var rems = receiptItem.PriceItemData.Remainders.FirstOrDefault();
                 receiptItems.Add(new PriceItem()
                 {
-                    PriceItemData = rems.PriceItem,
-                    Remainders = (int)(rems == null ? 0 : rems.Amount)
+                    PriceItemData = receiptItem.PriceItemData,
+                    Remainders = (int)(receiptItem.Remainders - receiptItem.SoldCount)
                 });
             }
             DispatcherHelper.CheckBeginInvokeOnUI(() =>
@@ -967,11 +1008,11 @@ namespace StoreAppTest.ViewModels
         }
         private void AddPositionToReceipt(string barcode)
         {
-            string uri = string.Concat(
-                Application.Current.Host.Source.Scheme, "://",
-                Application.Current.Host.Source.Host, ":",
-                Application.Current.Host.Source.Port,
-                "/StoreAppDataService.svc/");
+            //string uri = string.Concat(
+            //    Application.Current.Host.Source.Scheme, "://",
+            //    Application.Current.Host.Source.Host, ":",
+            //    Application.Current.Host.Source.Port,
+            //    "/StoreAppDataService.svc/");
 
             if (string.IsNullOrEmpty(barcode))
                 return;
@@ -981,15 +1022,17 @@ namespace StoreAppTest.ViewModels
             {
                 try
                 {
+                    var client = new StoreapptestClient();
 
-                    StoreDbContext ctx = new StoreDbContext(
-                        new Uri(uri
-                            , UriKind.Absolute));
+                    //StoreDbContext ctx = new StoreDbContext(
+                    //    new Uri(uri
+                    //        , UriKind.Absolute));
 
 
                     var findedPosition =
-                        ctx.ExecuteSyncronous(ctx.PriceItems.Expand("Gear,Prices").Where(wh => wh.Barcode1 == barcode || wh.Barcode2 == barcode || wh.Barcode3 == barcode))
-                            .FirstOrDefault();
+                        //ctx.ExecuteSyncronous(ctx.PriceItems.Expand("Gear,Prices").Where(wh => wh.Barcode1 == barcode || wh.Barcode2 == barcode || wh.Barcode3 == barcode))
+                        //    .FirstOrDefault();
+                        client.GetPriceItemByBarcode(barcode);
 
                     if (findedPosition != null)
                     {

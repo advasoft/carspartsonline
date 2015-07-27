@@ -9,10 +9,10 @@ namespace StoreAppTest
     using System.Text;
     using System.Threading;
     using System.Windows;
+    using Client.Model;
     using GalaSoft.MvvmLight.Threading;
     using MSPToolkit.Encodings;
     using Newtonsoft.Json;
-    using StoreAppDataService;
 
     public class RemaindersClient
     {

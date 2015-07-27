@@ -9,6 +9,8 @@ namespace StoreAppTest.ViewModels
     using System.Threading.Tasks;
     using System.Windows;
     using System.Windows.Input;
+    using Client;
+    using Client.Model;
     using Controls;
     using Event;
     using GalaSoft.MvvmLight.Threading;
@@ -17,7 +19,6 @@ namespace StoreAppTest.ViewModels
     using Microsoft.Practices.ServiceLocation;
     using Model;
     using Print;
-    using StoreAppDataService;
     using Utilities;
     using PriceItem = Model.PriceItem;
     using RefundItem = Model.RefundItem;
@@ -169,47 +170,48 @@ namespace StoreAppTest.ViewModels
 
 
 
-                string uri = string.Concat(
-                    Application.Current.Host.Source.Scheme, "://",
-                    Application.Current.Host.Source.Host, ":",
-                    Application.Current.Host.Source.Port,
-                    "/StoreAppDataService.svc/");
+                //string uri = string.Concat(
+                //    Application.Current.Host.Source.Scheme, "://",
+                //    Application.Current.Host.Source.Host, ":",
+                //    Application.Current.Host.Source.Port,
+                //    "/StoreAppDataService.svc/");
 
                 Task.Factory.StartNew(() =>
                 {
                     try
                     {
 
-                        StoreDbContext ctx = new StoreDbContext(
-                            new Uri(uri
-                                , UriKind.Absolute));
+                        //StoreDbContext ctx = new StoreDbContext(
+                        //    new Uri(uri
+                        //        , UriKind.Absolute));
 
-                        var refundDb =
-                        ctx.ExecuteSyncronous(ctx.RefundDocuments.OrderByDescending(s => s.Id)).FirstOrDefault();
-                        if (refundDb != null)
-                        {
-                            int lastNumber = 0;
-                            if (int.TryParse(refundDb.RefundNumber, out lastNumber))
-                            {
-                                DispatcherHelper.CheckBeginInvokeOnUI(() =>
-                                {
-                                    RefundNumber = (++lastNumber).ToString();
-                                });
-                            }
-                        }
+                        //var refundDb =
+                        //ctx.ExecuteSyncronous(ctx.RefundDocuments.OrderByDescending(s => s.Id)).FirstOrDefault();
+                        //if (refundDb != null)
+                        //{
+                        //    int lastNumber = 0;
+                        //    if (int.TryParse(refundDb.RefundNumber, out lastNumber))
+                        //    {
+                        //        DispatcherHelper.CheckBeginInvokeOnUI(() =>
+                        //        {
+                        //            RefundNumber = (++lastNumber).ToString();
+                        //        });
+                        //    }
+                        //}
 
 
 
 
                         var refund = new RefundDocument();
                         refund.Creator_Id = App.CurrentUser.UserName;
+                        refund.Creator = App.CurrentUser;
                         refund.RefundDate = _durtyRefund.RefundDate;
                         refund.SaleDocument_Id = _SelectedSaleDocumentId;                        
                         refund.LastChanger_Id = App.CurrentUser.UserName;
                         refund.RefundNumber = RefundNumber;
 
-                        ctx.AddToRefundDocuments(refund);
-                        ctx.SaveChangesSynchronous();
+                        //ctx.AddToRefundDocuments(refund);
+                        //ctx.SaveChangesSynchronous();
 
                         foreach (var refundItem in RefundItems)
                         {
@@ -219,7 +221,7 @@ namespace StoreAppTest.ViewModels
                             //{
                             //    discount = SelectedSaleDocument.SaleDocumentData.SaleItems.FirstOrDefault(f => f.PriceItem_Id == refundItem.PriceItemData.Id).Discount;
                             //});
-                            var item = new StoreAppDataService.RefundItem()
+                            var item = new Client.Model.RefundItem()
                             {
                                 Count = refundItem.SoldCount,
                                 Discount = refundItem.Discount,
@@ -227,8 +229,8 @@ namespace StoreAppTest.ViewModels
                                 PriceItem_Id = refundItem.PriceItemData.Id,
                                 //PriceItem = refundItem.PriceItemData,
                                 Amount = refundItem.Amount,
-                                RefundDocument_Id = refund.Id,
-                                RefundDocument = refund,
+                                //RefundDocument_Id = refund.Id,
+                                //RefundDocument = refund,
                                 SaleItem_Id = refundItem.SaleItem_Id
                                 
                             };
@@ -237,25 +239,47 @@ namespace StoreAppTest.ViewModels
                             //    item.PriceItem.Remainders.Where(w => w.Warehouse_Id == App.CurrentUser.Warehouse_Id)
                             //        .FirstOrDefault();
 
-                            var rem =
-                                ctx.ExecuteSyncronous(ctx.Remainders.Where(w => w.Warehouse_Id == App.CurrentUser.Warehouse_Id && w.PriceItem_Id == item.PriceItem_Id))
-                                    .FirstOrDefault();
+                            //var rem =
+                            //    ctx.ExecuteSyncronous(ctx.Remainders.Where(w => w.Warehouse_Id == App.CurrentUser.Warehouse_Id && w.PriceItem_Id == item.PriceItem_Id))
+                            //        .FirstOrDefault();
 
-                            rem.Amount += item.Count;
-                            rem.RemainderDate = DateTimeHelper.GetNowKz();
+                            //rem.Amount += item.Count;
+                            //rem.RemainderDate = DateTimeHelper.GetNowKz();
 
-                            //tx.AttachTo("Remainders", rem);
-                            ctx.ChangeState(rem, EntityStates.Modified);
+                            ////tx.AttachTo("Remainders", rem);
+                            //ctx.ChangeState(rem, EntityStates.Modified);
 
 
                             refund.RefundItems.Add(item);
-                            ctx.AddToRefundItems(item);
+                            //ctx.AddToRefundItems(item);
 
-                            refundItem.PriceItemData.Remainders.Add(rem);
+                            //refundItem.PriceItemData.Remainders.Add(rem);
                         }
 
-                        ctx.SaveChangesSynchronous();
+                        //ctx.SaveChangesSynchronous();
 
+                        var client = new StoreapptestClient();
+                        //var container = new RefundContainer();
+
+                        var reds = refund.RefundItems.ToArray();
+                        //refund.RefundItems = null;
+                        //container.Refund = refund;
+
+                        //var refundN = reds.First();
+                        
+                        //var refundDto = new RefundItemDto();
+                        //refundDto.Amount = refundN.Amount;
+                        //refundDto.Count = refundN.Count;
+                        //refundDto.Discount = refundN.Discount;
+                        //refundDto.Id = refundN.Id;
+                        //refundDto.Price = refundN.Price;
+                        //refundDto.PriceItem_Id = refundN.PriceItem_Id;
+                        //refundDto.RefundDocument_Id = refundN.RefundDocument_Id;
+                        //refundDto.SaleItem_Id = refundN.SaleItem_Id;
+
+                        //container.Items = refundDto;
+
+                        refund.Id = client.SaveRefund(refund);
 
                         var receiptItems = new List<PriceItem>();
                         foreach (var refundItem in RefundItems)
@@ -263,7 +287,7 @@ namespace StoreAppTest.ViewModels
                             receiptItems.Add(new PriceItem()
                             {
                                 PriceItemData = refundItem.PriceItemData,
-                                Remainders = (int)refundItem.PriceItemData.Remainders.First().Amount
+                                Remainders = refundItem.Remainders + refundItem.SoldCount//(int)refundItem.PriceItemData.Remainders.First().Amount
                             });
                         }
 
@@ -279,7 +303,13 @@ namespace StoreAppTest.ViewModels
                     }
                     catch (Exception e)
                     {
-                        MessageBox.Show(e.Message);
+                        DispatcherHelper.CheckBeginInvokeOnUI(() =>
+                        {
+                            MessageChildWindow msch = new MessageChildWindow();
+                            msch.Title = "Ошибка";
+                            msch.Message = e.Message;
+                            msch.Show();
+                        });
                     }
 
 

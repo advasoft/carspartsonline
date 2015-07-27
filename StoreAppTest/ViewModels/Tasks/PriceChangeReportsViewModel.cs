@@ -8,10 +8,11 @@ namespace StoreAppTest.ViewModels
     using System.Threading.Tasks;
     using System.Windows;
     using System.Windows.Input;
+    using Client;
+    using Client.Model;
     using Controls;
     using DevExpress.Data.PLinq.Helpers;
     using GalaSoft.MvvmLight.Threading;
-    using StoreAppDataService;
     using Utilities;
 
     public class PriceChangeReportsViewModel : ViewModelBase
@@ -57,11 +58,11 @@ namespace StoreAppTest.ViewModels
             IsLoading = true;
             PriceChangeReports.Clear();
 
-                        string uri = string.Concat(
-                Application.Current.Host.Source.Scheme, "://",
-                Application.Current.Host.Source.Host, ":",
-                Application.Current.Host.Source.Port,
-                "/StoreAppDataService.svc/");
+                //        string uri = string.Concat(
+                //Application.Current.Host.Source.Scheme, "://",
+                //Application.Current.Host.Source.Host, ":",
+                //Application.Current.Host.Source.Port,
+                //"/StoreAppDataService.svc/");
 
 
             Task.Factory.StartNew(() =>
@@ -69,12 +70,14 @@ namespace StoreAppTest.ViewModels
                 try
                 {
 
-                    StoreDbContext ctx = new StoreDbContext(
-                        new Uri(uri
-                            , UriKind.Absolute));
+                    //StoreDbContext ctx = new StoreDbContext(
+                    //    new Uri(uri
+                    //        , UriKind.Absolute));
 
+                    var client = new StoreapptestClient();
 
-                    var reports = ctx.ExecuteSyncronous(ctx.PriceChangeReports.Expand("Creator,PriceChangeReportItems/NewPrice,PriceChangeReportItems/PreviousPrice,PriceChangeReportItems/PriceItem/Remainders")).ToList();
+                    //var reports = ctx.ExecuteSyncronous(ctx.PriceChangeReports.Expand("Creator,PriceChangeReportItems/NewPrice,PriceChangeReportItems/PreviousPrice,PriceChangeReportItems/PriceItem/Remainders")).ToList();
+                    var reports = client.GetPriceChangeReports();
                     foreach (var source in reports.OrderByDescending(o => o.ReportDate))
                     {
                         PriceChangeReportItemModel item = new PriceChangeReportItemModel();

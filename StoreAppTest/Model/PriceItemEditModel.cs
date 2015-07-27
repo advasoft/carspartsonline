@@ -5,7 +5,7 @@ namespace StoreAppTest.Model
     using System;
     using System.Collections.ObjectModel;
     using System.Windows.Input;
-    using StoreAppDataService;
+    using Client.Model;
     using Utilities;
 
     public class PriceItemEditModel : Notified
@@ -170,7 +170,10 @@ namespace StoreAppTest.Model
 
         public UnitOfMeasure Uom
         {
-            get { return _Uom; }
+            get
+            {
+                return _Uom;
+            }
             set
             {
                 _Uom = value;

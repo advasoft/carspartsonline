@@ -6,8 +6,8 @@ namespace StoreAppTest.ViewModels
     using System.Linq;
     using System.Threading.Tasks;
     using System.Windows;
+    using Client;
     using GalaSoft.MvvmLight.Threading;
-    using StoreAppDataService;
     using Utilities;
 
     public class PriceChangesReportsItemViewModel : ViewModelBase
@@ -77,11 +77,11 @@ namespace StoreAppTest.ViewModels
         protected override void LoadViewHandler()
         {
             IsLoading = true;
-            string uri = string.Concat(
-                Application.Current.Host.Source.Scheme, "://",
-                Application.Current.Host.Source.Host, ":",
-                Application.Current.Host.Source.Port,
-                "/StoreAppDataService.svc/");
+            //string uri = string.Concat(
+            //    Application.Current.Host.Source.Scheme, "://",
+            //    Application.Current.Host.Source.Host, ":",
+            //    Application.Current.Host.Source.Port,
+            //    "/StoreAppDataService.svc/");
 
 
 
@@ -90,14 +90,16 @@ namespace StoreAppTest.ViewModels
                 try
                 {
 
-                    StoreDbContext ctx = new StoreDbContext(
-                        new Uri(uri
-                            , UriKind.Absolute));
+                    //StoreDbContext ctx = new StoreDbContext(
+                    //    new Uri(uri
+                    //        , UriKind.Absolute));
 
-                    var reportItems =
-                        ctx.ExecuteSyncronous(ctx.PriceChangeReportItems
-                        .Expand("PriceItem,PreviousPrice,NewPrice,PriceItem/Gear,PriceItem/UnitOfMeasure,")
-                        .Where(w => w.PriceChangeReport_Id == _priceReport)).ToList();
+                    var client = new StoreapptestClient();
+                    //var reportItems =
+                    //    ctx.ExecuteSyncronous(ctx.PriceChangeReportItems
+                    //    .Expand("PriceItem,PreviousPrice,NewPrice,PriceItem/Gear,PriceItem/UnitOfMeasure,")
+                    //    .Where(w => w.PriceChangeReport_Id == _priceReport)).ToList();
+                    var reportItems = client.GetPriceChangeReportItems(_priceReport);
 
                     int index = 1;
                     foreach (var reportItem in reportItems)
@@ -142,12 +144,13 @@ namespace StoreAppTest.ViewModels
                         item.PreviewsPrice_Id = previouPriceId;
 
                         item.PriceItem_Id = reportItem.PriceItem_Id;
-                        item.Uom = reportItem.PriceItem.UnitOfMeasure.Name;
+                        item.Uom = reportItem.PriceItem.Uom_Id;
                         //item.WholesalePrice = reportItem.PriceItem.WholesalePrice;
 
-                        var rems =
-                            ctx.ExecuteSyncronous(ctx.Remainders.Where(w => w.PriceItem_Id == reportItem.PriceItem_Id && w.Warehouse_Id == App.CurrentUser.Warehouse_Id))
-                                .ToList();
+                        //var rems =
+                        //    ctx.ExecuteSyncronous(ctx.Remainders.Where(w => w.PriceItem_Id == reportItem.PriceItem_Id && w.Warehouse_Id == App.CurrentUser.Warehouse_Id))
+                        //        .ToList();
+                        var rems = client.GetRemaindersByPriceItem(reportItem.PriceItem_Id, App.CurrentUser.Warehouse_Id);
 
                         item.Remainders = (int)rems.Sum(s => s.Amount);
                         item.IsAccept = true;

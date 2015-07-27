@@ -7,8 +7,8 @@ namespace StoreAppTest.ViewModels.Tasks
     using System.Linq;
     using System.Threading.Tasks;
     using System.Windows;
+    using Client.Model;
     using GalaSoft.MvvmLight.Threading;
-    using StoreAppDataService;
     using Utilities;
 
     public class RemaindersWarehouseAmountViewModel : ViewModelBase

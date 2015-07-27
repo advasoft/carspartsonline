@@ -3,7 +3,7 @@ namespace StoreAppTest.Model
 {
     using System;
     using System.Collections.Generic;
-    using StoreAppDataService;
+    using Client.Model;
 
     public class Receipt
     {

@@ -110,7 +110,7 @@
             <TextBlock HorizontalAlignment="Left" Margin="393,11,0,0" TextWrapping="Wrap" Text="по" VerticalAlignment="Top" Width="19" Height="22" FontSize="14" Grid.Column="1"/>
             <dxe:DateEdit HorizontalAlignment="Left" Margin="422,6,0,0" VerticalAlignment="Top" Width="123" Height="32" EditValue="{Binding AtToDate, Mode=TwoWay}" IsEnabled="{Binding SelectedPeriodType, Converter={StaticResource PeriodTypesToBoolBackConverter}}" Grid.Column="1"/>
         </Grid>
-        <dxg:GridControl x:Name="IncomesGridControl" AutoGenerateColumns="None" Grid.Column="1" Grid.Row="1" SelectionMode="Row" ItemsSource="{Binding IncomeItems}" SelectedItem="{Binding SelectedIncome, Mode=TwoWay}" SelectedItems="{Binding SelectedIncomeItems, Mode=TwoWay}" ShowLoadingPanel="{Binding IsLoading}">
+        <dxg:GridControl x:Name="IncomesGridControl" AutoGenerateColumns="None" Grid.Column="1" Grid.Row="1" SelectionMode="Row" ItemsSource="{Binding IncomeItems}" SelectedItem="{Binding SelectedIncome, Mode=TwoWay}" SelectedItems="{Binding SelectedIncomeItems, Mode=TwoWay}" ShowLoadingPanel="{Binding IsLoading}" CustomColumnSort="IncomesGridControl_CustomColumnSort">
             <dxg:GridControl.Resources>
                 <Style TargetType="dxg:TableView">
                     <Setter Property="ColumnHeaderTemplate">
@@ -123,13 +123,15 @@
                 </Style>
             </dxg:GridControl.Resources>
             <dxg:GridControl.Columns>
-                <dxg:GridColumn FieldName="Income" GroupIndex="0" Header="Документ"/>
+                <dxg:GridColumn FieldName="Income" GroupIndex="0"  Header="Документ" SortOrder="Descending" SortMode="Custom" />
                 <dxg:GridColumn FieldName="Number" Header="№" ReadOnly="True" Width="40"/>
+                <dxg:GridColumn FieldName="IncomeDate" Header="Дата оприходования" ReadOnly="True" Width="120" Visible="False" SortIndex="0" SortOrder="Descending" SortMode="Value"/>
                 <!--<dxg:GridColumn FieldName="Articul" Header="Артикул" ReadOnly="True" Width="100"/>-->
                 <dxg:GridColumn FieldName="CatalogNumber" Header="Каталожный номер" ReadOnly="True" Width="100"/>
                 <dxg:GridColumn FieldName="IsDuplicate" Header="*" ReadOnly="True" Width="20"/>
                 <dxg:GridColumn FieldName="Name" Header="Название" ReadOnly="True" Width="200"/>
                 <dxg:GridColumn FieldName="BuyPriceRur" Header="Закупочная цена (руб.)" ReadOnly="True" Width="80">
+                    
                     <!--<dxg:GridColumn.EditSettings>
                         <dxe:TextEditSettings Mask="Numeric"
         					DisplayFormat="C"/>

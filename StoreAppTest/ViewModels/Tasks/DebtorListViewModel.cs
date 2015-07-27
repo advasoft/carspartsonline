@@ -8,6 +8,8 @@ namespace StoreAppTest.ViewModels
     using System.Threading.Tasks;
     using System.Windows;
     using System.Windows.Input;
+    using Client;
+    using Client.Model;
     using Controls;
     using Event;
     using GalaSoft.MvvmLight.Threading;
@@ -15,7 +17,6 @@ namespace StoreAppTest.ViewModels
     using Microsoft.Practices.Prism.PubSubEvents;
     using Microsoft.Practices.ServiceLocation;
     using Model;
-    using StoreAppDataService;
     using Utilities;
 
     public class DebtorListViewModel : ViewModelBase
@@ -71,32 +72,38 @@ namespace StoreAppTest.ViewModels
             IsLoading = true;
             DebtorItems.Clear();
 
-            string uri = string.Concat(
-                Application.Current.Host.Source.Scheme, "://",
-                Application.Current.Host.Source.Host, ":",
-                Application.Current.Host.Source.Port,
-                "/StoreAppDataService.svc/");
+            //string uri = string.Concat(
+            //    Application.Current.Host.Source.Scheme, "://",
+            //    Application.Current.Host.Source.Host, ":",
+            //    Application.Current.Host.Source.Port,
+            //    "/StoreAppDataService.svc/");
 
             
             Task.Factory.StartNew(() =>
             {
-                StoreDbContext ctx = new StoreDbContext(
-                    new Uri(uri
-                        , UriKind.Absolute));
+                //StoreDbContext ctx = new StoreDbContext(
+                //    new Uri(uri
+                //        , UriKind.Absolute));
 
                 List<SaleDocument> salesDb = null;
-                var query = ctx.SaleDocuments.Expand("SaleItems,Customer").Where(f => f.IsInDebt && f.Creator_Id == App.CurrentUser.UserName);
+                //var query = ctx.SaleDocuments.Expand("SaleItems,Customer").Where(f => f.IsInDebt && f.Creator_Id == App.CurrentUser.UserName);
+                //if (_customer != null)
+                //    query = query.Where(c => c.Customer_Name == _customer.Name);
+
+                //salesDb =
+                //    ctx.ExecuteSyncronous(query).ToList();
+                var client = new StoreapptestClient();
+                var query = client.GetUserDebtReceipts(App.CurrentUser.UserName);
+
                 if (_customer != null)
-                    query = query.Where(c => c.Customer_Name == _customer.Name);
+                    query = client.GetUserDebtReceipts(App.CurrentUser.UserName, _customer.Name);
 
-                salesDb =
-                    ctx.ExecuteSyncronous(query).ToList();
+                IList<Client.Model.RefundItem> refs = default(IList<Client.Model.RefundItem>);
 
-                IList<StoreAppDataService.RefundItem> refs = default(IList<StoreAppDataService.RefundItem>);
-
-                var refundsDb =
-                    ctx.ExecuteSyncronous(ctx.RefundDocuments.Expand("RefundItems").Where(f => f.SaleDocument.IsInDebt && f.Creator_Id == App.CurrentUser.UserName))
-                        .ToList();
+                //var refundsDb =
+                //    ctx.ExecuteSyncronous(ctx.RefundDocuments.Expand("RefundItems").Where(f => f.SaleDocument.IsInDebt && f.Creator_Id == App.CurrentUser.UserName))
+                //        .ToList();
+                var refundsDb = client.GetUserDebtRefunds(App.CurrentUser.UserName);
 
                 if (refundsDb != null)
                 {
@@ -104,7 +111,7 @@ namespace StoreAppTest.ViewModels
                 }
 
                 List<DebtItem> salesDebtItems = new List<DebtItem>();
-                salesDb.ForEach(i =>
+                query.ForEach(i =>
                 {
 
                     if (refs == null || !refs.Any(v => v.SaleItem_Id == i.Id) ||
@@ -133,14 +140,16 @@ namespace StoreAppTest.ViewModels
 
 
                 List<DebtDischargeDocument> dischDb = null;
-                IQueryable<DebtDischargeDocument> queryDisch = ctx.DebtDischargeDocuments;
+                //IQueryable<DebtDischargeDocument> queryDisch = ctx.DebtDischargeDocuments;
+                IEnumerable<DebtDischargeDocument> queryDisch =
+                        client.GetUserDebtDischargeDocuments(App.CurrentUser.UserName);
 
                 if (_customer != null)
                     queryDisch = queryDisch.Where(c => c.Debtor_Id == _customer.Name);
 
-                dischDb =
-                    ctx.ExecuteSyncronous(queryDisch).ToList();
-
+                //dischDb =
+                //    ctx.ExecuteSyncronous(queryDisch).ToList();
+                dischDb = queryDisch.ToList();
                 dischDb.ForEach(i =>
                 {
                     salesDebtItems.Add(new DebtItem()

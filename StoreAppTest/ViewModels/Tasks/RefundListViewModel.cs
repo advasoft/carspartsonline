@@ -8,13 +8,14 @@ namespace StoreAppTest.ViewModels
     using System.Threading.Tasks;
     using System.Windows;
     using System.Windows.Input;
+    using Client;
+    using Client.Model;
     using Controls;
     using Event;
     using GalaSoft.MvvmLight.Threading;
     using Microsoft.Practices.Prism.PubSubEvents;
     using Microsoft.Practices.ServiceLocation;
     using Model;
-    using StoreAppDataService;
     using Utilities;
 
     public class RefundListViewModel : ViewModelBase
@@ -162,7 +163,7 @@ namespace StoreAppTest.ViewModels
             {
                 IsLoading = true;
 
-                var receivedUri = GetContextUri();
+                //var receivedUri = GetContextUri();
 
                 RefundDocuments.Clear();
 
@@ -171,29 +172,31 @@ namespace StoreAppTest.ViewModels
 
                     try
                     {
-                        var ctx = new StoreDbContext(receivedUri);
-
+                        //var ctx = new StoreDbContext(receivedUri);
+                        var client = new StoreapptestClient();
                         IList<RefundDocument> refundDocuments = new List<RefundDocument>();
 
                         if (_showonlyfrocurrentuser)
                         {
                             refundDocuments =
-                                ctx.ExecuteSyncronous(ctx.RefundDocuments.Expand(
-                                    "SaleDocument,RefundItems")
-                                    .Where(rl => rl.RefundDate >= AtFromDate
-                                    && rl.RefundDate <= AtToDate
-                                    && rl.Creator_Id == App.CurrentUser.UserName)
-                                    .OrderByDescending(or => or.RefundDate)).ToList();
+                                //ctx.ExecuteSyncronous(ctx.RefundDocuments.Expand(
+                                //    "SaleDocument,RefundItems")
+                                //    .Where(rl => rl.RefundDate >= AtFromDate
+                                //    && rl.RefundDate <= AtToDate
+                                //    && rl.Creator_Id == App.CurrentUser.UserName)
+                                //    .OrderByDescending(or => or.RefundDate)).ToList();
+                                client.GetRefundDocuments(AtFromDate, AtToDate, App.CurrentUser.UserName).ToList();
                         }
                         else
                         {
 
                             refundDocuments =
-                                ctx.ExecuteSyncronous(ctx.RefundDocuments.Expand(
-                                    "SaleDocument,RefundItems")
-                                    .Where(rl => rl.RefundDate >= AtFromDate 
-                                    && rl.RefundDate <= AtToDate)
-                                    .OrderByDescending(or => or.RefundDate)).ToList();
+                                //ctx.ExecuteSyncronous(ctx.RefundDocuments.Expand(
+                                //    "SaleDocument,RefundItems")
+                                //    .Where(rl => rl.RefundDate >= AtFromDate 
+                                //    && rl.RefundDate <= AtToDate)
+                                //    .OrderByDescending(or => or.RefundDate)).ToList();
+                                client.GetRefundDocuments(AtFromDate, AtToDate, "").ToList();
                         }
 
                         var tempRefund = new List<RefundDocumentModel>();

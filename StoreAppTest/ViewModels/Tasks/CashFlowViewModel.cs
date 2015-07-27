@@ -5,12 +5,13 @@ namespace StoreAppTest.ViewModels
     using System;
     using System.Collections.ObjectModel;
     using System.Linq;
+    using System.Runtime.Serialization;
     using System.Threading.Tasks;
     using System.Windows;
     using System.Windows.Input;
+    using Client;
     using Controls;
     using GalaSoft.MvvmLight.Threading;
-    using StoreAppDataService;
     using Utilities;
 
     public class CashFlowViewModel : ViewModelBase
@@ -226,393 +227,379 @@ namespace StoreAppTest.ViewModels
                 try
                 {
 
-                    StoreDbContext ctx = new StoreDbContext(
-                        new Uri(uri
-                            , UriKind.Absolute));
+                    //StoreDbContext ctx = new StoreDbContext(
+                    //    new Uri(uri
+                    //        , UriKind.Absolute));
 
-                    StoreDbContext debtCtx = new StoreDbContext(
-                        new Uri(uri
-                            , UriKind.Absolute));
+                    //StoreDbContext debtCtx = new StoreDbContext(
+                    //    new Uri(uri
+                    //        , UriKind.Absolute));
 
-                    var realizations = ctx.ExecuteSyncronous(
-                        ctx.SalesPerDayItems
-                        .Expand("SaleDocumentsPerDay,SaleItem/SaleDocument/Creator,SaleItem/PriceItem/Prices")
-                        .Where(w => w.SaleDocumentsPerDay.SaleDocumentsDate >= AtFromDate
-                            && w.SaleDocumentsPerDay.SaleDocumentsDate <= AtToDate)).ToList();
+                    //var realizations = ctx.ExecuteSyncronous(
+                    //    ctx.SalesPerDayItems
+                    //    .Expand("SaleDocumentsPerDay,SaleItem/SaleDocument/Creator,SaleItem/PriceItem/Prices")
+                    //    .Where(w => w.SaleDocumentsPerDay.SaleDocumentsDate >= AtFromDate
+                    //        && w.SaleDocumentsPerDay.SaleDocumentsDate <= AtToDate)).ToList();
 
-                    var previousRealizations = ctx.ExecuteSyncronous(
-                        ctx.SalesPerDayItems
-                        .Expand("SaleDocumentsPerDay,SaleItem/SaleDocument/Creator,SaleItem/PriceItem/Prices")
-                        .Where(w => w.SaleDocumentsPerDay.SaleDocumentsDate >= PreviousAtFromDate
-                            && w.SaleDocumentsPerDay.SaleDocumentsDate <= PreviousAtToDate)).ToList();
+                    //var previousRealizations = ctx.ExecuteSyncronous(
+                    //    ctx.SalesPerDayItems
+                    //    .Expand("SaleDocumentsPerDay,SaleItem/SaleDocument/Creator,SaleItem/PriceItem/Prices")
+                    //    .Where(w => w.SaleDocumentsPerDay.SaleDocumentsDate >= PreviousAtFromDate
+                    //        && w.SaleDocumentsPerDay.SaleDocumentsDate <= PreviousAtToDate)).ToList();
 
-                    var tempGroupedRealzation =
-                        from r in realizations
-                        select new
-                        {
-                            Cashier = r.SaleItem.SaleDocument.Creator.DisplayName,
-                            Sales = r.Amount,
-                            WholesaleSales = r.Count * (r.SaleItem.PriceItem.Prices.Count > 0
-                                            ? r.SaleItem.PriceItem.Prices.Where(
-                                                p => p.PriceDate <= r.SaleItem.SaleDocument.SaleDate)
-                                                .OrderByDescending(or => or.PriceDate)
-                                                .First()
-                                                .Price
-                                              : 0)
-                        };
+                    //var tempGroupedRealzation =
+                    //    from r in realizations
+                    //    select new
+                    //    {
+                    //        Cashier = r.SaleItem.SaleDocument.Creator.DisplayName,
+                    //        Sales = r.Amount,
+                    //        WholesaleSales = r.Count * (r.SaleItem.PriceItem.Prices.Count > 0
+                    //                        ? r.SaleItem.PriceItem.Prices.Where(
+                    //                            p => p.PriceDate <= r.SaleItem.SaleDocument.SaleDate)
+                    //                            .OrderByDescending(or => or.PriceDate)
+                    //                            .First()
+                    //                            .Price
+                    //                          : 0)
+                    //    };
 
-                    var groupedRealization = from r in tempGroupedRealzation
-                                             group r by r.Cashier
-                                                 into cshrs
-                                                 select new
-                                                 {
-                                                     Cashier = cshrs.Key,
-                                                     Sales = cshrs.Sum(s => s.Sales),
-                                                     WholesaleSales = cshrs.Sum(s => s.WholesaleSales)
-                                                 };
-
-
-                    var tempGroupedPreviousRealization =
-                        from r in previousRealizations
-                        select new
-                        {
-                            Cashier = r.SaleItem.SaleDocument.Creator.DisplayName,
-                            Sales = r.Amount,
-                            WholesaleSales = r.Count * (r.SaleItem.PriceItem.Prices.Count > 0
-                                            ? r.SaleItem.PriceItem.Prices.Where(
-                                                p => p.PriceDate <= r.SaleItem.SaleDocument.SaleDate)
-                                                .OrderByDescending(or => or.PriceDate)
-                                                .First()
-                                                .Price
-                                              : 0)
-                        };
-                    var groupedPreviousRealization = from r in tempGroupedPreviousRealization
-                                                     group r by r.Cashier
-                                                         into cshrs
-                                                         select new
-                                                         {
-                                                             Cashier = cshrs.Key,
-                                                             Sales = cshrs.Sum(s => s.Sales),
-                                                             WholesaleSales = cshrs.Sum(s => s.WholesaleSales)
-                                                         };
-
-                    var realization = from r in groupedRealization
-                                      join pr in groupedPreviousRealization on r.Cashier equals pr.Cashier into prvs
-                                      from previous in prvs.DefaultIfEmpty()
-                                      select new
-                                      {
-                                          Cashier = r.Cashier,
-                                          Sales = r.Sales,
-                                          WholesaleSales = r.WholesaleSales,
-                                          PreviousSales = previous != null ? previous.Sales : 0,
-                                          PreviousWholesaleSales = previous != null ? previous.WholesaleSales : 0
-                                      };
+                    //var groupedRealization = from r in tempGroupedRealzation
+                    //                         group r by r.Cashier
+                    //                             into cshrs
+                    //                             select new
+                    //                             {
+                    //                                 Cashier = cshrs.Key,
+                    //                                 Sales = cshrs.Sum(s => s.Sales),
+                    //                                 WholesaleSales = cshrs.Sum(s => s.WholesaleSales)
+                    //                             };
 
 
-                    var refunds = ctx.ExecuteSyncronous(
-                       ctx.RefundItems.Expand("RefundDocument/SaleDocument,SaleItem/SaleDocument/Creator,PriceItem/Prices") //PriceItem/Gear,PriceItem/UnitOfMeasure,PriceItem/Remainders,PriceItem/Prices
-                           .Where(
-                               w =>
-                                   w.RefundDocument.RefundDate >= AtFromDate
-                                   && w.RefundDocument.RefundDate <= AtToDate
-                                   && !w.RefundDocument.SaleDocument.IsInDebt)).ToList();
+                    //var tempGroupedPreviousRealization =
+                    //    from r in previousRealizations
+                    //    select new
+                    //    {
+                    //        Cashier = r.SaleItem.SaleDocument.Creator.DisplayName,
+                    //        Sales = r.Amount,
+                    //        WholesaleSales = r.Count * (r.SaleItem.PriceItem.Prices.Count > 0
+                    //                        ? r.SaleItem.PriceItem.Prices.Where(
+                    //                            p => p.PriceDate <= r.SaleItem.SaleDocument.SaleDate)
+                    //                            .OrderByDescending(or => or.PriceDate)
+                    //                            .First()
+                    //                            .Price
+                    //                          : 0)
+                    //    };
+                    //var groupedPreviousRealization = from r in tempGroupedPreviousRealization
+                    //                                 group r by r.Cashier
+                    //                                     into cshrs
+                    //                                     select new
+                    //                                     {
+                    //                                         Cashier = cshrs.Key,
+                    //                                         Sales = cshrs.Sum(s => s.Sales),
+                    //                                         WholesaleSales = cshrs.Sum(s => s.WholesaleSales)
+                    //                                     };
 
-                    var previousRefunds = ctx.ExecuteSyncronous(
-                       ctx.RefundItems.Expand("RefundDocument/SaleDocument,SaleItem/SaleDocument/Creator,PriceItem/Prices") //PriceItem/Gear,PriceItem/UnitOfMeasure,PriceItem/Remainders,PriceItem/Prices
-                           .Where(
-                               w =>
-                                   w.RefundDocument.RefundDate >= PreviousAtFromDate
-                                   && w.RefundDocument.RefundDate <= PreviousAtToDate
-                                   && !w.RefundDocument.SaleDocument.IsInDebt)).ToList();
-
-
-                    var tempGroupedRefunds =
-                        from r in refunds
-                        select new
-                        {
-                            Cashier = r.SaleItem.SaleDocument.Creator.DisplayName,
-                            Refunds = r.Amount,
-                            WholesaleSales = r.Count * (r.SaleItem.PriceItem.Prices.Count > 0
-                                            ? r.SaleItem.PriceItem.Prices.Where(
-                                                p => p.PriceDate <= r.SaleItem.SaleDocument.SaleDate)
-                                                .OrderByDescending(or => or.PriceDate)
-                                                .First()
-                                                .Price
-                                              : 0)
-                        };
-                    var groupedRefunds = from r in tempGroupedRefunds
-                                         group r by r.Cashier
-                                             into cshrs
-                                             select new
-                                             {
-                                                 Cashier = cshrs.Key,
-                                                 Refunds = cshrs.Sum(s => s.Refunds),
-                                                 WholesaleRefunds = cshrs.Sum(s => s.WholesaleSales)
-
-                                             };
+                    //var realization = from r in groupedRealization
+                    //                  join pr in groupedPreviousRealization on r.Cashier equals pr.Cashier into prvs
+                    //                  from previous in prvs.DefaultIfEmpty()
+                    //                  select new
+                    //                  {
+                    //                      Cashier = r.Cashier,
+                    //                      Sales = r.Sales,
+                    //                      WholesaleSales = r.WholesaleSales,
+                    //                      PreviousSales = previous != null ? previous.Sales : 0,
+                    //                      PreviousWholesaleSales = previous != null ? previous.WholesaleSales : 0
+                    //                  };
 
 
-                    var tempGroupedPreviousRefunds =
-                        from r in previousRefunds
-                        select new
-                        {
-                            Cashier = r.SaleItem.SaleDocument.Creator.DisplayName,
-                            Refunds = r.Amount,
-                            WholesaleSales = r.Count * (r.SaleItem.PriceItem.Prices.Count > 0
-                                            ? r.SaleItem.PriceItem.Prices.Where(
-                                                p => p.PriceDate <= r.SaleItem.SaleDocument.SaleDate)
-                                                .OrderByDescending(or => or.PriceDate)
-                                                .First()
-                                                .Price
-                                              : 0)
-                        };
+                    //var refunds = ctx.ExecuteSyncronous(
+                    //   ctx.RefundItems.Expand("RefundDocument/SaleDocument,SaleItem/SaleDocument/Creator,PriceItem/Prices") //PriceItem/Gear,PriceItem/UnitOfMeasure,PriceItem/Remainders,PriceItem/Prices
+                    //       .Where(
+                    //           w =>
+                    //               w.RefundDocument.RefundDate >= AtFromDate
+                    //               && w.RefundDocument.RefundDate <= AtToDate
+                    //               && !w.RefundDocument.SaleDocument.IsInDebt)).ToList();
 
-                    var groupedPreviousRefunds = from r in tempGroupedPreviousRefunds
-                                                 group r by r.Cashier
-                                                     into cshrs
-                                                     select new
-                                                     {
-                                                         Cashier = cshrs.Key,
-                                                         Refunds = cshrs.Sum(s => s.Refunds),
-                                                         WholesaleRefunds = cshrs.Sum(s => s.WholesaleSales)
-
-                                                     };
-
-                    var refund = from r in groupedRefunds
-                                 join pr in groupedPreviousRefunds on r.Cashier equals pr.Cashier into prvs
-                                 from previous in prvs.DefaultIfEmpty()
-                                 select new
-                                 {
-                                     Cashier = r.Cashier,
-                                     Refunds = r.Refunds,
-                                     WholesaleRefunds = r.WholesaleRefunds,
-                                     PreviousRefunds = previous != null ? previous.Refunds : 0,
-                                     PreviousWholesaleRefunds = previous != null ? previous.WholesaleRefunds : 0
-                                 };
+                    //var previousRefunds = ctx.ExecuteSyncronous(
+                    //   ctx.RefundItems.Expand("RefundDocument/SaleDocument,SaleItem/SaleDocument/Creator,PriceItem/Prices") //PriceItem/Gear,PriceItem/UnitOfMeasure,PriceItem/Remainders,PriceItem/Prices
+                    //       .Where(
+                    //           w =>
+                    //               w.RefundDocument.RefundDate >= PreviousAtFromDate
+                    //               && w.RefundDocument.RefundDate <= PreviousAtToDate
+                    //               && !w.RefundDocument.SaleDocument.IsInDebt)).ToList();
 
 
-                    var debts = realizations.Where(r => r.SaleItem.SaleDocument.IsInDebt);
+                    //var tempGroupedRefunds =
+                    //    from r in refunds
+                    //    select new
+                    //    {
+                    //        Cashier = r.SaleItem.SaleDocument.Creator.DisplayName,
+                    //        Refunds = r.Amount,
+                    //        WholesaleSales = r.Count * (r.SaleItem.PriceItem.Prices.Count > 0
+                    //                        ? r.SaleItem.PriceItem.Prices.Where(
+                    //                            p => p.PriceDate <= r.SaleItem.SaleDocument.SaleDate)
+                    //                            .OrderByDescending(or => or.PriceDate)
+                    //                            .First()
+                    //                            .Price
+                    //                          : 0)
+                    //    };
+                    //var groupedRefunds = from r in tempGroupedRefunds
+                    //                     group r by r.Cashier
+                    //                         into cshrs
+                    //                         select new
+                    //                         {
+                    //                             Cashier = cshrs.Key,
+                    //                             Refunds = cshrs.Sum(s => s.Refunds),
+                    //                             WholesaleRefunds = cshrs.Sum(s => s.WholesaleSales)
+
+                    //                         };
 
 
-                    var previousDebts = previousRealizations.Where(r => r.SaleItem.SaleDocument.IsInDebt);
+                    //var tempGroupedPreviousRefunds =
+                    //    from r in previousRefunds
+                    //    select new
+                    //    {
+                    //        Cashier = r.SaleItem.SaleDocument.Creator.DisplayName,
+                    //        Refunds = r.Amount,
+                    //        WholesaleSales = r.Count * (r.SaleItem.PriceItem.Prices.Count > 0
+                    //                        ? r.SaleItem.PriceItem.Prices.Where(
+                    //                            p => p.PriceDate <= r.SaleItem.SaleDocument.SaleDate)
+                    //                            .OrderByDescending(or => or.PriceDate)
+                    //                            .First()
+                    //                            .Price
+                    //                          : 0)
+                    //    };
+
+                    //var groupedPreviousRefunds = from r in tempGroupedPreviousRefunds
+                    //                             group r by r.Cashier
+                    //                                 into cshrs
+                    //                                 select new
+                    //                                 {
+                    //                                     Cashier = cshrs.Key,
+                    //                                     Refunds = cshrs.Sum(s => s.Refunds),
+                    //                                     WholesaleRefunds = cshrs.Sum(s => s.WholesaleSales)
+
+                    //                                 };
+
+                    //var refund = from r in groupedRefunds
+                    //             join pr in groupedPreviousRefunds on r.Cashier equals pr.Cashier into prvs
+                    //             from previous in prvs.DefaultIfEmpty()
+                    //             select new
+                    //             {
+                    //                 Cashier = r.Cashier,
+                    //                 Refunds = r.Refunds,
+                    //                 WholesaleRefunds = r.WholesaleRefunds,
+                    //                 PreviousRefunds = previous != null ? previous.Refunds : 0,
+                    //                 PreviousWholesaleRefunds = previous != null ? previous.WholesaleRefunds : 0
+                    //             };
 
 
-                    var tempGroupedDebts =
-                        from r in debts
-                        select new
-                        {
-                            Cashier = r.SaleItem.SaleDocument.Creator.DisplayName,
-                            Debts = r.Amount,
-                            WholesaleDebts =
-                                r.Count * (r.SaleItem.PriceItem.Prices.Count > 0
-                                                ? r.SaleItem.PriceItem.Prices.Where(
-                                                    p => p.PriceDate <= r.SaleItem.SaleDocument.SaleDate)
-                                                    .OrderByDescending(or => or.PriceDate)
-                                                    .First()
-                                                    .Price
-                                                : 0)
-                        };
-                    var groupedDebts = from r in tempGroupedDebts
-                                       group r by r.Cashier
-                                           into cshrs
-                                           select new
-                                           {
-                                               Cashier = cshrs.Key,
-                                               Debts = cshrs.Sum(s => s.Debts),
-                                               WholesaleDebts = cshrs.Sum(s => s.WholesaleDebts)
-                                           };
+                    //var debts = realizations.Where(r => r.SaleItem.SaleDocument.IsInDebt);
 
 
-
-                    var tempPreviousGroupedDebts =
-                        from r in previousDebts
-                        select new
-                        {
-                            Cashier = r.SaleItem.SaleDocument.Creator.DisplayName,
-                            Debts = r.Amount,
-                            WholesaleDebts =
-                                r.Count * (r.SaleItem.PriceItem.Prices.Count > 0
-                                                ? r.SaleItem.PriceItem.Prices.Where(
-                                                    p => p.PriceDate <= r.SaleItem.SaleDocument.SaleDate)
-                                                    .OrderByDescending(or => or.PriceDate)
-                                                    .First()
-                                                    .Price
-                                                : 0)
-                        };
-
-                    var groupedPreviousDebts = from r in tempPreviousGroupedDebts
-                                               group r by r.Cashier
-                                                   into cshrs
-                                                   select new
-                                                   {
-                                                       Cashier = cshrs.Key,
-                                                       Debts = cshrs.Sum(s => s.Debts),
-                                                       WholesaleDebts = cshrs.Sum(s => s.WholesaleDebts)
-                                                   };
-
-                    var debt = (from r in groupedDebts
-                                join pr in groupedPreviousDebts on r.Cashier equals pr.Cashier into prvs
-                                from previous in prvs.DefaultIfEmpty()
-                                select new
-                                {
-                                    Cashier = r.Cashier,
-                                    Debts = r.Debts,
-                                    WholesaleDebts = r.WholesaleDebts,
-                                    PreviousDebts = previous != null ? previous.Debts : 0,
-                                    PreviousWholesaleDebts = previous != null ? previous.WholesaleDebts : 0
-                                }).ToList();
-
-                    var additionalDebts = debtCtx.ExecuteSyncronous(
-                       debtCtx.DebtDischargeDocuments.Expand("Creator")
-                           .Where(w => !w.IsDischarge
-                                       && w.DischargeDate >= AtFromDate
-                                       && w.DischargeDate <= AtToDate)).ToList();
-
-                    var previousAdditionalDebts = debtCtx.ExecuteSyncronous(
-                       debtCtx.DebtDischargeDocuments.Expand("Creator")
-                           .Where(w => !w.IsDischarge
-                                       && w.DischargeDate >= PreviousAtFromDate
-                                       && w.DischargeDate <= PreviousAtToDate)).ToList();
+                    //var previousDebts = previousRealizations.Where(r => r.SaleItem.SaleDocument.IsInDebt);
 
 
-                    var groupedAdditionaDebts = from r in additionalDebts
-                                                group r by r.Creator.DisplayName
-                                                    into cshrs
-                                                    select new
-                                                    {
-                                                        Cashier = cshrs.Key,
-                                                        Debts = cshrs.Sum(s => s.Amount)
-                                                    };
-
-
-                    var groupedPreviousAdditionaDebts = from r in previousAdditionalDebts
-                                                        group r by r.Creator.DisplayName
-                                                            into cshrs
-                                                            select new
-                                                            {
-                                                                Cashier = cshrs.Key,
-                                                                Debts = cshrs.Sum(s => s.Amount)
-                                                            };
-
-                    var additionalDebt = from r in groupedAdditionaDebts
-                                         join pr in groupedPreviousAdditionaDebts on r.Cashier equals pr.Cashier into prvs
-                                         from previous in prvs.DefaultIfEmpty()
-                                         select new
-                                         {
-                                             Cashier = r.Cashier,
-                                             Debts = r.Debts,
-                                             WholesaleDebts = r.Debts,
-                                             PreviousDebts = previous != null ? previous.Debts : 0,
-                                             PreviousWholesaleDebts = previous != null ? previous.Debts : 0
-                                         };
-
-
-                    debt.AddRange(additionalDebt);
-
-                    var totalDebt = from d in debt
-                                    group d by d.Cashier
-                                        into dbt
-                                        select new
-                                        {
-                                            Cashier = dbt.Key,
-                                            Debts = dbt.Sum(s => s.Debts),
-                                            WholesaleDebts = dbt.Sum(s => s.WholesaleDebts),
-                                            PreviousDebts = dbt.Sum(s => s.PreviousDebts),
-                                            PreviousWholesaleDebts = dbt.Sum(s => s.PreviousWholesaleDebts)
-                                        };
-
-                    var debtDischarges = ctx.ExecuteSyncronous(
-                        ctx.DebtDischargeDocuments.Expand("Creator")
-                            .Where(w => w.IsDischarge
-                                        && w.DischargeDate >= AtFromDate
-                                        && w.DischargeDate <= AtToDate)).ToList();
-
-                    var previousDebtDischarges = ctx.ExecuteSyncronous(
-                        ctx.DebtDischargeDocuments.Expand("Creator")
-                            .Where(w => w.IsDischarge
-                                        && w.DischargeDate >= PreviousAtFromDate
-                                        && w.DischargeDate <= PreviousAtToDate)).ToList();
+                    //var tempGroupedDebts =
+                    //    from r in debts
+                    //    select new
+                    //    {
+                    //        Cashier = r.SaleItem.SaleDocument.Creator.DisplayName,
+                    //        Debts = r.Amount,
+                    //        WholesaleDebts =
+                    //            r.Count * (r.SaleItem.PriceItem.Prices.Count > 0
+                    //                            ? r.SaleItem.PriceItem.Prices.Where(
+                    //                                p => p.PriceDate <= r.SaleItem.SaleDocument.SaleDate)
+                    //                                .OrderByDescending(or => or.PriceDate)
+                    //                                .First()
+                    //                                .Price
+                    //                            : 0)
+                    //    };
+                    //var groupedDebts = from r in tempGroupedDebts
+                    //                   group r by r.Cashier
+                    //                       into cshrs
+                    //                       select new
+                    //                       {
+                    //                           Cashier = cshrs.Key,
+                    //                           Debts = cshrs.Sum(s => s.Debts),
+                    //                           WholesaleDebts = cshrs.Sum(s => s.WholesaleDebts)
+                    //                       };
 
 
 
-                    var groupedDebtDischarges = from r in debtDischarges
-                                                group r by r.Creator.DisplayName
-                                                    into cshrs
-                                                    select new
-                                                    {
-                                                        Cashier = cshrs.Key,
-                                                        Discharges = cshrs.Sum(s => s.Amount)
-                                                    };
+                    //var tempPreviousGroupedDebts =
+                    //    from r in previousDebts
+                    //    select new
+                    //    {
+                    //        Cashier = r.SaleItem.SaleDocument.Creator.DisplayName,
+                    //        Debts = r.Amount,
+                    //        WholesaleDebts =
+                    //            r.Count * (r.SaleItem.PriceItem.Prices.Count > 0
+                    //                            ? r.SaleItem.PriceItem.Prices.Where(
+                    //                                p => p.PriceDate <= r.SaleItem.SaleDocument.SaleDate)
+                    //                                .OrderByDescending(or => or.PriceDate)
+                    //                                .First()
+                    //                                .Price
+                    //                            : 0)
+                    //    };
 
-                    var groupedPreviousDebtDischarges = from r in previousDebtDischarges
-                                                        group r by r.Creator.DisplayName
-                                                            into cshrs
-                                                            select new
-                                                            {
-                                                                Cashier = cshrs.Key,
-                                                                Discharges = cshrs.Sum(s => s.Amount)
-                                                            };
+                    //var groupedPreviousDebts = from r in tempPreviousGroupedDebts
+                    //                           group r by r.Cashier
+                    //                               into cshrs
+                    //                               select new
+                    //                               {
+                    //                                   Cashier = cshrs.Key,
+                    //                                   Debts = cshrs.Sum(s => s.Debts),
+                    //                                   WholesaleDebts = cshrs.Sum(s => s.WholesaleDebts)
+                    //                               };
 
-                    var debtDischarge = from r in groupedDebtDischarges
-                                        join pr in groupedPreviousDebtDischarges on r.Cashier equals pr.Cashier into prvs
-                                        from previous in prvs.DefaultIfEmpty()
-                                        select new
-                                        {
-                                            Cashier = r.Cashier,
-                                            DebDischargests = r.Discharges,
-                                            PreviousDischarges = previous != null ? previous.Discharges : 0
-                                        };
+                    //var debt = (from r in groupedDebts
+                    //            join pr in groupedPreviousDebts on r.Cashier equals pr.Cashier into prvs
+                    //            from previous in prvs.DefaultIfEmpty()
+                    //            select new
+                    //            {
+                    //                Cashier = r.Cashier,
+                    //                Debts = r.Debts,
+                    //                WholesaleDebts = r.WholesaleDebts,
+                    //                PreviousDebts = previous != null ? previous.Debts : 0,
+                    //                PreviousWholesaleDebts = previous != null ? previous.WholesaleDebts : 0
+                    //            }).ToList();
 
-                    var totalData = from s in realization
-                        join r in refund on s.Cashier equals r.Cashier into rfnds
-                        join d in totalDebt on s.Cashier equals d.Cashier into dbts
-                        join dd in debtDischarge on s.Cashier equals dd.Cashier into dschrgs
-                        from rfndsItem in rfnds.DefaultIfEmpty()
-                        from dbtsItem in dbts.DefaultIfEmpty()
-                        from dschrgsItem in dschrgs.DefaultIfEmpty()
-                        select new
-                        {
-                            Cashier = s.Cashier,
-                            Sales = s.Sales,
-                            WholesaleSales = s.WholesaleSales,
-                            PreviousSales = s.PreviousSales,
-                            PreviousWholesaleSales = s.PreviousWholesaleSales,
-                            Refunds = rfndsItem != null ? rfndsItem.Refunds : 0,
-                            WholesaleRefunds = rfndsItem != null ? rfndsItem.WholesaleRefunds : 0,
-                            PreviousRefunds = rfndsItem != null ? rfndsItem.PreviousRefunds : 0,
-                            PreviousWholesaleRefunds = rfndsItem != null ? rfndsItem.PreviousWholesaleRefunds : 0,
-                            Debts = dbtsItem != null ? dbtsItem.Debts : 0,
-                            WholesaleDebts = dbtsItem != null ? dbtsItem.WholesaleDebts : 0,
-                            PreviousDebts = dbtsItem != null ? dbtsItem.PreviousDebts : 0,
-                            PreviousWholesaleDebts = dbtsItem != null ? dbtsItem.PreviousWholesaleDebts : 0,
-                            DebtDischarges = dschrgsItem != null ? dschrgsItem.DebDischargests : 0,
-                            PreviousDebtDischarges = dschrgsItem != null ? dschrgsItem.PreviousDischarges : 0
-                        };
+                    //var additionalDebts = debtCtx.ExecuteSyncronous(
+                    //   debtCtx.DebtDischargeDocuments.Expand("Creator")
+                    //       .Where(w => !w.IsDischarge
+                    //                   && w.DischargeDate >= AtFromDate
+                    //                   && w.DischargeDate <= AtToDate)).ToList();
+
+                    //var previousAdditionalDebts = debtCtx.ExecuteSyncronous(
+                    //   debtCtx.DebtDischargeDocuments.Expand("Creator")
+                    //       .Where(w => !w.IsDischarge
+                    //                   && w.DischargeDate >= PreviousAtFromDate
+                    //                   && w.DischargeDate <= PreviousAtToDate)).ToList();
+
+
+                    //var groupedAdditionaDebts = from r in additionalDebts
+                    //                            group r by r.Creator.DisplayName
+                    //                                into cshrs
+                    //                                select new
+                    //                                {
+                    //                                    Cashier = cshrs.Key,
+                    //                                    Debts = cshrs.Sum(s => s.Amount)
+                    //                                };
+
+
+                    //var groupedPreviousAdditionaDebts = from r in previousAdditionalDebts
+                    //                                    group r by r.Creator.DisplayName
+                    //                                        into cshrs
+                    //                                        select new
+                    //                                        {
+                    //                                            Cashier = cshrs.Key,
+                    //                                            Debts = cshrs.Sum(s => s.Amount)
+                    //                                        };
+
+                    //var additionalDebt = from r in groupedAdditionaDebts
+                    //                     join pr in groupedPreviousAdditionaDebts on r.Cashier equals pr.Cashier into prvs
+                    //                     from previous in prvs.DefaultIfEmpty()
+                    //                     select new
+                    //                     {
+                    //                         Cashier = r.Cashier,
+                    //                         Debts = r.Debts,
+                    //                         WholesaleDebts = r.Debts,
+                    //                         PreviousDebts = previous != null ? previous.Debts : 0,
+                    //                         PreviousWholesaleDebts = previous != null ? previous.Debts : 0
+                    //                     };
+
+
+                    //debt.AddRange(additionalDebt);
+
+                    //var totalDebt = from d in debt
+                    //                group d by d.Cashier
+                    //                    into dbt
+                    //                    select new
+                    //                    {
+                    //                        Cashier = dbt.Key,
+                    //                        Debts = dbt.Sum(s => s.Debts),
+                    //                        WholesaleDebts = dbt.Sum(s => s.WholesaleDebts),
+                    //                        PreviousDebts = dbt.Sum(s => s.PreviousDebts),
+                    //                        PreviousWholesaleDebts = dbt.Sum(s => s.PreviousWholesaleDebts)
+                    //                    };
+
+                    //var debtDischarges = ctx.ExecuteSyncronous(
+                    //    ctx.DebtDischargeDocuments.Expand("Creator")
+                    //        .Where(w => w.IsDischarge
+                    //                    && w.DischargeDate >= AtFromDate
+                    //                    && w.DischargeDate <= AtToDate)).ToList();
+
+                    //var previousDebtDischarges = ctx.ExecuteSyncronous(
+                    //    ctx.DebtDischargeDocuments.Expand("Creator")
+                    //        .Where(w => w.IsDischarge
+                    //                    && w.DischargeDate >= PreviousAtFromDate
+                    //                    && w.DischargeDate <= PreviousAtToDate)).ToList();
+
+
+
+                    //var groupedDebtDischarges = from r in debtDischarges
+                    //                            group r by r.Creator.DisplayName
+                    //                                into cshrs
+                    //                                select new
+                    //                                {
+                    //                                    Cashier = cshrs.Key,
+                    //                                    Discharges = cshrs.Sum(s => s.Amount)
+                    //                                };
+
+                    //var groupedPreviousDebtDischarges = from r in previousDebtDischarges
+                    //                                    group r by r.Creator.DisplayName
+                    //                                        into cshrs
+                    //                                        select new
+                    //                                        {
+                    //                                            Cashier = cshrs.Key,
+                    //                                            Discharges = cshrs.Sum(s => s.Amount)
+                    //                                        };
+
+                    //var debtDischarge = from r in groupedDebtDischarges
+                    //                    join pr in groupedPreviousDebtDischarges on r.Cashier equals pr.Cashier into prvs
+                    //                    from previous in prvs.DefaultIfEmpty()
+                    //                    select new
+                    //                    {
+                    //                        Cashier = r.Cashier,
+                    //                        DebDischargests = r.Discharges,
+                    //                        PreviousDischarges = previous != null ? previous.Discharges : 0
+                    //                    };
+
+                    //var totalData = from s in realization
+                    //    join r in refund on s.Cashier equals r.Cashier into rfnds
+                    //    join d in totalDebt on s.Cashier equals d.Cashier into dbts
+                    //    join dd in debtDischarge on s.Cashier equals dd.Cashier into dschrgs
+                    //    from rfndsItem in rfnds.DefaultIfEmpty()
+                    //    from dbtsItem in dbts.DefaultIfEmpty()
+                    //    from dschrgsItem in dschrgs.DefaultIfEmpty()
+                    //    select new
+                    //    {
+                    //        Cashier = s.Cashier,
+                    //        Sales = s.Sales,
+                    //        WholesaleSales = s.WholesaleSales,
+                    //        PreviousSales = s.PreviousSales,
+                    //        PreviousWholesaleSales = s.PreviousWholesaleSales,
+                    //        Refunds = rfndsItem != null ? rfndsItem.Refunds : 0,
+                    //        WholesaleRefunds = rfndsItem != null ? rfndsItem.WholesaleRefunds : 0,
+                    //        PreviousRefunds = rfndsItem != null ? rfndsItem.PreviousRefunds : 0,
+                    //        PreviousWholesaleRefunds = rfndsItem != null ? rfndsItem.PreviousWholesaleRefunds : 0,
+                    //        Debts = dbtsItem != null ? dbtsItem.Debts : 0,
+                    //        WholesaleDebts = dbtsItem != null ? dbtsItem.WholesaleDebts : 0,
+                    //        PreviousDebts = dbtsItem != null ? dbtsItem.PreviousDebts : 0,
+                    //        PreviousWholesaleDebts = dbtsItem != null ? dbtsItem.PreviousWholesaleDebts : 0,
+                    //        DebtDischarges = dschrgsItem != null ? dschrgsItem.DebDischargests : 0,
+                    //        PreviousDebtDischarges = dschrgsItem != null ? dschrgsItem.PreviousDischarges : 0
+                    //    };
+
+                    var client = new StoreapptestClient();
+                    var totalData = client.GetCashFlowItems(AtFromDate, AtToDate, PreviousAtFromDate, PreviousAtToDate,
+                        "");
 
                     foreach (var item in totalData)
                     {
                         var item1 = item;
                         DispatcherHelper.CheckBeginInvokeOnUI(() =>
                         {
-                            
-                            CashFlowItems.Add(new CashFlowItemModel()
-                            {
-                                Cashier = item1.Cashier,
-                                Sales = (int)item1.Sales,
-                                SalesByWholesales = (int)item1.WholesaleSales,
-                                PreviousSales = (int)item1.PreviousSales,
-                                PreviousSalesByWholesales = (int)item1.PreviousWholesaleSales,
-                                Refunds = (int)item1.Refunds,
-                                RefundsByWholesales = (int)item1.WholesaleRefunds,
-                                PreviousRefunds = (int)item1.PreviousRefunds,
-                                PreviousRefundsByWholesales = (int)item1.PreviousWholesaleRefunds,
-                                Debds = (int)item1.Debts,
-                                DebdsByWholesales = (int)item1.WholesaleDebts,
-                                PreviousDebds = (int)item1.PreviousDebts,
-                                PreviousDebdsByWholesales = (int)item1.PreviousWholesaleDebts,
-                                DebdDischarges = (int)item1.DebtDischarges,
-                                PreviousDebdDischarges = (int)item1.PreviousDebtDischarges
-                            });
+                            CashFlowItems.Add(item1);
                         });
                     }
                 }
@@ -631,14 +618,19 @@ namespace StoreAppTest.ViewModels
         }
     }
 
+    [Serializable]
+    [DataContract]
     public class CashFlowItemModel
     {
+        [DataMember]
         public string Cashier { get; set; }
-
+        [DataMember]
         public int Sales { get; set; }
+        [DataMember]
         public int PreviousSales { get; set; }
-
+        [DataMember]
         public int SalesByWholesales { get; set; }
+        [DataMember]
         public int PreviousSalesByWholesales { get; set; }
 
 
@@ -652,11 +644,13 @@ namespace StoreAppTest.ViewModels
                 return (((decimal)Sales) / ((decimal)PreviousSales)) * 100;
             }
         }
-
+        [DataMember]
         public int Refunds { get; set; }
+        [DataMember]
         public int PreviousRefunds { get; set; }
-
+        [DataMember]
         public int RefundsByWholesales { get; set; }
+        [DataMember]
         public int PreviousRefundsByWholesales { get; set; }
 
         public decimal RefundsDifference
@@ -669,11 +663,13 @@ namespace StoreAppTest.ViewModels
                 return (((decimal)Refunds) / ((decimal)PreviousRefunds)) * 100;
             }
         }
-
+        [DataMember]
         public int DebdsByWholesales { get; set; }
+        [DataMember]
         public int PreviousDebdsByWholesales { get; set; }
-
+        [DataMember]
         public int Debds { get; set; }
+        [DataMember]
         public int PreviousDebds { get; set; }
 
 
@@ -687,8 +683,9 @@ namespace StoreAppTest.ViewModels
                 return (((decimal)Debds) / ((decimal)PreviousDebds)) * 100;
             }
         }
-
+        [DataMember]
         public int DebdDischarges { get; set; }
+        [DataMember]
         public int PreviousDebdDischarges { get; set; }
 
         public decimal DebdDischargesDifference

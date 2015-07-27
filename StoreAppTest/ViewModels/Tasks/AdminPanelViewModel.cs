@@ -13,12 +13,13 @@ namespace StoreAppTest.ViewModels
     using System.Threading.Tasks;
     using System.Windows;
     using System.Windows.Input;
+    using Client;
+    using Client.Model;
     using Controls;
     using GalaSoft.MvvmLight.Threading;
     using Model;
     using MSPToolkit.Encodings;
     using Newtonsoft.Json;
-    using StoreAppDataService;
     using Utilities;
 
     public class AdminPanelViewModel : ViewModelBase
@@ -88,11 +89,11 @@ namespace StoreAppTest.ViewModels
             IsUsersLoading = true;
             IsWarehousesLoading = true;
 
-            string uri = string.Concat(
-                Application.Current.Host.Source.Scheme, "://",
-                Application.Current.Host.Source.Host, ":",
-                Application.Current.Host.Source.Port,
-                "/StoreAppDataService.svc/");
+            //string uri = string.Concat(
+            //    Application.Current.Host.Source.Scheme, "://",
+            //    Application.Current.Host.Source.Host, ":",
+            //    Application.Current.Host.Source.Port,
+            //    "/StoreAppDataService.svc/");
 
             WarehousesItems.Clear();
             UsersItems.Clear();
@@ -104,12 +105,15 @@ namespace StoreAppTest.ViewModels
                 try
                 {
 
-                    StoreDbContext ctx = new StoreDbContext(
-                        new Uri(uri
-                            , UriKind.Absolute));
+                    //StoreDbContext ctx = new StoreDbContext(
+                    //    new Uri(uri
+                    //        , UriKind.Absolute));
 
 
-                    var warehouses = ctx.ExecuteSyncronous(ctx.Warehouses).ToList();
+                    //var warehouses = ctx.ExecuteSyncronous(ctx.Warehouses).ToList();
+                    var client = new StoreapptestClient();
+
+                    var warehouses = client.GetWarehouses();
                     foreach (var warehouse in warehouses)
                     {
                         DispatcherHelper.CheckBeginInvokeOnUI(() =>
@@ -135,11 +139,13 @@ namespace StoreAppTest.ViewModels
                 try
                 {
 
-                    StoreDbContext ctx = new StoreDbContext(
-                        new Uri(uri
-                            , UriKind.Absolute));
+                    //StoreDbContext ctx = new StoreDbContext(
+                    //    new Uri(uri
+                    //        , UriKind.Absolute));
 
-                    var users = ctx.ExecuteSyncronous(ctx.Users.Expand("Warehouse")).ToList();
+                    //var users = ctx.ExecuteSyncronous(ctx.Users.Expand("Warehouse")).ToList();
+                    var client = new StoreapptestClient();
+                    var users = client.GetUsers();
                     foreach (var user in users)
                     {
                         DispatcherHelper.CheckBeginInvokeOnUI(() =>
@@ -204,9 +210,11 @@ namespace StoreAppTest.ViewModels
                             newUser.UserName = model.UserName;
                             newUser.Warehouse_Id = model.Warehouse_Id;
 
-                            var ctx = GetContext();
-                            ctx.AddToUsers(newUser);
-                            ctx.SaveChangesSynchronous();
+                            var client = new StoreapptestClient();
+                            client.AddUser(newUser);
+                            //var ctx = GetContext();
+                            //ctx.AddToUsers(newUser);
+                            //ctx.SaveChangesSynchronous();
 
                             UsersItems.Add(newUser);
                         }
@@ -244,10 +252,12 @@ namespace StoreAppTest.ViewModels
                     {
                         try
                         {
-                            var ctx = GetContext();
-                            ctx.AttachTo("Users", SelectedUser);
-                            ctx.ChangeState(SelectedUser, EntityStates.Deleted);
-                            ctx.SaveChangesSynchronous();
+                            //var ctx = GetContext();
+                            //ctx.AttachTo("Users", SelectedUser);
+                            //ctx.ChangeState(SelectedUser, EntityStates.Deleted);
+                            //ctx.SaveChangesSynchronous();
+                            var client = new StoreapptestClient();
+                            client.RemoveUser(SelectedUser);
                         }
                         catch (Exception exception)
                         {
@@ -295,9 +305,11 @@ namespace StoreAppTest.ViewModels
                             SelectedUser.Warehouse_Id = model.Warehouse_Id;
                             SelectedUser.IsSupplierVisible = model.IsSupplierVisible;
 
-                            var ctx = GetContext();
-                            ctx.ChangeState(SelectedUser, EntityStates.Modified);
-                            ctx.SaveChangesSynchronous();
+                            var client = new StoreapptestClient();
+                            client.SaveUser(SelectedUser);
+                            //var ctx = GetContext();
+                            //ctx.ChangeState(SelectedUser, EntityStates.Modified);
+                            //ctx.SaveChangesSynchronous();
 
                             if (App.CurrentUser.UserName == model.UserName)
                             {
@@ -329,6 +341,7 @@ namespace StoreAppTest.ViewModels
             {
                 if (SelectedUser == null) return;
 
+                
                 UserChangePasswordControl ctrl = new UserChangePasswordControl();
 
                 ctrl.Closed += (sender, args) =>
@@ -337,25 +350,28 @@ namespace StoreAppTest.ViewModels
                     {
                         try
                         {
-                            Uri apiUri = new Uri(
-                                string.Concat(App.AppBaseUrl,
-                                string.Format("/api/PriceLists/SetPassword?userName={0}&passwordHash={1}", SelectedUser.UserName, ctrl.AdminPasswordTeBoxEdit.Password))
-                                , UriKind.Absolute);
-
+                            //Uri apiUri = new Uri(
+                            //    string.Concat(App.AppBaseUrl,
+                            //    string.Format("/api/PriceLists/SetPassword?userName={0}&passwordHash={1}", ))
+                            //    , UriKind.Absolute);
+                            string user = SelectedUser.UserName;
+                            string password = ctrl.AdminPasswordTeBoxEdit.Password;
                             new Thread(() =>
                             {
                                 try
                                 {
-                                    var request =
-                                      WebRequest.Create(apiUri);
-                                    request.Method = "POST";
+                                    var client = new StoreapptestClient();
+                                    client.SetPassword(user, password);
+                                    //var request =
+                                    //  WebRequest.Create(apiUri);
+                                    //request.Method = "POST";
 
-                                    request.BeginGetResponse((r) =>
-                                    {
-                                         request.EndGetResponse(r);
-                                    },
+                                    //request.BeginGetResponse((r) =>
+                                    //{
+                                    //     request.EndGetResponse(r);
+                                    //},
 
-                                    request);
+                                    //request);
 
                                 }
                                 catch (Exception exception)
@@ -406,9 +422,11 @@ namespace StoreAppTest.ViewModels
                         ctrl.DataContext = null;
                         try
                         {
-                            var ctx = GetContext();
-                            ctx.AddToWarehouses(model);
-                            ctx.SaveChangesSynchronous();
+                            var client = new StoreapptestClient();
+                            client.AddWarehouse(model);
+                            //var ctx = GetContext();
+                            //ctx.AddToWarehouses(model);
+                            //ctx.SaveChangesSynchronous();
 
                             WarehousesItems.Add(model);
                         }
@@ -446,10 +464,12 @@ namespace StoreAppTest.ViewModels
                     {
                         try
                         {
-                            var ctx = GetContext();
-                            ctx.AttachTo("Warehouses", SelectedWarehouse);
-                            ctx.ChangeState(SelectedWarehouse, EntityStates.Deleted);
-                            ctx.SaveChangesSynchronous();
+                            var client = new StoreapptestClient();
+                            client.RemoveWarehouse(SelectedWarehouse);
+                            //var ctx = GetContext();
+                            //ctx.AttachTo("Warehouses", SelectedWarehouse);
+                            //ctx.ChangeState(SelectedWarehouse, EntityStates.Deleted);
+                            //ctx.SaveChangesSynchronous();
                         }
                         catch (Exception exception)
                         {
@@ -484,9 +504,12 @@ namespace StoreAppTest.ViewModels
                         ctrl.DataContext = null;
                         try
                         {
-                            var ctx = GetContext();
-                            ctx.ChangeState(SelectedWarehouse, EntityStates.Modified);
-                            ctx.SaveChangesSynchronous();
+                            var client = new StoreapptestClient();
+                            client.SaveWarehouse(SelectedWarehouse);
+
+                            //var ctx = GetContext();
+                            //ctx.ChangeState(SelectedWarehouse, EntityStates.Modified);
+                            //ctx.SaveChangesSynchronous();
                         }
                         catch (Exception exception)
                         {
@@ -511,17 +534,17 @@ namespace StoreAppTest.ViewModels
 
 
 
-        private StoreDbContext GetContext()
-        {
-            string uri = string.Concat(
-                Application.Current.Host.Source.Scheme, "://",
-                Application.Current.Host.Source.Host, ":",
-                Application.Current.Host.Source.Port,
-                "/StoreAppDataService.svc/");
-                StoreDbContext ctx = new StoreDbContext(
-                    new Uri(uri
-                        , UriKind.Absolute));
-            return ctx;
-        }
+        //private StoreDbContext GetContext()
+        //{
+        //    string uri = string.Concat(
+        //        Application.Current.Host.Source.Scheme, "://",
+        //        Application.Current.Host.Source.Host, ":",
+        //        Application.Current.Host.Source.Port,
+        //        "/StoreAppDataService.svc/");
+        //        StoreDbContext ctx = new StoreDbContext(
+        //            new Uri(uri
+        //                , UriKind.Absolute));
+        //    return ctx;
+        //}
     }
 }

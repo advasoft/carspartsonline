@@ -8,17 +8,17 @@ namespace StoreAppTest.ViewModels
     using System.Threading.Tasks;
     using System.Windows;
     using System.Windows.Input;
-    using DevExpress.Data.WcfLinq.Helpers;
+    using Client;
+    using Client.Model;
     using Event;
     using GalaSoft.MvvmLight.Threading;
     using Microsoft.Practices.Prism.PubSubEvents;
     using Microsoft.Practices.ServiceLocation;
     using Model;
     using Print;
-    using StoreAppDataService;
     using Utilities;
     using IncomeItem = Model.IncomeItem;
-    using PriceChangeReportItem = StoreAppDataService.PriceChangeReportItem;
+    using PriceChangeReportItem = Client.Model.PriceChangeReportItem;
 
     public class PriceChangeReportViewModel : ViewModelBase
     {
@@ -147,11 +147,11 @@ namespace StoreAppTest.ViewModels
         {
 
             IsLoading = true;
-            string uri = string.Concat(
-                Application.Current.Host.Source.Scheme, "://",
-                Application.Current.Host.Source.Host, ":",
-                Application.Current.Host.Source.Port,
-                "/StoreAppDataService.svc/");
+            //string uri = string.Concat(
+            //    Application.Current.Host.Source.Scheme, "://",
+            //    Application.Current.Host.Source.Host, ":",
+            //    Application.Current.Host.Source.Port,
+            //    "/StoreAppDataService.svc/");
 
 
 
@@ -160,9 +160,10 @@ namespace StoreAppTest.ViewModels
                 try
                 {
 
-                    StoreDbContext ctx = new StoreDbContext(
-                        new Uri(uri
-                            , UriKind.Absolute));
+                    //StoreDbContext ctx = new StoreDbContext(
+                    //    new Uri(uri
+                    //        , UriKind.Absolute));
+                    var client = new StoreapptestClient();
 
                     Model.PriceChangeReportItem check = new Model.PriceChangeReportItem();
 
@@ -172,14 +173,15 @@ namespace StoreAppTest.ViewModels
                     foreach (var incomeItem in _incomes)
                     {
 
-                        var rems =
-                            ctx.ExecuteSyncronous(ctx.Remainders.Where(w => w.PriceItem_Id == incomeItem.PriceItem_Id))
-                                .ToList();
+                        //var rems =
+                        //    ctx.ExecuteSyncronous(ctx.Remainders.Where(w => w.PriceItem_Id == incomeItem.PriceItem_Id))
+                        //        .ToList();
 
-                        var prices =
-                            ctx.ExecuteSyncronous(ctx.WholesalePrices.Where(r => r.PriceItem_Id == incomeItem.PriceItem_Id))
-                                .ToList();
-
+                        //var prices =
+                        //    ctx.ExecuteSyncronous(ctx.WholesalePrices.Where(r => r.PriceItem_Id == incomeItem.PriceItem_Id))
+                        //        .ToList();
+                        var rems = client.GetRemaindersByPriceItem(incomeItem.PriceItem_Id);
+                        var prices = client.GetPricesByPriceItem(incomeItem.PriceItem_Id).ToList();
 
 
                         var columnsRemainders =
@@ -289,20 +291,20 @@ namespace StoreAppTest.ViewModels
 
             SendReportCommand = new UICommand(o =>
             {
-                string uri = string.Concat(
-                    Application.Current.Host.Source.Scheme, "://",
-                    Application.Current.Host.Source.Host, ":",
-                    Application.Current.Host.Source.Port,
-                    "/StoreAppDataService.svc/");
+                //string uri = string.Concat(
+                //    Application.Current.Host.Source.Scheme, "://",
+                //    Application.Current.Host.Source.Host, ":",
+                //    Application.Current.Host.Source.Port,
+                //    "/StoreAppDataService.svc/");
 
                 Task.Factory.StartNew(() =>
                 {
                     try
                     {
 
-                        StoreDbContext ctx = new StoreDbContext(
-                            new Uri(uri
-                                , UriKind.Absolute));
+                        //StoreDbContext ctx = new StoreDbContext(
+                        //    new Uri(uri
+                        //        , UriKind.Absolute));
 
                         var now = DateTimeHelper.GetNowKz();
 
@@ -312,8 +314,8 @@ namespace StoreAppTest.ViewModels
                         rep.ReportDate = now;
                         rep.ReportNumber = PriceReportNumber;
 
-                        ctx.AddToPriceChangeReports(rep);
-                        ctx.SaveChangesSynchronous();
+                        //ctx.AddToPriceChangeReports(rep);
+                        //ctx.SaveChangesSynchronous();
 
 
                         foreach (var incomeItem in PriceChangeReportCollection)
@@ -327,11 +329,14 @@ namespace StoreAppTest.ViewModels
                                 PriceChangeReport_Id = rep.Id
                             };
 
-                            ctx.AddToPriceChangeReportItems(repItem);
+                            //ctx.AddToPriceChangeReportItems(repItem);
 
                             rep.PriceChangeReportItems.Add(repItem);
                         }
-                        ctx.SaveChangesSynchronous();
+                        //ctx.SaveChangesSynchronous();
+
+                        var client = new StoreapptestClient();
+                        client.AddPriceChangeReport(rep);
 
                         DispatcherHelper.CheckBeginInvokeOnUI(() =>
                         {

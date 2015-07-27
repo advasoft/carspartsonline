@@ -301,13 +301,13 @@ namespace StoreAppTest.Web
             sb.Append("GR.Name AS Gear_Name, ");
             if (!string.IsNullOrEmpty(warehouse))
             {
-                sb.Append("RMW.RecommendedRemainder AS RecommendedRemainder, ");
-                sb.Append("RMW.LowerLimitRemainder AS LowerLimitRemainder, ");
+                sb.Append("ISNULL(RMW.RecommendedRemainder, CAST(0 AS DECIMAL)) AS RecommendedRemainder, ");
+                sb.Append("ISNULL(RMW.LowerLimitRemainder, CAST(0 AS DECIMAL)) AS LowerLimitRemainder, ");
             }
             else
             {
-                sb.Append("0 AS RecommendedRemainder, ");
-                sb.Append("0 AS LowerLimitRemainder, ");
+                sb.Append("CAST(0 AS DECIMAL) AS RecommendedRemainder, ");
+                sb.Append("CAST(0 AS DECIMAL) AS LowerLimitRemainder, ");
             }
             sb.Append("CAST(0 AS BIGINT) AS Remainder_Id, ");
             if (!string.IsNullOrEmpty(warehouse))
@@ -368,7 +368,7 @@ sb.Append("JOIN [PriceListPriceItems] AS PRPRL ON PR.Id = PRPRL.PriceItem_Id ");
             var query = CurrentDataSource.Set<PriceItemRemainderView>()
           .SqlQuery(sb.ToString(), parameters.ToArray());
 
-
+            
             return query;
 
         }
@@ -501,13 +501,13 @@ sb.Append("JOIN [PriceListPriceItems] AS PRPRL ON PR.Id = PRPRL.PriceItem_Id ");
             sb.Append("GR.Name AS Gear_Name, ");
             if (!string.IsNullOrEmpty(warehouse))
             {
-                sb.Append("RMW.RecommendedRemainder AS RecommendedRemainder, ");
-                sb.Append("RMW.LowerLimitRemainder AS LowerLimitRemainder, ");
+                sb.Append("ISNULL(RMW.RecommendedRemainder, CAST(0 AS DECIMAL)) AS RecommendedRemainder, ");
+                sb.Append("ISNULL(RMW.LowerLimitRemainder, CAST(0 AS DECIMAL)) AS LowerLimitRemainder, ");
             }
             else
             {
-                sb.Append("0 AS RecommendedRemainder, ");
-                sb.Append("0 AS LowerLimitRemainder, ");
+                sb.Append("CAST(0 AS DECIMAL) AS RecommendedRemainder, ");
+                sb.Append("CAST(0 AS DECIMAL) AS LowerLimitRemainder, ");
             }
             sb.Append("CAST(0 AS BIGINT) AS Remainder_Id, ");
             if (!string.IsNullOrEmpty(warehouse))

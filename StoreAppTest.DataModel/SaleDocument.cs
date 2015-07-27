@@ -7,6 +7,7 @@ namespace StoreAppTest.Web.DataModel
     using System.Runtime.Serialization;
 
     [DataContract]
+    [Serializable]
     public partial class SaleDocument
     {
         public SaleDocument()

@@ -8,13 +8,14 @@ namespace StoreAppTest.ViewModels
     using System.Threading.Tasks;
     using System.Windows;
     using System.Windows.Input;
+    using Client;
+    using Client.Model;
     using Controls;
     using Event;
     using GalaSoft.MvvmLight.Threading;
     using Microsoft.Practices.Prism.PubSubEvents;
     using Microsoft.Practices.ServiceLocation;
     using Model;
-    using StoreAppDataService;
     using Utilities;
 
     public class RealizationPerDyaListViewModel : ViewModelBase
@@ -162,7 +163,7 @@ namespace StoreAppTest.ViewModels
             {
                 IsLoading = true;
 
-                var receivedUri = GetContextUri();
+                //var receivedUri = GetContextUri();
 
                 RealizationPerDayDocuments.Clear();
 
@@ -171,29 +172,33 @@ namespace StoreAppTest.ViewModels
 
                     try
                     {
-                        var ctx = new StoreDbContext(receivedUri);
+                        //var ctx = new StoreDbContext(receivedUri);
+                        var client = new StoreapptestClient();
 
                         IList<SaleDocumentsPerDay> salesPerDayDocuments = new List<SaleDocumentsPerDay>();
 
                         if (_showonlyfrocurrentuser)
                         {
                             salesPerDayDocuments =
-                                ctx.ExecuteSyncronous(ctx.SaleDocumentsPerDays.Expand(
-                                    "Creator,SalesPerDayItems")
-                                    .Where(rl => rl.SaleDocumentsDate >= AtFromDate
-                                    && rl.SaleDocumentsDate <= AtToDate
-                                    && rl.Creator_Id == App.CurrentUser.UserName)
-                                    .OrderByDescending(or => or.SaleDocumentsDate)).ToList();
+                                //ctx.ExecuteSyncronous(ctx.SaleDocumentsPerDays.Expand(
+                                //    "Creator,SalesPerDayItems")
+                                //    .Where(rl => rl.SaleDocumentsDate >= AtFromDate
+                                //    && rl.SaleDocumentsDate <= AtToDate
+                                //    && rl.Creator_Id == App.CurrentUser.UserName)
+                                //    .OrderByDescending(or => or.SaleDocumentsDate)).ToList();
+                                client.GetSaleDocumentsPerDays(AtFromDate, AtToDate, App.CurrentUser.UserName).ToList();
                         }
                         else
                         {
 
                             salesPerDayDocuments =
-                                ctx.ExecuteSyncronous(ctx.SaleDocumentsPerDays.Expand(
-                                    "Creator,SalesPerDayItems")
-                                    .Where(rl => rl.SaleDocumentsDate >= AtFromDate 
-                                    && rl.SaleDocumentsDate <= AtToDate)
-                                    .OrderByDescending(or => or.SaleDocumentsDate)).ToList();
+                                //ctx.ExecuteSyncronous(ctx.SaleDocumentsPerDays.Expand(
+                                //    "Creator,SalesPerDayItems")
+                                //    .Where(rl => rl.SaleDocumentsDate >= AtFromDate 
+                                //    && rl.SaleDocumentsDate <= AtToDate)
+                                //    .OrderByDescending(or => or.SaleDocumentsDate)).ToList();
+                                client.GetSaleDocumentsPerDays(AtFromDate, AtToDate, "").ToList();
+
                         }
 
                         var tempRealization = new List<RealizationPerDayDocumentModel>();
@@ -252,25 +257,25 @@ namespace StoreAppTest.ViewModels
 
         private void SearchByBarcode()
         {
-            string uri = string.Concat(
-               Application.Current.Host.Source.Scheme, "://",
-               Application.Current.Host.Source.Host, ":",
-               Application.Current.Host.Source.Port,
-               "/StoreAppDataService.svc/");
+            //string uri = string.Concat(
+            //   Application.Current.Host.Source.Scheme, "://",
+            //   Application.Current.Host.Source.Host, ":",
+            //   Application.Current.Host.Source.Port,
+            //   "/StoreAppDataService.svc/");
             string barcode = Barcode;
             Task.Factory.StartNew(() =>
             {
                 try
                 {
 
-                    StoreDbContext ctx = new StoreDbContext(
-                        new Uri(uri
-                            , UriKind.Absolute));
+                    //StoreDbContext ctx = new StoreDbContext(
+                    //    new Uri(uri
+                    //        , UriKind.Absolute));
 
-
-                    var findedDocument = ctx.ExecuteSyncronous(ctx.SaleDocumentsPerDays
-                        .Where(rl => rl.Barcode == barcode)).FirstOrDefault();
-
+                    var client = new StoreapptestClient();
+                    //var findedDocument = ctx.ExecuteSyncronous(ctx.SaleDocumentsPerDays
+                    //    .Where(rl => rl.Barcode == barcode)).FirstOrDefault();
+                    var findedDocument = client.GetSaleDocumentsPerDayByBarcode(barcode);
                     if (findedDocument != null)
                     {
                         DispatcherHelper.CheckBeginInvokeOnUI(() =>

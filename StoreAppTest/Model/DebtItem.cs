@@ -2,7 +2,7 @@
 namespace StoreAppTest.Model
 {
     using System;
-    using StoreAppDataService;
+    using Client.Model;
 
     public class DebtItem : Notified
     {

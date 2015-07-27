@@ -14,7 +14,7 @@ namespace StoreAppTest.Model
         public int BuyPriceTng { get; set; }
         public string Uom { get; set; }
 
-        public StoreAppDataService.PriceItem PriceItemData { get; set; }
+        public Client.Model.PriceItem PriceItemData { get; set; }
 
         private int _wholesalePrice = 0;
         public int WholesalePrice

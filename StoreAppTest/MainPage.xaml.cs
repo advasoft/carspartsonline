@@ -1,7 +1,6 @@
 ﻿
 namespace StoreAppTest
 {
-    using StoreAppDataService;
     using Views;
     using System;
     using System.IO;

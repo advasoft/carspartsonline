@@ -13,6 +13,7 @@ using System.Windows.Navigation;
 
 namespace StoreAppTest.Views
 {
+    using System.Text.RegularExpressions;
     using DevExpress.Xpf.Editors;
     using DevExpress.Xpf.Printing;
     using DevExpress.XtraEditors.DXErrorProvider;
@@ -23,6 +24,8 @@ namespace StoreAppTest.Views
         {
             InitializeComponent();
         }
+
+        private Regex _numberRegex = new Regex("Оприходование № (?<number>\\d+) от (?<date>[\\d\\.])");
 
         // Выполняется, когда пользователь переходит на эту страницу.
         protected override void OnNavigatedTo(NavigationEventArgs e)
@@ -55,6 +58,31 @@ namespace StoreAppTest.Views
             preview.Model = model;
             link.CreateDocument(false);
             preview.ShowDialog();
+        }
+
+        private void IncomesGridControl_CustomColumnSort(object sender, DevExpress.Xpf.Grid.CustomColumnSortEventArgs e)
+        {
+            if (e.Column.FieldName == "Income")
+            {
+                //Оприходование № 34 от 23.07.2015
+                var val1 = GetNumberValue((string) e.Value1);
+                var val2 = GetNumberValue((string) e.Value2);
+
+                e.Result = Comparer<long>.Default.Compare(val1, val2);
+
+                e.Handled = true;
+            }
+        }
+
+        private long GetNumberValue(string incomeString)
+        {
+            long result = 0;
+            var valMatch = _numberRegex.Match(incomeString);
+            if (valMatch != null && valMatch.Success)
+            {
+                result = Convert.ToInt64(valMatch.Groups["number"].Value);
+            }
+            return result;
         }
     }
 }

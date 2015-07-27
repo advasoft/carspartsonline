@@ -3,6 +3,7 @@ namespace StoreAppTest.Reports
 {
     using System;
     using System.Collections.Generic;
+    using System.Data.Entity;
     using System.Linq;
     using DevExpress.XtraReports.UI;
     using Web.DataModel;
@@ -33,12 +34,38 @@ namespace StoreAppTest.Reports
             var parameter = Parameters["DocId"];
             if (parameter != null)
             {
-                var now = DateTimeHelper.GetNowKz();
-                var strt = new DateTime(now.Year, now.Month, now.Day, 0, 0, 0);
-                var endd = new DateTime(now.Year, now.Month, now.Day, 23, 59, 59);
+                //var now = DateTimeHelper.GetNowKz();
+                //var strt = new DateTime(now.Year, now.Month, now.Day, 0, 0, 0);
+                //var endd = new DateTime(now.Year, now.Month, now.Day, 23, 59, 59);
 
-                var dischargesSource = context.DebtDischargeDocuments
-                            .Where(w => w.DischargeDate >= strt && w.DischargeDate <= endd && w.IsDischarge).ToList();
+
+
+
+                long id = long.Parse(parameter.Value.ToString());
+                var salesDocuments = context.SaleDocumentsPerDays
+                    .Include(i => i.Creator)
+                    .Include(i => i.SalesPerDayItems)
+                    .Include("SalesPerDayItems.SaleDocumentsPerDay")
+                    .Include("SalesPerDayItems.SaleItem.PriceItem.Remainders")
+                    .Include("SalesPerDayItems.SaleItem.PriceItem.Prices")
+                    .Include("SalesPerDayItems.SaleItem.PriceItem.Gear")
+                    .Include("SalesPerDayItems.SaleItem.PriceItem.PriceLists")
+                    .Include("SalesPerDayItems.SaleItem.PriceItem.UnitOfMeasure")
+                    .Include("SalesPerDayItems.SaleItem.SaleDocument")
+                    .Where(r => r.Id == id).ToList();
+                foreach (var saleDocumentsPerDay in salesDocuments)
+                {
+
+                    var strt = DateTimeHelper.GetStartDay(saleDocumentsPerDay.SaleDocumentsDate);
+                    var endd = DateTimeHelper.GetEndDay(saleDocumentsPerDay.SaleDocumentsDate);
+
+                    var dischargesSource = context.DebtDischargeDocuments
+                        .Include(i => i.Debtor)
+                        .Where(
+                            w =>
+                                w.DischargeDate >= strt && w.DischargeDate <= endd && w.IsDischarge &&
+                                w.Creator_Id == saleDocumentsPerDay.Creator_Id).ToList();
+
                 var discharges = (from d in dischargesSource
                                   group d by new
                                   {
@@ -52,12 +79,18 @@ namespace StoreAppTest.Reports
                                       }).ToList();
 
 
-
-                long id = long.Parse(parameter.Value.ToString());
-                var salesDocuments = context.SaleDocumentsPerDays.Where(r => r.Id == id).ToList();
-                foreach (var saleDocumentsPerDay in salesDocuments)
-                {
-
+                    var refundItems =
+                    context.RefundItems
+                    .Include(i => i.RefundDocument.SaleDocument)
+                    .Include(i => i.SaleItem.SaleDocument)
+                    .Include(i => i.SaleItem.PriceItem.Gear)
+                    .Include(i => i.SaleItem.PriceItem.PriceLists)
+                    .Include(i => i.SaleItem.PriceItem.Prices)
+                    
+                        .Where(
+                            r =>
+                                r.RefundDocument.RefundDate >= strt && r.RefundDocument.RefundDate <= endd &&
+                                r.RefundDocument.Creator_Id == saleDocumentsPerDay.Creator_Id).ToList();
 
                     var doc = new RealizationPerDayReportDocument();
                     doc.Barcode = saleDocumentsPerDay.Barcode;
@@ -68,27 +101,114 @@ namespace StoreAppTest.Reports
                     var saleItems = saleDocumentsPerDay.SalesPerDayItems;
                     foreach (var salesPerDayItem in saleItems)
                     {
+
+                        //var amouuntWithoutDebt = 0;
+                        //var amountWholesalePriceWithoutDebt = 0;
+
+                        //decimal refund = 0;
+
+                        //refund =
+                        //    refundItems.Where(wh => wh.SaleItem_Id == salesPerDayItem.SaleItem_Id && wh.RefundDocument.SaleDocument.IsInDebt == false)
+                        //        .Sum(sum => sum.Count);
+
+                        //if (!salesPerDayItem.SaleItem.SaleDocument.IsInDebt)
+                        //{
+                        //    var price =
+                        //        salesPerDayItem.SaleItem.PriceItem.Prices.Where(p => p.PriceDate <= saleDocumentsPerDay.SaleDocumentsDate)
+                        //            .OrderByDescending(o => o.PriceDate)
+                        //            .FirstOrDefault();
+
+
+                        //    amouuntWithoutDebt = (int)((salesPerDayItem.Price * (salesPerDayItem.Count - refund)) - (salesPerDayItem.Discount - ((salesPerDayItem.Discount / salesPerDayItem.Count) * refund)));
+                        //    if (price != null)
+                        //    {
+                        //        amountWholesalePriceWithoutDebt =
+                        //            (int)((price.Price * (salesPerDayItem.Count - refund)));
+                        //    }
+
+                        //}
+
                         var item = new RealizationPerDayReportItem()
                         {
-                            Amount = (int) salesPerDayItem.Amount,
-                            CatalogNumber = salesPerDayItem.CatalogNumber,
-                            Name = salesPerDayItem.Name,
+                            Amount = (int) (salesPerDayItem.Amount),
+                            CatalogNumber = salesPerDayItem.CatalogNumber ?? "",
+                            Name = salesPerDayItem.Name ?? "",
                             Count = (int) salesPerDayItem.Count,
                             Discount = (int) salesPerDayItem.Discount,
                             Price = (int) (salesPerDayItem.Amount / salesPerDayItem.Count),
                             Uom = salesPerDayItem.UnitOfMeasure,
+                            Time = salesPerDayItem.SaleItem.SaleDocument.SaleDate,
+                            SaleDocumentNumber = salesPerDayItem.SaleItem.SaleDocument.Number,
                             PriceListName = salesPerDayItem.SaleItem.PriceItem.PriceLists.FirstOrDefault().Name,
-                            WholesalePrice = (int)salesPerDayItem.SaleItem.PriceItem.Prices.Where(p => p.PriceDate <= saleDocumentsPerDay.SaleDocumentsDate).OrderByDescending(o => o.PriceDate).First().Price
+                            WholesalePrice = (int)salesPerDayItem.SaleItem.PriceItem.Prices.Where(p => p.PriceDate <= saleDocumentsPerDay.SaleDocumentsDate).OrderByDescending(o => o.PriceDate).First().Price,
+                            SaleItemData = salesPerDayItem.SaleItem
+                            //AmountWithoutDebt = amouuntWithoutDebt,
+                            //AmountWithoutDebtByWholePrice = amountWholesalePriceWithoutDebt
                             
                         };
 
                         doc.Items.Add(item);
                     }
+
+
+                    var realizationsByPriceList = (from q in doc.Items
+                                                   group q by q.PriceListName
+                                                       into grp
+                                                       select grp).ToList();
+
+                    var refundsByPriceList = (from r in refundItems
+                                              group r by r.PriceItem.PriceLists.FirstOrDefault().Name
+                                                  into grp
+                                                  select grp).ToList();
+
+                    foreach (var itm in realizationsByPriceList)
+                    {
+                        int refndVal = 0;
+                        int refndValWh = 0;
+
+                        var refnd = refundsByPriceList.Where(r => r.Key == itm.Key).FirstOrDefault();
+                        if (refnd != null)
+                        {
+                            refndVal = (int)refnd.Sum(s => s.Amount);
+                            refndValWh = (int)
+                                refnd.Sum(
+                                    s =>
+                                        s.Count *
+                                        (s.PriceItem.Prices.Where(p => p.PriceDate <= s.RefundDocument.RefundDate)
+                                            .OrderByDescending(o => o.PriceDate)
+                                            .FirstOrDefault() == null
+                                            ? 0
+                                            : s.PriceItem.Prices.Where(p => p.PriceDate <= s.RefundDocument.RefundDate)
+                                                .OrderByDescending(o => o.PriceDate)
+                                                .FirstOrDefault().Price)
+                                    );
+                        }
+
+                        var realizationVal = (int)
+                            itm.Where(r => !r.SaleItemData.SaleDocument.IsInDebt).Sum(s => s.Amount);
+
+                        var realizationValWh =
+                            (int)
+                                itm.Where(r => !r.SaleItemData.SaleDocument.IsInDebt).Sum(
+                                    s =>
+                                        s.Count * s.WholesalePrice
+                                    );
+
+                        var frstItem = itm.FirstOrDefault();
+                        if (frstItem != null)
+                        {
+                            frstItem.AmountWithoutDebt = realizationVal - refndVal;
+                            frstItem.AmountWithoutDebtByWholePrice = realizationValWh - refndValWh;
+                        }
+                    }
+
+
+
                     foreach (var debtDischargeDocument in discharges)
                     {
                         var item = new RealizationPerDayReportItem()
                         {
-                            Name = debtDischargeDocument.Debtor_Id,
+                            Name = "Возврат долга " + debtDischargeDocument.Debtor_Id,
                             IsInDebd = true,
                             Amount = (int)debtDischargeDocument.Amount
                         };
@@ -135,17 +255,30 @@ namespace StoreAppTest.Reports
         public int? Count { get; set; }
         public int? Discount { get; set; }
         public int Amount { get; set; }
+        public int AmountWithoutDebt { get; set; }
+        public int AmountWithoutDebtByWholePrice { get; set; }
+
+        public int PofitByPriceList
+        {
+            get
+            {
+                return AmountWithoutDebt - AmountWithoutDebtByWholePrice;
+            }
+        }
+
         public string Debtor { get; set; }
         public int DebtDischarge { get; set; }
         public bool IsInDebd { get; set; }
         public string PriceListName { get; set; }
         public int WholesalePrice { get; set; }
+        public DateTime Time { get; set; }
+        public string SaleDocumentNumber { get; set; }
 
         public int TotalByWholePrice
         {
             get
             {
-                return (int) ((WholesalePrice*Count));
+                return (int) ((WholesalePrice*(Count ?? 0)));
             }
         }
 
@@ -156,6 +289,8 @@ namespace StoreAppTest.Reports
                 return Amount - TotalByWholePrice;
             }
         }
+
+        public SaleItem SaleItemData { get; set; }
     }
 
     public class RealizationPerDayReportDocument

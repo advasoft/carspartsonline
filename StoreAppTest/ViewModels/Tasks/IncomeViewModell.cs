@@ -11,6 +11,8 @@ namespace StoreAppTest.ViewModels
     using System.Windows;
     using System.Windows.Controls;
     using System.Windows.Input;
+    using Client;
+    using Client.Model;
     using Controls;
     using DevExpress.Xpf.Editors.Helpers;
     using Event;
@@ -19,11 +21,11 @@ namespace StoreAppTest.ViewModels
     using Microsoft.Practices.ServiceLocation;
     using Model;
     using Print;
-    using StoreAppDataService;
     using Utilities;
     using Views;
     using IncomeItem = Model.IncomeItem;
-    using PriceItem = StoreAppDataService.PriceItem;
+    using PriceChangeReportItem = Client.Model.PriceChangeReportItem;
+    using PriceItem = Client.Model.PriceItem;
 
     public class IncomeViewModell : ViewModelBase
     {
@@ -226,29 +228,32 @@ namespace StoreAppTest.ViewModels
                         }
                         else
                         {
-                            IncomeItem model = new IncomeItem()
+                            if (vm.SelectedPriceItem != null)
                             {
-                                Number = IncomeItems.Select(s => s.Number).LastOrDefault() + 1,
-                                Articul = vm.SelectedPriceItem.Articul,
-                                BuyPriceRur = (int)vm.SelectedPriceItem.BuyPriceRur,
-                                BuyPriceTng = (int)vm.SelectedPriceItem.BuyPriceTng,
-                                CatalogNumber = vm.SelectedPriceItem.CatalogNumber,
-                                Incomes = 0,
-                                IsDuplicate = vm.SelectedPriceItem.IsDuplicate ? "*" : "",
-                                Gear_Id = vm.SelectedPriceItem.Gear_Id,
-                                Name = vm.SelectedPriceItem.Gear_Name,
-                                LowerLimitRemainder = vm.SelectedPriceItem.LowerLimitRemainder,
-                                RecommendedRemainder = vm.SelectedPriceItem.RecommendedRemainder,
-                                NewPrice = 0,
-                                PriceItem_Id = vm.SelectedPriceItem.PriceItem_Id,
-                                Uom = vm.SelectedPriceItem.Uom,
-                                WholesalePrice = vm.SelectedPriceItem.WholesalePrice,
-                                Remainders = vm.SelectedPriceItem.Remainders
-                            };
+                                IncomeItem model = new IncomeItem()
+                                {
+                                    Number = IncomeItems.Select(s => s.Number).LastOrDefault() + 1,
+                                    Articul = vm.SelectedPriceItem.Articul,
+                                    BuyPriceRur = (int) vm.SelectedPriceItem.BuyPriceRur,
+                                    BuyPriceTng = (int) vm.SelectedPriceItem.BuyPriceTng,
+                                    CatalogNumber = vm.SelectedPriceItem.CatalogNumber,
+                                    Incomes = 0,
+                                    IsDuplicate = vm.SelectedPriceItem.IsDuplicate ? "*" : "",
+                                    Gear_Id = vm.SelectedPriceItem.Gear_Id,
+                                    Name = vm.SelectedPriceItem.Gear_Name,
+                                    LowerLimitRemainder = vm.SelectedPriceItem.LowerLimitRemainder,
+                                    RecommendedRemainder = vm.SelectedPriceItem.RecommendedRemainder,
+                                    NewPrice = 0,
+                                    PriceItem_Id = vm.SelectedPriceItem.PriceItem_Id,
+                                    Uom = vm.SelectedPriceItem.Uom,
+                                    WholesalePrice = vm.SelectedPriceItem.WholesalePrice,
+                                    Remainders = vm.SelectedPriceItem.Remainders
+                                };
 
 
-                            IncomeItems.Add(model);
-                            SelectedIncome = model;
+                                IncomeItems.Add(model);
+                                SelectedIncome = model;
+                            }
                         }
                     }
                 };
@@ -264,17 +269,20 @@ namespace StoreAppTest.ViewModels
 
             AddPriceItemCommand = new UICommand(a =>
             {
-                string uri = string.Concat(
-                    Application.Current.Host.Source.Scheme, "://",
-                    Application.Current.Host.Source.Host, ":",
-                    Application.Current.Host.Source.Port,
-                    "/StoreAppDataService.svc/");
+                //string uri = string.Concat(
+                //    Application.Current.Host.Source.Scheme, "://",
+                //    Application.Current.Host.Source.Host, ":",
+                //    Application.Current.Host.Source.Port,
+                //    "/StoreAppDataService.svc/");
 
-                StoreDbContext ctx = new StoreDbContext(
-                        new Uri(uri
-                            , UriKind.Absolute));
+                //StoreDbContext ctx = new StoreDbContext(
+                //        new Uri(uri
+                //            , UriKind.Absolute));
 
-                var uoms = ctx.ExecuteSyncronous(ctx.UnitOfMeasures).ToList();
+                var client = new StoreapptestClient();
+
+                //var uoms = ctx.ExecuteSyncronous(ctx.UnitOfMeasures).ToList();
+                var uoms = client.GetUnitOfMeasures();
                 var editModel = new PriceItemEditModel();
 
                 editModel.UomList = new ObservableCollection<UnitOfMeasure>(uoms);
@@ -284,8 +292,9 @@ namespace StoreAppTest.ViewModels
                 var editor = new PriceItemEditControl();
                 editor.DataContext = editModel;
 
-                var findedPriceList =
-                    ctx.ExecuteSyncronous(ctx.PriceLists.Expand("PriceItems").Where(p => p.Name == _priceListName)).FirstOrDefault();
+                //var findedPriceList =
+                //    ctx.ExecuteSyncronous(ctx.PriceLists.Expand("PriceItems").Where(p => p.Name == _priceListName)).FirstOrDefault();
+                var findedPriceList = client.GetPriceListByName(_priceListName);
 
                 editor.Closed += (sender, args) =>
                 {
@@ -298,17 +307,17 @@ namespace StoreAppTest.ViewModels
                         newGear.IsDuplicate = editModel.IsDuplicate;
                         newGear.Name = editModel.Name;
                         
-                        ctx.AddToGears(newGear);
-                        ctx.SaveChangesSynchronous();
+                        //ctx.AddToGears(newGear);
+                        //ctx.SaveChangesSynchronous();
 
 
-                        var gearNews = new GearNew();
-                        gearNews.CreatedDate = DateTimeHelper.GetNowKz();
-                        gearNews.Gear_Id = newGear.Id;
-                        ctx.AddToGearNews(gearNews);
+                        //var gearNews = new GearNew();
+                        //gearNews.CreatedDate = DateTimeHelper.GetNowKz();
+                        //gearNews.Gear_Id = newGear.Id;
+                        //ctx.AddToGearNews(gearNews);
 
                         var newPriceItem = new PriceItem();
-                        newPriceItem.Gear_Id = newGear.Id;
+                        //newPriceItem.Gear_Id = newGear.Id;
                         newPriceItem.Gear = newGear;
                         //newPriceItem.PriceList_Id = _priceListName;
                         newPriceItem.Uom_Id = editModel.Uom.Name;
@@ -319,13 +328,13 @@ namespace StoreAppTest.ViewModels
                         newPriceItem.Barcode2 = editModel.Barcode2;
                         newPriceItem.Barcode3 = editModel.Barcode3;
 
-                        ctx.AddToPriceItems(newPriceItem);
-                        ctx.SaveChangesSynchronous();
+                        //ctx.AddToPriceItems(newPriceItem);
+                        //ctx.SaveChangesSynchronous();
 
                         newPriceItem.PriceLists.Add(findedPriceList);
                         //findedPriceList.PriceItems.Add(newPriceItem);
-                        ctx.AddLink(newPriceItem, "PriceLists", findedPriceList);
-                        ctx.SaveChangesSynchronous();
+                        //ctx.AddLink(newPriceItem, "PriceLists", findedPriceList);
+                        //ctx.SaveChangesSynchronous();
 
                         var newRemainder = new Remainder();
                         newRemainder.PriceItem_Id = newPriceItem.Id;
@@ -334,24 +343,24 @@ namespace StoreAppTest.ViewModels
                         newRemainder.Warehouse_Id = App.CurrentUser.Warehouse_Id;
                         newRemainder.LowerLimitRemainder = editModel.LowerLimitRemainder;
                         newRemainder.RecommendedRemainder = editModel.RecommendedRemainder;
-                        ctx.AddToRemainders(newRemainder);
+                        //ctx.AddToRemainders(newRemainder);
 
 
                         WholesalePrice rp = new WholesalePrice();
                         rp.Price = editModel.WholesalePrice;
                         rp.PriceDate = DateTimeHelper.GetNowKz();
                         rp.PriceItem_Id = newPriceItem.Id;
-                        ctx.AddToWholesalePrices(rp);
-                        //ctx.SaveChangesSynchronous();
+                        //ctx.AddToWholesalePrices(rp);
+                        ////ctx.SaveChangesSynchronous();
 
 
                         newPriceItem.Remainders.Add(newRemainder);
                         newPriceItem.Prices.Add(rp);
 
-                        ctx.SaveChangesSynchronous();
+                        //ctx.SaveChangesSynchronous();
 
                         //_newPriceItemAddEvent.Publish(newPriceItem);
-
+                        var priceItemId = client.AddPriceItem(newPriceItem);
 
                         IncomeItem model = new IncomeItem()
                         {
@@ -367,7 +376,7 @@ namespace StoreAppTest.ViewModels
                             LowerLimitRemainder = newRemainder.LowerLimitRemainder,
                             RecommendedRemainder = newRemainder.RecommendedRemainder,
                             NewPrice = 0,
-                            PriceItem_Id = newPriceItem.Id,
+                            PriceItem_Id = priceItemId,
                             Uom = newPriceItem.Uom_Id,
                             WholesalePrice = 0,
                             //(int)newPriceItem.Prices.OrderByDescending(o => o.PriceDate).First().Price,
@@ -392,21 +401,26 @@ namespace StoreAppTest.ViewModels
             {
                 if (SelectedIncome == null) return;
 
-                string uri = string.Concat(
-                    Application.Current.Host.Source.Scheme, "://",
-                    Application.Current.Host.Source.Host, ":",
-                    Application.Current.Host.Source.Port,
-                    "/StoreAppDataService.svc/");
+                //string uri = string.Concat(
+                //    Application.Current.Host.Source.Scheme, "://",
+                //    Application.Current.Host.Source.Host, ":",
+                //    Application.Current.Host.Source.Port,
+                //    "/StoreAppDataService.svc/");
 
-                StoreDbContext ctx = new StoreDbContext(
-                        new Uri(uri
-                            , UriKind.Absolute));
+                //StoreDbContext ctx = new StoreDbContext(
+                //        new Uri(uri
+                //            , UriKind.Absolute));
+                var client = new StoreapptestClient();
 
-                var uoms = ctx.ExecuteSyncronous(ctx.UnitOfMeasures).ToList();
+                //var uoms = ctx.ExecuteSyncronous(ctx.UnitOfMeasures).ToList();
+                var uoms = client.GetUnitOfMeasures();
+
                 var findedPriceItem =
-                    ctx.ExecuteSyncronous(
-                        ctx.PriceItems.Expand("Gear,Remainders,UnitOfMeasure,Prices")
-                            .Where(w => w.Id == SelectedIncome.PriceItem_Id)).FirstOrDefault();
+                    //ctx.ExecuteSyncronous(
+                    //    ctx.PriceItems.Expand("Gear,Remainders,UnitOfMeasure,Prices")
+                    //        .Where(w => w.Id == SelectedIncome.PriceItem_Id)).FirstOrDefault();
+                    client.GetPriceItemById(SelectedIncome.PriceItem_Id);
+
 
                 var findedRemainder =
                     findedPriceItem.Remainders.Where(w => w.Warehouse_Id == App.CurrentUser.Warehouse_Id)
@@ -435,74 +449,83 @@ namespace StoreAppTest.ViewModels
                 editor.DataContext = editModel;
                 editor.Closed += (sender, args) =>
                 {
-                    findedPriceItem.Gear.Articul = editModel.Articul;
-                    findedPriceItem.Gear.CatalogNumber = editModel.CatalogNumber;
-                    findedPriceItem.Gear.Category_Id = "Обычные";
-                    findedPriceItem.Gear.IsDuplicate = editModel.IsDuplicate;
-                    findedPriceItem.Gear.Name = editModel.Name;
-
-                    ctx.ChangeState(findedPriceItem.Gear, EntityStates.Modified);
-
-                    findedPriceItem.Uom_Id = editModel.Uom.Name;
-                    //findedPriceItem.WholesalePrice = editModel.WholesalePrice;
-                    findedPriceItem.BuyPriceRur = editModel.BuyPriceRur;
-                    findedPriceItem.BuyPriceTng = editModel.BuyPriceTng;
-                    findedPriceItem.Barcode1 = editModel.Barcode1;
-                    findedPriceItem.Barcode2 = editModel.Barcode2;
-                    findedPriceItem.Barcode3 = editModel.Barcode3;
-
-                    ctx.ChangeState(findedPriceItem, EntityStates.Modified);
-
-                    if (findedRemainder != null)
+                    if (editor.DialogResult == true)
                     {
-                        findedRemainder.RecommendedRemainder = editModel.RecommendedRemainder;
-                        findedRemainder.LowerLimitRemainder = editModel.LowerLimitRemainder;
-                        ctx.ChangeState(findedRemainder, EntityStates.Modified);
+                        findedPriceItem.Gear.Articul = editModel.Articul;
+                        findedPriceItem.Gear.CatalogNumber = editModel.CatalogNumber;
+                        findedPriceItem.Gear.Category_Id = "Обычные";
+                        findedPriceItem.Gear.IsDuplicate = editModel.IsDuplicate;
+                        findedPriceItem.Gear.Name = editModel.Name;
+
+                        //ctx.ChangeState(findedPriceItem.Gear, EntityStates.Modified);
+                        client.SaveGear(findedPriceItem.Gear);
+
+
+                        findedPriceItem.Uom_Id = editModel.Uom.Name;
+                        //findedPriceItem.WholesalePrice = editModel.WholesalePrice;
+                        findedPriceItem.BuyPriceRur = editModel.BuyPriceRur;
+                        findedPriceItem.BuyPriceTng = editModel.BuyPriceTng;
+                        findedPriceItem.Barcode1 = editModel.Barcode1;
+                        findedPriceItem.Barcode2 = editModel.Barcode2;
+                        findedPriceItem.Barcode3 = editModel.Barcode3;
+
+                        //ctx.ChangeState(findedPriceItem, EntityStates.Modified);
+                        client.SavePriceItem(findedPriceItem);
+
+
+                        if (findedRemainder != null)
+                        {
+                            findedRemainder.RecommendedRemainder = editModel.RecommendedRemainder;
+                            findedRemainder.LowerLimitRemainder = editModel.LowerLimitRemainder;
+                            //ctx.ChangeState(findedRemainder, EntityStates.Modified);
+                            client.SaveRemainder(findedRemainder);
+                        }
+                        else
+                        {
+                            var newRemainder = new Remainder();
+                            newRemainder.PriceItem_Id = findedPriceItem.Id;
+                            newRemainder.PriceItem = findedPriceItem;
+                            newRemainder.RemainderDate = DateTimeHelper.GetNowKz();
+                            newRemainder.Warehouse_Id = App.CurrentUser.Warehouse_Id;
+                            newRemainder.LowerLimitRemainder = editModel.LowerLimitRemainder;
+                            newRemainder.RecommendedRemainder = editModel.RecommendedRemainder;
+                            //ctx.AddToRemainders(newRemainder);
+                            client.AddRemainder(newRemainder);
+
+                        }
+
+                        if (editModel.PreviousWholesalePrice != editModel.WholesalePrice)
+                        {
+                            WholesalePrice price = new WholesalePrice();
+                            price.PriceDate = DateTimeHelper.GetNowKz();
+                            price.PriceItem_Id = findedPriceItem.Id;
+                            price.Price = editModel.WholesalePrice;
+                            //ctx.AddToWholesalePrices(price);
+                            client.AddWholesalePrice(price);
+
+                            findedPriceItem.Prices.Add(price);
+                        }
+
+                        //ctx.SaveChangesSynchronous();
+                        ////_newPriceItemAddEvent.Publish(newPriceItem);
+
+                        SelectedIncome.Articul = findedPriceItem.Gear.Articul;
+                        SelectedIncome.BuyPriceRur = (int) findedPriceItem.BuyPriceRur;
+                        SelectedIncome.BuyPriceTng = (int) findedPriceItem.BuyPriceTng;
+                        SelectedIncome.CatalogNumber = findedPriceItem.Gear.CatalogNumber;
+                        SelectedIncome.IsDuplicate = findedPriceItem.Gear.IsDuplicate ? "*" : "";
+                        SelectedIncome.Name = findedPriceItem.Gear.Name;
+                        SelectedIncome.LowerLimitRemainder = 0; //findedPriceItem.Gear.LowerLimitRemainder;
+                        SelectedIncome.RecommendedRemainder = 0; //findedPriceItem.Gear.RecommendedRemainder;
+                        SelectedIncome.PriceItem_Id = findedPriceItem.Id;
+                        SelectedIncome.Uom = findedPriceItem.Uom_Id;
+                        SelectedIncome.WholesalePrice = (int)
+                            findedPriceItem.Prices.OrderByDescending(o => o.PriceDate).First().Price;
+                        if (editModel.PreviousWholesalePrice != editModel.WholesalePrice)
+                        {
+                            CreatePriceChangeReport(findedPriceItem);
+                        }
                     }
-                    else
-                    {
-                        var newRemainder = new Remainder();
-                        newRemainder.PriceItem_Id = findedPriceItem.Id;
-                        newRemainder.PriceItem = findedPriceItem;
-                        newRemainder.RemainderDate = DateTimeHelper.GetNowKz();
-                        newRemainder.Warehouse_Id = App.CurrentUser.Warehouse_Id;
-                        newRemainder.LowerLimitRemainder = editModel.LowerLimitRemainder;
-                        newRemainder.RecommendedRemainder = editModel.RecommendedRemainder;
-                        ctx.AddToRemainders(newRemainder);
-                      
-                    }
-
-                    if (editModel.PreviousWholesalePrice != editModel.WholesalePrice)
-                    {
-                        WholesalePrice price = new WholesalePrice();
-                        price.PriceDate = DateTimeHelper.GetNowKz();
-                        price.PriceItem_Id = findedPriceItem.Id;
-                        price.Price = editModel.WholesalePrice;
-                        ctx.AddToWholesalePrices(price);
-
-                        findedPriceItem.Prices.Add(price);
-                    }
-
-                    ctx.SaveChangesSynchronous();
-                    //_newPriceItemAddEvent.Publish(newPriceItem);
-
-                    SelectedIncome.Articul = findedPriceItem.Gear.Articul;
-                    SelectedIncome.BuyPriceRur = (int)findedPriceItem.BuyPriceRur;
-                    SelectedIncome.BuyPriceTng = (int)findedPriceItem.BuyPriceTng;
-                    SelectedIncome.CatalogNumber = findedPriceItem.Gear.CatalogNumber;
-                    SelectedIncome.IsDuplicate = findedPriceItem.Gear.IsDuplicate ? "*" : "";
-                    SelectedIncome.Name = findedPriceItem.Gear.Name;
-                    SelectedIncome.LowerLimitRemainder = 0;//findedPriceItem.Gear.LowerLimitRemainder;
-                    SelectedIncome.RecommendedRemainder = 0;//findedPriceItem.Gear.RecommendedRemainder;
-                    SelectedIncome.PriceItem_Id = findedPriceItem.Id;
-                    SelectedIncome.Uom = findedPriceItem.Uom_Id;
-                    SelectedIncome.WholesalePrice = (int)
-                        findedPriceItem.Prices.OrderByDescending(o => o.PriceDate).First().Price;
-                    if (editModel.PreviousWholesalePrice != editModel.WholesalePrice)
-                    {
-                        CreatePriceChangeReport(findedPriceItem);
-                    }
-
                 };
                 editor.Show();
             });
@@ -549,20 +572,21 @@ namespace StoreAppTest.ViewModels
 
 
 
-                string uri = string.Concat(
-                    Application.Current.Host.Source.Scheme, "://",
-                    Application.Current.Host.Source.Host, ":",
-                    Application.Current.Host.Source.Port,
-                    "/StoreAppDataService.svc/");
+                //string uri = string.Concat(
+                //    Application.Current.Host.Source.Scheme, "://",
+                //    Application.Current.Host.Source.Host, ":",
+                //    Application.Current.Host.Source.Port,
+                //    "/StoreAppDataService.svc/");
 
                 Task.Factory.StartNew(() =>
                 {
                     try
                     {
 
-                        StoreDbContext ctx = new StoreDbContext(
-                            new Uri(uri
-                                , UriKind.Absolute));
+                        //StoreDbContext ctx = new StoreDbContext(
+                        //    new Uri(uri
+                        //        , UriKind.Absolute));
+                        var client = new StoreapptestClient();
 
                         var now = DateTimeHelper.GetNowKz();
                         Income inc = new Income();
@@ -572,13 +596,13 @@ namespace StoreAppTest.ViewModels
                         inc.Supplier_Id = SelectedSupplier.Name;
                         inc.IsAccept = false;
                         
-                        ctx.AddToIncomes(inc);
-                        ctx.SaveChangesSynchronous();
-
+                        //ctx.AddToIncomes(inc);
+                        //ctx.SaveChangesSynchronous();
+                        
 
                         foreach (var incomeItem in IncomeItems)
                         {
-                            var inci = new StoreAppDataService.IncomeItem();
+                            var inci = new Client.Model.IncomeItem();
                             inci.Amount = incomeItem.Incomes;
                             inci.Income_Id = inc.Id;
                             inci.PriceItem_Id = incomeItem.PriceItem_Id;
@@ -586,10 +610,11 @@ namespace StoreAppTest.ViewModels
                             inci.BuyPriceRur = incomeItem.BuyPriceRur;
                             inci.BuyPriceTng = incomeItem.BuyPriceTng;
 
-                            ctx.AddToIncomeItems(inci);
+                            //ctx.AddToIncomeItems(inci);
                             inc.IncomeItems.Add(inci);
 
                             incomeItem.Income_ID = inc.Id;
+
 
                             //WholesalePrice rp = new WholesalePrice();
                             //rp.Price = incomeItem.NewPrice;
@@ -605,11 +630,13 @@ namespace StoreAppTest.ViewModels
                             //ctx.AddToRetailPrices(rp);
 
                         }
-                        ctx.SaveChangesSynchronous();
+                        //ctx.SaveChangesSynchronous();
+
+                        long incomeId = client.AddIncome(inc);
 
                         IncomeItems.ForEach(f =>
                         {
-                            f.Income_ID = inc.Id;
+                            f.Income_ID = incomeId;
                             f.Income = string.Format("Оприходование № {0} от {1:dd.MM.yyyy}",
                                 inc.IncomeNumber, inc.IncomeDate);
                         });
@@ -618,7 +645,7 @@ namespace StoreAppTest.ViewModels
                         {
                             _newIncomeAddedEvent.Publish(IncomeItems);
                             //_closeViewNeedEvent.Publish(ViewId);
-                            SavedDocumentId = inc.Id;
+                            SavedDocumentId = incomeId;
                             Saved = true;
 
                         });
@@ -878,26 +905,27 @@ namespace StoreAppTest.ViewModels
         private void UpdateSuppliersList()
         {
 
-            string uri = string.Concat(
-                Application.Current.Host.Source.Scheme, "://",
-                Application.Current.Host.Source.Host, ":",
-                Application.Current.Host.Source.Port,
-                "/StoreAppDataService.svc/");
+            //string uri = string.Concat(
+            //    Application.Current.Host.Source.Scheme, "://",
+            //    Application.Current.Host.Source.Host, ":",
+            //    Application.Current.Host.Source.Port,
+            //    "/StoreAppDataService.svc/");
 
             Task.Factory.StartNew(() =>
             {
-                StoreDbContext ctx = new StoreDbContext(
-                    new Uri(uri
-                        , UriKind.Absolute));
+                //StoreDbContext ctx = new StoreDbContext(
+                //    new Uri(uri
+                //        , UriKind.Absolute));
 
-                var customersDb =
-                    ctx.ExecuteSyncronous(ctx.Suppliers).ToList();
-
+                //var customersDb =
+                //    ctx.ExecuteSyncronous(ctx.Suppliers).ToList();
+                var client = new StoreapptestClient();
+                var supplierDb = client.GetSuppliers();
                 DispatcherHelper.CheckBeginInvokeOnUI(() =>
                 {
                     SupplierList.Clear();
 
-                    customersDb.ForEach(i =>
+                    supplierDb.ForEach(i =>
                     {
                         SupplierList.Add(i);
                     });
@@ -910,44 +938,46 @@ namespace StoreAppTest.ViewModels
 
         private void CreatePriceChangeReport(PriceItem priceItem)
         {
-            string uri = string.Concat(
-                Application.Current.Host.Source.Scheme, "://",
-                Application.Current.Host.Source.Host, ":",
-                Application.Current.Host.Source.Port,
-                "/StoreAppDataService.svc/");
+            //string uri = string.Concat(
+            //    Application.Current.Host.Source.Scheme, "://",
+            //    Application.Current.Host.Source.Host, ":",
+            //    Application.Current.Host.Source.Port,
+            //    "/StoreAppDataService.svc/");
 
             Task.Factory.StartNew(() =>
             {
-                StoreDbContext ctx = new StoreDbContext(
-                    new Uri(uri
-                        , UriKind.Absolute));
+                //StoreDbContext ctx = new StoreDbContext(
+                //    new Uri(uri
+                //        , UriKind.Absolute));
 
                 //var acceptIncomeItems = IncomeItems.Where(i => i.Income_ID == incomeId).ToList();
 
+                var client = new StoreapptestClient();
+
                 var now = DateTimeHelper.GetNowKz();
 
-                StoreAppDataService.PriceChangeReport rep = new StoreAppDataService.PriceChangeReport();
+                Client.Model.PriceChangeReport rep = new Client.Model.PriceChangeReport();
                 rep.Creator_Id = App.CurrentUser.UserName;
                 rep.ReportDate = now;
 
-                var priceReportDb =
-                    ctx.ExecuteSyncronous(ctx.PriceChangeReports.OrderByDescending(s => s.Id)).FirstOrDefault();
-                if (priceReportDb != null)
-                {
-                    int lastNumber = 0;
-                    if (int.TryParse(priceReportDb.ReportNumber, out lastNumber))
-                    {
-                        rep.ReportNumber = (++lastNumber).ToString();
-                    }
-                }
-                else
-                {
-                    rep.ReportNumber = "1";
-                }
+                //var priceReportDb =
+                //    ctx.ExecuteSyncronous(ctx.PriceChangeReports.OrderByDescending(s => s.Id)).FirstOrDefault();
+                //if (priceReportDb != null)
+                //{
+                //    int lastNumber = 0;
+                //    if (int.TryParse(priceReportDb.ReportNumber, out lastNumber))
+                //    {
+                //        rep.ReportNumber = (++lastNumber).ToString();
+                //    }
+                //}
+                //else
+                //{
+                //    rep.ReportNumber = "1";
+                //}
 
 
-                ctx.AddToPriceChangeReports(rep);
-                ctx.SaveChangesSynchronous();
+                //ctx.AddToPriceChangeReports(rep);
+                //ctx.SaveChangesSynchronous();
 
 
                 var prices = priceItem.Prices;
@@ -967,7 +997,7 @@ namespace StoreAppTest.ViewModels
                     previousRetailPrice = currentRetailPrice;
                 }
 
-                StoreAppTest.StoreAppDataService.PriceChangeReportItem repItem = new StoreAppTest.StoreAppDataService.PriceChangeReportItem()
+                Client.Model.PriceChangeReportItem repItem = new Client.Model.PriceChangeReportItem()
                 {
                     PriceItem_Id = priceItem.Id,
                     PreviousPrice_Id = previousRetailPrice.Id,
@@ -975,39 +1005,41 @@ namespace StoreAppTest.ViewModels
                     PriceChangeReport_Id = rep.Id
                 };
 
-                ctx.AddToPriceChangeReportItems(repItem);
+                //ctx.AddToPriceChangeReportItems(repItem);
 
                 rep.PriceChangeReportItems.Add(repItem);
 
+                client.AddPriceChangeReport(rep);
 
-
-                ctx.SaveChangesSynchronous();
+                //ctx.SaveChangesSynchronous();
 
             });
         }
 
         private void AddPositionToIncome(string barcode)
         {
-            string uri = string.Concat(
-                Application.Current.Host.Source.Scheme, "://",
-                Application.Current.Host.Source.Host, ":",
-                Application.Current.Host.Source.Port,
-                "/StoreAppDataService.svc/");
+            //string uri = string.Concat(
+            //    Application.Current.Host.Source.Scheme, "://",
+            //    Application.Current.Host.Source.Host, ":",
+            //    Application.Current.Host.Source.Port,
+            //    "/StoreAppDataService.svc/");
 
             Task.Factory.StartNew(() =>
             {
                 try
                 {
 
-                    StoreDbContext ctx = new StoreDbContext(
-                        new Uri(uri
-                            , UriKind.Absolute));
+                    //StoreDbContext ctx = new StoreDbContext(
+                    //    new Uri(uri
+                    //        , UriKind.Absolute));
 
 
-                    var findedPosition =
-                        ctx.ExecuteSyncronous(ctx.PriceItems.Expand("Gear,Prices,Remainders").Where(wh => wh.Barcode1 == barcode || wh.Barcode2 == barcode || wh.Barcode3 == barcode))
-                            .FirstOrDefault();
+                    //var findedPosition =
+                    //    ctx.ExecuteSyncronous(ctx.PriceItems.Expand("Gear,Prices,Remainders").Where(wh => wh.Barcode1 == barcode || wh.Barcode2 == barcode || wh.Barcode3 == barcode))
+                    //        .FirstOrDefault();
+                    var client = new StoreapptestClient();
 
+                    var findedPosition = client.GetPriceItemByBarcode(barcode);
                     if (findedPosition != null)
                     {
 

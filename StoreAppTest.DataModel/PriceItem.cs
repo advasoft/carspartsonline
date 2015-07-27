@@ -1,10 +1,12 @@
 namespace StoreAppTest.Web.DataModel
 {
+    using System;
     using System.Collections.Generic;
     using System.ComponentModel;
     using System.ComponentModel.DataAnnotations;
     using System.Runtime.Serialization;
 
+    [Serializable]
     [DataContract]
     public partial class PriceItem
     {

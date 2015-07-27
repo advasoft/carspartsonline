@@ -101,6 +101,7 @@
             <dxg:GridControl.Columns>
                 <dxg:GridColumn FieldName="PriceListName" Header="Прайс" ReadOnly="True" GroupIndex="0"/>
                 <dxg:GridColumn FieldName="Number" Header="№" ReadOnly="True" Width="40"/>
+                <dxg:GridColumn FieldName="SaledNumber" Header="№ Чека" ReadOnly="True" Width="80"/>
                 <dxg:GridColumn FieldName="CatalogNumber" Header="Каталожный номер" ReadOnly="True"/>
                 <dxg:GridColumn FieldName="IsDuplicate" Header="*" ReadOnly="True" Width="20"/>
                 <dxg:GridColumn FieldName="Name" Header="Название" ReadOnly="True" Width="200"/>

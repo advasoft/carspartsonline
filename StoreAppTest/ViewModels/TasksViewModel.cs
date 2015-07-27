@@ -12,6 +12,8 @@ namespace StoreAppTest.ViewModels
     using System.Windows.Input;
     using System.Windows.Media;
     using advasoft.sltools.menu;
+    using Client;
+    using Client.Model;
     using Controls;
     using DevExpress.Xpf.Editors.Helpers;
     using Event;
@@ -19,7 +21,6 @@ namespace StoreAppTest.ViewModels
     using Microsoft.Practices.Prism.PubSubEvents;
     using Microsoft.Practices.ServiceLocation;
     using Model;
-    using StoreAppDataService;
     using Tasks;
     using Utilities;
     using Views;
@@ -307,24 +308,25 @@ namespace StoreAppTest.ViewModels
             RemaindersTabs.Clear();
             IncomesTabs.Clear();
 
-            string path = string.Concat(
-                Application.Current.Host.Source.Scheme, "://",
-                Application.Current.Host.Source.Host, ":",
-                Application.Current.Host.Source.Port,
-                "/StoreAppDataService.svc/");
+            //string path = string.Concat(
+            //    Application.Current.Host.Source.Scheme, "://",
+            //    Application.Current.Host.Source.Host, ":",
+            //    Application.Current.Host.Source.Port,
+            //    "/StoreAppDataService.svc/");
 
-            //var th = new Thread(() =>
-            //{
-                StoreDbContext ctx = new StoreDbContext(
-                    new Uri(path
-                        , UriKind.Absolute));
-
-
+            ////var th = new Thread(() =>
+            ////{
+            //    StoreDbContext ctx = new StoreDbContext(
+            //        new Uri(path
+            //            , UriKind.Absolute));
 
 
 
-                var priceLists =
-                    ctx.ExecuteSyncronous(ctx.PriceLists).ToList();
+            var client = new StoreapptestClient();
+
+            var priceLists =
+                //ctx.ExecuteSyncronous(ctx.PriceLists).ToList();
+                client.GetPriceLists();
 
                 IEnumerable<PriceList> query = priceLists;
                 //if (App.CurrentUser.UserName != "admin")
@@ -407,7 +409,7 @@ namespace StoreAppTest.ViewModels
 
             Guid viewId = Guid.NewGuid();
             RealizationPerDay ps = new RealizationPerDay();
-            RealizationPerDayViewModel vm = new RealizationPerDayViewModel(viewId);
+            RealizationPerDayViewModel vm = new RealizationPerDayViewModel(viewId, ps);
             ps.DataContext = vm;
 
             ClosableTabItem tb = new ClosableTabItem();
@@ -430,7 +432,7 @@ namespace StoreAppTest.ViewModels
             ps.RealizationBarcode.IsEnabled = false;
             ps.RealizationNumberTextBox.IsEnabled = false;
 
-            RealizationPerDayReadOnlyViewModel vm = new RealizationPerDayReadOnlyViewModel(viewId, model.Id);
+            RealizationPerDayReadOnlyViewModel vm = new RealizationPerDayReadOnlyViewModel(viewId, model.Id, ps);
             vm.RealizationNumber = model.DocumentNumber;
             vm.Barcode = model.Barcode;
             vm.Saved = true;

@@ -7,11 +7,12 @@ namespace StoreAppTest.Web.DataModel
     using System.Runtime.Serialization;
 
     [DataContract]
+    [Serializable]
     public partial class RefundDocument
     {
         public RefundDocument()
         {
-            RefundItems = new HashSet<RefundItem>();
+            RefundItems = new List<RefundItem>();
         }
 
         [Key]
@@ -52,6 +53,6 @@ namespace StoreAppTest.Web.DataModel
         public virtual User LastChanger { get; set; }
 
         [DataMember]
-        public virtual ICollection<RefundItem> RefundItems { get; set; }
+        public virtual List<RefundItem> RefundItems { get; set; }
     }
 }

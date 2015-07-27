@@ -9,14 +9,17 @@ namespace StoreAppTest.ViewModels
     using System.Threading.Tasks;
     using System.Windows;
     using System.Windows.Input;
+    using Client;
+    using Client.Model;
     using Event;
     using GalaSoft.MvvmLight.Threading;
     using Microsoft.Practices.Prism.PubSubEvents;
     using Microsoft.Practices.ServiceLocation;
     using Model;
-    using Print;using StoreAppDataService;
+    using Print;
     using Utilities;
-    using RefundItem = StoreAppDataService.RefundItem;
+    using Views;
+    using RefundItem = Client.Model.RefundItem;
 
     public class RealizationPerDayViewModel : ViewModelBase
     {
@@ -30,10 +33,14 @@ namespace StoreAppTest.ViewModels
 
         private IList<RealizationItem> realization = new List<RealizationItem>();
         private IList<DebtDischargeDocument> discharges = new List<DebtDischargeDocument>();
- 
-        public RealizationPerDayViewModel(Guid viewId)
+
+        private RealizationPerDay _view;
+
+        public RealizationPerDayViewModel(Guid viewId, RealizationPerDay view)
         {
             ViewId = viewId;
+
+            _view = view;
 
             _agregator = ServiceLocator.Current.GetInstance<IEventAggregator>();
             _closeViewNeedEvent = _agregator.GetEvent<CloseViewNeedEvent>();
@@ -68,6 +75,8 @@ namespace StoreAppTest.ViewModels
         {
             get
             {
+                //
+                //return _refundItems.Where(w => !w.RefundDocument.SaleDocument.IsInDebt).Sum(s => s.Amount);
                 return _refundItems.Where(w => !w.RefundDocument.SaleDocument.IsInDebt).Sum(s => s.Amount);
             }
         }
@@ -85,7 +94,7 @@ namespace StoreAppTest.ViewModels
                 var totalDisc = discharges.Sum(s => s.Amount);
 
                 decimal total = realization.Where(w => !w.SaleItemData.SaleDocument.IsInDebt).Sum(
-                    s => s.SoldCount*s.WholePrice);
+                    s => s.SoldCount * s.WholePrice);
                 return TotalAmount - (total + totalDisc);
             }
         }
@@ -171,18 +180,13 @@ namespace StoreAppTest.ViewModels
 
         protected override void LoadViewHandler()
         {
-            realization = new List<RealizationItem>();
+            //realization = new List<RealizationItem>();
 
-            var now = DateTimeHelper.GetNowKz();
-
-            var startDate = new DateTime(now.Year, now.Month, now.Day, 0, 0, 0);
-            var endDate = new DateTime(now.Year, now.Month, now.Day, 23, 59, 59);
-
-            string uri = string.Concat(
-                Application.Current.Host.Source.Scheme, "://",
-                Application.Current.Host.Source.Host, ":",
-                Application.Current.Host.Source.Port,
-                "/StoreAppDataService.svc/");
+            //string uri = string.Concat(
+            //    Application.Current.Host.Source.Scheme, "://",
+            //    Application.Current.Host.Source.Host, ":",
+            //    Application.Current.Host.Source.Port,
+            //    "/StoreAppDataService.svc/");
 
             RealizationItems.Clear();
 
@@ -191,19 +195,21 @@ namespace StoreAppTest.ViewModels
                 try
                 {
 
-                    StoreDbContext ctx = new StoreDbContext(
-                        new Uri(uri
-                            , UriKind.Absolute));
+                    //StoreDbContext ctx = new StoreDbContext(
+                    //    new Uri(uri
+                    //        , UriKind.Absolute));
 
                     int index = 1;
 
+                    var client = new StoreapptestClient();
+                    //var realizationPdDb =
+                        //ctx.ExecuteSyncronous(ctx.SaleDocumentsPerDays.OrderByDescending(s => s.Id)).FirstOrDefault();
 
-                    var realizationPdDb =
-                        ctx.ExecuteSyncronous(ctx.SaleDocumentsPerDays.OrderByDescending(s => s.Id)).FirstOrDefault();
-                    if (realizationPdDb != null)
+                    var lastNum = client.GetLastSaleDocumentsPerDaysNumber();
+                    if (!string.IsNullOrEmpty(lastNum))
                     {
                         int lastNumber = 0;
-                        if (int.TryParse(realizationPdDb.Number, out lastNumber))
+                        if (int.TryParse(lastNum, out lastNumber))
                         {
                             DispatcherHelper.CheckBeginInvokeOnUI(() =>
                             {
@@ -219,14 +225,16 @@ namespace StoreAppTest.ViewModels
                         });
                     }
 
-                    //var now = DateTimeHelper.GetNowKz();
+                    var now = DateTimeHelper.GetNowKz();
                     var strt = new DateTime(now.Year, now.Month, now.Day, 0, 0, 0);
                     var endd = new DateTime(now.Year, now.Month, now.Day, 23, 59, 59);
 
                     var dischargesSource =
-                        ctx.ExecuteSyncronous(
-                            ctx.DebtDischargeDocuments.Expand("Debtor")
-                                .Where(w => w.DischargeDate >= strt && w.DischargeDate <= endd && w.IsDischarge && w.Creator_Id == App.CurrentUser.UserName)).ToList();
+                        //ctx.ExecuteSyncronous(
+                        //    ctx.DebtDischargeDocuments.Expand("Debtor")
+                        //        .Where(w => w.DischargeDate >= strt && w.DischargeDate <= endd && w.IsDischarge && w.Creator_Id == App.CurrentUser.UserName)).ToList();
+                        client.GetUserDebtDischargeDocumentsByDate(strt, endd, App.CurrentUser.UserName).ToList();
+
                     discharges = (from d in dischargesSource
                                   group d by new
                                   {
@@ -240,200 +248,269 @@ namespace StoreAppTest.ViewModels
                                       }).ToList();
 
 
-                    StoreDbContext refundCtx = new StoreDbContext(
-                        new Uri(uri
-                            , UriKind.Absolute));
+                    ////StoreDbContext refundCtx = new StoreDbContext(
+                    ////    new Uri(uri
+                    ////        , UriKind.Absolute));
 
 
-                    var closedRefundPerDay = refundCtx.ExecuteSyncronous(
-                        refundCtx.RefundsPerDayItems.Expand("SaleDocumentsPerDay,RefundItem")
-                            .Where(
-                                w =>
-                                    w.SaleDocumentsPerDay.SaleDocumentsDate >= startDate
-                                    && w.SaleDocumentsPerDay.SaleDocumentsDate <= endDate
-                                    && w.SaleDocumentsPerDay.IsClosed &&
-                                    w.SaleDocumentsPerDay.Creator_Id == App
-                                        .CurrentUser.UserName)).ToList().Select(s => s.RefundItem.Id).ToList();
+                    //var closedRefundPerDay = refundCtx.ExecuteSyncronous(
+                    //    refundCtx.RefundsPerDayItems.Expand("SaleDocumentsPerDay,RefundItem")
+                    //        .Where(
+                    //            w =>
+                    //                w.SaleDocumentsPerDay.SaleDocumentsDate >= startDate
+                    //                && w.SaleDocumentsPerDay.SaleDocumentsDate <= endDate
+                    //                && w.SaleDocumentsPerDay.IsClosed &&
+                    //                w.SaleDocumentsPerDay.Creator_Id == App
+                    //                    .CurrentUser.UserName)).ToList().Select(s => s.RefundItem.Id).ToList();
 
 
-                    var refundQuery = refundCtx.ExecuteSyncronous(
-                        refundCtx.RefundItems.Expand("RefundDocument/SaleDocument,PriceItem/Gear,PriceItem/UnitOfMeasure,PriceItem/Remainders,PriceItem/Prices,SaleItem")
-                            .Where(
-                                w =>
-                                    w.RefundDocument.RefundDate >= startDate
-                                    && w.RefundDocument.RefundDate <= endDate
-                                    //&& !closedRefundPerDay.Contains(w.Id)
-                                    && w.RefundDocument.Creator_Id == App
-                                        .CurrentUser.UserName)).ToList();
+                    //var refundQuery = refundCtx.ExecuteSyncronous(
+                    //    refundCtx.RefundItems.Expand("RefundDocument/SaleDocument,PriceItem/Gear,PriceItem/UnitOfMeasure,PriceItem/Remainders,PriceItem/Prices,SaleItem")
+                    //        .Where(
+                    //            w =>
+                    //                w.RefundDocument.RefundDate >= startDate
+                    //                && w.RefundDocument.RefundDate <= endDate
+                    //                //&& !closedRefundPerDay.Contains(w.Id)
+                    //                && w.RefundDocument.Creator_Id == App
+                    //                    .CurrentUser.UserName)).ToList();
 
-                    _refundItems = refundQuery.Where(w => !closedRefundPerDay.Contains(w.Id)).ToList();
+                    //_refundItems = refundQuery.Where(w => !closedRefundPerDay.Contains(w.Id)).ToList();
 
-                    var closedSalesPerDay = ctx.ExecuteSyncronous(
-                        ctx.SalesPerDayItems.Expand("SaleDocumentsPerDay,SaleItem")
-                            .Where(
-                                w =>
-                                    w.SaleDocumentsPerDay.SaleDocumentsDate >= startDate
-                                    && w.SaleDocumentsPerDay.SaleDocumentsDate <= endDate
-                                    && w.SaleDocumentsPerDay.IsClosed &&
-                                    w.SaleDocumentsPerDay.Creator_Id == App
-                                        .CurrentUser.UserName)).ToList().Select(s => s.SaleItem.Id).ToList();
+                    //var closedSalesPerDay = ctx.ExecuteSyncronous(
+                    //    ctx.SalesPerDayItems.Expand("SaleDocumentsPerDay,SaleItem")
+                    //        .Where(
+                    //            w =>
+                    //                w.SaleDocumentsPerDay.SaleDocumentsDate >= startDate
+                    //                && w.SaleDocumentsPerDay.SaleDocumentsDate <= endDate
+                    //                && w.SaleDocumentsPerDay.IsClosed &&
+                    //                w.SaleDocumentsPerDay.Creator_Id == App
+                    //                    .CurrentUser.UserName)).ToList().Select(s => s.SaleItem.Id).ToList();
 
 
-                    var salesQuery = ctx.ExecuteSyncronous(
-                        ctx.SaleItems.Expand("SaleDocument,PriceItem/PriceLists,PriceItem/Gear,PriceItem/UnitOfMeasure,PriceItem/Remainders,PriceItem/Prices")
-                            .Where(
-                                w =>
-                                    w.SaleDocument.SaleDate >= startDate
-                                    && w.SaleDocument.SaleDate <= endDate
-                                    && !w.SaleDocument.IsOrder
-                                    //&& !closedSalesPerDay.Contains(w.Id)
-                                    && w.SaleDocument.Creator_Id == App
-                                        .CurrentUser.UserName)).ToList();
+                    //var salesQuery = ctx.ExecuteSyncronous(
+                    //    ctx.SaleItems.Expand("SaleDocument,PriceItem/PriceLists,PriceItem/Gear,PriceItem/UnitOfMeasure,PriceItem/Remainders,PriceItem/Prices")
+                    //        .Where(
+                    //            w =>
+                    //                w.SaleDocument.SaleDate >= startDate
+                    //                && w.SaleDocument.SaleDate <= endDate
+                    //                && !w.SaleDocument.IsOrder
+                    //                //&& !closedSalesPerDay.Contains(w.Id)
+                    //                && w.SaleDocument.Creator_Id == App
+                    //                    .CurrentUser.UserName)).ToList();
 
-                    var salesItems = salesQuery.Where(w => !closedSalesPerDay.Contains(w.Id)).ToList();
+                    //var salesItems = salesQuery.Where(w => !closedSalesPerDay.Contains(w.Id)).ToList();
 
-                    salesItems.ForEach(s =>
-                    {
+                    //salesItems.ForEach(s =>
+                    //{
                         
-                        //string debtor = "";
-                        //int debtDisc = 0;
+                    //    //string debtor = "";
+                    //    //int debtDisc = 0;
 
-                        //var findedDebtor =
-                        //    discharges.Where(w => w.Debtor_Id == s.SaleDocument.Customer_Name).FirstOrDefault();
-                        //if (findedDebtor != null)
-                        //{
-                        //    debtor = findedDebtor.Debtor_Id;
-                        //    debtDisc = (int)findedDebtor.Amount;
-                        //}
-                        var remainders = 0;
-                        var rems =
-                            s.PriceItem.Remainders.Where(w => w.Warehouse_Id == App.CurrentUser.Warehouse_Id)
-                                .FirstOrDefault();
-                        if (rems != null)
-                            remainders = (int)rems.Amount;
+                    //    //var findedDebtor =
+                    //    //    discharges.Where(w => w.Debtor_Id == s.SaleDocument.Customer_Name).FirstOrDefault();
+                    //    //if (findedDebtor != null)
+                    //    //{
+                    //    //    debtor = findedDebtor.Debtor_Id;
+                    //    //    debtDisc = (int)findedDebtor.Amount;
+                    //    //}
+                    //    var remainders = 0;
+                    //    var rems =
+                    //        s.PriceItem.Remainders.Where(w => w.Warehouse_Id == App.CurrentUser.Warehouse_Id)
+                    //            .FirstOrDefault();
+                    //    if (rems != null)
+                    //        remainders = (int)rems.Amount;
 
-                        var amouuntWithoutDebt = 0;
-                        var amountWholesalePriceWithoutDebt = 0;
+                    //    var amouuntWithoutDebt = 0;
+                    //    var amountWholesalePriceWithoutDebt = 0;
 
-                        if (!s.SaleDocument.IsInDebt)
-                        {
-                            var price =
-                                s.PriceItem.Prices.Where(p => p.PriceDate <= DateTimeHelper.GetNowKz())
-                                    .OrderByDescending(o => o.PriceDate)
-                                    .FirstOrDefault();
+                    //    if (!s.SaleDocument.IsInDebt)
+                    //    {
+                    //        var price =
+                    //            s.PriceItem.Prices.Where(p => p.PriceDate <= DateTimeHelper.GetNowKz())
+                    //                .OrderByDescending(o => o.PriceDate)
+                    //                .FirstOrDefault();
 
-                            amouuntWithoutDebt = (int) ((s.Price*s.Count) - s.Discount);
-                            if (price != null)
-                            {
-                                amountWholesalePriceWithoutDebt =
-                                    (int)((price.Price * s.Count));
-                            }
-                        }
-                        var itemRefunds =
-                            _refundItems.Where(wh => wh.SaleItem_Id == s.Id && wh.RefundDocument.SaleDocument.IsInDebt == true)
-                                .Sum(sum => sum.Count);
+                    //        amouuntWithoutDebt = (int) ((s.Price*s.Count) - s.Discount);
+                    //        if (price != null)
+                    //        {
+                    //            amountWholesalePriceWithoutDebt =
+                    //                (int)((price.Price * s.Count));
+                    //        }
+                    //    }
+                    //    var itemRefunds =
+                    //        _refundItems.Where(wh => wh.SaleItem_Id == s.Id && wh.RefundDocument.SaleDocument.IsInDebt == true)
+                    //            .Sum(sum => sum.Count);
 
-                        var count = s.Count - itemRefunds;
-                        if (count != 0)
-                        {
-                            realization.Add(new RealizationItem()
-                            {
+                    //    var count = s.Count - itemRefunds;
+                    //    if (count != 0)
+                    //    {
+                    //        realization.Add(new RealizationItem()
+                    //        {
 
-                                CatalogNumber = s.PriceItem.Gear.CatalogNumber,
-                                IsDuplicate = s.PriceItem.Gear.IsDuplicate ? "*" : "",
-                                Name = s.PriceItem.Gear.Name,
-                                Price = (int) s.Price,
-                                Remainders = remainders,
-                                SoldCount = (int)count,
-                                Uom = s.PriceItem.UnitOfMeasure.Name,
-                                WholePrice = (int) s.PriceItem.Prices.OrderByDescending(o => o.PriceDate).First().Price,
-                                //Amount = (int)((s.Price * count) - s.Discount),
-                                Amount = (int)((s.Price - (s.Discount / s.Count)) * count),
-                                AmountWithoutDebt = amouuntWithoutDebt,
-                                AmountWithoutDebtProfit = amouuntWithoutDebt - amountWholesalePriceWithoutDebt,
-                                Discount = (int) s.Discount,
-                                SaleItemData = s,
-                                Customer = s.SaleDocument.IsInDebt ? s.SaleDocument.Customer_Name : "",
-                                //DebtDischarge = s.SaleDocument.IsInDebt ? debtDisc : 0,
-                                IsInDebt = s.SaleDocument.IsInDebt,
-                                PriceListName = s.PriceItem.PriceLists.First().Name,
-                                SaledDate = s.SaleDocument.SaleDate.ToString("T"),
-                                SaledCount = (int)s.Count,
+                    //            CatalogNumber = s.PriceItem.Gear.CatalogNumber,
+                    //            IsDuplicate = s.PriceItem.Gear.IsDuplicate ? "*" : "",
+                    //            Name = s.PriceItem.Gear.Name,
+                    //            Price = (int) s.Price,
+                    //            Remainders = remainders,
+                    //            SoldCount = (int)count,
+                    //            Uom = s.PriceItem.UnitOfMeasure.Name,
+                    //            WholePrice = (int) s.PriceItem.Prices.OrderByDescending(o => o.PriceDate).First().Price,
+                    //            //Amount = (int)((s.Price * count) - s.Discount),
+                    //            Amount = (int)((s.Price - (s.Discount / s.Count)) * count),
+                    //            AmountWithoutDebt = amouuntWithoutDebt,
+                    //            AmountWithoutDebtProfit = amouuntWithoutDebt - amountWholesalePriceWithoutDebt,
+                    //            Discount = (int) s.Discount,
+                    //            SaleItemData = s,
+                    //            Customer = s.SaleDocument.IsInDebt ? s.SaleDocument.Customer_Name : "",
+                    //            //DebtDischarge = s.SaleDocument.IsInDebt ? debtDisc : 0,
+                    //            IsInDebt = s.SaleDocument.IsInDebt,
+                    //            PriceListName = s.PriceItem.PriceLists.First().Name,
+                    //            SaledDate = s.SaleDocument.SaleDate.ToString("T"),
+                    //            SaledCount = (int)s.Count,
 
-                            });
-                        }
-                    });
+                    //        });
+                    //    }
+                    //});
 
-                    var query = from r in realization
-                                group r by new
-                                {
-                                    CatalogNumber = r.CatalogNumber,
-                                    IsDuplicate = r.IsDuplicate,
-                                    Name = r.Name,
-                                    Price = r.Price,
-                                    //Remainders = r.Remainders,
-                                    //SoldCount = r.SoldCount,
-                                    Uom = r.Uom,
+                    //var query = from r in realization
+                    //            group r by new
+                    //            {
+                    //                CatalogNumber = r.CatalogNumber,
+                    //                IsDuplicate = r.IsDuplicate,
+                    //                Name = r.Name,
+                    //                Price = r.Price,
+                    //                //Remainders = r.Remainders,
+                    //                //SoldCount = r.SoldCount,
+                    //                Uom = r.Uom,
 
-                                    //Customer = r.Customer,
-                                    IsInDebt = r.IsInDebt,
-                                    PriceListName = r.PriceListName,
-                                    SaledDate = r.SaledDate
-                                    //SaleItemData = r.SaleItemData,
-                                    //Amount = r.Amount,
-                                    //Discount = r.Discount,
-                                    //WholePrice = r.WholePrice
-                                }
-                                    into groups
-                                    select new RealizationItem()
-                                    {
-                                        Number = index++,
-                                        CatalogNumber = groups.Key.CatalogNumber,
-                                        IsDuplicate = groups.Key.IsDuplicate,
-                                        Name = groups.Key.Name,
-                                        Price = (int)groups.Key.Price,
-                                        Remainders = (int)groups.Average(s => s.Remainders),
-                                        SoldCount = groups.Sum(s => s.SoldCount),
-                                        Uom = groups.Key.Uom,
-                                        Amount = groups.Sum(s => s.Amount),
-                                        AmountWithoutDebt = groups.Sum(s => s.AmountWithoutDebt),
-                                        AmountWithoutDebtProfit = groups.Sum(s => s.AmountWithoutDebtProfit),
-                                        Discount = groups.Sum(s => s.Discount),
-                                        WholePrice = (int)groups.Average(a => a.WholePrice),
-                                        //Customer = groups.Key.Customer,
-                                        DebtDischarge = (int)groups.Average(s => s.DebtDischarge),
-                                        IsInDebt = groups.Key.IsInDebt,
-                                        PriceListName = groups.Key.PriceListName,
-                                        SaledDate = groups.Key.SaledDate,
-                                        SaledCount = groups.Sum(s => s.SaledCount)
-                                        //SaleItemData = groups.Key.SaleItemData
-                                    };
+                    //                //Customer = r.Customer,
+                    //                IsInDebt = r.IsInDebt,
+                    //                PriceListName = r.PriceListName,
+                    //                SaledDate = r.SaledDate
+                    //                //SaleItemData = r.SaleItemData,
+                    //                //Amount = r.Amount,
+                    //                //Discount = r.Discount,
+                    //                //WholePrice = r.WholePrice
+                    //            }
+                    //                into groups
+                    //                select new RealizationItem()
+                    //                {
+                    //                    Number = index++,
+                    //                    CatalogNumber = groups.Key.CatalogNumber,
+                    //                    IsDuplicate = groups.Key.IsDuplicate,
+                    //                    Name = groups.Key.Name,
+                    //                    Price = (int)groups.Key.Price,
+                    //                    Remainders = (int)groups.Average(s => s.Remainders),
+                    //                    SoldCount = groups.Sum(s => s.SoldCount),
+                    //                    Uom = groups.Key.Uom,
+                    //                    Amount = groups.Sum(s => s.Amount),
+                    //                    AmountWithoutDebt = groups.Sum(s => s.AmountWithoutDebt),
+                    //                    AmountWithoutDebtProfit = groups.Sum(s => s.AmountWithoutDebtProfit),
+                    //                    Discount = groups.Sum(s => s.Discount),
+                    //                    WholePrice = (int)groups.Average(a => a.WholePrice),
+                    //                    //Customer = groups.Key.Customer,
+                    //                    DebtDischarge = (int)groups.Average(s => s.DebtDischarge),
+                    //                    IsInDebt = groups.Key.IsInDebt,
+                    //                    PriceListName = groups.Key.PriceListName,
+                    //                    SaledDate = groups.Key.SaledDate,
+                    //                    SaledCount = groups.Sum(s => s.SaledCount)
+                    //                    //SaleItemData = groups.Key.SaleItemData
+                    //                };
+                    _refundItems = client.GetTodayRefundItems(App.CurrentUser.UserName).ToList();
 
+                    var query = client.GetTodayRealizationItems(App.CurrentUser.UserName, App.CurrentUser.Warehouse_Id).ToList();
+
+                    realization = client.GetTodayRealizationItemsRaw(App.CurrentUser.UserName,
+                        App.CurrentUser.Warehouse_Id).ToList();
 
                     foreach (var realizationItem in query)
                     {
                         if (realizationItem.IsInDebt)
                             realizationItem.Additional = "Продан в долг";
+                        var item = realizationItem;
                         DispatcherHelper.CheckBeginInvokeOnUI(() =>
                         {
-                            RealizationItems.Add(realizationItem);
+                            RealizationItems.Add(item);
                         });
                     }
 
+                    var realizationsByPriceList = (from q in realization
+                                                   group q by q.PriceListName
+                                                       into grp
+                                                       select grp).ToList();
+
+                    var refundsByPriceList = (from r in _refundItems
+                                              group r by r.PriceItem.PriceLists.FirstOrDefault().Name
+                                                  into grp
+                                                  select grp).ToList();
+
+                    foreach (var itm in realizationsByPriceList)
+                    {
+                        int refndVal = 0;
+                        int refndValWh = 0;
+
+                        var refnd = refundsByPriceList.Where(r => r.Key == itm.Key).FirstOrDefault();
+                        if (refnd != null)
+                        {
+                            refndVal = (int)refnd.Sum(s => s.Amount);
+                            refndValWh = (int)
+                                refnd.Sum(
+                                    s =>
+                                        s.Count *
+                                        (s.PriceItem.Prices.Where(p => p.PriceDate <= s.RefundDocument.RefundDate)
+                                            .OrderByDescending(o => o.PriceDate)
+                                            .FirstOrDefault() == null
+                                            ? 0
+                                            : s.PriceItem.Prices.Where(p => p.PriceDate <= s.RefundDocument.RefundDate)
+                                                .OrderByDescending(o => o.PriceDate)
+                                                .FirstOrDefault().Price)
+                                    );
+                        }
+
+                        var realizationVal = (int)
+                            itm.Where(r => !r.SaleItemData.SaleDocument.IsInDebt).Sum(s => s.Amount);
+
+                        var realizationValWh =
+                            (int)
+                                itm.Where(r => !r.SaleItemData.SaleDocument.IsInDebt).Sum(
+                                    s =>
+                                        s.SaledCount * s.WholePrice
+                                    );
+
+                        var frstItem = itm.FirstOrDefault();
+                        if (frstItem != null)
+                        {
+                            DispatcherHelper.CheckBeginInvokeOnUI(() =>
+                            {
+                                //var findedRealizationItem =
+                                //    RealizationItems.Where(w => w.SaleItemData.Id == frstItem.SaleItemData.Id)
+                                //        .FirstOrDefault();
+                                var findedRealizationItem =
+                                    RealizationItems.Where(i => i.PriceListName == frstItem.PriceListName)
+                                        .FirstOrDefault();
+
+                                findedRealizationItem.AmountWithoutDebt = realizationVal - refndVal;
+                                findedRealizationItem.AmountWithoutDebtProfit = findedRealizationItem.AmountWithoutDebt - (realizationValWh - refndValWh);
+                            });
+                        }
+                    }
+
+
+
                     foreach (var debtDischargeDocument in discharges)
                     {
+                        var document = debtDischargeDocument;
                         DispatcherHelper.CheckBeginInvokeOnUI(() =>
                         {
                             RealizationItems.Add(new RealizationItem()
                             {
                                 Number = index++,
-                                Name = "Погашение " + debtDischargeDocument.Debtor_Id,
-                                Price = (int)debtDischargeDocument.Amount,
+                                Name = "Погашение " + document.Debtor_Id,
+                                Price = (int)document.Amount,
                                 IsInDebt = true
                             });
                         });
                     }
-
                 }
                 catch (Exception e)
                 {
@@ -453,6 +530,8 @@ namespace StoreAppTest.ViewModels
                     OnPropertyChanged("TotalRefundProfit");
                     OnPropertyChanged("SubTotalProfit");
                     OnPropertyChanged("TotalByPrice");
+
+                    _view.ReceiptGridControl.RefreshData();
                 });
             });
         }
@@ -469,27 +548,28 @@ namespace StoreAppTest.ViewModels
             SaveRealizationPerDayCommand = new UICommand(o =>
             {
                 Saving = true;
-                string uri = string.Concat(
-                    Application.Current.Host.Source.Scheme, "://",
-                    Application.Current.Host.Source.Host, ":",
-                    Application.Current.Host.Source.Port,
-                    "/StoreAppDataService.svc/");
+                //string uri = string.Concat(
+                //    Application.Current.Host.Source.Scheme, "://",
+                //    Application.Current.Host.Source.Host, ":",
+                //    Application.Current.Host.Source.Port,
+                //    "/StoreAppDataService.svc/");
 
                 Task.Factory.StartNew(() =>
                 {
                     try
                     {
+                        var client = new StoreapptestClient();
+                        //StoreDbContext ctx = new StoreDbContext(
+                        //    new Uri(uri
+                        //        , UriKind.Absolute));
 
-                        StoreDbContext ctx = new StoreDbContext(
-                            new Uri(uri
-                                , UriKind.Absolute));
-
-                        var realizationPdDb =
-                           ctx.ExecuteSyncronous(ctx.SaleDocumentsPerDays.OrderByDescending(s => s.Id)).FirstOrDefault();
-                        if (realizationPdDb != null)
+                        //var realizationPdDb =
+                        //   ctx.ExecuteSyncronous(ctx.SaleDocumentsPerDays.OrderByDescending(s => s.Id)).FirstOrDefault();
+                        var lastNum = client.GetLastSaleDocumentsPerDaysNumber();
+                        if (!string.IsNullOrWhiteSpace(lastNum))
                         {
                             int lastNumber = 0;
-                            if (int.TryParse(realizationPdDb.Number, out lastNumber))
+                            if (int.TryParse(lastNum, out lastNumber))
                             {
                                 DispatcherHelper.CheckBeginInvokeOnUI(() =>
                                 {
@@ -520,8 +600,8 @@ namespace StoreAppTest.ViewModels
                         salePerDay.TotalRefundProfit = TotalRefundProfit;
                         salePerDay.SubTotalProfit = SubTotalProfit;
 
-                        ctx.AddToSaleDocumentsPerDays(salePerDay);
-                        ctx.SaveChangesSynchronous();
+                        //ctx.AddToSaleDocumentsPerDays(salePerDay);
+                        //ctx.SaveChangesSynchronous();
 
 
                         foreach (var receiptItem in realization)
@@ -540,11 +620,33 @@ namespace StoreAppTest.ViewModels
                             item.Name = receiptItem.Name;
                             item.Price = receiptItem.Price;
                             item.UnitOfMeasure = receiptItem.Uom;
-                            
+                            item.Remainders = receiptItem.Remainders;
 
                             salePerDay.SalesPerDayItems.Add(item);
-                            ctx.AddToSalesPerDayItems(item);
+                            //ctx.AddToSalesPerDayItems(item);
                         }
+
+                        //foreach (var receiptItem in realization)
+                        //{
+                        //    var item = new SalesPerDayItem()
+                        //    {
+                        //        SaleDocumentsPerDay_Id = salePerDay.Id,
+                        //        SaleItem_Id = receiptItem.SaleItemData.Id
+
+                        //    };
+                        //    item.Amount = receiptItem.Amount;
+                        //    item.CatalogNumber = receiptItem.CatalogNumber;
+                        //    item.Count = receiptItem.SoldCount;
+                        //    item.Discount = receiptItem.Discount;
+                        //    item.IsDuplicate = receiptItem.IsDuplicate == "*" ? true : false;
+                        //    item.Name = receiptItem.Name;
+                        //    item.Price = receiptItem.Price;
+                        //    item.UnitOfMeasure = receiptItem.Uom;
+                            
+
+                        //    salePerDay.SalesPerDayItems.Add(item);
+                        //    //ctx.AddToSalesPerDayItems(item);
+                        //}
 
 
                         //foreach (var refundItem in _refundItems)
@@ -559,12 +661,13 @@ namespace StoreAppTest.ViewModels
                         //    ctx.AddToRefundsPerDayItems(item);
                         //}
 
-                        ctx.SaveChangesSynchronous();
+                        //ctx.SaveChangesSynchronous();
+                        var realizationId = client.AddRealizationPerDay(salePerDay);
 
                         DispatcherHelper.CheckBeginInvokeOnUI(() =>
                         {
                             //_closeViewNeedEvent.Publish(ViewId);
-                            SavedDocumentId = salePerDay.Id;
+                            SavedDocumentId = realizationId;
                             Barcode = salePerDay.Barcode;
                             Saved = true;
                         });

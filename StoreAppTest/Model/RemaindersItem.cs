@@ -11,7 +11,6 @@ namespace StoreAppTest.Model
     using DevExpress.Data.Access;
     using DevExpress.Data.Browsing;
     using DevExpress.Xpf.Collections;
-    using StoreAppDataService;
     using Utilities;
     using PropertyDescriptor = DevExpress.Data.Browsing.PropertyDescriptor;
 
@@ -31,9 +30,9 @@ namespace StoreAppTest.Model
         //{
         //}
 
-        private StoreAppDataService.PriceItem _priceItemData;
+        private Client.Model.PriceItem _priceItemData;
 
-        public RemaindersItem(StoreAppDataService.PriceItem priceItemData)
+        public RemaindersItem(Client.Model.PriceItem priceItemData)
         {
             _priceItemData = priceItemData;
         }
@@ -169,7 +168,7 @@ namespace StoreAppTest.Model
         public long Gear_Id { get; set; }
         public long PriceItem_Id { get; set; }
 
-        public StoreAppDataService.PriceItem GetPriceItemData()
+        public Client.Model.PriceItem GetPriceItemData()
         {
             return _priceItemData;
         }

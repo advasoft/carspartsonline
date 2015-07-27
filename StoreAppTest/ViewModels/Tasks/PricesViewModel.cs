@@ -9,13 +9,14 @@ namespace StoreAppTest.ViewModels
     using System.Windows;
     using System.Windows.Controls;
     using System.Windows.Input;
+    using Client;
+    using Client.Model;
     using Event;
     using GalaSoft.MvvmLight.Threading;
     using Microsoft.Practices.ObjectBuilder2;
     using Microsoft.Practices.Prism.PubSubEvents;
     using Microsoft.Practices.ServiceLocation;
     using Model;
-    using StoreAppDataService;
     using Utilities;
     using Views;
     using PriceItem = Model.PriceItem;
@@ -164,11 +165,11 @@ namespace StoreAppTest.ViewModels
         {
             IsLoading = true;
 
-            string uri = string.Concat(
-                Application.Current.Host.Source.Scheme, "://",
-                Application.Current.Host.Source.Host, ":",
-                Application.Current.Host.Source.Port,
-                "/StoreAppDataService.svc/");
+            //string uri = string.Concat(
+            //    Application.Current.Host.Source.Scheme, "://",
+            //    Application.Current.Host.Source.Host, ":",
+            //    Application.Current.Host.Source.Port,
+            //    "/StoreAppDataService.svc/");
 
 
 
@@ -176,14 +177,17 @@ namespace StoreAppTest.ViewModels
             {
                 var prices = new List<PriceItem>();
 
-                StoreDbContext ctx = new StoreDbContext(
-                    new Uri(uri
-                        , UriKind.Absolute));
+                //StoreDbContext ctx = new StoreDbContext(
+                //    new Uri(uri
+                //        , UriKind.Absolute));
 
-                //var pricesDb = ctx.ExecuteSyncronous(ctx.PriceItems.Expand("Remainders/Warehouse, Gear, UnitOfMeasure").Where(p => p.PriceList_Id == _priceListName)).ToList();
-                var qr = ctx.ExecuteSyncronous<PriceItemRemainderView>(
-                    new Uri(string.Format("{0}GetLightPriceItemList?priceListName='{1}'&warehouse='{2}'", uri, _priceListName, App.CurrentUser.Warehouse.Name),
-                        UriKind.Absolute));
+                ////var pricesDb = ctx.ExecuteSyncronous(ctx.PriceItems.Expand("Remainders/Warehouse, Gear, UnitOfMeasure").Where(p => p.PriceList_Id == _priceListName)).ToList();
+                //var qr = ctx.ExecuteSyncronous<PriceItemRemainderView>(
+                //    new Uri(string.Format("{0}GetLightPriceItemList?priceListName='{1}'&warehouse='{2}'", uri, _priceListName, App.CurrentUser.Warehouse.Name),
+                //        UriKind.Absolute));
+
+                StoreapptestClient client = new StoreapptestClient();
+                var qr = client.GetIncomes(_priceListName, App.CurrentUser.Warehouse.Name);
 
                 int number = 1;
 
@@ -203,7 +207,7 @@ namespace StoreAppTest.ViewModels
                         Uom = priceItemRemainderView.Uom,
                         WholesalePrice = (int) priceItemRemainderView.WholesalePrice,
                         TwonyPercent = (int) (priceItemRemainderView.WholesalePrice * 1.2m),
-                        PriceItemData = new StoreAppDataService.PriceItem() {Id = priceItemRemainderView.PriceItem_Id}
+                        PriceItemData = new Client.Model.PriceItem() { Id = priceItemRemainderView.PriceItem_Id }
 
                     };
                 
@@ -258,197 +262,228 @@ namespace StoreAppTest.ViewModels
 
             OpenNewReceiptCommand = new UICommand(o =>
             {
-                var selectedPriceItems = PriceItems.Where(p => p.SoldCount > 0).ToList();
-                var realization = new Model.Receipt();
-                realization.Customer = SelectedCustomer;
-                realization.IsInDebt = InDebt;
-                realization.IsOrder = IsOrder;
-                realization.IsInvoice = IsInvoice;
-                realization.ReceiptDate = DateTimeHelper.GetNowKz();
-                realization.PriceListName = _priceListName;
-
-            string uri = string.Concat(
-                Application.Current.Host.Source.Scheme, "://",
-                Application.Current.Host.Source.Host, ":",
-                Application.Current.Host.Source.Port,
-                "/StoreAppDataService.svc/");
-
-                StoreDbContext ctx = new StoreDbContext(
-                    new Uri(uri
-                        , UriKind.Absolute));
-
-                int lastNumber = 0;
-                string prefix = string.Empty;
-
-                if (!IsOrder && !IsInvoice)
+                IsLoading = true;
+                Task.Factory.StartNew(() =>
                 {
-                    var realizationDb =
-                        ctx.ExecuteSyncronous(
-                            ctx.SaleDocuments.Where(w => !w.IsOrder && !w.IsInvoice).OrderByDescending(s => s.Id))
-                            .FirstOrDefault();
-                    if (realizationDb != null)
-                    {
-                        prefix = "ТЧ";
-                        string number = realizationDb.Number;
-                        if (number.StartsWith(prefix))
-                            number = number.Remove(0, 2);
 
-                        if (int.TryParse(number, out lastNumber))
-                        {                            
-                            lastNumber = ++lastNumber;
-                        }
-                    }
-                    else
-                    {
-                        prefix = "ТЧ";
-                        lastNumber = 1;
-                    }
-                }
-                else if (IsOrder)
-                {
-                    var realizationDb =
-                        ctx.ExecuteSyncronous(
-                            ctx.SaleDocuments.Where(w => w.IsOrder).OrderByDescending(s => s.Id))
-                            .FirstOrDefault();
-                    if (realizationDb != null)
-                    {
-                        prefix = "СЧ";
-                        string number = realizationDb.Number;
-                        if (number.StartsWith(prefix))
-                            number = number.Remove(0, 2);
+                    var selectedPriceItems = PriceItems.Where(p => p.SoldCount > 0).ToList();
+                    var realization = new Model.Receipt();
+                    realization.Customer = SelectedCustomer;
+                    realization.IsInDebt = InDebt;
+                    realization.IsOrder = IsOrder;
+                    realization.IsInvoice = IsInvoice;
+                    realization.ReceiptDate = DateTimeHelper.GetNowKz();
+                    realization.PriceListName = _priceListName;
 
-                        if (int.TryParse(number, out lastNumber))
+
+                    int lastNumber = 0;
+                    string prefix = string.Empty;
+
+                    var client = new StoreapptestClient();
+
+                    if (!IsOrder && !IsInvoice)
+                    {
+                        //var realizationDb =
+                        //    ctx.ExecuteSyncronous(
+                        //        ctx.SaleDocuments.Where(w => !w.IsOrder && !w.IsInvoice).OrderByDescending(s => s.Id))
+                        //        .FirstOrDefault();
+                        string lastFindedNumber = string.Empty;
+                        lastFindedNumber = client.GetLastReceiptNumber();
+
+                        if (!string.IsNullOrWhiteSpace(lastFindedNumber))
                         {
-                            lastNumber = ++lastNumber;
-                        }
-                    }
-                    else
-                    {
-                        prefix = "СЧ";
-                        lastNumber = 1;
-                    }
-                    
-                }
-                else if (IsInvoice)
-                {
-                    var realizationDb =
-                        ctx.ExecuteSyncronous(
-                            ctx.SaleDocuments.Where(w => w.IsInvoice).OrderByDescending(s => s.Id))
-                            .FirstOrDefault();
-                    if (realizationDb != null)
-                    {
-                        prefix = "СФ";
-                        string number = realizationDb.Number;
-                        if (number.StartsWith(prefix))
-                            number = number.Remove(0, 2);
+                            prefix = "ТЧ";
+                            string number = lastFindedNumber;
+                            if (number.StartsWith(prefix))
+                                number = number.Remove(0, 2);
 
-                        if (int.TryParse(number, out lastNumber))
+                            if (int.TryParse(number, out lastNumber))
+                            {
+                                lastNumber = ++lastNumber;
+                            }
+                        }
+                        else
                         {
-                            lastNumber = ++lastNumber;
+                            prefix = "ТЧ";
+                            lastNumber = 1;
                         }
                     }
-                    else
+                    else if (IsOrder)
                     {
-                        prefix = "СФ";
-                        lastNumber = 1;
+                        //var realizationDb =
+                        //    ctx.ExecuteSyncronous(
+                        //        ctx.SaleDocuments.Where(w => w.IsOrder).OrderByDescending(s => s.Id))
+                        //        .FirstOrDefault();
+                        string lastFindedNumber = string.Empty;
+                        lastFindedNumber = client.GetLastOrderNumber();
+
+                        if (!string.IsNullOrWhiteSpace(lastFindedNumber))
+                        {
+                            prefix = "СЧ";
+                            string number = lastFindedNumber;
+                            if (number.StartsWith(prefix))
+                                number = number.Remove(0, 2);
+
+                            if (int.TryParse(number, out lastNumber))
+                            {
+                                lastNumber = ++lastNumber;
+                            }
+                        }
+                        else
+                        {
+                            prefix = "СЧ";
+                            lastNumber = 1;
+                        }
+
                     }
-                }
-
-                realization.ReceiptNumber = DocumentNumberHelper.GetRecipeDocumentNumber(prefix, lastNumber);
-
-
-                int index = 1;
-                selectedPriceItems.ForEach(i =>
-                {
-                    int price = i.WholesalePrice;
-
-                    var clearPrice = 0;
-                    if (_oldPrices.ContainsKey(i.Number))
-                        clearPrice = (int) _oldPrices[i.Number];
-                    realization.ReceiptItems.Add(new ReceiptItem()
+                    else if (IsInvoice)
                     {
-                        Number = index++,
-                        Articul = i.Articul,
-                        CatalogNumber = i.CatalogNumber,
-                        IsDuplicate = i.IsDuplicate,
-                        Name = i.Name,
-                        Price = price,
-                        WholesalePrice = price,
-                        SoldCount = i.SoldCount,
-                        Uom = i.Uom,
-                        PriceItemData = i.PriceItemData,
-                        PriceItem_Id = i.PriceItemData.Id,
-                        Remainders = i.Remainders,
-                        ClearPrice = clearPrice == 0 ? price : clearPrice
+                        //var realizationDb =
+                        //    ctx.ExecuteSyncronous(
+                        //        ctx.SaleDocuments.Where(w => w.IsInvoice).OrderByDescending(s => s.Id))
+                        //        .FirstOrDefault();
+                        string lastFindedNumber = string.Empty;
+                        lastFindedNumber = client.GetLastInvoiceNumber();
+
+                        if (!string.IsNullOrWhiteSpace(lastFindedNumber))
+                        {
+                            prefix = "СФ";
+                            string number = lastFindedNumber;
+                            if (number.StartsWith(prefix))
+                                number = number.Remove(0, 2);
+
+                            if (int.TryParse(number, out lastNumber))
+                            {
+                                lastNumber = ++lastNumber;
+                            }
+                        }
+                        else
+                        {
+                            prefix = "СФ";
+                            lastNumber = 1;
+                        }
+                    }
+
+                    realization.ReceiptNumber = DocumentNumberHelper.GetRecipeDocumentNumber(prefix, lastNumber);
+
+
+                    int index = 1;
+                    selectedPriceItems.ForEach(i =>
+                    {
+                        int price = i.WholesalePrice;
+
+                        var clearPrice = 0;
+                        if (_oldPrices.ContainsKey(i.Number))
+                            clearPrice = (int)_oldPrices[i.Number];
+                        realization.ReceiptItems.Add(new ReceiptItem()
+                        {
+                            Number = index++,
+                            Articul = i.Articul,
+                            CatalogNumber = i.CatalogNumber,
+                            IsDuplicate = i.IsDuplicate,
+                            Name = i.Name,
+                            Price = price,
+                            WholesalePrice = price,
+                            SoldCount = i.SoldCount,
+                            Uom = i.Uom,
+                            PriceItemData = i.PriceItemData,
+                            PriceItem_Id = i.PriceItemData.Id,
+                            Remainders = i.Remainders,
+                            ClearPrice = clearPrice == 0 ? price : clearPrice
+                        });
+                    });
+
+                    DispatcherHelper.CheckBeginInvokeOnUI(() =>
+                    {
+                        _newReceiptEvent.Publish(realization);
+
+                        PriceItems.ForEach(i =>
+                        {
+                            i.SoldCount = 0;
+                        });
+                    });
+
+                }).ContinueWith(c =>
+                {
+                    DispatcherHelper.CheckBeginInvokeOnUI(() =>
+                    {
+                        IsLoading = false;
                     });
                 });
-                _newReceiptEvent.Publish(realization);
 
-                PriceItems.ForEach(i =>
-                {
-                    i.SoldCount = 0;
-                });
             });
 
 
             OpenNewRefundCommand = new UICommand(o =>
             {
-                var selectedPriceItems = PriceItems.Where(p => p.SoldCount > 0).ToList();
-
-
-                string uri = string.Concat(
-                    Application.Current.Host.Source.Scheme, "://",
-                    Application.Current.Host.Source.Host, ":",
-                    Application.Current.Host.Source.Port,
-                    "/StoreAppDataService.svc/");
-
-                StoreDbContext ctx = new StoreDbContext(
-                    new Uri(uri
-                        , UriKind.Absolute));
-
-                Refund refund = new Refund();
-
-                var refundDb =
-                    ctx.ExecuteSyncronous(ctx.RefundDocuments.OrderByDescending(s => s.Id)).FirstOrDefault();
-                if (refundDb != null)
+                IsLoading = true;
+                Task.Factory.StartNew(() =>
                 {
-                    int lastNumber = 0;
-                    if (int.TryParse(refundDb.RefundNumber, out lastNumber))
+                    var selectedPriceItems = PriceItems.Where(p => p.SoldCount > 0).ToList();
+
+                    Refund refund = new Refund();
+
+                    //var refundDb =
+                    //    ctx.ExecuteSyncronous(ctx.RefundDocuments.OrderByDescending(s => s.Id)).FirstOrDefault();
+                    var client = new StoreapptestClient();
+
+                    var num = client.GetLastRefundNumber();
+
+                    if (!string.IsNullOrEmpty(num))
                     {
-                        refund.RefundNumber = (++lastNumber).ToString();
+                        int lastNumber = 0;
+                        if (int.TryParse(num, out lastNumber))
+                        {
+                            refund.RefundNumber = (++lastNumber).ToString();
+                        }
                     }
-                }
-                else
-                {
-                    refund.RefundNumber = "1";
-                }
-
-                refund.RefundDate = DateTimeHelper.GetNowKz();
-
-                int index = 1;
-                selectedPriceItems.ForEach(i =>
-                {
-                    refund.RefundItems.Add(new RefundItem()
+                    else
                     {
-                        Number = index++,
-                        Articul = i.Articul,
-                        CatalogNumber = i.CatalogNumber,
-                        IsDuplicate = i.IsDuplicate,
-                        Name = i.Name,
-                        RetailPrice = i.WholesalePrice,
-                        WhosalePrice = i.WholesalePrice,
-                        SoldCount = i.SoldCount,
-                        SaledCount = i.SoldCount,
-                        Uom = i.Uom,
-                        PriceItemData = i.PriceItemData
+                        refund.RefundNumber = "1";
+                    }
+
+                    refund.RefundDate = DateTimeHelper.GetNowKz();
+
+                    int index = 1;
+                    selectedPriceItems.ForEach(i =>
+                    {
+                        refund.RefundItems.Add(new RefundItem()
+                        {
+                            Number = index++,
+                            Articul = i.Articul,
+                            CatalogNumber = i.CatalogNumber,
+                            IsDuplicate = i.IsDuplicate,
+                            Name = i.Name,
+                            RetailPrice = i.WholesalePrice,
+                            WhosalePrice = i.WholesalePrice,
+                            SoldCount = i.SoldCount,
+                            SaledCount = i.SoldCount,
+                            Uom = i.Uom,
+                            Remainders = i.Remainders,
+                            PriceItemData = i.PriceItemData
+                        });
+                    });
+
+                    DispatcherHelper.CheckBeginInvokeOnUI(() =>
+                    {
+                        _newRefundNeedEvent.Publish(refund);
+
+                        PriceItems.ForEach(i =>
+                        {
+                            i.SoldCount = 0;
+                        });
+                    });
+
+
+                }).ContinueWith(c =>
+                {
+                    DispatcherHelper.CheckBeginInvokeOnUI(() =>
+                    {
+                        IsLoading = false;
                     });
                 });
-                _newRefundNeedEvent.Publish(refund);
 
-                PriceItems.ForEach(i =>
-                {
-                    i.SoldCount = 0;
-                });
+
 
             });
 
@@ -485,23 +520,26 @@ namespace StoreAppTest.ViewModels
         private void UpdateCustomersList()
         {
 
-            string uri = string.Concat(
-                Application.Current.Host.Source.Scheme, "://",
-                Application.Current.Host.Source.Host, ":",
-                Application.Current.Host.Source.Port,
-                "/StoreAppDataService.svc/");
+            //string uri = string.Concat(
+            //    Application.Current.Host.Source.Scheme, "://",
+            //    Application.Current.Host.Source.Host, ":",
+            //    Application.Current.Host.Source.Port,
+            //    "/StoreAppDataService.svc/");
 
             Task.Factory.StartNew(() =>
             {
-                StoreDbContext ctx = new StoreDbContext(
-                    new Uri(uri
-                        , UriKind.Absolute));
+                //StoreDbContext ctx = new StoreDbContext(
+                //    new Uri(uri
+                //        , UriKind.Absolute));
 
-                var customersDb =
-                    ctx.ExecuteSyncronous(ctx.Customers.Where(
-                            c =>
-                                c.Creator_Id == App.CurrentUser.UserName || c.Creator_Id == "admin" ||
-                                (c.Name == "Розничный покупатель" || c.Name == "Клиент интернет-магазина"))).ToList();
+                //var customersDb =
+                //    ctx.ExecuteSyncronous(ctx.Customers.Where(
+                //            c =>
+                //                c.Creator_Id == App.CurrentUser.UserName || c.Creator_Id == "admin" ||
+                //                (c.Name == "Розничный покупатель" || c.Name == "Клиент интернет-магазина"))).ToList();
+                var client = new StoreapptestClient();
+
+                var customersDb = client.GetCustomers(App.CurrentUser.UserName);
 
                 DispatcherHelper.CheckBeginInvokeOnUI(() =>
                     {
@@ -532,8 +570,14 @@ namespace StoreAppTest.ViewModels
                     IsOrder = false;
                 if (InDebt == true)
                     InDebt = false;
-
-                SelectedCustomer = CustomerList.FirstOrDefault(f => f.Name == "Розничный покупатель");
+                try
+                {
+                    SelectedCustomer = CustomerList.FirstOrDefault(f => f.Name == "Розничный покупатель");
+                }
+                catch (Exception exception)
+                {                  
+                    throw;
+                }
             });
 
 
@@ -544,13 +588,13 @@ namespace StoreAppTest.ViewModels
 
                 if (priceItemModel != null)
                 {
-                    var findedRemainder =
-                        priceItem.PriceItemData.Remainders.Where(w => w.Warehouse_Id == App.CurrentUser.Warehouse_Id)
-                            .FirstOrDefault();
-                    if (findedRemainder != null)
-                    {
-                        priceItemModel.Remainders = (int)findedRemainder.Amount;
-                    }
+                    //var findedRemainder =
+                    //    priceItem.PriceItemData.Remainders.Where(w => w.Warehouse_Id == App.CurrentUser.Warehouse_Id)
+                    //        .FirstOrDefault();
+                    //if (findedRemainder != null)
+                    //{
+                        priceItemModel.Remainders = (int)priceItem.Remainders;
+                    //}
                 }
                 //PriceItems.Where(p => p.PriceItemData.Id == priceItem.PriceItemData.Id).FirstOrDefault().Remainders =
                 //    (int)priceItem.PriceItemData.Remainders.Where(w => w.Warehouse_Id == App.CurrentUser.Warehouse_Id)

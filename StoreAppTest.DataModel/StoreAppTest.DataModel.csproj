@@ -52,6 +52,17 @@
     <Compile Include="DebtDischargeDocument.cs" />
     <Compile Include="Gear.cs" />
     <Compile Include="GearCategory.cs" />
+    <Compile Include="Migrations\201507081741449_InitialCreate.cs" />
+    <Compile Include="Migrations\201507081741449_InitialCreate.Designer.cs">
+      <DependentUpon>201507081741449_InitialCreate.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201507200922309_LastChanges_20_07_2015_1330.cs" />
+    <Compile Include="Migrations\201507200922309_LastChanges_20_07_2015_1330.Designer.cs">
+      <DependentUpon>201507200922309_LastChanges_20_07_2015_1330.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\Configuration.cs" />
+    <Compile Include="RemainderChanges.cs" />
+    <Compile Include="GearChanges.cs" />
     <Compile Include="GearNew.cs" />
     <Compile Include="Income.cs" />
     <Compile Include="IncomeItem.cs" />
@@ -97,6 +108,14 @@
       <Project>{e4d57279-8753-4db0-b5b7-789c2dc3bcc5}</Project>
       <Name>StoreAppTest.Utilities</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Migrations\201507081741449_InitialCreate.resx">
+      <DependentUpon>201507081741449_InitialCreate.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201507200922309_LastChanges_20_07_2015_1330.resx">
+      <DependentUpon>201507200922309_LastChanges_20_07_2015_1330.cs</DependentUpon>
+    </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

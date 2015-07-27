@@ -8,6 +8,8 @@
     using System.Threading.Tasks;
     using System.Windows;
     using System.Windows.Input;
+    using Client;
+    using Client.Model;
     using Controls;
     using Event;
     using GalaSoft.MvvmLight.Threading;
@@ -15,7 +17,6 @@
     using Microsoft.Practices.ServiceLocation;
     using Model;
     using Print;
-    using StoreAppDataService;
     using Utilities;
     using Views;
 
@@ -80,6 +81,21 @@
         }
 
         private bool _IsAccepted;
+
+        public bool IsAcceptedView
+        {
+            get
+            {
+                return _IsAcceptedView;
+            }
+            set
+            {
+                _IsAcceptedView = value;
+                OnPropertyChanged("IsAcceptedView");
+            }
+        }
+
+        private bool _IsAcceptedView;
 
         public string Description
         {
@@ -224,33 +240,35 @@
             {
                 SupplierRemainders.Clear();
 
-                string uri = string.Concat(
-                    Application.Current.Host.Source.Scheme, "://",
-                    Application.Current.Host.Source.Host, ":",
-                    Application.Current.Host.Source.Port,
-                    "/StoreAppDataService.svc/");
+                //string uri = string.Concat(
+                //    Application.Current.Host.Source.Scheme, "://",
+                //    Application.Current.Host.Source.Host, ":",
+                //    Application.Current.Host.Source.Port,
+                //    "/StoreAppDataService.svc/");
 
                 Task.Factory.StartNew(() =>
                 {
                     try
                     {
-                        StoreDbContext ctx = new StoreDbContext(
-                            new Uri(uri
-                                , UriKind.Absolute));
+                        //StoreDbContext ctx = new StoreDbContext(
+                        //    new Uri(uri
+                        //        , UriKind.Absolute));
 
                         //DispatcherHelper.CheckBeginInvokeOnUI(() =>
                         //{
                         SupplierRemainders.Clear();
+                        var client = new StoreapptestClient();
 
                         foreach (var warehouseTransferRequestModelItem in WarehouseTransferRequestItems)
                         {
                             var rem =
-                                ctx.ExecuteSyncronous(
-                                    ctx.Remainders.Where(
-                                        w =>
-                                            w.PriceItem_Id == warehouseTransferRequestModelItem.PriceItem_Id &&
-                                            w.Warehouse_Id == Warehouse_Id)).FirstOrDefault();
-
+                                //ctx.ExecuteSyncronous(
+                                //    ctx.Remainders.Where(
+                                //        w =>
+                                //            w.PriceItem_Id == warehouseTransferRequestModelItem.PriceItem_Id &&
+                                //            w.Warehouse_Id == Warehouse_Id)).FirstOrDefault();
+                                client.GetRemaindersByPriceItem(warehouseTransferRequestModelItem.PriceItem_Id,
+                                    Warehouse_Id).FirstOrDefault();
                                 
                             SupplierRemainders.Add(warehouseTransferRequestModelItem.PriceItem_Id, rem);
                             
@@ -286,26 +304,27 @@
 
             AcceptRequestCommand = new UICommand(a =>
             {
-                string uri = string.Concat(
-                    Application.Current.Host.Source.Scheme, "://",
-                    Application.Current.Host.Source.Host, ":",
-                    Application.Current.Host.Source.Port,
-                    "/StoreAppDataService.svc/");
+                //string uri = string.Concat(
+                //    Application.Current.Host.Source.Scheme, "://",
+                //    Application.Current.Host.Source.Host, ":",
+                //    Application.Current.Host.Source.Port,
+                //    "/StoreAppDataService.svc/");
 
                 Task.Factory.StartNew(() =>
                 {
                     try
                     {
 
-                        StoreDbContext ctx = new StoreDbContext(
-                            new Uri(uri
-                                , UriKind.Absolute));
-
+                        //StoreDbContext ctx = new StoreDbContext(
+                        //    new Uri(uri
+                        //        , UriKind.Absolute));
+                        var client = new StoreapptestClient();
                         var request =
-                            ctx.ExecuteSyncronous(
-                                ctx.WarehouseTransferRequests.Expand("WarehouseTransferRequestItemItems")
-                                .Where(w => w.Id == _requestModel.Id))
-                                .FirstOrDefault();
+                            //ctx.ExecuteSyncronous(
+                            //    ctx.WarehouseTransferRequests.Expand("WarehouseTransferRequestItemItems")
+                            //    .Where(w => w.Id == _requestModel.Id))
+                            //    .FirstOrDefault();
+                            client.GetWarehouseTransferRequest(_requestModel.Id);
 
                         if (_WarehouseTransferRequestItems.All(ac => ac.Count == ac.CountAccepted && ac.Amount == ac.AcceptedAmount))
                         {
@@ -322,6 +341,7 @@
                                 msch.Message = "Невозможно подтвердить перемещение с 0 количеством";
                                 msch.Show();
                                 IsAccepted = false;
+                                IsAcceptedView = false;
                             });
                             return;
                         }
@@ -332,7 +352,8 @@
                         request.Description = Description;
                         request.LastChanged_Id = App.CurrentUser.UserName;
                         request.StateChangedDate = DateTimeHelper.GetNowKz();
-                        ctx.ChangeState(request, EntityStates.Modified);
+                        //ctx.ChangeState(request, EntityStates.Modified);
+
 
                         foreach (var warehouseTransferRequestModelItem in WarehouseTransferRequestItems)
                         {
@@ -342,16 +363,17 @@
 
                             findedItem.CountAccepted = warehouseTransferRequestModelItem.CountAccepted;
                             findedItem.AcceptedAmount = warehouseTransferRequestModelItem.AcceptedAmount;
-                            ctx.ChangeState(findedItem, EntityStates.Modified);
+                            //ctx.ChangeState(findedItem, EntityStates.Modified);
 
 
                             var sourceRem =
-                                ctx.ExecuteSyncronous(
-                                    ctx.Remainders.Where(
-                                        w =>
-                                            w.PriceItem_Id == warehouseTransferRequestModelItem.PriceItem_Id &&
-                                            w.Warehouse_Id == request.Supplier_Id)).FirstOrDefault();
-
+                                //ctx.ExecuteSyncronous(
+                                //    ctx.Remainders.Where(
+                                //        w =>
+                                //            w.PriceItem_Id == warehouseTransferRequestModelItem.PriceItem_Id &&
+                                //            w.Warehouse_Id == request.Supplier_Id)).FirstOrDefault();
+                                client.GetRemaindersByPriceItem(warehouseTransferRequestModelItem.PriceItem_Id,
+                                    request.Supplier_Id).FirstOrDefault();
                             if (sourceRem != null)
                             {
                                 if (sourceRem.Amount < warehouseTransferRequestModelItem.CountAccepted)
@@ -368,36 +390,38 @@
                                                 Warehouse_Id, sourceRem.Amount);
                                         msch.Show();
                                         IsAccepted = false;
+                                        IsAcceptedView = false;
                                     });           
                                     return;
                                     
                                 }
-                                var targetRem =
-                                    ctx.ExecuteSyncronous(
-                                        ctx.Remainders.Where(
-                                            w =>
-                                                w.PriceItem_Id == warehouseTransferRequestModelItem.PriceItem_Id &&
-                                                w.Warehouse_Id == request.Customer_Id)).FirstOrDefault();
+                                //var targetRem =
+                                //    //ctx.ExecuteSyncronous(
+                                //    //    ctx.Remainders.Where(
+                                //    //        w =>
+                                //    //            w.PriceItem_Id == warehouseTransferRequestModelItem.PriceItem_Id &&
+                                //    //            w.Warehouse_Id == request.Customer_Id)).FirstOrDefault();
+                                //client.GetRemaindersByPriceItem(warehouseTransferRequestModelItem.PriceItem_Id,
+                                //    request.Customer_Id).FirstOrDefault();
+                                //if (targetRem == null)
+                                //{
+                                //    targetRem = new Remainder();
+                                //    targetRem.Amount = warehouseTransferRequestModelItem.CountAccepted;
+                                //    targetRem.PriceItem_Id = warehouseTransferRequestModelItem.PriceItem_Id;
+                                //    targetRem.RemainderDate = DateTimeHelper.GetNowKz();
+                                //    targetRem.Warehouse_Id = request.Customer_Id;
+                                //    ctx.AddToRemainders(targetRem);
+                                //}
+                                //else
+                                //{
+                                //    targetRem.Amount += warehouseTransferRequestModelItem.CountAccepted;
+                                //    targetRem.RemainderDate = DateTimeHelper.GetNowKz();
+                                //    ctx.ChangeState(targetRem, EntityStates.Modified);
+                                //}
 
-                                if (targetRem == null)
-                                {
-                                    targetRem = new Remainder();
-                                    targetRem.Amount = warehouseTransferRequestModelItem.CountAccepted;
-                                    targetRem.PriceItem_Id = warehouseTransferRequestModelItem.PriceItem_Id;
-                                    targetRem.RemainderDate = DateTimeHelper.GetNowKz();
-                                    targetRem.Warehouse_Id = request.Customer_Id;
-                                    ctx.AddToRemainders(targetRem);
-                                }
-                                else
-                                {
-                                    targetRem.Amount += warehouseTransferRequestModelItem.CountAccepted;
-                                    targetRem.RemainderDate = DateTimeHelper.GetNowKz();
-                                    ctx.ChangeState(targetRem, EntityStates.Modified);
-                                }
-
-                                sourceRem.RemainderDate = DateTimeHelper.GetNowKz();
-                                sourceRem.Amount -= warehouseTransferRequestModelItem.CountAccepted;
-                                ctx.ChangeState(sourceRem, EntityStates.Modified);
+                                //sourceRem.RemainderDate = DateTimeHelper.GetNowKz();
+                                //sourceRem.Amount -= warehouseTransferRequestModelItem.CountAccepted;
+                                //ctx.ChangeState(sourceRem, EntityStates.Modified);
                             }
                             else
                             {
@@ -417,8 +441,17 @@
                             }
                         }
 
-                        ctx.SaveChangesSynchronous();
-                        _receivedRequestChangedEvent.Publish(request);
+                        //ctx.SaveChangesSynchronous();
+                        client.AcceptWarehouseTransferRequest(request);
+
+                        try
+                        {
+                            _receivedRequestChangedEvent.Publish(request);
+                        }
+                        catch (Exception)
+                        {
+
+                        }
 
                         DispatcherHelper.CheckBeginInvokeOnUI(() =>
                         {
@@ -437,6 +470,7 @@
                             //}
 
                             IsAccepted = true;
+                            IsAcceptedView = true;
                         });
 
                         
@@ -458,49 +492,73 @@
 
             DeclineRequestCommand = new UICommand(a =>
             {
-                string uri = string.Concat(
-                    Application.Current.Host.Source.Scheme, "://",
-                    Application.Current.Host.Source.Host, ":",
-                    Application.Current.Host.Source.Port,
-                    "/StoreAppDataService.svc/");
+                //string uri = string.Concat(
+                //    Application.Current.Host.Source.Scheme, "://",
+                //    Application.Current.Host.Source.Host, ":",
+                //    Application.Current.Host.Source.Port,
+                //    "/StoreAppDataService.svc/");
 
                 Task.Factory.StartNew(() =>
                 {
                     try
                     {
 
-                        StoreDbContext ctx = new StoreDbContext(
-                            new Uri(uri
-                                , UriKind.Absolute));
+                        //StoreDbContext ctx = new StoreDbContext(
+                        //    new Uri(uri
+                                //, UriKind.Absolute));
 
+                        //var request =
+                        //    ctx.ExecuteSyncronous(
+                        //        ctx.WarehouseTransferRequests.Expand("WarehouseTransferRequestItemItems")
+                        //        .Where(w => w.Id == _requestModel.Id))
+                        //        .FirstOrDefault();
+                        var client = new StoreapptestClient();
                         var request =
-                            ctx.ExecuteSyncronous(
-                                ctx.WarehouseTransferRequests.Expand("WarehouseTransferRequestItemItems")
-                                .Where(w => w.Id == _requestModel.Id))
-                                .FirstOrDefault();
-
+                            client.GetWarehouseTransferRequest(_requestModel.Id);
                         request.IsAccept = false;
                         request.IsReserve = false;
                         request.Description = Description;
                         request.LastChanged_Id = App.CurrentUser.UserName;
                         request.StateChangedDate = DateTimeHelper.GetNowKz();
                         request.Status = "Отклоненно";
-                        ctx.ChangeState(request, EntityStates.Modified);
+                        //ctx.ChangeState(request, EntityStates.Modified);
 
+                        //foreach (var warehouseTransferRequestModelItem in WarehouseTransferRequestItems)
+                        //{
+                            //var findedItem =
+                                //request.WarehouseTransferRequestItemItems.Where(
+                                    //w => w.Id == warehouseTransferRequestModelItem.Id).FirstOrDefault();
+
+                            //findedItem.CountAccepted = warehouseTransferRequestModelItem.CountAccepted;
+                           // findedItem.AcceptedAmount = warehouseTransferRequestModelItem.AcceptedAmount;
+
+                            //ctx.ChangeState(findedItem, EntityStates.Modified);
+                        //}
+
+                        //ctx.SaveChangesSynchronous();
+
+                        client.SaveWarehouseTransferRequest(request);
                         foreach (var warehouseTransferRequestModelItem in WarehouseTransferRequestItems)
                         {
+
                             var findedItem =
                                 request.WarehouseTransferRequestItemItems.Where(
                                     w => w.Id == warehouseTransferRequestModelItem.Id).FirstOrDefault();
-
-                            findedItem.CountAccepted = warehouseTransferRequestModelItem.CountAccepted;
-                            findedItem.AcceptedAmount = warehouseTransferRequestModelItem.AcceptedAmount;
-
-                            ctx.ChangeState(findedItem, EntityStates.Modified);
+                            DispatcherHelper.CheckBeginInvokeOnUI(() =>
+                            {
+                                warehouseTransferRequestModelItem.CountAccepted = (int) findedItem.CountAccepted;
+                                warehouseTransferRequestModelItem.AcceptedAmount = (int) findedItem.AcceptedAmount;
+                            });
                         }
 
-                        ctx.SaveChangesSynchronous();
-                        _receivedRequestChangedEvent.Publish(request);
+                        try
+                        {
+                            _receivedRequestChangedEvent.Publish(request);
+                        }
+                        catch (Exception)
+                        {
+
+                        }
 
 
                         DispatcherHelper.CheckBeginInvokeOnUI(() =>
@@ -520,11 +578,17 @@
                             //}
 
                             IsAccepted = true;
+                            IsAcceptedView = true;
                         });
                     }
                     catch (Exception exception)
                     {
-
+                        DispatcherHelper.CheckBeginInvokeOnUI(() =>
+                        {
+                            MessageChildWindow msch = new MessageChildWindow();
+                            msch.Message = exception.Message;
+                            msch.Show();
+                        });
                     }
                 });
             });
@@ -634,22 +698,22 @@
                     });           
                     return;
                 }
-                string uri = string.Concat(
-                    Application.Current.Host.Source.Scheme, "://",
-                    Application.Current.Host.Source.Host, ":",
-                    Application.Current.Host.Source.Port,
-                    "/StoreAppDataService.svc/");
+                //string uri = string.Concat(
+                //    Application.Current.Host.Source.Scheme, "://",
+                //    Application.Current.Host.Source.Host, ":",
+                //    Application.Current.Host.Source.Port,
+                //    "/StoreAppDataService.svc/");
 
                 Task.Factory.StartNew(() =>
                 {
                     try
                     {
 
-                        StoreDbContext ctx = new StoreDbContext(
-                            new Uri(uri
-                                , UriKind.Absolute));
+                        //StoreDbContext ctx = new StoreDbContext(
+                        //    new Uri(uri
+                        //        , UriKind.Absolute));
                         WarehouseTransferRequest request = null;
-
+                        var client = new StoreapptestClient();
                         if (IsNew)
                         {
                             //if(IsNew)
@@ -665,8 +729,8 @@
                             request.Supplier_Id = Warehouse_Id;
                             request.RequestNumber = RequestNumber;
 
-                            ctx.AddToWarehouseTransferRequests(request);
-                            ctx.SaveChangesSynchronous();
+                            //ctx.AddToWarehouseTransferRequests(request);
+                            //ctx.SaveChangesSynchronous();
 
                             foreach (var warehouseTransferRequestModelItem in WarehouseTransferRequestItems)
                             {
@@ -678,11 +742,15 @@
                                 requstItem.WarehouseTransferRequest_Id = request.Id;
                                 requstItem.WholesalePrice = warehouseTransferRequestModelItem.WholesalePrice;
 
-                                ctx.AddToWarehouseTransferRequestItems(requstItem);
+                                //ctx.AddToWarehouseTransferRequestItems(requstItem);
                                 request.WarehouseTransferRequestItemItems.Add(requstItem);
                             }
-                            ctx.SaveChangesSynchronous();
+                            //ctx.SaveChangesSynchronous();
                             
+                            var requestId = client.AddWarehouseTransferRequest(request);
+
+                            request.Id = requestId;
+
                             _newWarehouseTransferRequestAdded.Publish(request);
                             DispatcherHelper.CheckBeginInvokeOnUI(() =>
                             {
@@ -694,38 +762,68 @@
                                 msch.Show();
 
                                 IsNew = false;
-                                SavedDocumentId = request.Id;
+                                SavedDocumentId = requestId;
                                 Saved = true;
                             });
 
                             _requestModel = new WarehouseTransferRequestModel();
-                            _requestModel.Id = request.Id;
+                            _requestModel.Id = requestId;
 
-                            foreach (var warehouseTransferRequestItemItem in request.WarehouseTransferRequestItemItems)
+                            var savedItems = client.GetWarehouseTransferRequestItems(requestId);
+                            DispatcherHelper.CheckBeginInvokeOnUI(() =>
                             {
-                                var findedItem = WarehouseTransferRequestItems.Where(i =>
-                                    i.AcceptedAmount == warehouseTransferRequestItemItem.AcceptedAmount
-                                    && i.Count == warehouseTransferRequestItemItem.Count
-                                    && i.CountAccepted == warehouseTransferRequestItemItem.CountAccepted
-                                    && i.PriceItem_Id == warehouseTransferRequestItemItem.PriceItem_Id
-                                    && i.WholesalePrice == warehouseTransferRequestItemItem.WholesalePrice)
-                                    .FirstOrDefault();
-                                findedItem.Id = warehouseTransferRequestItemItem.Id;
-                            }
+                                WarehouseTransferRequestItems.Clear();
+                                int number = 1;
+                                foreach (var warehouseTransferRequestItemItem in savedItems)
+                                {
+                                    WarehouseTransferRequestItems.Add(new WarehouseTransferRequestModelItem(
+                                        (int)warehouseTransferRequestItemItem.AcceptedAmount, 
+                                        (int)warehouseTransferRequestItemItem.CountAccepted)
+                                    {
+                                        Articul = warehouseTransferRequestItemItem.PriceItem.Gear.Articul,
+                                        CatalogNumber = warehouseTransferRequestItemItem.PriceItem.Gear.CatalogNumber,
+                                        Count = (int)warehouseTransferRequestItemItem.Count,
+                                        //CountAccepted = (int)s.CountAccepted,
+                                        Gear_Id = warehouseTransferRequestItemItem.PriceItem.Gear_Id,
+                                        Id = warehouseTransferRequestItemItem.Id,
+                                        IsDuplicate = warehouseTransferRequestItemItem.PriceItem.Gear.IsDuplicate ? "*" : "",
+                                        Name = warehouseTransferRequestItemItem.PriceItem.Gear.Name,
+                                        Number = number++,
+                                        Uom = warehouseTransferRequestItemItem.PriceItem.Uom_Id,
+                                        PriceItem_Id = warehouseTransferRequestItemItem.PriceItem_Id,
+                                        WholesalePrice = (int)warehouseTransferRequestItemItem.WholesalePrice,
+                                        WarehouseTransferRequest_Id = warehouseTransferRequestItemItem.WarehouseTransferRequest_Id
+                                    });
+                                    //findedItem.Id = warehouseTransferRequestItemItem.Id;
+                                }
+                            });
+                            //foreach (var warehouseTransferRequestItemItem in request.WarehouseTransferRequestItemItems)
+                            //{
+                            //    var findedItem = WarehouseTransferRequestItems.Where(i =>
+                            //        i.AcceptedAmount == warehouseTransferRequestItemItem.AcceptedAmount
+                            //        && i.Count == warehouseTransferRequestItemItem.Count
+                            //        && i.CountAccepted == warehouseTransferRequestItemItem.CountAccepted
+                            //        && i.PriceItem_Id == warehouseTransferRequestItemItem.PriceItem_Id
+                            //        && i.WholesalePrice == warehouseTransferRequestItemItem.WholesalePrice)
+                            //        .FirstOrDefault();
+                            //    //findedItem.Id = warehouseTransferRequestItemItem.Id;
+                            //}
                         }
                         else
                         {
                             request =
-                                ctx.ExecuteSyncronous(
-                                    ctx.WarehouseTransferRequests.Expand("WarehouseTransferRequestItemItems")
-                                    .Where(w => w.Id == _requestModel.Id))
-                                    .FirstOrDefault();
+                                //ctx.ExecuteSyncronous(
+                                //    ctx.WarehouseTransferRequests.Expand("WarehouseTransferRequestItemItems")
+                                //    .Where(w => w.Id == _requestModel.Id))
+                                //    .FirstOrDefault();
+                                client.GetWarehouseTransferRequest(_requestModel.Id);
 
                             request.Description = Description;
                             request.Supplier_Id = Warehouse_Id;
 
-                            ctx.ChangeState(request, EntityStates.Modified);
+                            //ctx.ChangeState(request, EntityStates.Modified);
 
+                            
                             foreach (var warehouseTransferRequestModelItem in WarehouseTransferRequestItems)
                             {
                                 var findedItem =
@@ -733,12 +831,11 @@
                                         w => w.Id == warehouseTransferRequestModelItem.Id).FirstOrDefault();
 
                                 findedItem.Count = warehouseTransferRequestModelItem.Count;
-                                ctx.ChangeState(findedItem, EntityStates.Modified);
-
-
+                                //ctx.ChangeState(findedItem, EntityStates.Modified);
                             }
+                            client.SaveWarehouseTransferRequest(request);
 
-                            ctx.SaveChangesSynchronous();
+                            //ctx.SaveChangesSynchronous();
                             _sendedRequestChangedEvent.Publish(request);
 
                             DispatcherHelper.CheckBeginInvokeOnUI(() =>
@@ -801,11 +898,11 @@
 
                         WarehouseTransferRequestItems.Clear();
 
-                        string uri = string.Concat(
-                            Application.Current.Host.Source.Scheme, "://",
-                            Application.Current.Host.Source.Host, ":",
-                            Application.Current.Host.Source.Port,
-                            "/StoreAppDataService.svc/");
+                        //string uri = string.Concat(
+                        //    Application.Current.Host.Source.Scheme, "://",
+                        //    Application.Current.Host.Source.Host, ":",
+                        //    Application.Current.Host.Source.Port,
+                        //    "/StoreAppDataService.svc/");
 
 
                         Task.Factory.StartNew(() =>
@@ -813,9 +910,9 @@
                             try
                             {
 
-                                StoreDbContext ctx = new StoreDbContext(
-                                    new Uri(uri
-                                        , UriKind.Absolute));
+                                //StoreDbContext ctx = new StoreDbContext(
+                                //    new Uri(uri
+                                //        , UriKind.Absolute));
 
                                 IList<PriceItemRemainderView> pricelistitems = new List<PriceItemRemainderView>();
                                 RemaindersClient client = new RemaindersClient(vm.PriceListName);
@@ -917,25 +1014,27 @@
 
         private void AddPositionToWarehouseTransferRequest(string barcode)
         {
-            string uri = string.Concat(
-                Application.Current.Host.Source.Scheme, "://",
-                Application.Current.Host.Source.Host, ":",
-                Application.Current.Host.Source.Port,
-                "/StoreAppDataService.svc/");
+            //string uri = string.Concat(
+            //    Application.Current.Host.Source.Scheme, "://",
+            //    Application.Current.Host.Source.Host, ":",
+            //    Application.Current.Host.Source.Port,
+            //    "/StoreAppDataService.svc/");
 
             Task.Factory.StartNew(() =>
             {
                 try
                 {
 
-                    StoreDbContext ctx = new StoreDbContext(
-                        new Uri(uri
-                            , UriKind.Absolute));
+                    //StoreDbContext ctx = new StoreDbContext(
+                    //    new Uri(uri
+                    //        , UriKind.Absolute));
 
+                    var client = new StoreapptestClient();
 
                     var findedPosition =
-                        ctx.ExecuteSyncronous(ctx.PriceItems.Expand("Gear,Prices,Remainders").Where(wh => wh.Barcode1 == barcode || wh.Barcode2 == barcode || wh.Barcode3 == barcode))
-                            .FirstOrDefault();
+                        //ctx.ExecuteSyncronous(ctx.PriceItems.Expand("Gear,Prices,Remainders").Where(wh => wh.Barcode1 == barcode || wh.Barcode2 == barcode || wh.Barcode3 == barcode))
+                        //    .FirstOrDefault();
+                        client.GetPriceItemByBarcode(barcode);
 
                     if (findedPosition != null)
                     {

@@ -12,13 +12,13 @@
         public string Uom { get; set; }
         public long SaleItem_Id { get; set; }
         public int SaledCount { get; set; }
-
+        public int Remainders { get; set; }
         public int Discount
         {
             get;
             set; }
 
-        public StoreAppDataService.PriceItem PriceItemData { get; set; }
+        public Client.Model.PriceItem PriceItemData { get; set; }
 
         public int WhosalePrice { get; set; }
 

@@ -10,11 +10,11 @@ namespace StoreAppTest
     using System.Net;
     using System.Text;
     using System.Threading;
+    using Client.Model;
     using Controls;
     using GalaSoft.MvvmLight.Threading;
     using MSPToolkit.Encodings;
     using Newtonsoft.Json;
-    using StoreAppDataService;
     using Utilities;
 
     public partial class LoginPage : UserControl

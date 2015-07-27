@@ -8,12 +8,14 @@ namespace StoreAppTest.ViewModels
     using System.Threading.Tasks;
     using System.Windows;
     using System.Windows.Input;
+    using Client;
+    using Client.Model;
     using Event;
     using GalaSoft.MvvmLight.Threading;
+    using Microsoft.Practices.ObjectBuilder2;
     using Microsoft.Practices.Prism.PubSubEvents;
     using Microsoft.Practices.ServiceLocation;
     using Model;
-    using StoreAppDataService;
     using Utilities;
     using Views;
 
@@ -100,23 +102,26 @@ namespace StoreAppTest.ViewModels
         private void UpdateCustomersList()
         {
 
-            string uri = string.Concat(
-                Application.Current.Host.Source.Scheme, "://",
-                Application.Current.Host.Source.Host, ":",
-                Application.Current.Host.Source.Port,
-                "/StoreAppDataService.svc/");
+            //string uri = string.Concat(
+            //    Application.Current.Host.Source.Scheme, "://",
+            //    Application.Current.Host.Source.Host, ":",
+            //    Application.Current.Host.Source.Port,
+            //    "/StoreAppDataService.svc/");
 
             Task.Factory.StartNew(() =>
             {
-                StoreDbContext ctx = new StoreDbContext(
-                    new Uri(uri
-                        , UriKind.Absolute));
+                //StoreDbContext ctx = new StoreDbContext(
+                //    new Uri(uri
+                //        , UriKind.Absolute));
 
-                var customersDb =
-                    ctx.ExecuteSyncronous(ctx.Customers.Where(
-                            c =>
-                                c.Creator_Id == App.CurrentUser.UserName || c.Creator_Id == "admin" ||
-                                (c.Name == "Розничный покупатель" || c.Name == "Клиент интернет-магазина"))).ToList();
+                //var customersDb =
+                //    ctx.ExecuteSyncronous(ctx.Customers.Where(
+                //            c =>
+                //                c.Creator_Id == App.CurrentUser.UserName || c.Creator_Id == "admin" ||
+                //                (c.Name == "Розничный покупатель" || c.Name == "Клиент интернет-магазина"))).ToList();
+                var client = new StoreapptestClient();
+
+                var customersDb = client.GetCustomers(App.CurrentUser.UserName);
 
                 DispatcherHelper.CheckBeginInvokeOnUI(() =>
                 {

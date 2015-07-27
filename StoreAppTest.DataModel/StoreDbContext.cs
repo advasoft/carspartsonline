@@ -15,12 +15,12 @@ namespace StoreAppTest.Web.DataModel
             : base("name=StoreDbContext")
         {
             Configuration.LazyLoadingEnabled = true;
-            Configuration.ProxyCreationEnabled = true;
+            Configuration.ProxyCreationEnabled = false;
         }
 
         static StoreDbContext()
         {
-            Database.SetInitializer(new StoreDbInitializer());
+            //Database.SetInitializer(new StoreDbInitializer());
             //Database.SetInitializer(new DropCreateDatabaseAlways<StoreDbContext>());
         }
 
@@ -50,6 +50,8 @@ namespace StoreAppTest.Web.DataModel
         public DbSet<RefundsPerDayItem> RefundsPerDayItems { get; set; }
         public DbSet<RemaindersUserChange> RemaindersUserChanges { get; set; }
         public DbSet<GearNew> GearNews { get; set; }
+        public DbSet<GearChanges> GearsChanges { get; set; }
+        public DbSet<RemainderChanges> RemaindersChanges { get; set; }
         public DbSet<WarehouseTransferRequestItem> WarehouseTransferRequestItems { get; set; }
         public DbSet<WarehouseTransferRequest> WarehouseTransferRequests { get; set; }
         public DbSet<PriceChangeReportItem> PriceChangeReportItems { get; set; } 
@@ -289,7 +291,15 @@ namespace StoreAppTest.Web.DataModel
                 .HasRequired(r => r.Gear)
                 .WithMany().HasForeignKey(c => c.Gear_Id).WillCascadeOnDelete(false);
 
+            modelBuilder.Entity<GearChanges>()
+                .Map(m => m.ToTable("GearChangeses"))
+                .HasRequired(r => r.Gear)
+                .WithMany().HasForeignKey(c => c.Gear_Id).WillCascadeOnDelete(false);
 
+            modelBuilder.Entity<RemainderChanges>()
+                .Map(m => m.ToTable("RemainderChangeses"))
+                .HasRequired(r => r.Remainder)
+                .WithMany().HasForeignKey(c => c.Remainder_Id).WillCascadeOnDelete(false);
 
             modelBuilder.Entity<WarehouseTransferRequest>()
                 .HasRequired(r => r.Creator)

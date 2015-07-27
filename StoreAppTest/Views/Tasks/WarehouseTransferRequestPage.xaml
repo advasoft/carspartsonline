@@ -30,8 +30,8 @@
                 <ColumnDefinition Width="154"/>
             </Grid.ColumnDefinitions>
             <TextBlock HorizontalAlignment="Left" Margin="39,10,0,0" TextWrapping="Wrap" Text="Коментарий:" VerticalAlignment="Top" Height="34" Width="108" FontSize="14"/>
-            <dxe:TextEdit Grid.Column="1" Margin="5,10,147,0" VerticalAlignment="Top" Height="32" EditValue="{Binding Description, Mode=TwoWay}" NullText="Коментарий" FontSize="14" IsEnabled="{Binding IsAccepted, Converter={StaticResource BoolToBoolReverseConverter}}"/>
-            <Button  x:Name="AcceptButton" Grid.Column="3" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" Width="144" Height="32" Visibility="{Binding IsEditMode, Converter={StaticResource BoolToVisibilityReverseConverter}}" IsEnabled="{Binding IsAccepted, Converter={StaticResource BoolToBoolReverseConverter}}" Command="{Binding AcceptRequestCommand}">
+            <dxe:TextEdit Grid.Column="1" Margin="5,10,147,0" VerticalAlignment="Top" Height="32" EditValue="{Binding Description, Mode=TwoWay}" NullText="Коментарий" FontSize="14" IsEnabled="{Binding IsAcceptedView, Converter={StaticResource BoolToBoolReverseConverter}}"/>
+            <Button  x:Name="AcceptButton" Grid.Column="3" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" Width="144" Height="32" Visibility="{Binding IsEditMode, Converter={StaticResource BoolToVisibilityReverseConverter}}" IsEnabled="{Binding IsAcceptedView, Converter={StaticResource BoolToBoolReverseConverter}}" Command="{Binding AcceptRequestCommand}">
                 <!--  Click="AcceptButton_Click"-->
                 <Grid HorizontalAlignment="Left" VerticalAlignment="Stretch">
                     <Grid.ColumnDefinitions>
@@ -42,7 +42,7 @@
                     <TextBlock Grid.Column="1" Text="Подтвердить" FontSize="14" Margin="2,2,0,0" FontWeight="Bold"/>
                 </Grid>
             </Button>
-            <Button  x:Name="AcceptButton_Copy" Grid.Column="2" HorizontalAlignment="Left" Margin="0,10,0,0" VerticalAlignment="Top" Width="144" Height="32" Command="{Binding DeclineRequestCommand}" Visibility="{Binding IsEditMode, Converter={StaticResource BoolToVisibilityReverseConverter}}" IsEnabled="{Binding IsAccepted, Converter={StaticResource BoolToBoolReverseConverter}}">
+            <Button  x:Name="AcceptButton_Copy" Grid.Column="2" HorizontalAlignment="Left" Margin="0,10,0,0" VerticalAlignment="Top" Width="144" Height="32" Command="{Binding DeclineRequestCommand}" Visibility="{Binding IsEditMode, Converter={StaticResource BoolToVisibilityReverseConverter}}" IsEnabled="{Binding IsAcceptedView, Converter={StaticResource BoolToBoolReverseConverter}}">
                 <Grid HorizontalAlignment="Left" VerticalAlignment="Stretch">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="32"/>
@@ -62,7 +62,7 @@
                 <ColumnDefinition/>
                 <ColumnDefinition Width="173"/>
             </Grid.ColumnDefinitions>
-            <Button  x:Name="SelectPriceItemButton" HorizontalAlignment="Left" VerticalAlignment="Top" Width="181" Height="32" Command="{Binding SelectPriceItemCommand}" Visibility="{Binding IsEditMode, Converter={StaticResource BoolToVisibilityConverter}}" IsEnabled="{Binding IsAccepted, Converter={StaticResource BoolToBoolReverseConverter}}" Margin="100,0,0,0">
+            <Button  x:Name="SelectPriceItemButton" HorizontalAlignment="Left" VerticalAlignment="Top" Width="181" Height="32" Command="{Binding SelectPriceItemCommand}" Visibility="{Binding IsEditMode, Converter={StaticResource BoolToVisibilityConverter}}" IsEnabled="{Binding IsAcceptedView, Converter={StaticResource BoolToBoolReverseConverter}}" Margin="100,0,0,0">
                 <Grid HorizontalAlignment="Left" VerticalAlignment="Stretch">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="32"/>
@@ -72,15 +72,15 @@
                     <TextBlock Width="150" Grid.Column="1" Text="Выбрать из прайса" FontSize="14" Margin="2,2,0,0"/>
                 </Grid>
             </Button>
-            <Button HorizontalAlignment="Left" Margin="290,0,0,0" VerticalAlignment="Top" Width="32" Height="32" Command="{Binding RemoveRequestItemCommand}" Visibility="{Binding IsEditMode, Converter={StaticResource BoolToVisibilityConverter}}" IsEnabled="{Binding IsAccepted, Converter={StaticResource BoolToBoolReverseConverter}}">
+            <Button HorizontalAlignment="Left" Margin="290,0,0,0" VerticalAlignment="Top" Width="32" Height="32" Command="{Binding RemoveRequestItemCommand}" Visibility="{Binding IsEditMode, Converter={StaticResource BoolToVisibilityConverter}}" IsEnabled="{Binding IsAcceptedView, Converter={StaticResource BoolToBoolReverseConverter}}">
                 <Image Height="24" Width="24" Source="/StoreAppTest;component/Assets/Images/1431713178_678069-sign-error-48.png"/>
             </Button>
             <TextBlock Grid.Column="1" HorizontalAlignment="Left" Margin="10,6,0,0" TextWrapping="Wrap" Text="Перемещение №:" VerticalAlignment="Top" Height="32" FontSize="14" Width="140"/>
             <TextBlock Grid.Column="1" Margin="155,6,82,0" TextWrapping="Wrap" Text="{Binding RequestNumber}" VerticalAlignment="Top" Height="32" FontSize="14" Visibility="{Binding IsEditMode, Converter={StaticResource BoolToVisibilityReverseConverter}}"/>
             <TextBlock Grid.Column="1" Margin="227,6,0,0" TextWrapping="Wrap" Text="от" VerticalAlignment="Top" Height="32" FontSize="14" Visibility="{Binding IsEditMode, Converter={StaticResource BoolToVisibilityReverseConverter}}" HorizontalAlignment="Left" Width="32" Grid.ColumnSpan="2"/>
             <TextBlock Grid.Column="2" Margin="13,6,0,0" TextWrapping="Wrap" Text="{Binding RequestDate, StringFormat='{}{0:dd.MM.yyyy}'}" VerticalAlignment="Top" Height="32" FontSize="14" Visibility="{Binding IsEditMode, Converter={StaticResource BoolToVisibilityReverseConverter}}" Grid.ColumnSpan="2" HorizontalAlignment="Left" Width="224"/>
-            <dxe:TextEdit Grid.Column="1" Margin="144,0,0,0" VerticalAlignment="Top" Height="32" EditValue="{Binding RequestNumber}" Visibility="{Binding IsEditMode, Converter={StaticResource BoolToVisibilityConverter}}" IsEnabled="{Binding IsAccepted, Converter={StaticResource BoolToBoolReverseConverter}}"/>
-            <dxg:LookUpEdit x:Name="WarehouseLookUpEdit" Margin="10,0,0,0" VerticalAlignment="Top" AutoPopulateColumns="False" NullText="Контрагент" ItemsSource="{Binding WarehouseList}" DisplayMember="Name" ValueMember="Name" Height="32" CausesValidation="True" EditValue="{Binding Warehouse_Id, Mode=TwoWay}" FontSize="14" Grid.Column="4" Visibility="{Binding IsEditMode, Converter={StaticResource BoolToVisibilityConverter}}" Validate="WarehouseLookUpEdit_Validate" IsEnabled="{Binding IsAccepted, Converter={StaticResource BoolToBoolReverseConverter}}">
+            <dxe:TextEdit Grid.Column="1" Margin="144,0,0,0" VerticalAlignment="Top" Height="32" EditValue="{Binding RequestNumber}" Visibility="{Binding IsEditMode, Converter={StaticResource BoolToVisibilityConverter}}" IsEnabled="{Binding IsAcceptedView, Converter={StaticResource BoolToBoolReverseConverter}}"/>
+            <dxg:LookUpEdit x:Name="WarehouseLookUpEdit" Margin="10,0,0,0" VerticalAlignment="Top" AutoPopulateColumns="False" NullText="Контрагент" ItemsSource="{Binding WarehouseList}" DisplayMember="Name" ValueMember="Name" Height="32" CausesValidation="True" EditValue="{Binding Warehouse_Id, Mode=TwoWay}" FontSize="14" Grid.Column="4" Visibility="{Binding IsEditMode, Converter={StaticResource BoolToVisibilityConverter}}" Validate="WarehouseLookUpEdit_Validate" IsEnabled="{Binding IsAcceptedView, Converter={StaticResource BoolToBoolReverseConverter}}">
                 <dxg:LookUpEdit.PopupContentTemplate>
                     <ControlTemplate>
                         <dxg:GridControl x:Name="PART_GridControl"  >
@@ -94,7 +94,7 @@
                     </ControlTemplate>
                 </dxg:LookUpEdit.PopupContentTemplate>
             </dxg:LookUpEdit>
-            <Button  x:Name="SaveRequestButton" Grid.Column="5" VerticalAlignment="Top" Height="32" Command="{Binding SaveRequestCommand}" Visibility="{Binding IsEditMode, Converter={StaticResource BoolToVisibilityConverter}}" IsEnabled="{Binding IsAccepted, Converter={StaticResource BoolToBoolReverseConverter}}" HorizontalAlignment="Right" Width="149">
+            <Button  x:Name="SaveRequestButton" Grid.Column="5" VerticalAlignment="Top" Height="32" Command="{Binding SaveRequestCommand}" Visibility="{Binding IsEditMode, Converter={StaticResource BoolToVisibilityConverter}}" IsEnabled="{Binding IsAcceptedView, Converter={StaticResource BoolToBoolReverseConverter}}" HorizontalAlignment="Right" Width="149">
                 <Grid HorizontalAlignment="Left" VerticalAlignment="Stretch">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="32"/>
@@ -116,7 +116,7 @@
             </Button>
             <TextBlock Grid.Column="2" HorizontalAlignment="Left" Margin="5,6,0,0" TextWrapping="Wrap" Text="Штрихкод:" VerticalAlignment="Top" FontSize="14" Height="20" Width="81" Visibility="{Binding IsEditMode, Converter={StaticResource BoolToVisibilityConverter}}"/>
             <dxe:TextEdit x:Name="BarcodeEditText" Grid.Column="3" Margin="5,0,0,0" VerticalAlignment="Top" Height="32" EditValue="{Binding Barcode, Mode=TwoWay}" FontSize="12" IsEnabled="{Binding Saved, Converter={StaticResource BoolToBoolReverseConverter}, Mode=TwoWay}" Visibility="{Binding IsEditMode, Converter={StaticResource BoolToVisibilityConverter}}" />
-            <Button  x:Name="FillDataButton" HorizontalAlignment="Left" VerticalAlignment="Top" Width="123" Height="32" IsEnabled="{Binding Saved, Mode=TwoWay, Converter={StaticResource BoolToVisibilityConverter}}" Command="{Binding FillDataCommand}" Margin="327,0,0,0" Visibility="{Binding IsEditMode, Converter={StaticResource BoolToVisibilityConverter}}">
+            <Button  x:Name="FillDataButton" HorizontalAlignment="Left" VerticalAlignment="Top" Width="123" Height="32" IsEnabled="{Binding IsAcceptedView, Mode=TwoWay, Converter={StaticResource BoolToBoolReverseConverter}}" Command="{Binding FillDataCommand}" Margin="327,0,0,0" Visibility="{Binding IsEditMode, Converter={StaticResource BoolToVisibilityConverter}}">
                 <Grid HorizontalAlignment="Left" VerticalAlignment="Stretch">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="32"/>
@@ -165,7 +165,7 @@
                 </dxg:GridColumn>
             </dxg:GridControl.Columns>
             <dxg:GridControl.View>
-                <dxg:TableView AllowGrouping="False" ShowGroupPanel="False" ShowAutoFilterRow="True" ShowTotalSummary="False" AllowEditing="{Binding IsAccepted, Converter={StaticResource BoolToBoolReverseConverter}}" ValidateRow="TableView_ValidateRow" ShowSearchPanelMode="Always" SearchPanelHighlightResults="True" SearchPanelFindFilter="Contains"  SearchPanelCriteriaOperatorType="And"/>
+                <dxg:TableView AllowGrouping="False" ShowGroupPanel="False" ShowAutoFilterRow="True" ShowTotalSummary="False" AllowEditing="{Binding IsAcceptedView, Converter={StaticResource BoolToBoolReverseConverter}}" ValidateRow="TableView_ValidateRow" ShowSearchPanelMode="Always" SearchPanelHighlightResults="True" SearchPanelFindFilter="Contains"  SearchPanelCriteriaOperatorType="And"/>
             </dxg:GridControl.View>
             <!--<dxg:GridControl.TotalSummary>
                 <dxg:GridSummaryItem DisplayFormat="N0" FieldName="AcceptedAmount" SummaryType="Sum" />

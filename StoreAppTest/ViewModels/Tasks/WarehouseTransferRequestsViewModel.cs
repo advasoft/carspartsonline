@@ -7,13 +7,14 @@ namespace StoreAppTest.ViewModels
     using System.Threading.Tasks;
     using System.Windows;
     using System.Windows.Input;
+    using Client;
+    using Client.Model;
     using Controls;
     using Event;
     using GalaSoft.MvvmLight.Threading;
     using Microsoft.Practices.Prism.PubSubEvents;
     using Microsoft.Practices.ServiceLocation;
     using Model;
-    using StoreAppDataService;
     using Utilities;
 
     public class WarehouseTransferRequestsViewModel : ViewModelBase
@@ -202,19 +203,34 @@ namespace StoreAppTest.ViewModels
                         vm.IsNew = false;
                         vm.RequestNumber = SelectedReceivedRequest.RequestNumber;
                         vm.IsAccepted = SelectedReceivedRequest.IsAccept;
+                        if (SelectedReceivedRequest.IsAccept)
+                        {
+                            vm.IsAcceptedView = true;
+                        }
+                        else if (!SelectedReceivedRequest.IsAccept && SelectedReceivedRequest.CompletedAmount > 0)
+                        {
+                            vm.IsAcceptedView = true;
+                        }
+                        else
+                        {
+                            vm.IsAcceptedView = false;
+                        }
                         vm.Saved = true;
                         vm.SavedDocumentId = SelectedReceivedRequest.Id;
+                        vm.Description = SelectedReceivedRequest.Description;
 
                         var uri = GetContextUri();
             
-                        var ctx = new StoreDbContext(uri);
+                        //var ctx = new StoreDbContext(uri);
+                        var client = new StoreapptestClient();
 
                         int number = 1;
                         var items =
-                            ctx.ExecuteSyncronous(
-                                ctx.WarehouseTransferRequestItems.Expand("PriceItem/Gear")
-                                .Where(
-                                    w => w.WarehouseTransferRequest_Id == SelectedReceivedRequest.Id))
+                            //ctx.ExecuteSyncronous(
+                            //    ctx.WarehouseTransferRequestItems.Expand("PriceItem/Gear")
+                            //    .Where(
+                            //        w => w.WarehouseTransferRequest_Id == SelectedReceivedRequest.Id))
+                            client.GetWarehouseTransferRequestItems(SelectedReceivedRequest.Id)
                                 .ToList()
                                 .Select(s => new WarehouseTransferRequestModelItem((int)s.AcceptedAmount,(int)s.CountAccepted)
                                 {
@@ -276,20 +292,33 @@ namespace StoreAppTest.ViewModels
                         vm.IsNew = false;
                         vm.RequestNumber = SelectedSendredRequest.RequestNumber;
                         vm.IsAccepted = SelectedSendredRequest.IsAccept;
+                        if (SelectedSendredRequest.IsAccept)
+                        {
+                            vm.IsAcceptedView = true;
+                        }
+                        else if (!SelectedSendredRequest.IsAccept && SelectedSendredRequest.CompletedAmount > 0)
+                        {
+                            vm.IsAcceptedView = true;
+                        }
+                        else
+                        {
+                            vm.IsAcceptedView = false;
+                        }
                         vm.Saved = true;
                         vm.SavedDocumentId = SelectedSendredRequest.Id;
+                        vm.Description = SelectedSendredRequest.Description;
+                        //var uri = GetContextUri();
 
-                        var uri = GetContextUri();
-
-                        var ctx = new StoreDbContext(uri);
-
+                        //var ctx = new StoreDbContext(uri);
+                        var client = new StoreapptestClient();
                         int number = 1;
 
                         var rawItems =
-                            ctx.ExecuteSyncronous(
-                                ctx.WarehouseTransferRequestItems.Expand("PriceItem/Gear")
-                                    .Where(
-                                        w => w.WarehouseTransferRequest_Id == SelectedSendredRequest.Id))
+                            //ctx.ExecuteSyncronous(
+                            //    ctx.WarehouseTransferRequestItems.Expand("PriceItem/Gear")
+                            //        .Where(
+                            //            w => w.WarehouseTransferRequest_Id == SelectedSendredRequest.Id))
+                            client.GetWarehouseTransferRequestItems(SelectedSendredRequest.Id)
                                 .ToList();
 
                         var items = rawItems
@@ -321,17 +350,25 @@ namespace StoreAppTest.ViewModels
                         vm.WarehouseTransferRequestItems =
                             new ObservableCollection<WarehouseTransferRequestModelItem>(items);
 
-                        var warehouses = ctx.ExecuteSyncronous(ctx.Warehouses.Where(w => w.Name != App.CurrentUser.Warehouse_Id)).ToList();
+                        //var warehouses = ctx.ExecuteSyncronous(ctx.Warehouses.Where(w => w.Name != App.CurrentUser.Warehouse_Id)).ToList();
+                        var warehouses =
+                            client.GetWarehouses().Where(w => w.Name != App.CurrentUser.Warehouse_Id).ToList();
                         vm.WarehouseList = new ObservableCollection<Warehouse>(warehouses);
 
                         vm.Warehouse_Id = SelectedSendredRequest.Supplier_Id;
                         _newWarehouseTransferRequestNeedEvent.Publish(vm);
                         vm.LoadView();
                     }
-                    catch (Exception)
+                    catch (Exception exception)
                     {
+                        DispatcherHelper.CheckBeginInvokeOnUI(() =>
+                        {
+                            MessageChildWindow ms = new MessageChildWindow();
+                            ms.Title = "Ошибка";
+                            ms.Message = exception.Message;
 
-                        throw;
+                            ms.Show();
+                        });
                     }
 
                 }
@@ -345,24 +382,29 @@ namespace StoreAppTest.ViewModels
             {
                 try
                 {
-                    var uri = GetContextUri();
+                    //var uri = GetContextUri();
 
-                    StoreDbContext ctx = new StoreDbContext(uri);
+                    //StoreDbContext ctx = new StoreDbContext(uri);
 
                     WarehouseTransferRequestViewModel vm = new WarehouseTransferRequestViewModel(new WarehouseTransferRequestModel());
                     //WarehouseList
                     vm.IsEditMode = true;
                     vm.IsNew = true;
+                    var client = new StoreapptestClient();
 
-                    var warehouses = ctx.ExecuteSyncronous(ctx.Warehouses.Where(w => w.Name != App.CurrentUser.Warehouse_Id)).ToList();
+                    //var warehouses = ctx.ExecuteSyncronous(ctx.Warehouses.Where(w => w.Name != App.CurrentUser.Warehouse_Id)).ToList();
+                    var warehouses = client.GetWarehouses().Where(w => w.Name != App.CurrentUser.Warehouse_Id);
+
                     vm.WarehouseList = new ObservableCollection<Warehouse>(warehouses);
 
-                    var reqDb =
-                        ctx.ExecuteSyncronous(ctx.WarehouseTransferRequests.OrderByDescending(s => s.Id)).FirstOrDefault();
-                    if (reqDb != null)
+                    //var reqDb =
+                    //    ctx.ExecuteSyncronous(ctx.WarehouseTransferRequests.OrderByDescending(s => s.Id)).FirstOrDefault();
+                    var lastNum = client.GetLastWarehouseTransferRequestNumber();
+
+                    if (!string.IsNullOrEmpty(lastNum))
                     {
                         int lastNumber = 0;
-                        if (int.TryParse(reqDb.RequestNumber, out lastNumber))
+                        if (int.TryParse(lastNum, out lastNumber))
                         {
                             vm.RequestNumber = (++lastNumber).ToString();
                         }
@@ -393,7 +435,7 @@ namespace StoreAppTest.ViewModels
             {
                 IsReceivedLoading = true;
 
-                var receivedUri = GetContextUri();
+                //var receivedUri = GetContextUri();
 
                 ReceivedRequests.Clear();
 
@@ -402,13 +444,15 @@ namespace StoreAppTest.ViewModels
 
                     try
                     {
-                        var ctx = new StoreDbContext(receivedUri);
+                        //var ctx = new StoreDbContext(receivedUri);
+                        var client = new StoreapptestClient();
 
                         var receivedRequests =
-                            ctx.ExecuteSyncronous(
-                                ctx.WarehouseTransferRequests.Expand("WarehouseTransferRequestItemItems")
-                                .Where(w => w.Supplier_Id == App.CurrentUser.Warehouse_Id
-                                && w.RequestDate >= ReceivedAtFromDate && w.RequestDate <= ReceivedAtToDate).OrderByDescending(or => or.RequestDate))
+                            //ctx.ExecuteSyncronous(
+                            //    ctx.WarehouseTransferRequests.Expand("WarehouseTransferRequestItemItems")
+                            //    .Where(w => w.Supplier_Id == App.CurrentUser.Warehouse_Id
+                            //    && w.RequestDate >= ReceivedAtFromDate && w.RequestDate <= ReceivedAtToDate).OrderByDescending(or => or.RequestDate))
+                            client.GetReceivedWarehouseTransferRequests(ReceivedAtFromDate, ReceivedAtToDate, App.CurrentUser.Warehouse_Id)
                                 .ToList();
 
 
@@ -467,7 +511,7 @@ namespace StoreAppTest.ViewModels
             {
                 IsSendedLoading = true;
 
-                var sendedUri = GetContextUri();
+                //var sendedUri = GetContextUri();
 
                 SendredRequests.Clear();
 
@@ -476,13 +520,16 @@ namespace StoreAppTest.ViewModels
 
                     try
                     {
-                        var ctx = new StoreDbContext(sendedUri); 
+                        var client = new StoreapptestClient();
+
+                        //var ctx = new StoreDbContext(sendedUri); 
                         var receivedRequests =
-                             ctx.ExecuteSyncronous(
-                                 ctx.WarehouseTransferRequests.Expand("WarehouseTransferRequestItemItems")
-                                 .Where(w => w.Customer_Id == App.CurrentUser.Warehouse_Id
-                                 && w.RequestDate >= SendedAtFromDate && w.RequestDate <= SendedAtToDate)
-                                 .OrderByDescending(or => or.RequestDate))
+                             //ctx.ExecuteSyncronous(
+                             //    ctx.WarehouseTransferRequests.Expand("WarehouseTransferRequestItemItems")
+                             //    .Where(w => w.Customer_Id == App.CurrentUser.Warehouse_Id
+                             //    && w.RequestDate >= SendedAtFromDate && w.RequestDate <= SendedAtToDate)
+                             //    .OrderByDescending(or => or.RequestDate))
+                             client.GetSendedWarehouseTransferRequests(ReceivedAtFromDate, ReceivedAtToDate, App.CurrentUser.Warehouse_Id)
                                  .ToList();
 
 
@@ -514,11 +561,14 @@ namespace StoreAppTest.ViewModels
                     }
                     catch (Exception exception)
                     {
-                        MessageChildWindow ms = new MessageChildWindow();
-                        ms.Title = "Ошибка";
-                        ms.Message = exception.Message;
+                        DispatcherHelper.CheckBeginInvokeOnUI(() =>
+                        {
+                            MessageChildWindow ms = new MessageChildWindow();
+                            ms.Title = "Ошибка";
+                            ms.Message = exception.Message;
 
-                        ms.Show();
+                            ms.Show();
+                        });
                     }
                 }).ContinueWith(c =>
                 {
@@ -575,37 +625,43 @@ namespace StoreAppTest.ViewModels
         public void WarehouseTransferSendedRequestChangedEventHandler(WarehouseTransferRequest obj)
         {
             var model = SendredRequests.Where(m => m.Id == obj.Id).FirstOrDefault();
-            model.ReserveAmount = (int)
-                            obj.WarehouseTransferRequestItemItems.Sum(s => s.Count * s.WholesalePrice);
-            model.Customer_Id = obj.Customer_Id;
-            model.Description = obj.Description;
-            model.IsAccept = obj.IsAccept;
-            model.IsReserve = obj.IsReserve;
-            model.RequestDate = obj.RequestDate;
-            model.RequestNumber = obj.RequestNumber;
-            model.CompletedAmount = (int)
-                obj.WarehouseTransferRequestItemItems.Sum(s => s.AcceptedAmount);
-            model.StateChangedDate = obj.StateChangedDate;
-            model.Status = obj.Status;
-            model.Supplier_Id = obj.Supplier_Id;
+            if (model != null)
+            {
+                model.ReserveAmount = (int)
+                    obj.WarehouseTransferRequestItemItems.Sum(s => s.Count * s.WholesalePrice);
+                model.Customer_Id = obj.Customer_Id;
+                model.Description = obj.Description;
+                model.IsAccept = obj.IsAccept;
+                model.IsReserve = obj.IsReserve;
+                model.RequestDate = obj.RequestDate;
+                model.RequestNumber = obj.RequestNumber;
+                model.CompletedAmount = (int)
+                    obj.WarehouseTransferRequestItemItems.Sum(s => s.AcceptedAmount);
+                model.StateChangedDate = obj.StateChangedDate;
+                model.Status = obj.Status;
+                model.Supplier_Id = obj.Supplier_Id;
+            }
         }
 
         public void WarehouseTransferReceivedRequestChangedEventHandler(WarehouseTransferRequest obj)
         {
             var model = ReceivedRequests.Where(m => m.Id == obj.Id).FirstOrDefault();
-            model.ReserveAmount = (int)
-                            obj.WarehouseTransferRequestItemItems.Sum(s => s.Count * s.WholesalePrice);
-            model.Customer_Id = obj.Customer_Id;
-            model.Description = obj.Description;
-            model.IsAccept = obj.IsAccept;
-            model.IsReserve = obj.IsReserve;
-            model.RequestDate = obj.RequestDate;
-            model.RequestNumber = obj.RequestNumber;
-            model.CompletedAmount = (int)
-                obj.WarehouseTransferRequestItemItems.Sum(s => s.AcceptedAmount);
-            model.StateChangedDate = obj.StateChangedDate;
-            model.Status = obj.Status;
-            model.Supplier_Id = obj.Supplier_Id;
+            if (model != null)
+            {
+                model.ReserveAmount = (int)
+                    obj.WarehouseTransferRequestItemItems.Sum(s => s.Count * s.WholesalePrice);
+                model.Customer_Id = obj.Customer_Id;
+                model.Description = obj.Description;
+                model.IsAccept = obj.IsAccept;
+                model.IsReserve = obj.IsReserve;
+                model.RequestDate = obj.RequestDate;
+                model.RequestNumber = obj.RequestNumber;
+                model.CompletedAmount = (int)
+                    obj.WarehouseTransferRequestItemItems.Sum(s => s.AcceptedAmount);
+                model.StateChangedDate = obj.StateChangedDate;
+                model.Status = obj.Status;
+                model.Supplier_Id = obj.Supplier_Id;
+            }
         }
 
     }

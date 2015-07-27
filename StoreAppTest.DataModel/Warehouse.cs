@@ -5,7 +5,7 @@ namespace StoreAppTest.Web.DataModel
     using System.ComponentModel.DataAnnotations;
     using System.ComponentModel.DataAnnotations.Schema;
     using System.Runtime.Serialization;
-
+    [Serializable]
     [DataContract]
     public partial class Warehouse
     {

@@ -2,6 +2,7 @@
 namespace StoreAppTest.Reports
 {
     using System.Collections.Generic;
+    using System.Data.Entity;
     using System.Linq;
     using DevExpress.XtraReports.UI;
     using Web.DataModel;
@@ -26,7 +27,13 @@ namespace StoreAppTest.Reports
             if (parameter != null)
             {
                 long id = long.Parse(parameter.Value.ToString());
-                documents = context.Incomes.Where(r => r.Id == id).ToList();
+                documents = context.Incomes
+                    .Include(i => i.Accepter)
+                    .Include(i => i.Creator)
+                    .Include(i => i.IncomeItems)
+                    .Include(i => i.Supplier)
+                    .Include("IncomeItems.PriceItem.Gear")
+                    .Where(r => r.Id == id).ToList();
             }
 
             var firstDocument = documents.FirstOrDefault();

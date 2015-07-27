@@ -9,12 +9,13 @@ namespace StoreAppTest
     using System.Net;
     using System.Threading;
     using System.Windows.Browser;
+    using Client.Model;
     using DevExpress.Data.PLinq.Helpers;
     using GalaSoft.MvvmLight.Threading;
     using Microsoft.Practices.Prism.PubSubEvents;
     using Microsoft.Practices.ServiceLocation;
     using Microsoft.Practices.Unity;
-    using StoreAppDataService;
+    using Newtonsoft.Json;
     using Utilities;
     using Views;
     using Receipt = Model.Receipt;
@@ -54,19 +55,23 @@ namespace StoreAppTest
 		        Current.Host.Source.Host, ":",
 		        Current.Host.Source.Port);
 
-
-            //TODO: изменить на авторизацию
-            StoreDbContext ctx = new StoreDbContext(
-                new Uri(string.Concat(
-                    Current.Host.Source.Scheme, "://", Current.Host.Source.Host, ":", Current.Host.Source.Port,
-                    "/StoreAppDataService.svc/"), UriKind.Absolute));
-            ctx.IgnoreResourceNotFoundException = true;
-
-            new Thread(() =>
+            JsonConvert.DefaultSettings = () => new JsonSerializerSettings
             {
-                var categories = ctx.ExecuteSyncronous(ctx.GearCategories).ToList();
-                //var user = ctx.ExecuteSyncronous(ctx.Users.Where(u => u.UserName == "admin")).FirstOrDefault();
-            }).Start();
+                Formatting = Newtonsoft.Json.Formatting.Indented,
+                ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore
+            };
+            ////TODO: изменить на авторизацию
+            //StoreDbContext ctx = new StoreDbContext(
+            //    new Uri(string.Concat(
+            //        Current.Host.Source.Scheme, "://", Current.Host.Source.Host, ":", Current.Host.Source.Port,
+            //        "/StoreAppDataService.svc/"), UriKind.Absolute));
+            //ctx.IgnoreResourceNotFoundException = true;
+
+            //new Thread(() =>
+            //{
+            //    var categories = ctx.ExecuteSyncronous(ctx.GearCategories).ToList();
+            //    //var user = ctx.ExecuteSyncronous(ctx.Users.Where(u => u.UserName == "admin")).FirstOrDefault();
+            //}).Start();
 
             //ctx.BeginExecute<User>(new Uri(ctx.Users.Where(u => u.UserName == "dd").ToString()),a =>
             //{

@@ -2,6 +2,7 @@
 namespace StoreAppTest.Reports
 {
     using System.Collections.Generic;
+    using System.Data.Entity;
     using System.Linq;
     using DevExpress.XtraReports.UI;
     using Web.DataModel;
@@ -25,7 +26,14 @@ namespace StoreAppTest.Reports
             if (parameter != null)
             {
                 long id = long.Parse(parameter.Value.ToString());
-                documents = context.WarehouseTransferRequests.Where(r => r.Id == id).ToList();
+                documents = context.WarehouseTransferRequests
+                    .Include(i => i.Creator)
+                    .Include(i => i.Customer)
+                    .Include(i => i.LastChanged)
+                    .Include(i => i.Supplier)
+                    .Include(i => i.WarehouseTransferRequestItemItems)
+                    .Include("WarehouseTransferRequestItemItems.PriceItem.Gear")
+                    .Where(r => r.Id == id).ToList();
             }
 
             DataSource = documents;

@@ -6,7 +6,7 @@ namespace StoreAppTest.Web.DataModel
     using System.ComponentModel.DataAnnotations.Schema;
     using System.Runtime.Serialization;
     using StoreAppTest.DataModel;
-
+    [Serializable]
     [DataContract]
     public partial class Gear
     {
@@ -38,9 +38,10 @@ namespace StoreAppTest.Web.DataModel
         [DataMember]
         public bool IsDuplicate { get; set; }
 
-        [Required]
-        [StringLength(255)]
-        [DataMember]
+        //[Required]
+        //[StringLength(255)]
+        //[DataMember]
+        [IgnoreDataMember]
         //[ForeignKey("GearCategory")]
         public string Category_Id { get; set; }
 
@@ -59,7 +60,8 @@ namespace StoreAppTest.Web.DataModel
             get;
             set; }
 
-        [DataMember]
+        //[DataMember]
+        [IgnoreDataMember]
         public virtual GearCategory GearCategory { get; set; }
 
         //[DataMember]
@@ -67,18 +69,18 @@ namespace StoreAppTest.Web.DataModel
 
         #region Overrides of Object
 
-        /// <summary>
-        /// ќпредел€ет, равен ли заданный объект <see cref="T:System.Object"/> текущему объекту <see cref="T:System.Object"/>.
-        /// </summary>
-        /// <returns>
-        /// true, если заданный объект равен текущему объекту; в противном случае†Ч false.
-        /// </returns>
-        /// <param name="obj">ќбъект, который требуетс€ сравнить с текущим объектом.</param>
-        public override bool Equals(object obj)
-        {
-            var g = obj as Gear;
-            return g.Name == Name && g.Articul == Articul;
-        }
+        ///// <summary>
+        ///// ќпредел€ет, равен ли заданный объект <see cref="T:System.Object"/> текущему объекту <see cref="T:System.Object"/>.
+        ///// </summary>
+        ///// <returns>
+        ///// true, если заданный объект равен текущему объекту; в противном случае†Ч false.
+        ///// </returns>
+        ///// <param name="obj">ќбъект, который требуетс€ сравнить с текущим объектом.</param>
+        //public override bool Equals(object obj)
+        //{
+        //    var g = obj as Gear;
+        //    return g.Name == Name && g.Articul == Articul;
+        //}
 
         #endregion
     }

@@ -6,7 +6,8 @@ namespace StoreAppTest.Views
     using System;
     using System.Threading.Tasks;
     using System.Windows;
-    using StoreAppDataService;
+    using Client;
+    using Client.Model;
     using Utilities;
 
     public partial class SupplierDetails : UserControl
@@ -35,13 +36,15 @@ namespace StoreAppTest.Views
                 try
                 {
 
-                    StoreDbContext ctx = new StoreDbContext(
-                        new Uri(uri
-                            , UriKind.Absolute));
+                    var client = new StoreapptestClient();
+                    client.AddSupplier(sp);
+                    //StoreDbContext ctx = new StoreDbContext(
+                    //    new Uri(uri
+                    //        , UriKind.Absolute));
 
-                    ctx.AddToSuppliers(sp);
-                    ctx.SaveChangesSynchronous();
-                    
+                    //ctx.AddToSuppliers(sp);
+                    //ctx.SaveChangesSynchronous();
+
                 }
                 catch (Exception exception)
                 {

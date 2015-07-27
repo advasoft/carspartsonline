@@ -6,7 +6,8 @@ namespace StoreAppTest.Views
     using System;
     using System.Threading.Tasks;
     using System.Windows;
-    using StoreAppDataService;
+    using Client;
+    using Client.Model;
     using Utilities;
 
     public partial class CustomerDetails : UserControl
@@ -34,14 +35,14 @@ namespace StoreAppTest.Views
             //{
                 try
                 {
-
-                    StoreDbContext ctx = new StoreDbContext(
-                        new Uri(uri
-                            , UriKind.Absolute));
+                    var client = new StoreapptestClient();
+                    //StoreDbContext ctx = new StoreDbContext(
+                    //    new Uri(uri
+                    //        , UriKind.Absolute));
                     cs.Creator_Id = App.CurrentUser.UserName;
-                    ctx.AddToCustomers(cs);
-                    ctx.SaveChangesSynchronous();
-                    
+                    //ctx.AddToCustomers(cs);
+                    //ctx.SaveChangesSynchronous();
+                    client.AddCustomer(cs);
                 }
                 catch (Exception exception)
                 {

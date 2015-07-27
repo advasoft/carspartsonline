@@ -74,7 +74,7 @@
         <dxe:TextEdit Grid.Column="2" Margin="5,0,23,0" Grid.Row="1" VerticalAlignment="Top" Height="30" EditValue="{Binding Articul, Mode=TwoWay}" FontSize="14"/>
         <dxe:TextEdit Grid.Column="4" Margin="5,0,23,0" Grid.Row="1" VerticalAlignment="Top" Height="30" EditValue="{Binding CatalogNumber, Mode=TwoWay}" FontSize="14"/>
         <dxe:TextEdit Grid.Column="2" Margin="5,0,23,0" Grid.Row="2" VerticalAlignment="Top" Height="30" Grid.ColumnSpan="3" EditValue="{Binding Name, Mode=TwoWay}" FontSize="14"/>
-        <dxe:ComboBoxEdit Grid.Column="4" Margin="5,2,23,0" Grid.Row="3" VerticalAlignment="Top" Height="30" SelectedItem="{Binding Uom, Mode=TwoWay}" ItemsSource="{Binding UomList}" DisplayMember="Name" FontSize="14"/>
+        <dxe:ComboBoxEdit Grid.Column="4" Margin="5,2,23,0" Grid.Row="3" VerticalAlignment="Top" Height="30" EditValue="{Binding Uom, Mode=TwoWay}" ItemsSource="{Binding UomList}" DisplayMember="Name" FontSize="14"/>
         <dxe:TextEdit Grid.Column="2" Margin="5,0,23,0" Grid.Row="4" VerticalAlignment="Top" Height="30" EditValue="{Binding BuyPriceRur, Mode=TwoWay, StringFormat='N0'}" FontSize="14" HorizontalContentAlignment="Right" />
         <dxe:TextEdit Grid.Column="4" Margin="5,0,23,0" Grid.Row="4" VerticalAlignment="Top" Height="30" EditValue="{Binding BuyPriceTng, Mode=TwoWay, StringFormat='N0'}" FontSize="14" HorizontalContentAlignment="Right" />
         <dxe:TextEdit Grid.Column="2" Margin="5,0,23,0" Grid.Row="7" VerticalAlignment="Top" Height="30" EditValue="{Binding WholesalePrice, Mode=TwoWay, StringFormat='N0'}" FontSize="14" HorizontalContentAlignment="Right" Visibility="{Binding IsAdmin, Converter={StaticResource BoolToVisibilityConverter}}"/>
