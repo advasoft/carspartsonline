@@ -178,7 +178,7 @@ namespace StoreAppTest.ViewModels
                 .ForEach(f =>
                 {
                     f.Number = number++;
-                    if (f.Amount > 0)
+                    if (f.Amount != 0)
                     {
                         DispatcherHelper.CheckBeginInvokeOnUI(() =>
                         {

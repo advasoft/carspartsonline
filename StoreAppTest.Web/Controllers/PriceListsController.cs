@@ -2207,6 +2207,10 @@ sb.Append("LEFT JOIN  (  ");
                             previousRetailPrice = prices.OrderByDescending(d => d.PriceDate).Skip(1).First();
                             previousPrice = previousRetailPrice.Price;
 
+                            if (previousRetailPrice.Price == 0)
+                            {
+                                previousRetailPrice.Price = currentRetailPrice.Price;
+                            }
                         }
                         else
                         {
@@ -2264,6 +2268,20 @@ sb.Append("LEFT JOIN  (  ");
 
             foreach (var item in report.PriceChangeReportItems)
             {
+                var prevId = item.PreviousPrice_Id;
+                var currId = item.NewPrice_Id;
+
+                var prev = context.WholesalePrices.Where(p => p.Id == prevId).FirstOrDefault();
+                var curr = context.WholesalePrices.Where(p => p.Id == currId).FirstOrDefault();
+
+                if (curr != null && prev != null)
+                {
+                    if (prev.Price == 0)
+                    {
+                        prev.Price = curr.Price;
+                    }
+                }
+
                 context.PriceChangeReportItems.Add(item);
             }
             context.SaveChanges();
@@ -3020,6 +3038,7 @@ sb.Append("LEFT JOIN  (  ");
                 .Include(i => i.PriceItem.UnitOfMeasure)
                 .Include(i => i.PriceItem.Remainders)
                 .Include(i => i.PriceItem.Prices)
+                .Include(i => i.PriceItem.PriceLists)
                 .Include(i => i.SaleItem.SaleDocument)
                     .Where(
                         w =>
@@ -3038,6 +3057,7 @@ sb.Append("LEFT JOIN  (  ");
             var startDate = DateTime.Parse(from);
             var endDate = DateTime.Parse(to);
 
+
             var context = new StoreDbContext();
 
             var closedRefundPerDay = context.RefundsPerDayItems
@@ -3048,22 +3068,43 @@ sb.Append("LEFT JOIN  (  ");
                         && w.SaleDocumentsPerDay.IsClosed &&
                         w.SaleDocumentsPerDay.Creator_Id == userName).Select(s => s.RefundItem.Id).ToList();
             //"RefundDocument/SaleDocument,PriceItem/Gear,PriceItem/UnitOfMeasure,PriceItem/Remainders,PriceItem/Prices,SaleItem"
+            
+            //context.Database.ExecuteSqlCommand("SET ARITHABORT OFF SET QUERY_GOVERNOR_COST_LIMIT 0;");
+            //var refundQuery =
+            //    context.RefundItems
+                
+            //        .Where(
+            //            w =>
+            //                w.RefundDocument.RefundDate >= startDate
+            //                && w.RefundDocument.RefundDate <= endDate
+            //                //&& !closedRefundPerDay.Contains(w.Id)
+            //                && w.RefundDocument.Cr i.PriceItem.Prices)
+            //    .Include(i => i.PriceItem.PriceLists)
+            //    .Include(i => i.SaleItem.SaleDocument).ToList();
+
             var refundQuery =
-                context.RefundItems
-                .Include(i => i.RefundDocument)
-                .Include(i => i.RefundDocument.SaleDocument)
-                .Include(i => i.PriceItem.Gear)
-                .Include(i => i.PriceItem.UnitOfMeasure)
-                .Include(i => i.PriceItem.Remainders)
-                .Include(i => i.PriceItem.Prices)
-                .Include(i => i.PriceItem.PriceLists)
-                .Include(i => i.SaleItem.SaleDocument)
+                context.RefundDocuments
                     .Where(
                         w =>
-                            w.RefundDocument.RefundDate >= startDate
-                            && w.RefundDocument.RefundDate <= endDate
-                            //&& !closedRefundPerDay.Contains(w.Id)
-                            && w.RefundDocument.Creator_Id == userName).ToList();
+                            w.RefundDate >= startDate
+                            && w.RefundDate <= endDate
+                            && w.Creator_Id == userName)
+                    .SelectMany(s => s.RefundItems)
+                    .Include(i => i.RefundDocument)
+                    .Include(i => i.PriceItem.Gear)
+                    .Include(i => i.PriceItem.UnitOfMeasure)
+                    .Include(i => i.PriceItem.Remainders)
+                    .Include(i => i.PriceItem.Prices)
+                    .Include(i => i.PriceItem.PriceLists)
+                    .Include(i => i.SaleItem.SaleDocument);
+                    //.Include(i => i.SaleDocument)
+                    //.Include("RefundItems.PriceItem")
+                    //.Include("RefundItems.PriceItem.Gear")
+                    //.Include("RefundItems.PriceItem.UnitOfMeasure")
+                    //.Include("RefundItems.PriceItem.Remainders")
+                    //.Include("RefundItems.PriceItem.Prices")
+                    //.Include("RefundItems.PriceItem.PriceLists")
+                    //.Include("RefundItems.SaleItem.SaleDocument");
 
             var refundItems = refundQuery.Where(w => !closedRefundPerDay.Contains(w.Id)).ToList();
             return refundItems;
@@ -3072,7 +3113,8 @@ sb.Append("LEFT JOIN  (  ");
         [HttpPost]
         public HttpResponseMessage AddRealizationPerDay(SaleDocumentsPerDay saleDocumentsPerDay)
         {
-
+            
+            
             //clearvalues
             saleDocumentsPerDay.Creator = null;
 
@@ -3156,7 +3198,14 @@ sb.Append("LEFT JOIN  (  ");
         [HttpPost]
         public HttpResponseMessage SaveRecipe(SaleDocument saleDocument)
         {
+            var logger = LogManager.GetLogger("*");
+            
+
             var creator = saleDocument.Creator;
+
+            logger.Info("-------------------------------------------------------------------------");
+            logger.Info("Создан товарный чек №{0} от {1} пользователем {2}", saleDocument.Number, saleDocument.SaleDate, creator.UserName);
+            logger.Info("Позиции документа:");
 
             //clear references
             saleDocument.Customer = null;
@@ -3223,6 +3272,7 @@ sb.Append("LEFT JOIN  (  ");
                         //receipt.SaleItems.Add(item);
                         //ctx.AddToSaleItems(item);
                         context.SaleItems.Add(item);
+                        logger.Info(" - {0}  {1}", item.CatalogNumber, item.Name);
 
                     }
 
@@ -3240,11 +3290,12 @@ sb.Append("LEFT JOIN  (  ");
                     context.SaveChanges();
 
                     tr.Commit();
-
+                    logger.Info("-------------------------------------------------------------------------");
 
                 }
                 catch (Exception exception)
                 {
+                    logger.Error("Произошла ошибка!", exception);
                     tr.Rollback();
                     throw;
                 }
@@ -3566,45 +3617,120 @@ sb.Append("LEFT JOIN  (  ");
             return new HttpResponseMessage(HttpStatusCode.Accepted);
         }
 
-        [HttpPost]
-        public HttpResponseMessage DeletePriceItem(long id)
+        [HttpGet]
+        public PriceItem DeletePriceItem(long id)
         {
             var context = new StoreDbContext();
-            var finded = context.PriceItems.Where(r => r.Id == id).FirstOrDefault();
-            if (finded != null)
+            using (var tr = context.Database.BeginTransaction())
             {
-                foreach (var item in finded.Remainders)
+                try
                 {
-                    foreach (var rem in item.RemaindersUserChanges)
+                    var finded = context.PriceItems
+                        .Include(i => i.Remainders)
+                        .Include(i => i.Prices)
+                        .Include("Remainders.RemaindersUserChanges")
+                        .Where(r => r.Id == id).FirstOrDefault();
+                    if (finded != null)
                     {
-                        context.RemaindersUserChanges.Remove(rem);
+                        var remlist = finded.Remainders.ToList();
+                        //finded.Remainders.Clear();
+                        //context.SaveChanges();
+
+                        foreach (var item in remlist)
+                        {
+
+                            var remchlist = item.RemaindersUserChanges.ToList();
+                            //item.RemaindersUserChanges.Clear();
+                            //context.SaveChanges();
+
+                            foreach (var rem in remchlist)
+                            {
+                        
+                                context.RemaindersUserChanges.Remove(rem);
+                            }
+                            context.SaveChanges();
+
+                            var remchanges = context.RemaindersChanges.Where(w => w.Remainder_Id == item.Id).ToList();
+                            foreach (var remchange in remchanges)
+                            {
+                                context.RemaindersChanges.Remove(remchange);
+                            }
+                            context.SaveChanges();
+
+                            context.Remainders.Remove(item);
+                        }
+                        context.SaveChanges();
+
+                        var prses = finded.Prices.ToList();
+                        //finded.Prices.Clear();
+                        //context.SaveChanges();
+
+                        foreach (var price in prses)
+                        {
+                            var chngOldPrices =
+                                context.PriceChangeReportItems.Where(w => w.PreviousPrice_Id == price.Id).ToList();
+                            foreach (var chngOld in chngOldPrices)
+                            {
+                                context.PriceChangeReportItems.Remove(chngOld);
+                            }
+                            context.SaveChanges();
+
+                            var chngNewPrices =
+                                context.PriceChangeReportItems.Where(w => w.NewPrice_Id == price.Id).ToList();
+                            foreach (var chngNew in chngNewPrices)
+                            {
+                                context.PriceChangeReportItems.Remove(chngNew);
+                            }
+                            context.SaveChanges();
+
+                            context.WholesalePrices.Remove(price);
+                        }
+                        context.SaveChanges();
+
+                        finded.PriceLists.Clear();
+
+                        context.SaveChanges();
+
+                        var news = context.GearNews.Where(g => g.Gear_Id == finded.Gear_Id).ToList();
+                        foreach (var n in news)
+                        {
+                            context.GearNews.Remove(n);
+                        }
+                        context.SaveChanges();
+
+                        var gearchngs = context.GearsChanges.Where(g => g.Gear_Id == finded.Gear_Id).ToList();
+                        foreach (var n in gearchngs)
+                        {
+                            context.GearsChanges.Remove(n);
+                        }
+                        context.SaveChanges();
+
+                        long gearId = finded.Gear_Id;
+
+                        var incomeItems = context.IncomeItems.Where(w => w.PriceItem_Id == finded.Id).ToList();
+                        foreach (var incomeItem in incomeItems)
+                        {
+                            context.IncomeItems.Remove(incomeItem);
+                        }
+                        context.SaveChanges();
+
+                        context.PriceItems.Remove(finded);
+                        context.SaveChanges();
+
+                        context.Gears.Remove(context.Gears.Where(g => g.Id == gearId).FirstOrDefault());
+
+                        context.SaveChanges();
+                        tr.Commit();
+                            
                     }
-
-                    context.Remainders.Remove(item);
                 }
-                foreach (var price in finded.Prices)
+                catch (Exception exception)
                 {
-                    context.WholesalePrices.Remove(price);
-                }
-
-                finded.PriceLists.Clear();
-
-                context.SaveChanges();
-
-                var news = context.GearNews.Where(g => g.Gear_Id == finded.Gear_Id).ToList();
-                foreach (var n in news)
-                {
-                    context.GearNews.Remove(n);
-                }
-
-                long gearId = finded.Gear_Id;
-                context.PriceItems.Remove(finded);
-
-                context.Gears.Remove(context.Gears.Where(g => g.Id == gearId).FirstOrDefault());
-
-                context.SaveChanges();
+                    tr.Rollback();
+                    throw;
+                }            
             }
-            return new HttpResponseMessage(HttpStatusCode.Accepted);
+            return new PriceItem();
         }
 
         [HttpPost]
@@ -3732,6 +3858,10 @@ sb.Append("LEFT JOIN  (  ");
         public HttpResponseMessage AcceptWarehouseTransferRequest(WarehouseTransferRequest request)
         {
 
+            var logger = LogManager.GetLogger("*");
+            logger.Info("========================================================");
+            logger.Info("Подтверждение перемещения...");
+
             var context = new StoreDbContext();
 
             using (var tr = context.Database.BeginTransaction())
@@ -3750,37 +3880,60 @@ sb.Append("LEFT JOIN  (  ");
                         context.Entry(warehouseTransferRequestModelItem).State = EntityState.Modified;
 
                         var sourceRem =
-                            context.Remainders.Where(
+                            context.Remainders
+                            .Include(i => i.PriceItem.Gear)
+                            .Where(
                                     w =>
                                         w.PriceItem_Id == warehouseTransferRequestModelItem.PriceItem_Id &&
                                         w.Warehouse_Id == request.Supplier_Id).FirstOrDefault();
 
                         if (sourceRem != null)
                         {
-                            if (sourceRem.Amount >= warehouseTransferRequestModelItem.CountAccepted)
-                            {
+                            logger.Info("\tОстатки {0} у отправителя {1} {2}шт.", sourceRem.PriceItem.Gear.Name + ", "
+                                + sourceRem.PriceItem.Gear.CatalogNumber,
+                                request.Supplier_Id, sourceRem.Amount);
+                            //if (sourceRem.Amount >= warehouseTransferRequestModelItem.CountAccepted)
+                            //{
 
                                 var targetRem =
-                                    context.Remainders.Where(
-                                            w =>
-                                                w.PriceItem_Id == warehouseTransferRequestModelItem.PriceItem_Id &&
-                                                w.Warehouse_Id == request.Customer_Id).FirstOrDefault();
+                                    context.Remainders
+                                    .Include(i => i.PriceItem.Gear)
+                                    .Where(
+                                        w =>
+
+                                            w.PriceItem_Id == warehouseTransferRequestModelItem.PriceItem_Id &&
+                                            w.Warehouse_Id == request.Customer_Id).FirstOrDefault();
 
                                 if (targetRem == null)
                                 {
+
+
+                                    logger.Info("\tОстатки {0} у получателя {1} 0шт.", sourceRem.PriceItem.Gear.Name + ", "
+                                        + sourceRem.PriceItem.Gear.CatalogNumber,
+                                        request.Supplier_Id);
+
                                     targetRem = new Remainder();
                                     targetRem.Amount = warehouseTransferRequestModelItem.CountAccepted;
                                     targetRem.PriceItem_Id = warehouseTransferRequestModelItem.PriceItem_Id;
                                     targetRem.RemainderDate = DateTimeHelper.GetNowKz();
                                     targetRem.Warehouse_Id = request.Customer_Id;
                                     context.Remainders.Add(targetRem);
+
+                                    logger.Info("\tПринято: {0}", warehouseTransferRequestModelItem.CountAccepted);
                                 }
                                 else
                                 {
+
+                                    logger.Info("\tОстатки {0} у получателя {1} {2}шт.", targetRem.PriceItem.Gear.Name + ", "
+                                        + targetRem.PriceItem.Gear.CatalogNumber,
+                                        request.Supplier_Id, targetRem.Amount);
+
                                     targetRem.Amount += warehouseTransferRequestModelItem.CountAccepted;
                                     targetRem.RemainderDate = DateTimeHelper.GetNowKz();
                                     context.Remainders.Attach(targetRem);
                                     context.Entry(targetRem).State = EntityState.Modified;
+
+                                    logger.Info("\tПринято: {0}", warehouseTransferRequestModelItem.CountAccepted);
                                 }
                                 rems.Add(targetRem);
 
@@ -3788,9 +3941,52 @@ sb.Append("LEFT JOIN  (  ");
                                 sourceRem.Amount -= warehouseTransferRequestModelItem.CountAccepted;
                                 context.Remainders.Attach(sourceRem);
                                 context.Entry(sourceRem).State = EntityState.Modified;
+                                logger.Info("\tСписано: {0}", warehouseTransferRequestModelItem.CountAccepted);
+                                //rems.Add(sourceRem);
+                            //}
+                        }
+                        else
+                        {
+                            var targetRem =
+                                context.Remainders.Where(
+                                    w =>
+                                        w.PriceItem_Id == warehouseTransferRequestModelItem.PriceItem_Id &&
+                                        w.Warehouse_Id == request.Customer_Id).FirstOrDefault();
 
-                                rems.Add(sourceRem);
+                            var priceItem =
+                                context.PriceItems
+                                    .Include(i => i.Gear)
+                                    .Where(
+                                        pr => pr.Id == warehouseTransferRequestModelItem.PriceItem_Id)
+                                    .FirstOrDefault();
+
+                            if (targetRem == null)
+                            {
+
+
+                                logger.Info("\tОстатки {0} у получателя {1} 0шт.", priceItem.Gear.Name + ", "
+                                    + priceItem.Gear.CatalogNumber,
+                                    request.Supplier_Id);
+
+                                targetRem = new Remainder();
+                                targetRem.Amount = warehouseTransferRequestModelItem.CountAccepted;
+                                targetRem.PriceItem_Id = warehouseTransferRequestModelItem.PriceItem_Id;
+                                targetRem.RemainderDate = DateTimeHelper.GetNowKz();
+                                targetRem.Warehouse_Id = request.Customer_Id;
+                                context.Remainders.Add(targetRem);
                             }
+                            else
+                            {
+                                logger.Info("\tОстатки {0} у получателя {1} {2}шт.", priceItem.Gear.Name + ", "
+                                    + priceItem.Gear.CatalogNumber,
+                                    request.Supplier_Id, targetRem.Amount);
+
+                                targetRem.Amount += warehouseTransferRequestModelItem.CountAccepted;
+                                targetRem.RemainderDate = DateTimeHelper.GetNowKz();
+                                context.Remainders.Attach(targetRem);
+                                context.Entry(targetRem).State = EntityState.Modified;
+                            }
+                            rems.Add(targetRem);
                         }
 
                     }
@@ -3809,12 +4005,15 @@ sb.Append("LEFT JOIN  (  ");
 
                     tr.Commit();
                 }
-                catch (Exception)
+                catch (Exception exception)
                 {
+                    logger.Error(exception.Message, exception);
+                    logger.Info("========================================================");
                     tr.Rollback();
                     return new HttpResponseMessage(HttpStatusCode.InternalServerError);
                 }
             }
+            logger.Info("========================================================");
             return new HttpResponseMessage(HttpStatusCode.OK);
         }
 

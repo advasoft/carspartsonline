@@ -747,10 +747,10 @@ namespace StoreAppTest.Client
         {
             var uri = new Uri(
                 string.Concat(App.AppBaseUrl,
-                    string.Format("/api/PriceLists/DeletePriceItem"))
+                    string.Format("/api/PriceLists/DeletePriceItem?id={0}", id))
                 , UriKind.Absolute);
 
-            SaveInternalData(uri, id);
+            GetInternalData<PriceItem>(uri);
         }
 
         public void DeleteGearNew(long id)

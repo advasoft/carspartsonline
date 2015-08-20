@@ -416,7 +416,10 @@ namespace StoreAppTest.ViewModels
                     //                    SaledCount = groups.Sum(s => s.SaledCount)
                     //                    //SaleItemData = groups.Key.SaleItemData
                     //                };
-                    _refundItems = client.GetTodayRefundItems(App.CurrentUser.UserName).ToList();
+                    
+
+                    var refndItems = client.GetTodayRefundItems(App.CurrentUser.UserName).ToList();
+                    _refundItems = refndItems;
 
                     var query = client.GetTodayRealizationItems(App.CurrentUser.UserName, App.CurrentUser.Warehouse_Id).ToList();
 
@@ -439,7 +442,7 @@ namespace StoreAppTest.ViewModels
                                                        into grp
                                                        select grp).ToList();
 
-                    var refundsByPriceList = (from r in _refundItems
+                    var refundsByPriceList = (from r in refndItems
                                               group r by r.PriceItem.PriceLists.FirstOrDefault().Name
                                                   into grp
                                                   select grp).ToList();
@@ -612,6 +615,7 @@ namespace StoreAppTest.ViewModels
                                 SaleItem_Id = receiptItem.SaleItemData.Id
 
                             };
+
                             item.Amount = receiptItem.Amount;
                             item.CatalogNumber = receiptItem.CatalogNumber;
                             item.Count = receiptItem.SoldCount;

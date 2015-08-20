@@ -271,42 +271,53 @@ namespace StoreAppTest.Web.Controllers
 
 
         [HttpGet]
-        public JsonResult<IList<ProductRemainderModel>> ProductRemaindersChanged(string from, string to)
+        public JsonResult<IList<ProductModel>> ProductRemaindersChanged(string from, string to)
         {
             var fromDate = DateTime.Parse(from);
             var toDate = DateTime.Parse(to);
 
-            IList<ProductRemainderModel> result = new List<ProductRemainderModel>();
-
+            IList<ProductModel> result = new List<ProductModel>();
             var context = new StoreDbContext();
+
             var changes = context.RemaindersChanges
                 .Include("Remainder.PriceItem.Gear")
+                .Include("Remainder.PriceItem.Remainders")
+                .Include("Remainder.PriceItem.Prices")
                 .Where(g => g.ChangesDate >= fromDate && g.ChangesDate <= toDate).ToList();
 
 
             var lastPrdcts = (from ch in changes
-                             group ch by ch.Remainder_Id
-                                 into grs
-                                 select new RemainderChanges()
-                                 {
-                                     Remainder_Id = grs.Key,
-                                     ChangesDate = grs.Max(m => m.ChangesDate)
-                                 }).ToList();
+                              group ch by ch.Remainder_Id
+                                  into grs
+                                  select new RemainderChanges()
+                                  {
+                                      Remainder_Id = grs.Key,
+                                      ChangesDate = grs.Max(m => m.ChangesDate)
+                                  }).ToList();
 
             var things = (from ch in changes
-                         join lst in lastPrdcts on new { Id = ch.Remainder_Id, Date = ch.ChangesDate } equals
-                             new { Id = lst.Remainder_Id, Date = lst.ChangesDate }
-                         select ch).ToList();
+                          join lst in lastPrdcts on new { Id = ch.Remainder_Id, Date = ch.ChangesDate } equals
+                              new { Id = lst.Remainder_Id, Date = lst.ChangesDate }
+                          select ch).ToList();
 
-            foreach (var change in things)
+            foreach (var priceItem in things)
             {
-                
-                ProductRemainderModel product = new ProductRemainderModel();
-                product.Articul = change.Remainder.PriceItem.Gear.Articul;
-                product.CatalogNumber = change.Remainder.PriceItem.Gear.CatalogNumber;
-                product.Name = change.Remainder.PriceItem.Gear.Name;
-                product.SalePoint = change.Remainder.Warehouse_Id;
-                product.Count = (int)change.Remainder.Amount;
+                ProductModel product = new ProductModel();
+                product.Articul = priceItem.Remainder.PriceItem.Gear.Articul;
+                product.CatalogNumber = priceItem.Remainder.PriceItem.Gear.CatalogNumber;
+                product.Name = priceItem.Remainder.PriceItem.Gear.Name;
+                product.UnitOfMeasure = priceItem.Remainder.PriceItem.Uom_Id;
+                product.Price = priceItem.Remainder.PriceItem.Prices.OrderByDescending(o => o.PriceDate)
+                    .First().Price * (decimal)1.2;
+
+                foreach (var remainder in priceItem.Remainder.PriceItem.Remainders)
+                {
+                    product.Remainders.Add(new RemaindersModel()
+                    {
+                        SalePoint = remainder.Warehouse_Id,
+                        Count = (int)remainder.Amount
+                    });
+                }
 
                 result.Add(product);
             }

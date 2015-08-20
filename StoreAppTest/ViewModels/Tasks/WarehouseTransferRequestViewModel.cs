@@ -374,71 +374,78 @@
                                 //            w.Warehouse_Id == request.Supplier_Id)).FirstOrDefault();
                                 client.GetRemaindersByPriceItem(warehouseTransferRequestModelItem.PriceItem_Id,
                                     request.Supplier_Id).FirstOrDefault();
-                            if (sourceRem != null)
+                            if (request.Supplier_Id != "Основной")
                             {
-                                if (sourceRem.Amount < warehouseTransferRequestModelItem.CountAccepted)
+                                if (sourceRem != null)
+                                {
+
+                                    if (sourceRem.Amount < warehouseTransferRequestModelItem.CountAccepted)
+                                    {
+                                        DispatcherHelper.CheckBeginInvokeOnUI(() =>
+                                        {
+                                            MessageChildWindow msch = new MessageChildWindow();
+                                            msch.Message =
+                                                string.Format(
+                                                    "Невозможно переместить {0} {1} {2} из {3}, т.к. в наличии всего {4}",
+                                                    warehouseTransferRequestModelItem.Count,
+                                                    warehouseTransferRequestModelItem.Uom,
+                                                    warehouseTransferRequestModelItem.Name,
+                                                    Warehouse_Id, sourceRem.Amount);
+                                            msch.Show();
+                                            IsAccepted = false;
+                                            IsAcceptedView = false;
+                                        });
+                                        return;
+
+                                    }
+
+                                    //var targetRem =
+                                    //    //ctx.ExecuteSyncronous(
+                                    //    //    ctx.Remainders.Where(
+                                    //    //        w =>
+                                    //    //            w.PriceItem_Id == warehouseTransferRequestModelItem.PriceItem_Id &&
+                                    //    //            w.Warehouse_Id == request.Customer_Id)).FirstOrDefault();
+                                    //client.GetRemaindersByPriceItem(warehouseTransferRequestModelItem.PriceItem_Id,
+                                    //    request.Customer_Id).FirstOrDefault();
+                                    //if (targetRem == null)
+                                    //{
+                                    //    targetRem = new Remainder();
+                                    //    targetRem.Amount = warehouseTransferRequestModelItem.CountAccepted;
+                                    //    targetRem.PriceItem_Id = warehouseTransferRequestModelItem.PriceItem_Id;
+                                    //    targetRem.RemainderDate = DateTimeHelper.GetNowKz();
+                                    //    targetRem.Warehouse_Id = request.Customer_Id;
+                                    //    ctx.AddToRemainders(targetRem);
+                                    //}
+                                    //else
+                                    //{
+                                    //    targetRem.Amount += warehouseTransferRequestModelItem.CountAccepted;
+                                    //    targetRem.RemainderDate = DateTimeHelper.GetNowKz();
+                                    //    ctx.ChangeState(targetRem, EntityStates.Modified);
+                                    //}
+
+                                    //sourceRem.RemainderDate = DateTimeHelper.GetNowKz();
+                                    //sourceRem.Amount -= warehouseTransferRequestModelItem.CountAccepted;
+                                    //ctx.ChangeState(sourceRem, EntityStates.Modified);
+                                }
+                                else
                                 {
                                     DispatcherHelper.CheckBeginInvokeOnUI(() =>
                                     {
+
                                         MessageChildWindow msch = new MessageChildWindow();
                                         msch.Message =
                                             string.Format(
-                                                "Невозможно переместить {0} {1} {2} из {3}, т.к. в наличии всего {4}",
+                                                "Невозможно переместить {0} {1} {2} из {3}, т.к. нет в наличии",
                                                 warehouseTransferRequestModelItem.Count,
                                                 warehouseTransferRequestModelItem.Uom,
                                                 warehouseTransferRequestModelItem.Name,
-                                                Warehouse_Id, sourceRem.Amount);
+                                                Warehouse_Id);
                                         msch.Show();
-                                        IsAccepted = false;
-                                        IsAcceptedView = false;
-                                    });           
+                                    });
                                     return;
-                                    
                                 }
-                                //var targetRem =
-                                //    //ctx.ExecuteSyncronous(
-                                //    //    ctx.Remainders.Where(
-                                //    //        w =>
-                                //    //            w.PriceItem_Id == warehouseTransferRequestModelItem.PriceItem_Id &&
-                                //    //            w.Warehouse_Id == request.Customer_Id)).FirstOrDefault();
-                                //client.GetRemaindersByPriceItem(warehouseTransferRequestModelItem.PriceItem_Id,
-                                //    request.Customer_Id).FirstOrDefault();
-                                //if (targetRem == null)
-                                //{
-                                //    targetRem = new Remainder();
-                                //    targetRem.Amount = warehouseTransferRequestModelItem.CountAccepted;
-                                //    targetRem.PriceItem_Id = warehouseTransferRequestModelItem.PriceItem_Id;
-                                //    targetRem.RemainderDate = DateTimeHelper.GetNowKz();
-                                //    targetRem.Warehouse_Id = request.Customer_Id;
-                                //    ctx.AddToRemainders(targetRem);
-                                //}
-                                //else
-                                //{
-                                //    targetRem.Amount += warehouseTransferRequestModelItem.CountAccepted;
-                                //    targetRem.RemainderDate = DateTimeHelper.GetNowKz();
-                                //    ctx.ChangeState(targetRem, EntityStates.Modified);
-                                //}
-
-                                //sourceRem.RemainderDate = DateTimeHelper.GetNowKz();
-                                //sourceRem.Amount -= warehouseTransferRequestModelItem.CountAccepted;
-                                //ctx.ChangeState(sourceRem, EntityStates.Modified);
                             }
-                            else
-                            {
-                                DispatcherHelper.CheckBeginInvokeOnUI(() =>
-                                {
 
-                                    MessageChildWindow msch = new MessageChildWindow();
-                                    msch.Message =
-                                        string.Format("Невозможно переместить {0} {1} {2} из {3}, т.к. нет в наличии",
-                                            warehouseTransferRequestModelItem.Count,
-                                            warehouseTransferRequestModelItem.Uom,
-                                            warehouseTransferRequestModelItem.Name,
-                                            Warehouse_Id);
-                                    msch.Show();
-                                });
-                                return;
-                            }
                         }
 
                         //ctx.SaveChangesSynchronous();

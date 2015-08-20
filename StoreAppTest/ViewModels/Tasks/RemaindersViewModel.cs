@@ -1109,9 +1109,7 @@ namespace StoreAppTest.ViewModels
                                 p.Gear_Id,
                                 p.Gear_Name,
                                 p.IsDuplicate,
-                                p.LowerLimitRemainder,
                                 p.PriceItem_Id,
-                                p.RecommendedRemainder,
                                 p.Uom,
                                 p.WholesalePrice,
                                 p.Supplier

@@ -1004,7 +1004,8 @@ namespace StoreAppTest.ViewModels
                 Saved = true;
 
             });
-            _changeRemaindersEvent.Publish(receiptItems);
+            if(!receipt.IsOrder)
+                _changeRemaindersEvent.Publish(receiptItems);
         }
         private void AddPositionToReceipt(string barcode)
         {
