@@ -135,7 +135,9 @@
                     {
                         //queryString = string.Format("{0}GetLightPriceItemList?priceListName='{1}'&warehouse='{2}'", uri,
                         //    PriceListName, App.CurrentUser.Warehouse.Name);
-                        pricelistitems = client.GetIncomes(PriceListName, App.CurrentUser.Warehouse.Name).ToList();
+
+                        //pricelistitems = client.GetIncomes(PriceListName, App.CurrentUser.Warehouse.Name).ToList();
+                        pricelistitems = client.GetIncomes(PriceListName, Warehouse).ToList();
                     }
                     else
                     {

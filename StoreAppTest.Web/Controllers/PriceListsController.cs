@@ -2613,21 +2613,46 @@ sb.Append("LEFT JOIN  (  ");
 
 
             //"RefundDocument/SaleDocument,PriceItem/Gear,PriceItem/UnitOfMeasure,PriceItem/Remainders,PriceItem/Prices,SaleItem"
-            var refundQuery = 
-                context.RefundItems
-                .Include(i => i.RefundDocument.SaleDocument)
-                .Include(i => i.PriceItem.Gear)
-                .Include(i => i.PriceItem.UnitOfMeasure)
-                .Include(i => i.PriceItem.Remainders)
-                .Include(i => i.PriceItem.Prices)
-                .Include(i => i.PriceItem.PriceLists)
-                .Include(i => i.SaleItem)
+            //var refundQuery = 
+            //    context.RefundItems
+            //    .Include(i => i.RefundDocument.SaleDocument)
+            //    .Include(i => i.PriceItem.Gear)
+            //    .Include(i => i.PriceItem.UnitOfMeasure)
+            //    .Include(i => i.PriceItem.Remainders)
+            //    .Include(i => i.PriceItem.Prices)
+            //    .Include(i => i.PriceItem.PriceLists)
+            //    .Include(i => i.SaleItem)
+            //        .Where(
+            //            w =>
+            //                w.RefundDocument.RefundDate >= startDate
+            //                && w.RefundDocument.RefundDate <= endDate
+            //                //&& !closedRefundPerDay.Contains(w.Id)
+            //                && w.RefundDocument.Creator_Id == userName).ToList();
+
+
+
+
+            var refundQuery =
+                context.RefundDocuments
                     .Where(
                         w =>
-                            w.RefundDocument.RefundDate >= startDate
-                            && w.RefundDocument.RefundDate <= endDate
-                            //&& !closedRefundPerDay.Contains(w.Id)
-                            && w.RefundDocument.Creator_Id == userName).ToList();
+                            w.RefundDate >= startDate
+                            && w.RefundDate <= endDate
+                            && w.Creator_Id == userName)
+                    .SelectMany(s => s.RefundItems)
+                    .Include(i => i.RefundDocument)
+                    .Include(i => i.PriceItem.Gear)
+                    .Include(i => i.PriceItem.UnitOfMeasure)
+                    .Include(i => i.PriceItem.Remainders)
+                    .Include(i => i.PriceItem.Prices)
+                    .Include(i => i.PriceItem.PriceLists)
+                    .Include(i => i.SaleItem.SaleDocument)
+                        .Where(
+                            w =>
+                                w.RefundDocument.RefundDate >= startDate
+                                && w.RefundDocument.RefundDate <= endDate
+                                && w.RefundDocument.Creator_Id == userName);
+
 
             var refundItems = refundQuery.Where(w => !closedRefundPerDay.Contains(w.Id)).ToList();
 
@@ -2815,21 +2840,46 @@ sb.Append("LEFT JOIN  (  ");
 
 
             //"RefundDocument/SaleDocument,PriceItem/Gear,PriceItem/UnitOfMeasure,PriceItem/Remainders,PriceItem/Prices,SaleItem"
+            //var refundQuery =
+            //    context.RefundItems
+            //    .Include(i => i.RefundDocument.SaleDocument)
+            //    .Include(i => i.PriceItem.Gear)
+            //    .Include(i => i.PriceItem.UnitOfMeasure)
+            //    .Include(i => i.PriceItem.Remainders)
+            //    .Include(i => i.PriceItem.Prices)
+            //    .Include(i => i.PriceItem.PriceLists)
+            //    .Include(i => i.SaleItem)
+            //        .Where(
+            //            w =>
+            //                w.RefundDocument.RefundDate >= startDate
+            //                && w.RefundDocument.RefundDate <= endDate
+            //                //&& !closedRefundPerDay.Contains(w.Id)
+            //                && w.RefundDocument.Creator_Id == userName).ToList();
+
+
+
             var refundQuery =
-                context.RefundItems
-                .Include(i => i.RefundDocument.SaleDocument)
-                .Include(i => i.PriceItem.Gear)
-                .Include(i => i.PriceItem.UnitOfMeasure)
-                .Include(i => i.PriceItem.Remainders)
-                .Include(i => i.PriceItem.Prices)
-                .Include(i => i.PriceItem.PriceLists)
-                .Include(i => i.SaleItem)
+                context.RefundDocuments
                     .Where(
                         w =>
-                            w.RefundDocument.RefundDate >= startDate
-                            && w.RefundDocument.RefundDate <= endDate
-                            //&& !closedRefundPerDay.Contains(w.Id)
-                            && w.RefundDocument.Creator_Id == userName).ToList();
+                            w.RefundDate >= startDate
+                            && w.RefundDate <= endDate
+                            && w.Creator_Id == userName)
+                    .SelectMany(s => s.RefundItems)
+                    .Include(i => i.RefundDocument)
+                    .Include(i => i.PriceItem.Gear)
+                    .Include(i => i.PriceItem.UnitOfMeasure)
+                    .Include(i => i.PriceItem.Remainders)
+                    .Include(i => i.PriceItem.Prices)
+                    .Include(i => i.PriceItem.PriceLists)
+                    .Include(i => i.SaleItem.SaleDocument)
+                        .Where(
+                            w =>
+                                w.RefundDocument.RefundDate >= startDate
+                                && w.RefundDocument.RefundDate <= endDate
+                                //&& !closedRefundPerDay.Contains(w.Id)
+                                && w.RefundDocument.Creator_Id == userName);
+
 
             var refundItems = refundQuery.Where(w => !closedRefundPerDay.Contains(w.Id)).ToList();
 
@@ -3030,22 +3080,44 @@ sb.Append("LEFT JOIN  (  ");
                         && w.SaleDocumentsPerDay.IsClosed &&
                         w.SaleDocumentsPerDay.Creator_Id == userName).Select(s => s.RefundItem.Id).ToList();
             //"RefundDocument/SaleDocument,PriceItem/Gear,PriceItem/UnitOfMeasure,PriceItem/Remainders,PriceItem/Prices,SaleItem"
+            //var refundQuery =
+            //    context.RefundItems
+            //    .Include(i => i.RefundDocument)
+            //    .Include(i => i.RefundDocument.SaleDocument)
+            //    .Include(i => i.PriceItem.Gear)
+            //    .Include(i => i.PriceItem.UnitOfMeasure)
+            //    .Include(i => i.PriceItem.Remainders)
+            //    .Include(i => i.PriceItem.Prices)
+            //    .Include(i => i.PriceItem.PriceLists)
+            //    .Include(i => i.SaleItem.SaleDocument)
+            //        .Where(
+            //            w =>
+            //                w.RefundDocument.RefundDate >= startDate
+            //                && w.RefundDocument.RefundDate <= endDate
+            //                //&& !closedRefundPerDay.Contains(w.Id)
+            //                && w.RefundDocument.Creator_Id == userName).ToList();
+
             var refundQuery =
-                context.RefundItems
-                .Include(i => i.RefundDocument)
-                .Include(i => i.RefundDocument.SaleDocument)
-                .Include(i => i.PriceItem.Gear)
-                .Include(i => i.PriceItem.UnitOfMeasure)
-                .Include(i => i.PriceItem.Remainders)
-                .Include(i => i.PriceItem.Prices)
-                .Include(i => i.PriceItem.PriceLists)
-                .Include(i => i.SaleItem.SaleDocument)
+                context.RefundDocuments
                     .Where(
                         w =>
-                            w.RefundDocument.RefundDate >= startDate
-                            && w.RefundDocument.RefundDate <= endDate
-                            //&& !closedRefundPerDay.Contains(w.Id)
-                            && w.RefundDocument.Creator_Id == userName).ToList();
+                            w.RefundDate >= startDate
+                            && w.RefundDate <= endDate
+                            && w.Creator_Id == userName)
+                    .SelectMany(s => s.RefundItems)
+                    .Include(i => i.RefundDocument)
+                    .Include(i => i.PriceItem.Gear)
+                    .Include(i => i.PriceItem.UnitOfMeasure)
+                    .Include(i => i.PriceItem.Remainders)
+                    .Include(i => i.PriceItem.Prices)
+                    .Include(i => i.PriceItem.PriceLists)
+                    .Include(i => i.SaleItem.SaleDocument)
+                        .Where(
+                            w =>
+                                w.RefundDocument.RefundDate >= startDate
+                                && w.RefundDocument.RefundDate <= endDate
+                                //&& !closedRefundPerDay.Contains(w.Id)
+                                && w.RefundDocument.Creator_Id == userName);
 
             var refundItems = refundQuery.Where(w => !closedRefundPerDay.Contains(w.Id)).ToList();
             return refundItems;

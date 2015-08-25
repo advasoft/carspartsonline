@@ -23,6 +23,7 @@ namespace StoreAppTest.Web
     {
         private Thread _timerThread;
         private System.Timers.Timer _timer;
+        private Thread _runByDateThread;
 
         protected void Application_Start()
         {
@@ -31,6 +32,11 @@ namespace StoreAppTest.Web
             _timerThread.IsBackground = true;
             _timerThread.Name = "TimerThread";
             _timerThread.Start();
+
+            //_runByDateThread = new Thread(RunByDateThread);
+            //_runByDateThread.IsBackground = true;
+            //_runByDateThread.Name = "RunByDateThread";
+            //_runByDateThread.Start();
         }
 
 
@@ -68,12 +74,43 @@ namespace StoreAppTest.Web
             }
         }
 
+        protected void RunByDateThread()
+        {
+            var context = new StoreDbContext();
+            var users = context.Users.ToList();
+
+
+
+            
+            for (int i = 0; i < users.Count; i++)
+            {
+                var realizationTasks = new Task[7];
+                for(int day = 14; day <= 20; day++)
+                {
+                    var i1 = i;
+                    var startDate = new DateTime(2015, 8, day, 0, 0, 0);
+                    var endDate = new DateTime(2015, 8, day, 23, 59, 59);
+
+                    realizationTasks[20 - day] = Task.Run(() =>
+                    {
+                        var user = users[i1];
+                        CloseRealizationPerDayByDate(user, startDate, endDate);
+                    });
+                }
+            }            
+        }
+
         protected void CloseRealiztionPerDay(User user)
         {
             var now = DateTimeHelper.GetNowKz();
             var startDate = new DateTime(now.Year, now.Month, now.Day, 0, 0, 0);
             var endDate = new DateTime(now.Year, now.Month, now.Day, 23, 59, 59);
 
+            CloseRealizationPerDayByDate(user, startDate, endDate);
+        }
+
+        protected void CloseRealizationPerDayByDate(User user, DateTime startDate, DateTime endDate)
+        {
             string realizationNumber = "";
 
             var lastNum = GetLastSaleDocumentsPerDaysNumber();
@@ -99,22 +136,22 @@ namespace StoreAppTest.Web
                GetUserDebtDischargeDocumentsByDate(strt, endd, user.UserName).ToList();
 
             var discharges = (from d in dischargesSource
-                          group d by new
-                          {
-                              Debtor = d.Debtor_Id
-                          }
-                              into ds
-                              select new DebtDischargeDocument()
+                              group d by new
                               {
-                                  Amount = ds.Sum(s => s.Amount),
-                                  Debtor_Id = ds.Key.Debtor
-                              }).ToList();
+                                  Debtor = d.Debtor_Id
+                              }
+                                  into ds
+                                  select new DebtDischargeDocument()
+                                  {
+                                      Amount = ds.Sum(s => s.Amount),
+                                      Debtor_Id = ds.Key.Debtor
+                                  }).ToList();
 
 
 
-            var refundItems = GetTodayRefundItems(user.UserName).ToList();
+            var refundItems = GetRefundItemsByDate(user.UserName, startDate, endDate).ToList();
 
-            var realization = GetRealizationItemsRaw(user).ToList();
+            var realization = GetRealizationItemsRawByDate(user, startDate, endDate).ToList();
 
 
             decimal TotalAmount = 0;
@@ -149,7 +186,7 @@ namespace StoreAppTest.Web
                 salePerDay.Creator_Id = user.UserName;
                 salePerDay.IsClosed = true;
                 salePerDay.Number = realizationNumber;
-                salePerDay.SaleDocumentsDate = DateTimeHelper.GetNowKz();
+                salePerDay.SaleDocumentsDate = new DateTime(endd.Year, endd.Month, endd.Day, 20, 0, 0);//DateTimeHelper.GetNowKz();
                 salePerDay.Barcode = GetBarcode(realizationNumber);
                 salePerDay.TotalAmount = TotalAmount;
                 salePerDay.TotalRefund = TotalRefund;
@@ -182,9 +219,8 @@ namespace StoreAppTest.Web
                 }
 
                 AddRealizationPerDay(salePerDay);
-            }
+            }            
         }
-
 
         protected IEnumerable<DebtDischargeDocument> GetUserDebtDischargeDocumentsByDate(DateTime from, DateTime to, string userName = "")
         {
@@ -228,13 +264,146 @@ namespace StoreAppTest.Web
             return connection;
         }
 
-        protected IEnumerable<RealizationItem> GetRealizationItemsRaw(User user)
+        //protected IEnumerable<RealizationItem> GetRealizationItemsRaw(User user)
+        //{
+        //    var context = new StoreDbContext();
+
+        //    var now = DateTimeHelper.GetNowKz();
+        //    var startDate = new DateTime(now.Year, now.Month, now.Day, 0, 0, 0);
+        //    var endDate = new DateTime(now.Year, now.Month, now.Day, 23, 59, 59);
+
+
+        //    var closedRefundPerDay = context.RefundsPerDayItems
+        //        .Include(i => i.SaleDocumentsPerDay)
+        //        .Include(i => i.RefundItem)
+        //            .Where(
+        //                w =>
+        //                    w.SaleDocumentsPerDay.SaleDocumentsDate >= startDate
+        //                    && w.SaleDocumentsPerDay.SaleDocumentsDate <= endDate
+        //                    && w.SaleDocumentsPerDay.IsClosed &&
+        //                    w.SaleDocumentsPerDay.Creator_Id == user.UserName).Select(s => s.RefundItem.Id).ToList();
+
+
+        //    //var refundQuery =
+        //    //    context.RefundItems
+        //    //    .Include(i => i.RefundDocument.SaleDocument)
+        //    //    .Include(i => i.PriceItem.Gear)
+        //    //    .Include(i => i.PriceItem.UnitOfMeasure)
+        //    //    .Include(i => i.PriceItem.Remainders)
+        //    //    .Include(i => i.PriceItem.Prices)
+        //    //    .Include(i => i.PriceItem.PriceLists)
+        //    //    .Include(i => i.SaleItem)
+        //    //        .Where(
+        //    //            w =>
+        //    //                w.RefundDocument.RefundDate >= startDate
+        //    //                && w.RefundDocument.RefundDate <= endDate
+        //    //                && w.RefundDocument.Creator_Id == user.UserName).ToList();
+
+
+        //    var refundQuery =
+        //        context.RefundDocuments
+        //            .Where(
+        //                w =>
+        //                    w.RefundDate >= startDate
+        //                    && w.RefundDate <= endDate
+        //                    && w.Creator_Id == user.UserName)
+        //            .SelectMany(s => s.RefundItems)
+        //            .Include(i => i.RefundDocument)
+        //            .Include(i => i.PriceItem.Gear)
+        //            .Include(i => i.PriceItem.UnitOfMeasure)
+        //            .Include(i => i.PriceItem.Remainders)
+        //            .Include(i => i.PriceItem.Prices)
+        //            .Include(i => i.PriceItem.PriceLists)
+        //            .Include(i => i.SaleItem.SaleDocument)
+        //                .Where(
+        //                    w =>
+        //                        w.RefundDocument.RefundDate >= startDate
+        //                        && w.RefundDocument.RefundDate <= endDate
+        //                        && w.RefundDocument.Creator_Id == user.UserName);
+
+        //    var refundItems = refundQuery.Where(w => !closedRefundPerDay.Contains(w.Id)).ToList();
+
+        //    var closedSalesPerDay =
+        //        context.SalesPerDayItems
+        //        .Include(i => i.SaleDocumentsPerDay)
+        //        .Include(i => i.SaleItem)
+        //            .Where(
+        //                w =>
+        //                    w.SaleDocumentsPerDay.SaleDocumentsDate >= startDate
+        //                    && w.SaleDocumentsPerDay.SaleDocumentsDate <= endDate
+        //                    && w.SaleDocumentsPerDay.IsClosed &&
+        //                    w.SaleDocumentsPerDay.Creator_Id == user.UserName).Select(s => s.SaleItem.Id).ToList();
+
+        //    var salesQuery =
+        //        context.SaleItems
+        //            .Include(i => i.SaleDocument)
+        //            .Include(i => i.PriceItem.PriceLists)
+        //            .Include(i => i.PriceItem.Gear)
+        //            .Include(i => i.PriceItem.UnitOfMeasure)
+        //            .Include(i => i.PriceItem.Remainders)
+        //            .Include(i => i.PriceItem.Prices)
+        //            .Include(i => i.PriceItem.PriceLists)
+        //            .Where(
+        //                w =>
+        //                    w.SaleDocument.SaleDate >= startDate
+        //                    && w.SaleDocument.SaleDate <= endDate
+        //                    && !w.SaleDocument.IsOrder
+        //                    && w.SaleDocument.Creator_Id == user.UserName).ToList();
+
+        //    var salesItems = salesQuery.Where(w => !closedSalesPerDay.Contains(w.Id)).ToList();
+        //    var realization = new List<RealizationItem>();
+        //    salesItems.ForEach(s =>
+        //    {
+
+        //        var remainders = 0;
+        //        var rems =
+        //            s.PriceItem.Remainders.Where(w => w.Warehouse_Id == user.Warehouse_Id)
+        //                .FirstOrDefault();
+        //        if (rems != null)
+        //            remainders = (int)rems.Amount;
+
+        //        var itemRefunds =
+        //            refundItems.Where(wh => wh.SaleItem_Id == s.Id && wh.RefundDocument.SaleDocument.IsInDebt == true)
+        //                .Sum(sum => sum.Count);
+
+
+        //        var count = s.Count - itemRefunds;
+        //        if (count != 0)
+        //        {
+        //            realization.Add(new RealizationItem()
+        //            {
+
+        //                CatalogNumber = s.PriceItem.Gear.CatalogNumber,
+        //                IsDuplicate = s.PriceItem.Gear.IsDuplicate ? "*" : "",
+        //                Name = s.PriceItem.Gear.Name,
+        //                Price = (int)s.Price,
+        //                Remainders = remainders,
+        //                SoldCount = (int)count,
+        //                Uom = s.PriceItem.UnitOfMeasure.Name,
+        //                WholePrice = (int)s.PriceItem.Prices.OrderByDescending(o => o.PriceDate).First().Price,
+        //                Amount = (int)((s.Price - (s.Discount / s.Count)) * count),
+        //                Discount = (int)s.Discount,
+        //                SaleItemData = s,
+        //                Customer = s.SaleDocument.IsInDebt ? s.SaleDocument.Customer_Name : "",
+        //                IsInDebt = s.SaleDocument.IsInDebt,
+        //                PriceListName = s.PriceItem.PriceLists.First().Name,
+        //                SaledDate = s.SaleDocument.SaleDate.ToString("T"),
+        //                SaledNumber = s.SaleDocument.Number,
+        //                SaledCount = (int)s.Count,
+
+        //            });
+        //        }
+        //    });
+
+        //    return realization;
+        //}
+        protected IEnumerable<RealizationItem> GetRealizationItemsRawByDate(User user, DateTime startDate, DateTime endDate)
         {
             var context = new StoreDbContext();
 
-            var now = DateTimeHelper.GetNowKz();
-            var startDate = new DateTime(now.Year, now.Month, now.Day, 0, 0, 0);
-            var endDate = new DateTime(now.Year, now.Month, now.Day, 23, 59, 59);
+            //var now = DateTimeHelper.GetNowKz();
+            //var startDate = new DateTime(now.Year, now.Month, now.Day, 0, 0, 0);
+            //var endDate = new DateTime(now.Year, now.Month, now.Day, 23, 59, 59);
 
 
             var closedRefundPerDay = context.RefundsPerDayItems
@@ -248,20 +417,42 @@ namespace StoreAppTest.Web
                             w.SaleDocumentsPerDay.Creator_Id == user.UserName).Select(s => s.RefundItem.Id).ToList();
 
 
+            //var refundQuery =
+            //    context.RefundItems
+            //    .Include(i => i.RefundDocument.SaleDocument)
+            //    .Include(i => i.PriceItem.Gear)
+            //    .Include(i => i.PriceItem.UnitOfMeasure)
+            //    .Include(i => i.PriceItem.Remainders)
+            //    .Include(i => i.PriceItem.Prices)
+            //    .Include(i => i.PriceItem.PriceLists)
+            //    .Include(i => i.SaleItem)
+            //        .Where(
+            //            w =>
+            //                w.RefundDocument.RefundDate >= startDate
+            //                && w.RefundDocument.RefundDate <= endDate
+            //                && w.RefundDocument.Creator_Id == user.UserName).ToList();
+
+
             var refundQuery =
-                context.RefundItems
-                .Include(i => i.RefundDocument.SaleDocument)
-                .Include(i => i.PriceItem.Gear)
-                .Include(i => i.PriceItem.UnitOfMeasure)
-                .Include(i => i.PriceItem.Remainders)
-                .Include(i => i.PriceItem.Prices)
-                .Include(i => i.PriceItem.PriceLists)
-                .Include(i => i.SaleItem)
+                context.RefundDocuments
                     .Where(
                         w =>
-                            w.RefundDocument.RefundDate >= startDate
-                            && w.RefundDocument.RefundDate <= endDate
-                            && w.RefundDocument.Creator_Id == user.UserName).ToList();
+                            w.RefundDate >= startDate
+                            && w.RefundDate <= endDate
+                            && w.Creator_Id == user.UserName)
+                    .SelectMany(s => s.RefundItems)
+                    .Include(i => i.RefundDocument)
+                    .Include(i => i.PriceItem.Gear)
+                    .Include(i => i.PriceItem.UnitOfMeasure)
+                    .Include(i => i.PriceItem.Remainders)
+                    .Include(i => i.PriceItem.Prices)
+                    .Include(i => i.PriceItem.PriceLists)
+                    .Include(i => i.SaleItem.SaleDocument)
+                        .Where(
+                            w =>
+                                w.RefundDocument.RefundDate >= startDate
+                                && w.RefundDocument.RefundDate <= endDate
+                                && w.RefundDocument.Creator_Id == user.UserName);
 
             var refundItems = refundQuery.Where(w => !closedRefundPerDay.Contains(w.Id)).ToList();
 
@@ -339,160 +530,216 @@ namespace StoreAppTest.Web
 
             return realization;
         }
+        //protected IEnumerable<RealizationItem> GetRealizationItems(User user)
+        //{
+        //    var context = new StoreDbContext();
 
-        protected IEnumerable<RealizationItem> GetRealizationItems(User user)
+        //    var now = DateTimeHelper.GetNowKz();
+        //    var startDate = new DateTime(now.Year, now.Month, now.Day, 0, 0, 0);
+        //    var endDate = new DateTime(now.Year, now.Month, now.Day, 23, 59, 59);
+
+        //    var closedRefundPerDay = context.RefundsPerDayItems
+        //        .Include(i => i.SaleDocumentsPerDay)
+        //        .Include(i => i.RefundItem)
+        //            .Where(
+        //                w =>
+        //                    w.SaleDocumentsPerDay.SaleDocumentsDate >= startDate
+        //                    && w.SaleDocumentsPerDay.SaleDocumentsDate <= endDate
+        //                    && w.SaleDocumentsPerDay.IsClosed &&
+        //                    w.SaleDocumentsPerDay.Creator_Id == user.UserName).Select(s => s.RefundItem.Id).ToList();
+
+
+        //    var refundQuery =
+        //        context.RefundItems
+        //        .Include(i => i.RefundDocument.SaleDocument)
+        //        .Include(i => i.PriceItem.Gear)
+        //        .Include(i => i.PriceItem.UnitOfMeasure)
+        //        .Include(i => i.PriceItem.Remainders)
+        //        .Include(i => i.PriceItem.Prices)
+        //        .Include(i => i.PriceItem.PriceLists)
+        //        .Include(i => i.SaleItem)
+        //            .Where(
+        //                w =>
+        //                    w.RefundDocument.RefundDate >= startDate
+        //                    && w.RefundDocument.RefundDate <= endDate
+        //                    && w.RefundDocument.Creator_Id == user.UserName).ToList();
+
+        //    var refundItems = refundQuery.Where(w => !closedRefundPerDay.Contains(w.Id)).ToList();
+
+        //    var closedSalesPerDay =
+        //        context.SalesPerDayItems
+        //        .Include(i => i.SaleDocumentsPerDay)
+        //        .Include(i => i.SaleItem)
+        //            .Where(
+        //                w =>
+        //                    w.SaleDocumentsPerDay.SaleDocumentsDate >= startDate
+        //                    && w.SaleDocumentsPerDay.SaleDocumentsDate <= endDate
+        //                    && w.SaleDocumentsPerDay.IsClosed
+        //                    && w.SaleDocumentsPerDay.Creator_Id == user.UserName).Select(s => s.SaleItem.Id).ToList();
+
+        //    var salesQuery =
+        //        context.SaleItems
+        //            .Include(i => i.SaleDocument)
+        //            .Include(i => i.PriceItem.PriceLists)
+        //            .Include(i => i.PriceItem.Gear)
+        //            .Include(i => i.PriceItem.UnitOfMeasure)
+        //            .Include(i => i.PriceItem.Remainders)
+        //            .Include(i => i.PriceItem.Prices)
+        //            .Include(i => i.PriceItem.PriceLists)
+        //            .Where(
+        //                w =>
+        //                    w.SaleDocument.SaleDate >= startDate
+        //                    && w.SaleDocument.SaleDate <= endDate
+        //                    && !w.SaleDocument.IsOrder
+        //                    && w.SaleDocument.Creator_Id == user.UserName).ToList();
+
+        //    var salesItems = salesQuery.Where(w => !closedSalesPerDay.Contains(w.Id)).ToList();
+        //    var realization = new List<RealizationItem>();
+        //    salesItems.ForEach(s =>
+        //    {
+
+        //        var remainders = 0;
+        //        var rems =
+        //            s.PriceItem.Remainders.Where(w => w.Warehouse_Id == user.Warehouse_Id)
+        //                .FirstOrDefault();
+        //        if (rems != null)
+        //            remainders = (int)rems.Amount;
+
+        //        var itemRefunds =
+        //            refundItems.Where(wh => wh.SaleItem_Id == s.Id && wh.RefundDocument.SaleDocument.IsInDebt == true)
+        //                .Sum(sum => sum.Count);
+
+
+
+        //        var count = s.Count - itemRefunds;
+        //        if (count != 0)
+        //        {
+        //            realization.Add(new RealizationItem()
+        //            {
+
+        //                CatalogNumber = s.PriceItem.Gear.CatalogNumber,
+        //                IsDuplicate = s.PriceItem.Gear.IsDuplicate ? "*" : "",
+        //                Name = s.PriceItem.Gear.Name,
+        //                Price = (int)s.Price,
+        //                Remainders = remainders,
+        //                SoldCount = (int)count,
+        //                Uom = s.PriceItem.UnitOfMeasure.Name,
+        //                WholePrice = (int)s.PriceItem.Prices.OrderByDescending(o => o.PriceDate).First().Price,
+        //                Amount = (int)((s.Price - (s.Discount / s.Count)) * count),
+        //                Discount = (int)s.Discount,
+        //                SaleItemData = s,
+        //                Customer = s.SaleDocument.IsInDebt ? s.SaleDocument.Customer_Name : "",
+        //                IsInDebt = s.SaleDocument.IsInDebt,
+        //                PriceListName = s.PriceItem.PriceLists.First().Name,
+        //                SaledDate = s.SaleDocument.SaleDate.ToString("T"),
+        //                SaledNumber = s.SaleDocument.Number,
+        //                SaledCount = (int)s.Count,
+
+        //            });
+        //        }
+        //    });
+        //    int index = 1;
+        //    var query = from r in realization
+        //                group r by new
+        //                {
+        //                    CatalogNumber = r.CatalogNumber,
+        //                    IsDuplicate = r.IsDuplicate,
+        //                    Name = r.Name,
+        //                    Price = r.Price,
+        //                    Uom = r.Uom,
+        //                    IsInDebt = r.IsInDebt,
+        //                    PriceListName = r.PriceListName,
+        //                    SaledDate = r.SaledDate,
+        //                    SaledNumber = r.SaledNumber,
+        //                }
+        //                    into groups
+        //                    select new RealizationItem()
+        //                    {
+        //                        Number = index++,
+        //                        CatalogNumber = groups.Key.CatalogNumber,
+        //                        IsDuplicate = groups.Key.IsDuplicate,
+        //                        Name = groups.Key.Name,
+        //                        Price = (int)groups.Key.Price,
+        //                        Remainders = (int)groups.Average(s => s.Remainders),
+        //                        SoldCount = groups.Sum(s => s.SoldCount),
+        //                        Uom = groups.Key.Uom,
+        //                        Amount = groups.Sum(s => s.Amount),
+        //                        AmountWithoutDebt = groups.Sum(s => s.AmountWithoutDebt),
+        //                        AmountWithoutDebtProfit = groups.Sum(s => s.AmountWithoutDebtProfit),
+        //                        Discount = groups.Sum(s => s.Discount),
+        //                        WholePrice = (int)groups.Average(a => a.WholePrice),
+        //                        DebtDischarge = (int)groups.Average(s => s.DebtDischarge),
+        //                        IsInDebt = groups.Key.IsInDebt,
+        //                        PriceListName = groups.Key.PriceListName,
+        //                        SaledDate = groups.Key.SaledDate,
+        //                        SaledNumber = groups.Key.SaledNumber,
+        //                        SaledCount = groups.Sum(s => s.SaledCount),
+        //                    };
+        //    return query;
+        //}
+
+        //protected IEnumerable<RefundItem> GetTodayRefundItems(string userName)
+        //{
+        //    var now = DateTimeHelper.GetNowKz();
+        //    var startDate = new DateTime(now.Year, now.Month, now.Day, 0, 0, 0);
+        //    var endDate = new DateTime(now.Year, now.Month, now.Day, 23, 59, 59);
+
+        //    var context = new StoreDbContext();
+
+        //    var closedRefundPerDay = context.RefundsPerDayItems
+        //        .Where(
+        //            w =>
+        //                w.SaleDocumentsPerDay.SaleDocumentsDate >= startDate
+        //                && w.SaleDocumentsPerDay.SaleDocumentsDate <= endDate
+        //                && w.SaleDocumentsPerDay.IsClosed &&
+        //                w.SaleDocumentsPerDay.Creator_Id == userName).Select(s => s.RefundItem.Id).ToList();
+        //    //var refundQuery =
+        //    //    context.RefundItems
+        //    //    .Include(i => i.RefundDocument)
+        //    //    .Include(i => i.RefundDocument.SaleDocument)
+        //    //    .Include(i => i.PriceItem.Gear)
+        //    //    .Include(i => i.PriceItem.UnitOfMeasure)
+        //    //    .Include(i => i.PriceItem.Remainders)
+        //    //    .Include(i => i.PriceItem.Prices)
+        //    //    .Include(i => i.PriceItem.PriceLists)
+        //    //    .Include(i => i.SaleItem.SaleDocument)
+        //    //        .Where(
+        //    //            w =>
+        //    //                w.RefundDocument.RefundDate >= startDate
+        //    //                && w.RefundDocument.RefundDate <= endDate
+        //    //                && w.RefundDocument.Creator_Id == userName).ToList();
+
+        //    var refundQuery =
+        //        context.RefundDocuments
+        //            .Where(
+        //                w =>
+        //                    w.RefundDate >= startDate
+        //                    && w.RefundDate <= endDate
+        //                    && w.Creator_Id == userName)
+        //            .SelectMany(s => s.RefundItems)
+        //            .Include(i => i.RefundDocument)
+        //            .Include(i => i.PriceItem.Gear)
+        //            .Include(i => i.PriceItem.UnitOfMeasure)
+        //            .Include(i => i.PriceItem.Remainders)
+        //            .Include(i => i.PriceItem.Prices)
+        //            .Include(i => i.PriceItem.PriceLists)
+        //            .Include(i => i.SaleItem.SaleDocument)
+        //                .Where(
+        //                    w =>
+        //                        w.RefundDocument.RefundDate >= startDate
+        //                        && w.RefundDocument.RefundDate <= endDate
+        //                        //&& !closedRefundPerDay.Contains(w.Id)
+        //                        && w.RefundDocument.Creator_Id == userName);
+
+        //    var refundItems = refundQuery.Where(w => !closedRefundPerDay.Contains(w.Id)).ToList();
+        //    return refundItems;
+        //}
+
+        protected IEnumerable<RefundItem> GetRefundItemsByDate(string userName, DateTime startDate, DateTime endDate)
         {
-            var context = new StoreDbContext();
-
-            var now = DateTimeHelper.GetNowKz();
-            var startDate = new DateTime(now.Year, now.Month, now.Day, 0, 0, 0);
-            var endDate = new DateTime(now.Year, now.Month, now.Day, 23, 59, 59);
-
-            var closedRefundPerDay = context.RefundsPerDayItems
-                .Include(i => i.SaleDocumentsPerDay)
-                .Include(i => i.RefundItem)
-                    .Where(
-                        w =>
-                            w.SaleDocumentsPerDay.SaleDocumentsDate >= startDate
-                            && w.SaleDocumentsPerDay.SaleDocumentsDate <= endDate
-                            && w.SaleDocumentsPerDay.IsClosed &&
-                            w.SaleDocumentsPerDay.Creator_Id == user.UserName).Select(s => s.RefundItem.Id).ToList();
-
-
-            var refundQuery =
-                context.RefundItems
-                .Include(i => i.RefundDocument.SaleDocument)
-                .Include(i => i.PriceItem.Gear)
-                .Include(i => i.PriceItem.UnitOfMeasure)
-                .Include(i => i.PriceItem.Remainders)
-                .Include(i => i.PriceItem.Prices)
-                .Include(i => i.PriceItem.PriceLists)
-                .Include(i => i.SaleItem)
-                    .Where(
-                        w =>
-                            w.RefundDocument.RefundDate >= startDate
-                            && w.RefundDocument.RefundDate <= endDate
-                            && w.RefundDocument.Creator_Id == user.UserName).ToList();
-
-            var refundItems = refundQuery.Where(w => !closedRefundPerDay.Contains(w.Id)).ToList();
-
-            var closedSalesPerDay =
-                context.SalesPerDayItems
-                .Include(i => i.SaleDocumentsPerDay)
-                .Include(i => i.SaleItem)
-                    .Where(
-                        w =>
-                            w.SaleDocumentsPerDay.SaleDocumentsDate >= startDate
-                            && w.SaleDocumentsPerDay.SaleDocumentsDate <= endDate
-                            && w.SaleDocumentsPerDay.IsClosed
-                            && w.SaleDocumentsPerDay.Creator_Id == user.UserName).Select(s => s.SaleItem.Id).ToList();
-
-            var salesQuery =
-                context.SaleItems
-                    .Include(i => i.SaleDocument)
-                    .Include(i => i.PriceItem.PriceLists)
-                    .Include(i => i.PriceItem.Gear)
-                    .Include(i => i.PriceItem.UnitOfMeasure)
-                    .Include(i => i.PriceItem.Remainders)
-                    .Include(i => i.PriceItem.Prices)
-                    .Include(i => i.PriceItem.PriceLists)
-                    .Where(
-                        w =>
-                            w.SaleDocument.SaleDate >= startDate
-                            && w.SaleDocument.SaleDate <= endDate
-                            && !w.SaleDocument.IsOrder
-                            && w.SaleDocument.Creator_Id == user.UserName).ToList();
-
-            var salesItems = salesQuery.Where(w => !closedSalesPerDay.Contains(w.Id)).ToList();
-            var realization = new List<RealizationItem>();
-            salesItems.ForEach(s =>
-            {
-
-                var remainders = 0;
-                var rems =
-                    s.PriceItem.Remainders.Where(w => w.Warehouse_Id == user.Warehouse_Id)
-                        .FirstOrDefault();
-                if (rems != null)
-                    remainders = (int)rems.Amount;
-
-                var itemRefunds =
-                    refundItems.Where(wh => wh.SaleItem_Id == s.Id && wh.RefundDocument.SaleDocument.IsInDebt == true)
-                        .Sum(sum => sum.Count);
-
-
-
-                var count = s.Count - itemRefunds;
-                if (count != 0)
-                {
-                    realization.Add(new RealizationItem()
-                    {
-
-                        CatalogNumber = s.PriceItem.Gear.CatalogNumber,
-                        IsDuplicate = s.PriceItem.Gear.IsDuplicate ? "*" : "",
-                        Name = s.PriceItem.Gear.Name,
-                        Price = (int)s.Price,
-                        Remainders = remainders,
-                        SoldCount = (int)count,
-                        Uom = s.PriceItem.UnitOfMeasure.Name,
-                        WholePrice = (int)s.PriceItem.Prices.OrderByDescending(o => o.PriceDate).First().Price,
-                        Amount = (int)((s.Price - (s.Discount / s.Count)) * count),
-                        Discount = (int)s.Discount,
-                        SaleItemData = s,
-                        Customer = s.SaleDocument.IsInDebt ? s.SaleDocument.Customer_Name : "",
-                        IsInDebt = s.SaleDocument.IsInDebt,
-                        PriceListName = s.PriceItem.PriceLists.First().Name,
-                        SaledDate = s.SaleDocument.SaleDate.ToString("T"),
-                        SaledNumber = s.SaleDocument.Number,
-                        SaledCount = (int)s.Count,
-
-                    });
-                }
-            });
-            int index = 1;
-            var query = from r in realization
-                        group r by new
-                        {
-                            CatalogNumber = r.CatalogNumber,
-                            IsDuplicate = r.IsDuplicate,
-                            Name = r.Name,
-                            Price = r.Price,
-                            Uom = r.Uom,
-                            IsInDebt = r.IsInDebt,
-                            PriceListName = r.PriceListName,
-                            SaledDate = r.SaledDate,
-                            SaledNumber = r.SaledNumber,
-                        }
-                            into groups
-                            select new RealizationItem()
-                            {
-                                Number = index++,
-                                CatalogNumber = groups.Key.CatalogNumber,
-                                IsDuplicate = groups.Key.IsDuplicate,
-                                Name = groups.Key.Name,
-                                Price = (int)groups.Key.Price,
-                                Remainders = (int)groups.Average(s => s.Remainders),
-                                SoldCount = groups.Sum(s => s.SoldCount),
-                                Uom = groups.Key.Uom,
-                                Amount = groups.Sum(s => s.Amount),
-                                AmountWithoutDebt = groups.Sum(s => s.AmountWithoutDebt),
-                                AmountWithoutDebtProfit = groups.Sum(s => s.AmountWithoutDebtProfit),
-                                Discount = groups.Sum(s => s.Discount),
-                                WholePrice = (int)groups.Average(a => a.WholePrice),
-                                DebtDischarge = (int)groups.Average(s => s.DebtDischarge),
-                                IsInDebt = groups.Key.IsInDebt,
-                                PriceListName = groups.Key.PriceListName,
-                                SaledDate = groups.Key.SaledDate,
-                                SaledNumber = groups.Key.SaledNumber,
-                                SaledCount = groups.Sum(s => s.SaledCount),
-                            };
-            return query;
-        }
-
-        protected IEnumerable<RefundItem> GetTodayRefundItems(string userName)
-        {
-            var now = DateTimeHelper.GetNowKz();
-            var startDate = new DateTime(now.Year, now.Month, now.Day, 0, 0, 0);
-            var endDate = new DateTime(now.Year, now.Month, now.Day, 23, 59, 59);
+            //var now = DateTimeHelper.GetNowKz();
+            //var startDate = new DateTime(now.Year, now.Month, now.Day, 0, 0, 0);
+            //var endDate = new DateTime(now.Year, now.Month, now.Day, 23, 59, 59);
 
             var context = new StoreDbContext();
 
@@ -503,21 +750,43 @@ namespace StoreAppTest.Web
                         && w.SaleDocumentsPerDay.SaleDocumentsDate <= endDate
                         && w.SaleDocumentsPerDay.IsClosed &&
                         w.SaleDocumentsPerDay.Creator_Id == userName).Select(s => s.RefundItem.Id).ToList();
+            //var refundQuery =
+            //    context.RefundItems
+            //    .Include(i => i.RefundDocument)
+            //    .Include(i => i.RefundDocument.SaleDocument)
+            //    .Include(i => i.PriceItem.Gear)
+            //    .Include(i => i.PriceItem.UnitOfMeasure)
+            //    .Include(i => i.PriceItem.Remainders)
+            //    .Include(i => i.PriceItem.Prices)
+            //    .Include(i => i.PriceItem.PriceLists)
+            //    .Include(i => i.SaleItem.SaleDocument)
+            //        .Where(
+            //            w =>
+            //                w.RefundDocument.RefundDate >= startDate
+            //                && w.RefundDocument.RefundDate <= endDate
+            //                && w.RefundDocument.Creator_Id == userName).ToList();
+
             var refundQuery =
-                context.RefundItems
-                .Include(i => i.RefundDocument)
-                .Include(i => i.RefundDocument.SaleDocument)
-                .Include(i => i.PriceItem.Gear)
-                .Include(i => i.PriceItem.UnitOfMeasure)
-                .Include(i => i.PriceItem.Remainders)
-                .Include(i => i.PriceItem.Prices)
-                .Include(i => i.PriceItem.PriceLists)
-                .Include(i => i.SaleItem.SaleDocument)
+                context.RefundDocuments
                     .Where(
                         w =>
-                            w.RefundDocument.RefundDate >= startDate
-                            && w.RefundDocument.RefundDate <= endDate
-                            && w.RefundDocument.Creator_Id == userName).ToList();
+                            w.RefundDate >= startDate
+                            && w.RefundDate <= endDate
+                            && w.Creator_Id == userName)
+                    .SelectMany(s => s.RefundItems)
+                    .Include(i => i.RefundDocument)
+                    .Include(i => i.PriceItem.Gear)
+                    .Include(i => i.PriceItem.UnitOfMeasure)
+                    .Include(i => i.PriceItem.Remainders)
+                    .Include(i => i.PriceItem.Prices)
+                    .Include(i => i.PriceItem.PriceLists)
+                    .Include(i => i.SaleItem.SaleDocument)
+                        .Where(
+                            w =>
+                                w.RefundDocument.RefundDate >= startDate
+                                && w.RefundDocument.RefundDate <= endDate
+                                //&& !closedRefundPerDay.Contains(w.Id)
+                                && w.RefundDocument.Creator_Id == userName);
 
             var refundItems = refundQuery.Where(w => !closedRefundPerDay.Contains(w.Id)).ToList();
             return refundItems;

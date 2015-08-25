@@ -607,7 +607,8 @@
             {
                 SelectPriceControl ctrl = new SelectPriceControl();
                 SelectPriceControlViewModel vm = new SelectPriceControlViewModel();
-                vm.Warehouse = App.CurrentUser.Warehouse_Id;
+                //vm.Warehouse = App.CurrentUser.Warehouse_Id;
+                vm.Warehouse = Warehouse_Id;
 
                 ctrl.DataContext = vm;
 
