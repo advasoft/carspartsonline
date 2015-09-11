@@ -177,6 +177,7 @@ namespace StoreAppTest.Client.Model
     [global::System.Data.Services.Common.EntitySetAttribute("Users")]
     [global::System.Data.Services.Common.DataServiceKeyAttribute("UserName")]
     [Serializable]
+    [DataContract]
     public partial class User : global::System.ComponentModel.INotifyPropertyChanged
     {
         /// <summary>
@@ -196,6 +197,7 @@ namespace StoreAppTest.Client.Model
         /// В схеме отсутствуют комментарии для свойства UserName.
         /// </summary>
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Services.Design", "1.0.0")]
+        [DataMember]
         public string UserName
         {
             get
@@ -218,6 +220,7 @@ namespace StoreAppTest.Client.Model
         /// В схеме отсутствуют комментарии для свойства DisplayName.
         /// </summary>
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Services.Design", "1.0.0")]
+        [DataMember]
         public string DisplayName
         {
             get
@@ -240,6 +243,7 @@ namespace StoreAppTest.Client.Model
         /// В схеме отсутствуют комментарии для свойства Warehouse_Id.
         /// </summary>
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Services.Design", "1.0.0")]
+        [DataMember]
         public string Warehouse_Id
         {
             get
@@ -262,6 +266,7 @@ namespace StoreAppTest.Client.Model
         /// В схеме отсутствуют комментарии для свойства PasswordHash.
         /// </summary>
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Services.Design", "1.0.0")]
+        [DataMember]
         public byte[] PasswordHash
         {
             get
@@ -291,6 +296,7 @@ namespace StoreAppTest.Client.Model
         /// В схеме отсутствуют комментарии для свойства IsSupplierVisible.
         /// </summary>
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Services.Design", "1.0.0")]
+        [DataMember]
         public bool IsSupplierVisible
         {
             get
@@ -313,6 +319,7 @@ namespace StoreAppTest.Client.Model
         /// В схеме отсутствуют комментарии для PriceLists.
         /// </summary>
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Services.Design", "1.0.0")]
+        [DataMember]
         public global::System.Data.Services.Client.DataServiceCollection<PriceList> PriceLists
         {
             get
@@ -331,6 +338,7 @@ namespace StoreAppTest.Client.Model
         /// В схеме отсутствуют комментарии для Roles.
         /// </summary>
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Services.Design", "1.0.0")]
+        [DataMember]
         public global::System.Data.Services.Client.DataServiceCollection<Role> Roles
         {
             get
@@ -349,6 +357,7 @@ namespace StoreAppTest.Client.Model
         /// В схеме отсутствуют комментарии для Warehouse.
         /// </summary>
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Services.Design", "1.0.0")]
+        [DataMember]
         public Warehouse Warehouse
         {
             get
@@ -1873,6 +1882,7 @@ namespace StoreAppTest.Client.Model
     [global::System.Data.Services.Common.EntitySetAttribute("Warehouses")]
     [global::System.Data.Services.Common.DataServiceKeyAttribute("Name")]
     [Serializable]
+    [DataContract]
     public partial class Warehouse : global::System.ComponentModel.INotifyPropertyChanged
     {
         /// <summary>
@@ -1890,6 +1900,7 @@ namespace StoreAppTest.Client.Model
         /// В схеме отсутствуют комментарии для свойства Name.
         /// </summary>
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Services.Design", "1.0.0")]
+        [DataMember]
         public string Name
         {
             get

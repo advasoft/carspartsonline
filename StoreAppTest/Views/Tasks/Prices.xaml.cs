@@ -54,8 +54,17 @@ namespace StoreAppTest.Views
 
         private void Button_Click(object sender, System.Windows.RoutedEventArgs e)
         {
+            //DocumentPreviewWindow preview = new DocumentPreviewWindow();
+            //PrintableControlLink link = new PrintableControlLink(PricesGridControl.View as DevExpress.Xpf.Printing.IPrintableControl);
+            //link.ExportServiceUri = "/StoreExportService.svc";
+            //link.PrintingSystem.ExportOptions.PrintPreview.ShowOptionsBeforeExport = false;
+            //LinkPreviewModel model = new LinkPreviewModel(link);
+            //preview.Model = model;
+            //link.CreateDocument(false);
+            //preview.ShowDialog();
+
             DocumentPreviewWindow preview = new DocumentPreviewWindow();
-            PrintableControlLink link = new PrintableControlLink(PricesGridControl.View as DevExpress.Xpf.Printing.IPrintableControl);
+            PrintableControlLink link = new PrintableControlLink((IPrintableControl)PricesGridControl.View);
             link.ExportServiceUri = "/StoreExportService.svc";
             link.PrintingSystem.ExportOptions.PrintPreview.ShowOptionsBeforeExport = false;
             LinkPreviewModel model = new LinkPreviewModel(link);

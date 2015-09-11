@@ -207,7 +207,7 @@ namespace StoreAppTest.Web.Controllers
             try
             {
                 var currentUser =
-                    context.Users.Where(w => w.UserName == currentUserName).FirstOrDefault();
+                    context.Users.Where(w => w.UserName == currentUserName).Include(i => i.Warehouse).FirstOrDefault();
 
 
                 var uoms = context.UnitOfMeasures.ToList();
@@ -297,26 +297,69 @@ namespace StoreAppTest.Web.Controllers
                         if (isDublStr != string.Empty)
                             isDupl = true;
                         name = record["Наименование"];
-                        var buyR = record["Цена закуп (руб, ю, тг)"];
-                        if (buyR != string.Empty)
-                            decimal.TryParse(buyR, out buyPriceRur);
-                        var buyT = record["Цена закуп (тг)"];
-                        if (buyT != string.Empty)
-                            decimal.TryParse(buyT, out buyPriceTn);
-                        uom = record["Ед. Измерения"];
-                        var priceS = record["Цена"];
-                        if (priceS != string.Empty)
-                            decimal.TryParse(priceS, out wholesalePrice);
-                        var remainderS = record["Остаток"];
-                        if (remainderS != string.Empty)
-                            decimal.TryParse(remainderS, out remainders);
-                        articul = record["артикул"];
+                        try
+                        {
+                            var buyR = record["Цена закуп (руб, ю, тг)"];
+                            if (buyR != string.Empty)
+                                decimal.TryParse(buyR, out buyPriceRur);
+                        }
+                        catch
+                        {
+                        }
 
+                        try
+                        {
+                            var buyT = record["Цена закуп (тг)"];
+                            if (buyT != string.Empty)
+                                decimal.TryParse(buyT, out buyPriceTn);
+                        }
+                        catch
+                        {
+                        }
 
-                        if (name == string.Empty || uom == string.Empty) continue;
+                        try
+                        {
+                            uom = record["Ед. Измерения"];
+                        }
+                        catch
+                        {
+                        }
 
-                        var priceItem = priceItems.Where(w => w.Articul == articul
-                                                                              && w.CatalogNumber == catalogNumber
+                        try
+                        {
+                            var priceS = record["Цена"];
+                            if (priceS != string.Empty)
+                                decimal.TryParse(priceS, out wholesalePrice);
+                        }
+                        catch
+                        {
+                        }
+
+                        try
+                        {
+                            var remainderS = record["Остаток"];
+                            if (remainderS != string.Empty)
+                                decimal.TryParse(remainderS, out remainders);
+                        }
+                        catch
+                        {
+                        }
+
+                        try
+                        {
+                            articul = record["артикул"];
+                        }
+                        catch
+                        {
+                        }
+
+                        //if (name == string.Empty || uom == string.Empty) continue;
+                        if (name == string.Empty) continue;
+
+                        //var priceItem = priceItems.Where(w => w.Articul == articul
+                        //                                                      && w.CatalogNumber == catalogNumber
+                        //                                                      && w.Gear_Name == name).FirstOrDefault();
+                        var priceItem = priceItems.Where(w => w.CatalogNumber == catalogNumber
                                                                               && w.Gear_Name == name).FirstOrDefault();
 
                         PriceItem findedPriceListItem = null;
@@ -387,9 +430,9 @@ namespace StoreAppTest.Web.Controllers
                         else
                         {
                             findedPriceListItem = context.PriceItems.Include("Prices").Where(w => w.Gear_Id == priceItem.Gear_Id).First();
-                            findedPriceListItem.BuyPriceRur = buyPriceRur;
-                            findedPriceListItem.BuyPriceTng = buyPriceTn;
-                            context.SaveChanges();
+                            //findedPriceListItem.BuyPriceRur = buyPriceRur;
+                            //findedPriceListItem.BuyPriceTng = buyPriceTn;
+                            //context.SaveChanges();
 
                             if(priceListIsNew)
                                 findedPriceListItem.PriceLists.Add(priceList);
