@@ -68,6 +68,12 @@
     <Compile Include="Reports\InvoiceReport.Designer.cs">
       <DependentUpon>InvoiceReport.cs</DependentUpon>
     </Compile>
+    <Compile Include="Reports\PriceListReport.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Reports\PriceListReport.Designer.cs">
+      <DependentUpon>PriceListReport.cs</DependentUpon>
+    </Compile>
     <Compile Include="Reports\ProductsTagReport.cs">
       <SubType>Component</SubType>
     </Compile>
@@ -129,6 +135,9 @@
     <EmbeddedResource Include="Reports\InvoiceReport.resx">
       <DependentUpon>InvoiceReport.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Reports\PriceListReport.resx">
+      <DependentUpon>PriceListReport.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Reports\ProductsTagReport.resx">
       <DependentUpon>ProductsTagReport.cs</DependentUpon>
     </EmbeddedResource>
@@ -168,6 +177,7 @@
     <None Include="packages.config" />
     <None Include="Properties\DataSources\InvoiceModel.datasource" />
     <None Include="Properties\DataSources\OrderReportModel.datasource" />
+    <None Include="Properties\DataSources\PriceListReportItem.datasource" />
     <None Include="Properties\DataSources\RealizationPerDayReportDocument.datasource" />
     <None Include="Properties\DataSources\RealizationPerDayReportItem.datasource" />
     <None Include="Properties\DataSources\ReportChangeReport.datasource" />

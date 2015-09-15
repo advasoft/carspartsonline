@@ -62,7 +62,7 @@
             <dxe:CheckEdit Grid.Column="3" IsChecked="{Binding IsECommerceCustomer, Mode=TwoWay}" FontSize="14">
                 <TextBlock TextWrapping="Wrap" Text="Клиент интернет-магазина" HorizontalAlignment="Stretch" Width="132"></TextBlock>
             </dxe:CheckEdit>
-            <Button  x:Name="CancelButton" HorizontalAlignment="Left" VerticalAlignment="Top" Width="110" Height="32" Click="Button_Click" Grid.ColumnSpan="3">
+            <Button  x:Name="CancelButton" HorizontalAlignment="Left" VerticalAlignment="Top" Width="110" Height="32" Command="{Binding PrintReportCommand}" Grid.ColumnSpan="3">
                 <Grid HorizontalAlignment="Left" VerticalAlignment="Stretch">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="32"/>

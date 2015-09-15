@@ -284,6 +284,9 @@
     <Compile Include="Print\OrdertReportControl.xaml.cs">
       <DependentUpon>OrdertReportControl.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Print\PriceListReportControl.xaml.cs">
+      <DependentUpon>PriceListReportControl.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Utilities\DateTimeHelper.cs" />
     <Compile Include="Utilities\DocumentNumberHelper.cs" />
     <Compile Include="Utilities\SerializationHelper.cs" />
@@ -550,6 +553,10 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="Print\OrdertReportControl.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Print\PriceListReportControl.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>

@@ -17,6 +17,7 @@ namespace StoreAppTest.ViewModels
     using Microsoft.Practices.Prism.PubSubEvents;
     using Microsoft.Practices.ServiceLocation;
     using Model;
+    using Print;
     using Utilities;
     using Views;
     using PriceItem = Model.PriceItem;
@@ -251,6 +252,7 @@ namespace StoreAppTest.ViewModels
         public ICommand OpenNewRefundCommand { get; set; }
         public ICommand AddNewCustomerCommand { get; set; }
         public ICommand ShowDebtorsCommand { get; set; }
+        public ICommand PrintReportCommand { get; set; }
 
         private void InitCommands()
         {
@@ -513,6 +515,17 @@ namespace StoreAppTest.ViewModels
             {
                 _showDebtorsEvent.Publish(null);
             });
+
+            #region PrintReportCommand
+
+            PrintReportCommand = new UICommand(a =>
+            {
+                PriceListReportControl control = new PriceListReportControl(_priceListName, App.CurrentUser.Warehouse_Id);
+                control.Show();
+            });
+
+            #endregion
+
         }
         #endregion
 
