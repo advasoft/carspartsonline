@@ -21,6 +21,7 @@ namespace StoreAppTest.Web.Controllers
     using System.Web.Http;
     using System.Xml.Serialization;
     using ef::System.Data.Entity;
+    using ef::System.Data.Entity.Infrastructure;
     using Kent.Boogaart.KBCsv;
     using Newtonsoft.Json;
     using NLog;
@@ -3732,19 +3733,19 @@ sb.Append("LEFT JOIN  (  ");
             return new HttpResponseMessage(HttpStatusCode.Accepted);
         }
 
-        [HttpGet]
-        public PriceItem DeletePriceItem(long id)
+        [HttpDelete]
+        public HttpResponseMessage DeletePriceItem([FromUri]long id)
         {
             var context = new StoreDbContext();
             using (var tr = context.Database.BeginTransaction())
             {
+                var finded = context.PriceItems
+                    .Include(i => i.Remainders)
+                    .Include(i => i.Prices)
+                    .Include("Remainders.RemaindersUserChanges")
+                    .Where(r => r.Id == id).FirstOrDefault();
                 try
                 {
-                    var finded = context.PriceItems
-                        .Include(i => i.Remainders)
-                        .Include(i => i.Prices)
-                        .Include("Remainders.RemaindersUserChanges")
-                        .Where(r => r.Id == id).FirstOrDefault();
                     if (finded != null)
                     {
                         var remlist = finded.Remainders.ToList();
@@ -3760,7 +3761,7 @@ sb.Append("LEFT JOIN  (  ");
 
                             foreach (var rem in remchlist)
                             {
-                        
+
                                 context.RemaindersUserChanges.Remove(rem);
                             }
                             context.SaveChanges();
@@ -3836,16 +3837,77 @@ sb.Append("LEFT JOIN  (  ");
 
                         context.SaveChanges();
                         tr.Commit();
-                            
+
                     }
+                }
+                catch (DbUpdateException dbUpdateException)
+                {
+                    tr.Rollback();
+                    return new HttpResponseMessage(HttpStatusCode.InternalServerError)
+                    {
+                        Content = new StringContent(GetPrieItemReferenceExceptionMessage(finded))
+                    };
                 }
                 catch (Exception exception)
                 {
                     tr.Rollback();
-                    throw;
+                    return new HttpResponseMessage(HttpStatusCode.InternalServerError)
+                    {
+                        Content = new StringContent(exception.Message)
+                    };
                 }            
             }
-            return new PriceItem();
+            return new HttpResponseMessage(HttpStatusCode.Accepted);
+            //return new PriceItem();
+        }
+
+        private string GetPrieItemReferenceExceptionMessage(PriceItem priceItem)
+        {
+            var builder = new StringBuilder("Не удалось удалить товар, так как на него существуют ссылки:");
+            builder.AppendLine();
+
+            using (var context = new StoreDbContext())
+            {
+                var warehouseRequests = context.WarehouseTransferRequests
+                    .Where(w => w.WarehouseTransferRequestItemItems.Any(a => a.PriceItem_Id == priceItem.Id))
+                    //.Include(i => i.WarehouseTransferRequestItemItems)
+                    .AsNoTracking().ToList();
+
+                var incomes = context.Incomes
+                    .Where(w => w.IncomeItems.Any(a => a.PriceItem_Id == priceItem.Id))
+                    //.Include(i => i.IncomeItems)
+                    .AsNoTracking().ToList();
+
+                var sales = context.SaleDocuments
+                    .Where(w => w.SaleItems.Any(a => a.PriceItem_Id == priceItem.Id))
+                    //.Include(i => i.SaleItems)
+                    .AsNoTracking().ToList();
+
+                if (warehouseRequests.Count > 0)
+                {
+                    foreach (var request in warehouseRequests)
+                    {
+                        builder.AppendLine(string.Format("Перемещение № {0} от {1}, автор {2}", 
+                            request.RequestNumber, request.RequestDate, request.Creator_Id));
+                    }
+                }
+                if (incomes.Count > 0)
+                {
+                    foreach (var income in incomes)
+                    {
+                        builder.AppendLine(string.Format("Оприходование № {0} от {1}, автор {2}", 
+                            income.IncomeNumber, income.IncomeDate, income.Creator_Id));
+                    }                }
+                if (sales.Count > 0)
+                {
+                    foreach (var sale in sales)
+                    {
+                        builder.AppendLine(string.Format("Товарный чек № {0} от {1}, автор {2}", 
+                            sale.Number, sale.SaleDate, sale.Creator_Id));
+                    }
+                }
+            }
+            return builder.ToString();
         }
 
         [HttpPost]

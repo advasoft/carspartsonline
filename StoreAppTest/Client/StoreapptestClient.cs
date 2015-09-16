@@ -743,14 +743,14 @@ namespace StoreAppTest.Client
             SaveInternalData(uri, id);
         }
 
-        public void DeletePriceItem(long id)
+        public bool DeletePriceItem(long id)
         {
             var uri = new Uri(
                 string.Concat(App.AppBaseUrl,
                     string.Format("/api/PriceLists/DeletePriceItem?id={0}", id))
                 , UriKind.Absolute);
 
-            GetInternalData<PriceItem>(uri);
+            return DeleteInternalData(uri);
         }
 
         public void DeleteGearNew(long id)
@@ -1156,6 +1156,76 @@ namespace StoreAppTest.Client
             handler.WaitOne(10000);
 
             return responseString;
+        }
+
+        private bool DeleteInternalData(Uri uri)
+        {
+            EventWaitHandle handler = new AutoResetEvent(false);
+            bool result = false;
+
+            //T result = default(T);
+
+            new Thread(() =>
+            {
+
+                var request =
+
+                    WebRequest.Create(uri);
+                request.Method = "DELETE";
+
+                request.BeginGetResponse((r) =>
+                {
+                    HttpWebResponse response;
+
+                    try
+                    {
+
+                        response =
+
+                            (HttpWebResponse)request.EndGetResponse(r);
+
+                        if (response.StatusCode == HttpStatusCode.OK)
+                        {
+                            result = true;
+                        }
+                    }
+                    catch (WebException exception)
+                    {
+                        DispatcherHelper.CheckBeginInvokeOnUI(() =>
+                        {
+                            var content = string.Empty;
+
+                            if (exception.Response != null)
+                            {
+                                var excResponse = exception.Response;
+                                using (StreamReader rd = new StreamReader(excResponse.GetResponseStream()))
+                                {
+                                    content = rd.ReadToEnd();
+                                }
+                            }
+                            MessageChildWindow msch = new MessageChildWindow();
+                            msch.Title = "Ошибка";
+                            if (!string.IsNullOrEmpty(content))
+                                msch.Message = content;
+                            else
+                                msch.Message = exception.Message;
+                            msch.Show();
+                        });
+                    }
+                    finally
+                    {
+                        handler.Set();
+                    }
+                },
+                request);
+
+            }) { IsBackground = true }.Start();
+
+
+            handler.WaitOne();
+
+            return result;
+
         }
 
     }

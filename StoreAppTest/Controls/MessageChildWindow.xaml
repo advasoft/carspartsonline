@@ -10,7 +10,9 @@
             <RowDefinition Height="52" />
         </Grid.RowDefinitions>
         <!--<Button x:Name="OKButton" Content="ОК" Click="OKButton_Click" Width="75" HorizontalAlignment="Center" Margin="152,13,151,1" Grid.Row="1" />-->
-        <TextBlock x:Name="MessageTextBlock" Margin="10" TextWrapping="Wrap" Text="" FontSize="14"/>
+        <ScrollViewer>
+            <TextBlock x:Name="MessageTextBlock" Margin="2" TextWrapping="Wrap" Text="" FontSize="14" />
+        </ScrollViewer>
         <Grid Grid.Row="1" Background="#FFBBCAD6">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition/>

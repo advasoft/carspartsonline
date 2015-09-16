@@ -890,7 +890,7 @@ namespace StoreAppTest.ViewModels
                         try
                         {
                             var client = new StoreapptestClient();
-                            client.DeletePriceItem(SelectedRemainders.GetPriceItemData().Id);
+                            var result = client.DeletePriceItem(SelectedRemainders.GetPriceItemData().Id);
 
                         //var findedPriceItem =
                         //    //ctx.ExecuteSyncronous(
@@ -924,15 +924,17 @@ namespace StoreAppTest.ViewModels
                         //    //ctx.SaveChangesSynchronous();
                         //    ctx.DeleteObject(gear);
                         //    ctx.SaveChangesSynchronous();
-
-                            RemainderItems.Remove(SelectedRemainders);
-                            SelectedRemainders = RemainderItems.FirstOrDefault();
+                            if (result)
+                            {
+                                RemainderItems.Remove(SelectedRemainders);
+                                SelectedRemainders = RemainderItems.FirstOrDefault();
+                            }
                         }
                         catch (Exception exception)
                         {
                             var messageWindows = new MessageChildWindow();
                             messageWindows.Title = "Ошибка";
-                            messageWindows.Message = exception.Message;
+                            messageWindows.Message = exception.Message + " yo!";
                             messageWindows.Show();
                             
                         }
