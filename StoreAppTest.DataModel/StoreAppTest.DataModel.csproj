@@ -60,6 +60,14 @@
     <Compile Include="Migrations\201507200922309_LastChanges_20_07_2015_1330.Designer.cs">
       <DependentUpon>201507200922309_LastChanges_20_07_2015_1330.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201509191154135_LastChanges_19_09_2015_1600.cs" />
+    <Compile Include="Migrations\201509191154135_LastChanges_19_09_2015_1600.Designer.cs">
+      <DependentUpon>201509191154135_LastChanges_19_09_2015_1600.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201509191207007_Add_remainders_to_PriceChangeReport.cs" />
+    <Compile Include="Migrations\201509191207007_Add_remainders_to_PriceChangeReport.Designer.cs">
+      <DependentUpon>201509191207007_Add_remainders_to_PriceChangeReport.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="RemainderChanges.cs" />
     <Compile Include="GearChanges.cs" />
@@ -115,6 +123,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201507200922309_LastChanges_20_07_2015_1330.resx">
       <DependentUpon>201507200922309_LastChanges_20_07_2015_1330.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201509191154135_LastChanges_19_09_2015_1600.resx">
+      <DependentUpon>201509191154135_LastChanges_19_09_2015_1600.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201509191207007_Add_remainders_to_PriceChangeReport.resx">
+      <DependentUpon>201509191207007_Add_remainders_to_PriceChangeReport.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

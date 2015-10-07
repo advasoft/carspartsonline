@@ -68,6 +68,8 @@ namespace StoreAppTest.Web.DataModel
         //[ForeignKey("UnitOfMeasure")]
         public string Barcode3 { get; set; }
 
+        [DataMember]
+        public bool IsDeleted { get; set; }
 
         //[DataMember]
         //[Required]
@@ -90,8 +92,6 @@ namespace StoreAppTest.Web.DataModel
 
         //[DataMember]
         //public virtual ICollection<RefundItem> RefundItems { get; set; }
-
-
 
         [DataMember]
         public virtual ICollection<Remainder> Remainders { get; set; }

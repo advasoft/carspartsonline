@@ -755,6 +755,10 @@ namespace StoreAppTest.Client.Model
         private string _Barcode3;
         partial void OnBarcode3Changing(string value);
         partial void OnBarcode3Changed();
+
+        [DataMember]
+        public bool IsDeleted { get; set; }
+
         /// <summary>
         /// В схеме отсутствуют комментарии для Gear.
         /// </summary>
@@ -3226,6 +3230,8 @@ namespace StoreAppTest.Client.Model
         private long _PriceChangeReport_Id;
         partial void OnPriceChangeReport_IdChanging(long value);
         partial void OnPriceChangeReport_IdChanged();
+        [DataMember]
+        public int Remainders { get; set; }
         /// <summary>
         /// В схеме отсутствуют комментарии для NewPrice.
         /// </summary>
@@ -3245,6 +3251,7 @@ namespace StoreAppTest.Client.Model
         }
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Services.Design", "1.0.0")]
         private WholesalePrice _NewPrice;
+
         /// <summary>
         /// В схеме отсутствуют комментарии для PreviousPrice.
         /// </summary>

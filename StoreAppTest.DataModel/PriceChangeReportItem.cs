@@ -29,6 +29,9 @@ namespace StoreAppTest.Web.DataModel
         public long PriceChangeReport_Id { get; set; }
 
         [DataMember]
+        public int Remainders { get; set; }
+
+        [DataMember]
         public virtual PriceChangeReport PriceChangeReport { get; set; }
 
         [DataMember]
