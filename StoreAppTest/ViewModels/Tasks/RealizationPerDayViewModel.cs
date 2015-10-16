@@ -25,13 +25,15 @@ namespace StoreAppTest.ViewModels
     {
         public Guid ViewId { get; private set; }
 
-        private IList<RefundItem> _refundItems;
-
-
+        //private IList<RefundItem> _refundItems;
+        private Dictionary<int, decimal> _refundAv;
+        private TodayRefundsTotalItem _refundsTotal = null;
+        private List<TodayRefundsTotal> _refundsTotalByPriceListName = new List<TodayRefundsTotal>();
+ 
         private IEventAggregator _agregator;
         private CloseViewNeedEvent _closeViewNeedEvent;
 
-        private IList<RealizationItem> realization = new List<RealizationItem>();
+        private IList<TodayRealizationsTotal> realization = new List<TodayRealizationsTotal>();
         private IList<DebtDischargeDocument> discharges = new List<DebtDischargeDocument>();
 
         private RealizationPerDay _view;
@@ -46,7 +48,8 @@ namespace StoreAppTest.ViewModels
             _closeViewNeedEvent = _agregator.GetEvent<CloseViewNeedEvent>();
 
             RealizationItems = new ObservableCollection<RealizationItem>();
-            _refundItems = new List<RefundItem>();
+            //_refundItems = new List<RefundItem>();
+            _refundAv = new Dictionary<int, decimal>();
 
             InitCommands();
         }
@@ -67,7 +70,9 @@ namespace StoreAppTest.ViewModels
             get
             {
                 var totalDisc = discharges.Sum(s => s.Amount);
-                var total = realization.Where(w => !w.SaleItemData.SaleDocument.IsInDebt).Sum(s => s.Amount);
+                //var total = realization.Where(w => !w.SaleItemData.SaleDocument.IsInDebt).Sum(s => s.Amount);
+                var total = realization.Sum(s => s.Total);
+
                 return total + totalDisc;
             }
         }
@@ -77,7 +82,9 @@ namespace StoreAppTest.ViewModels
             {
                 //
                 //return _refundItems.Where(w => !w.RefundDocument.SaleDocument.IsInDebt).Sum(s => s.Amount);
-                return _refundItems.Where(w => !w.RefundDocument.SaleDocument.IsInDebt).Sum(s => s.Amount);
+                //return _refundItems.Where(w => !w.RefundDocument.SaleDocument.IsInDebt).Sum(s => s.Amount);
+                if (_refundsTotal == null) return 0;
+                return _refundsTotal.Total;
             }
         }
         public decimal SubTotal
@@ -93,8 +100,10 @@ namespace StoreAppTest.ViewModels
             {
                 var totalDisc = discharges.Sum(s => s.Amount);
 
-                decimal total = realization.Where(w => !w.SaleItemData.SaleDocument.IsInDebt).Sum(
-                    s => s.SoldCount * s.WholePrice);
+                //decimal total = realization.Where(w => !w.SaleItemData.SaleDocument.IsInDebt).Sum(
+                //    s => s.SoldCount * s.WholePrice);
+                decimal total = realization.Sum(s => s.TotalByBuy);
+
                 return TotalAmount - (total + totalDisc);
             }
         }
@@ -102,8 +111,10 @@ namespace StoreAppTest.ViewModels
         {
             get
             {
-                decimal total = _refundItems.Where(w => !w.RefundDocument.SaleDocument.IsInDebt).Sum(
-                    s => s.Count * s.PriceItem.Prices.OrderByDescending(o => o.PriceDate).First().Price);
+                //decimal total = _refundItems.Where(w => !w.RefundDocument.SaleDocument.IsInDebt).Sum(
+                //    s => s.Count * s.PriceItem.Prices.OrderByDescending(o => o.PriceDate).First().Price);
+                if (_refundsTotal == null) return 0;
+                decimal total = _refundsTotal.TotalByBuy;
 
                 return TotalRefund - total;
             }
@@ -120,8 +131,20 @@ namespace StoreAppTest.ViewModels
             get
             {
                 //var totalDisc = discharges.Sum(s => s.Amount);
-                
-                var total = realization.Where(w => !w.SaleItemData.SaleDocument.IsInDebt && !_refundItems.Any( a=> a.SaleItem_Id == w.SaleItemData.Id)).Sum(s => s.SoldCount * s.WholePrice);
+
+                //var total = realization.Where(w => !w.SaleItemData.SaleDocument.IsInDebt && !_refundItems.Any(a => a.SaleItem_Id == w.SaleItemData.Id)).Sum(s => s.SoldCount * s.WholePrice);
+                var total = 0;
+                //foreach (var item in realization)
+                //{
+                //    int count = item.SoldCount;
+                //    if (_refundAv.Any(a => a.Key == item.SaleItemData.Id))
+                //    {
+                //        count -= (int)_refundAv.First(f => f.Key == item.SaleItemData.Id).Value;
+                //    }
+                //    total += (count*item.WholePrice);
+
+                //}
+
                 return total;
             }
         }
@@ -235,18 +258,18 @@ namespace StoreAppTest.ViewModels
                         //        .Where(w => w.DischargeDate >= strt && w.DischargeDate <= endd && w.IsDischarge && w.Creator_Id == App.CurrentUser.UserName)).ToList();
                         client.GetUserDebtDischargeDocumentsByDate(strt, endd, App.CurrentUser.UserName).ToList();
 
-                    discharges = (from d in dischargesSource
-                                  group d by new
-                                  {
-                                      Debtor = d.Debtor_Id
-                                  }
-                                      into ds
-                                      select new DebtDischargeDocument()
-                                      {
-                                          Amount = ds.Sum(s => s.Amount),
-                                          Debtor_Id = ds.Key.Debtor
-                                      }).ToList();
-
+                    //discharges = (from d in dischargesSource
+                    //              group d by new
+                    //              {
+                    //                  Debtor = d.Debtor_Id
+                    //              }
+                    //                  into ds
+                    //                  select new DebtDischargeDocument()
+                    //                  {
+                    //                      Amount = ds.Sum(s => s.Amount),
+                    //                      Debtor_Id = ds.Key.Debtor
+                    //                  }).ToList();
+                    discharges = dischargesSource;
 
                     ////StoreDbContext refundCtx = new StoreDbContext(
                     ////    new Uri(uri
@@ -418,66 +441,149 @@ namespace StoreAppTest.ViewModels
                     //                };
                     
 
-                    var refndItems = client.GetTodayRefundItems(App.CurrentUser.UserName).ToList();
-                    _refundItems = refndItems;
+                    //var refndItems = client.GetTodayRefundItems(App.CurrentUser.UserName).ToList();
+                    //_refundItems = refndItems;
 
-                    var query = client.GetTodayRealizationItems(App.CurrentUser.UserName, App.CurrentUser.Warehouse_Id).ToList();
+                    _refundAv = client.GetTodayRefundItemsDictionary(App.CurrentUser.UserName);
+                    _refundsTotal = client.GetTodayRefundTotals(App.CurrentUser.UserName);
+                    _refundsTotalByPriceListName =
+                        client.GetTodayRefundTotalsByPriceListName(App.CurrentUser.UserName).ToList();
 
-                    realization = client.GetTodayRealizationItemsRaw(App.CurrentUser.UserName,
-                        App.CurrentUser.Warehouse_Id).ToList();
-
+                    //var query = client.GetTodayRealizationItems(App.CurrentUser.UserName, App.CurrentUser.Warehouse_Id).ToList();
+                    var query = client.GetTodayTotalRealizationItems(App.CurrentUser.UserName).ToList();
+                    int number = 1;
                     foreach (var realizationItem in query)
                     {
-                        if (realizationItem.IsInDebt)
-                            realizationItem.Additional = "Продан в долг";
-                        var item = realizationItem;
+                        var saleItemData = new SaleItem();
+                        saleItemData.Id = realizationItem.SaleItem_Id;
+
+                        var addedRealizationItem = new RealizationItem()
+                        {
+                            CatalogNumber = realizationItem.CatalogNumber,
+                            Name = realizationItem.Name,
+                            IsDuplicate = realizationItem.IsDuplicate ? "*" : "",
+                            Number = number++,
+                            Uom = realizationItem.UnitOfMeasure,
+                            PriceListName = realizationItem.PriceListName,
+                            SaledDate = realizationItem.SaledTime,
+                            SaledNumber = realizationItem.SalesNumber,
+                            IsInDebt = realizationItem.IsInDebt,
+                            Customer = realizationItem.Customer,
+                            Price = (int) realizationItem.Price,
+                            WholePrice = (int) realizationItem.WholePrice,
+                            Remainders = (int) realizationItem.Remainders,
+                            SoldCount = (int) realizationItem.Count,
+                            SaledCount = (int) realizationItem.SoldCount,
+                            Amount = (int) realizationItem.Amount,
+                            Discount = (int) realizationItem.Discount,
+                            SaleItemData = saleItemData
+
+                        };
+                        if (addedRealizationItem.IsInDebt)
+                            addedRealizationItem.Additional = "Продан в долг";
+                        var item = addedRealizationItem;
                         DispatcherHelper.CheckBeginInvokeOnUI(() =>
                         {
                             RealizationItems.Add(item);
                         });
+
+        /*public string Articul 
+        public string CatalogNumber 
+        public string Name 
+        public string IsDuplicate 
+        public int Number 
+        public string Uom
+        public string PriceListName
+        public string SaledDate
+        public string SaledNumber
+        public bool IsInDebt 
+        public string Customer
+        public int DebtDischarge
+        public int Price
+        public int WholePrice
+        public int Remainders
+        public int SoldCount
+        public int SaledCount
+        public int Amount
+        public int AmountWithoutDebt
+        public int AmountWithoutDebtProfit
+        public int Discount
+        public string Additional*/
+
+
+
                     }
+
+                    
+
+                    //realization = client.GetTodayRealizationItemsRaw(App.CurrentUser.UserName,
+                    //    App.CurrentUser.Warehouse_Id).ToList();
+                    realization = client.GetTodayRecipeTotalsByPriceListName(App.CurrentUser.UserName).ToList();
+
+
+                    //foreach (var realizationItem in query)
+                    //{
+                    //    if (realizationItem.IsInDebt)
+                    //        realizationItem.Additional = "Продан в долг";
+                    //    var item = realizationItem;
+                    //    DispatcherHelper.CheckBeginInvokeOnUI(() =>
+                    //    {
+                    //        RealizationItems.Add(item);
+                    //    });
+                    //}
 
                     var realizationsByPriceList = (from q in realization
                                                    group q by q.PriceListName
                                                        into grp
                                                        select grp).ToList();
 
-                    var refundsByPriceList = (from r in refndItems
-                                              group r by r.PriceItem.PriceLists.FirstOrDefault().Name
-                                                  into grp
-                                                  select grp).ToList();
+                    //var refundsByPriceList = (from r in refndItems
+                    //                          group r by r.PriceItem.PriceLists.FirstOrDefault().Name
+                    //                              into grp
+                    //                              select grp).ToList();
 
                     foreach (var itm in realizationsByPriceList)
                     {
                         int refndVal = 0;
                         int refndValWh = 0;
 
-                        var refnd = refundsByPriceList.Where(r => r.Key == itm.Key).FirstOrDefault();
+                        //var refnd = refundsByPriceList.Where(r => r.Key == itm.Key).FirstOrDefault();
+                        var refnd = _refundsTotalByPriceListName.Where(r => r.PriceListName == itm.Key).FirstOrDefault();
                         if (refnd != null)
                         {
-                            refndVal = (int)refnd.Sum(s => s.Amount);
-                            refndValWh = (int)
-                                refnd.Sum(
-                                    s =>
-                                        s.Count *
-                                        (s.PriceItem.Prices.Where(p => p.PriceDate <= s.RefundDocument.RefundDate)
-                                            .OrderByDescending(o => o.PriceDate)
-                                            .FirstOrDefault() == null
-                                            ? 0
-                                            : s.PriceItem.Prices.Where(p => p.PriceDate <= s.RefundDocument.RefundDate)
-                                                .OrderByDescending(o => o.PriceDate)
-                                                .FirstOrDefault().Price)
-                                    );
+                            refndVal = (int) refnd.Total;
+                            refndValWh = (int) refnd.TotalByBuy;
+                            //refndVal = (int)refnd.Sum(s => s.Amount);
+                            //refndValWh = (int)
+                            //    refnd.Sum(
+                            //        s =>
+                            //            s.Count *
+                            //            (s.PriceItem.Prices.Where(p => p.PriceDate <= s.RefundDocument.RefundDate)
+                            //                .OrderByDescending(o => o.PriceDate)
+                            //                .FirstOrDefault() == null
+                            //                ? 0
+                            //                : s.PriceItem.Prices.Where(p => p.PriceDate <= s.RefundDocument.RefundDate)
+                            //                    .OrderByDescending(o => o.PriceDate)
+                            //                    .FirstOrDefault().Price)
+                            //        );
                         }
 
+                        //var realizationVal = (int)
+                        //    itm.Where(r => !r.SaleItemData.SaleDocument.IsInDebt).Sum(s => s.Amount);
                         var realizationVal = (int)
-                            itm.Where(r => !r.SaleItemData.SaleDocument.IsInDebt).Sum(s => s.Amount);
+                            itm.Sum(s => s.Total);
 
+                        //var realizationValWh =
+                        //    (int)
+                        //        itm.Where(r => !r.SaleItemData.SaleDocument.IsInDebt).Sum(
+                        //            s =>
+                        //                s.SaledCount * s.WholePrice
+                        //            );
                         var realizationValWh =
                             (int)
-                                itm.Where(r => !r.SaleItemData.SaleDocument.IsInDebt).Sum(
+                                itm.Sum(
                                     s =>
-                                        s.SaledCount * s.WholePrice
+                                        s.TotalByBuy
                                     );
 
                         var frstItem = itm.FirstOrDefault();
@@ -509,7 +615,8 @@ namespace StoreAppTest.ViewModels
                             {
                                 Number = index++,
                                 Name = "Погашение " + document.Debtor_Id,
-                                Price = (int)document.Amount,
+                                Amount = (int)document.Amount,
+                                AmountWithoutDebt = (int)document.Amount,
                                 IsInDebt = true
                             });
                         });
@@ -606,9 +713,10 @@ namespace StoreAppTest.ViewModels
                         //ctx.AddToSaleDocumentsPerDays(salePerDay);
                         //ctx.SaveChangesSynchronous();
 
-
-                        foreach (var receiptItem in realization)
+                        foreach (var receiptItem in RealizationItems)
                         {
+                            if(receiptItem.Name.Contains("Погашение")) continue;
+
                             var item = new SalesPerDayItem()
                             {
                                 SaleDocumentsPerDay_Id = salePerDay.Id,
@@ -629,6 +737,29 @@ namespace StoreAppTest.ViewModels
                             salePerDay.SalesPerDayItems.Add(item);
                             //ctx.AddToSalesPerDayItems(item);
                         }
+
+                        //foreach (var receiptItem in realization)
+                        //{
+                        //    var item = new SalesPerDayItem()
+                        //    {
+                        //        SaleDocumentsPerDay_Id = salePerDay.Id,
+                        //        SaleItem_Id = receiptItem.SaleItemData.Id
+
+                        //    };
+
+                        //    item.Amount = receiptItem.Amount;
+                        //    item.CatalogNumber = receiptItem.CatalogNumber;
+                        //    item.Count = receiptItem.SoldCount;
+                        //    item.Discount = receiptItem.Discount;
+                        //    item.IsDuplicate = receiptItem.IsDuplicate == "*" ? true : false;
+                        //    item.Name = receiptItem.Name;
+                        //    item.Price = receiptItem.Price;
+                        //    item.UnitOfMeasure = receiptItem.Uom;
+                        //    item.Remainders = receiptItem.Remainders;
+
+                        //    salePerDay.SalesPerDayItems.Add(item);
+                        //    //ctx.AddToSalesPerDayItems(item);
+                        //}
 
                         //foreach (var receiptItem in realization)
                         //{

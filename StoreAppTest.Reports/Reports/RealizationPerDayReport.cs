@@ -135,7 +135,7 @@ namespace StoreAppTest.Reports
                             Name = salesPerDayItem.Name ?? "",
                             Count = (int) salesPerDayItem.Count,
                             Discount = (int) salesPerDayItem.Discount,
-                            Price = (int) (salesPerDayItem.Amount / salesPerDayItem.Count),
+                            Price = salesPerDayItem.Count == 0 ? 0 : (int)(salesPerDayItem.Amount / salesPerDayItem.Count),
                             Uom = salesPerDayItem.UnitOfMeasure,
                             Time = salesPerDayItem.SaleItem.SaleDocument.SaleDate,
                             SaleDocumentNumber = salesPerDayItem.SaleItem.SaleDocument.Number,

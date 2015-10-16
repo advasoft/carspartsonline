@@ -191,6 +191,10 @@
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
     <Compile Include="Client\Model\Entities.cs" />
+    <Compile Include="Client\Model\TodayRealizationsTotal.cs" />
+    <Compile Include="Client\Model\TodayRefundsTotal.cs" />
+    <Compile Include="Client\Model\TotalRealizationItem.cs" />
+    <Compile Include="Client\Model\TotalRefundsTotalItem.cs" />
     <Compile Include="Client\RemaindersClient.cs" />
     <Compile Include="Client\StoreapptestClient.cs" />
     <Compile Include="Controls\AcceptIncomeControl.xaml.cs">

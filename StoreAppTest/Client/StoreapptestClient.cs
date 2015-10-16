@@ -544,6 +544,16 @@ namespace StoreAppTest.Client
             return GetInternalData<IEnumerable<RealizationItem>>(uri);
         }
 
+        public IEnumerable<TodayRealizationItem> GetTodayTotalRealizationItems(string userName)
+        {
+            var uri = new Uri(
+                string.Concat(App.AppBaseUrl,
+                    string.Format("/api/PriceLists/GetTodayTotalRealizationItems?userName={0}", userName))
+                , UriKind.Absolute);
+
+            return GetInternalData<IEnumerable<TodayRealizationItem>>(uri);
+        }
+        
         public IEnumerable<RealizationItem> GetTodayRealizationItemsRaw(string userName, string warehouse)
         {
             var uri = new Uri(
@@ -554,6 +564,16 @@ namespace StoreAppTest.Client
 
             return GetInternalData<IEnumerable<RealizationItem>>(uri);
         }
+        public IEnumerable<TodayRealizationsTotal> GetTodayRecipeTotalsByPriceListName(string userName)
+        {
+            var uri = new Uri(
+                string.Concat(App.AppBaseUrl,
+                    string.Format("/api/PriceLists/GetTodayRecipeTotalsByPriceListName?userName={0}", userName))
+                , UriKind.Absolute);
+
+            return GetInternalData<IEnumerable<TodayRealizationsTotal>>(uri);
+        }
+
         public IEnumerable<RefundItem> GetTodayRefundItems(string userName)
         {
             var uri = new Uri(
@@ -563,6 +583,43 @@ namespace StoreAppTest.Client
 
             return GetInternalData<IEnumerable<RefundItem>>(uri);
         }
+        public TodayRefundsTotalItem GetTodayRefundTotals(string userName)
+        {
+            var uri = new Uri(
+                string.Concat(App.AppBaseUrl,
+                    string.Format("/api/PriceLists/GetTodayRefundTotals?userName={0}", userName))
+                , UriKind.Absolute);
+
+            return GetInternalData<TodayRefundsTotalItem>(uri);
+        }
+        public IEnumerable<TodayRefundsTotal> GetTodayRefundTotalsByPriceListName(string userName)
+        {
+            var uri = new Uri(
+                string.Concat(App.AppBaseUrl,
+                    string.Format("/api/PriceLists/GetTodayRefundTotalsByPriceListName?userName={0}", userName))
+                , UriKind.Absolute);
+
+            return GetInternalData<IEnumerable<TodayRefundsTotal>>(uri);
+        }
+        public Dictionary<int, decimal> GetTodayRefundItemsDictionary(string userName)
+        {
+            var uri = new Uri(
+                string.Concat(App.AppBaseUrl,
+                    string.Format("/api/PriceLists/GetTodayRefundItemsDictionary?userName={0}", userName))
+                , UriKind.Absolute);
+
+            return GetInternalData<Dictionary<int, decimal>>(uri);
+        }
+        public IEnumerable<int> GetTodayRefundedSalesItemIds(string userName)
+        {
+            var uri = new Uri(
+                string.Concat(App.AppBaseUrl,
+                    string.Format("/api/PriceLists/GetTodayRefundedSalesItemIds?userName={0}", userName))
+                , UriKind.Absolute);
+
+            return GetInternalData<IEnumerable<int>>(uri);
+        }
+
         public IEnumerable<RefundItem> GetRefundItemsByDate(DateTime from, DateTime to, string userName)
         {
             var uri = new Uri(

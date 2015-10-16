@@ -25,6 +25,7 @@ namespace StoreAppTest.Web.Controllers
     using Kent.Boogaart.KBCsv;
     using Newtonsoft.Json;
     using NLog;
+    using StoreAppTest.DataModel;
     using Utilities;
     using StoreAppTest.Utilities;
 
@@ -164,7 +165,6 @@ namespace StoreAppTest.Web.Controllers
                 priceItem.Gear_Id = priceItem.Gear.Id;
             }
         }
-
 
         [HttpPost]
         public async Task<IHttpActionResult> LoadPriceFile(
@@ -1265,11 +1265,40 @@ sb.Append("LEFT JOIN  (  ");
             var fromDate = DateTime.Parse(from);
             var toDate = DateTime.Parse(to);
 
-            var context = new StoreDbContext();
-            var query = context.DebtDischargeDocuments
-                .Include(i => i.Debtor)
-                .Where(c => c.Creator_Id == userName && c.DischargeDate >= fromDate && c.DischargeDate <= toDate && c.IsDischarge);
+            List<DebtDischargeDocument> query = new List<DebtDischargeDocument>();
+            //var context = new StoreDbContext();
+            //var query = context.DebtDischargeDocuments
+            //    .Include(i => i.Debtor)
+            //    .Where(c => c.Creator_Id == userName && c.DischargeDate >= fromDate && c.DischargeDate <= toDate && c.IsDischarge);
 
+            using (var connection = GetConnection())
+            {
+                connection.Open();
+
+                var queryBuilder = new StringBuilder();
+                queryBuilder.Append("SELECT [Debtor_Id] ");
+                queryBuilder.Append(",SUM([Amount]) ");
+                queryBuilder.Append("FROM [dbo].[DebtDischargeDocuments] ");
+                queryBuilder.Append("WHERE [IsDischarge] = 1 AND [Creator_Id] = @Creator AND ([DischargeDate] BETWEEN @FromDate AND @ToDate) ");
+                queryBuilder.Append("GROUP BY [Debtor_Id]");
+
+                var command = connection.CreateCommand();
+                command.CommandText = queryBuilder.ToString();
+                command.Parameters.AddWithValue("Creator", userName);
+                command.Parameters.AddWithValue("FromDate", fromDate);
+                command.Parameters.AddWithValue("ToDate", toDate);
+
+                var reader = command.ExecuteReader();
+
+                while (reader.Read())
+                {
+                    var debt = new DebtDischargeDocument();
+                    debt.Debtor_Id = reader.GetString(0);// reader[0].ToString();
+                    debt.Amount = reader.GetDecimal(1);//Convert.ToInt32(reader[0]));
+
+                    query.Add(debt);
+                }
+            }
             return query;
         }
 
@@ -2633,7 +2662,7 @@ sb.Append("LEFT JOIN  (  ");
 
             return priceItem;
         }
-
+        
         [HttpGet]
         public IEnumerable<RealizationItem> GetTodayRealizationItems(string userName, string warehouse)
         {
@@ -2858,6 +2887,131 @@ sb.Append("LEFT JOIN  (  ");
                                 //SaleItemData = groups.Key.SaleItemData
                             };
             return query;
+        }
+
+        [HttpGet]
+        public IEnumerable<TodayRealizationItem> GetTodayTotalRealizationItems(string userName)
+        {
+            var now = DateTimeHelper.GetNowKz();
+            var refundedItems = GetTodayRefundInDebtsItemsDictionary(userName);
+            List<TodayRealizationItem> preTotalRealizationItems = new List<TodayRealizationItem>();
+
+            using (var connection = GetConnection())
+            {
+                connection.Open();
+
+                var selectUserQueryBuilder = new StringBuilder();
+                selectUserQueryBuilder.Append("SELECT [Warehouse_Id] ");
+                selectUserQueryBuilder.Append("FROM [dbo].[Users] ");
+                selectUserQueryBuilder.Append("WHERE [UserName] = @UserName ");
+
+                var selectUserQuery = connection.CreateCommand();
+                selectUserQuery.CommandText = selectUserQueryBuilder.ToString();
+                selectUserQuery.Parameters.AddWithValue("UserName", userName);
+
+                var warehouse = selectUserQuery.ExecuteScalar() as string;
+
+                var selectQueryBuilder = new StringBuilder();
+                selectQueryBuilder.Append("SELECT ");
+                //selectQueryBuilder.Append(",[Today] ");
+                //selectQueryBuilder.Append(",[UserName] ");
+                selectQueryBuilder.Append("TDR.[CatalogNumber] AS CatalogNumber ");
+                selectQueryBuilder.Append(",TDR.[Name] AS Name ");
+                selectQueryBuilder.Append(",TDR.[IsDuplicate] AS IsDuplicate ");
+                selectQueryBuilder.Append(",TDR.[UnitOfMeasure] AS UnitOfMeasure ");
+                selectQueryBuilder.Append(",TDR.[Price] AS Price ");
+                selectQueryBuilder.Append(",TDR.[Discount] AS Discount ");
+                selectQueryBuilder.Append(",TDR.[Count] AS Count ");
+                selectQueryBuilder.Append(",TDR.[Amount] AS Amount ");
+                selectQueryBuilder.Append(",RM.[Amount] AS Remainders ");
+                selectQueryBuilder.Append(",TDR.[SaleItem_Id] AS SaleItem_Id ");
+                selectQueryBuilder.Append(",TDR.[IsInDebt] AS IsInDebt ");
+                selectQueryBuilder.Append(",PRLI.[PriceList_Name] AS PriceListName "); 
+                selectQueryBuilder.Append(",TDR.[SaledTime] AS SaledTime ");
+                selectQueryBuilder.Append(",TDR.[SalesNumber] AS SalesNumber ");
+                selectQueryBuilder.Append(",TDR.[WholePrice] AS WholePrice ");
+                selectQueryBuilder.Append(",TDR.[SoldCount] AS SoldCount ");
+                selectQueryBuilder.Append(",TDR.[Customer] AS Customer ");
+                selectQueryBuilder.Append("FROM [dbo].[TodayRealizationItems] TDR ");
+                selectQueryBuilder.Append("JOIN [dbo].[PriceItems] PR ON TDR.[PriceItem_Id] = PR.Id ");
+                selectQueryBuilder.Append("RIGHT JOIN ( ");
+	            selectQueryBuilder.Append("SELECT PriceItem_Id, Amount ");
+	            selectQueryBuilder.Append("FROM [dbo].[Remainders] ");
+                selectQueryBuilder.Append("WHERE Warehouse_Id = @Warehouse ");
+                selectQueryBuilder.Append(") RM ON PR.Id = RM.PriceItem_Id ");
+                selectQueryBuilder.Append("JOIN [dbo].[PriceListPriceItems] PRLI ON PR.Id = PRLI.PriceItem_Id ");
+                selectQueryBuilder.Append("WHERE TDR.[UserName] = @UserName AND TDR.[Today] = @Today ");
+
+                var selectQuery = connection.CreateCommand();
+                selectQuery.CommandText = selectQueryBuilder.ToString();
+                selectQuery.Parameters.AddWithValue("Warehouse", warehouse);
+                selectQuery.Parameters.AddWithValue("UserName", userName);
+                selectQuery.Parameters.AddWithValue("Today", now.Date);
+
+                var reader = selectQuery.ExecuteReader();
+                while (reader.Read())
+                {
+                    preTotalRealizationItems.Add(new TodayRealizationItem()
+                    {
+                        //Id = reader.GetInt32(0),
+                        //Today = reader.GetDateTime(1),
+                        //UserName = reader.GetString(2),
+                        CatalogNumber = reader.GetString(0),
+                        Name = reader.GetString(1),
+                        IsDuplicate = reader.GetBoolean(2),
+                        UnitOfMeasure = reader.GetString(3),
+                        Price = reader.GetDecimal(4),
+                        Discount = reader.GetDecimal(5),
+                        Count = reader.GetDecimal(6),
+                        Amount = reader.GetDecimal(7),
+                        Remainders = reader.GetDecimal(8),
+                        SaleItem_Id = reader.GetInt64(9),
+                        IsInDebt = reader.GetBoolean(10),
+                        PriceListName = reader.GetString(11),
+                        SaledTime = reader.GetString(12),
+                        SalesNumber = reader.GetString(13),
+                        WholePrice = reader.GetDecimal(14),
+                        SoldCount = reader.GetDecimal(15),
+                        Customer = reader.GetString(16)
+                    });
+                }
+            }
+            foreach (var preTotalRealizationItem in preTotalRealizationItems)
+            {
+                if (refundedItems.ContainsKey((int) preTotalRealizationItem.SaleItem_Id))
+                {
+                    var findedRefund = refundedItems[(int) preTotalRealizationItem.SaleItem_Id];
+                    preTotalRealizationItem.Count -= findedRefund;
+                    preTotalRealizationItem.Amount = preTotalRealizationItem.Count*preTotalRealizationItem.Price;
+                }
+            }
+            var q = from p in preTotalRealizationItems
+                group p by new {p.CatalogNumber, p.Name, p.IsDuplicate, p.UnitOfMeasure, 
+                    p.Price, p.IsInDebt, p.PriceListName, p.SaledTime, p.SalesNumber, p.Customer, p.SaleItem_Id}
+                into grp
+                select new TodayRealizationItem()
+                {
+                    CatalogNumber = grp.Key.CatalogNumber,
+                    Name = grp.Key.Name,
+                    IsDuplicate = grp.Key.IsDuplicate,
+                    UnitOfMeasure = grp.Key.UnitOfMeasure,
+                    Price = grp.Key.Price,
+                    IsInDebt = grp.Key.IsInDebt,
+                    PriceListName = grp.Key.PriceListName,
+                    Discount = grp.Sum(s => s.Discount),
+                    Count = grp.Sum(s => s.Count),
+                    Amount = grp.Sum(s => s.Amount),
+                    Remainders = grp.Average(s => s.Remainders),
+                    SaledTime = grp.Key.SaledTime,
+                    SalesNumber = grp.Key.SalesNumber,
+                    WholePrice = grp.Average(s => s.WholePrice),
+                    SoldCount = grp.Sum(s => s.SoldCount),
+                    Customer = grp.Key.Customer,
+                    SaleItem_Id = grp.Key.SaleItem_Id
+                };
+
+            return q;
+
         }
 
         [HttpGet]
@@ -3106,7 +3260,158 @@ sb.Append("LEFT JOIN  (  ");
             //    }
             //});
         }
-            
+
+        [HttpGet]
+        public IEnumerable<RealizationItem> GetTodayTotalRealizationItemsRaw(string userName, string warehouse)
+        {
+
+            var context = new StoreDbContext();
+
+            var now = DateTimeHelper.GetNowKz();
+            var startDate = new DateTime(now.Year, now.Month, now.Day, 0, 0, 0);
+            var endDate = new DateTime(now.Year, now.Month, now.Day, 23, 59, 59);
+
+
+            //"SaleDocumentsPerDay,RefundItem"
+            var closedRefundPerDay = context.RefundsPerDayItems
+                .Include(i => i.SaleDocumentsPerDay)
+                .Include(i => i.RefundItem)
+                    .Where(
+                        w =>
+                            w.SaleDocumentsPerDay.SaleDocumentsDate >= startDate
+                            && w.SaleDocumentsPerDay.SaleDocumentsDate <= endDate
+                            && w.SaleDocumentsPerDay.IsClosed &&
+                            w.SaleDocumentsPerDay.Creator_Id == userName).Select(s => s.RefundItem.Id).ToList();
+
+
+            //"RefundDocument/SaleDocument,PriceItem/Gear,PriceItem/UnitOfMeasure,PriceItem/Remainders,PriceItem/Prices,SaleItem"
+            //var refundQuery =
+            //    context.RefundItems
+            //    .Include(i => i.RefundDocument.SaleDocument)
+            //    .Include(i => i.PriceItem.Gear)
+            //    .Include(i => i.PriceItem.UnitOfMeasure)
+            //    .Include(i => i.PriceItem.Remainders)
+            //    .Include(i => i.PriceItem.Prices)
+            //    .Include(i => i.PriceItem.PriceLists)
+            //    .Include(i => i.SaleItem)
+            //        .Where(
+            //            w =>
+            //                w.RefundDocument.RefundDate >= startDate
+            //                && w.RefundDocument.RefundDate <= endDate
+            //                //&& !closedRefundPerDay.Contains(w.Id)
+            //                && w.RefundDocument.Creator_Id == userName).ToList();
+
+
+
+            var refundQuery =
+                context.RefundDocuments
+                    .Where(
+                        w =>
+                            w.RefundDate >= startDate
+                            && w.RefundDate <= endDate
+                            && w.Creator_Id == userName)
+                    .SelectMany(s => s.RefundItems)
+                    .Include(i => i.RefundDocument)
+                    .Include(i => i.PriceItem.Gear)
+                    .Include(i => i.PriceItem.UnitOfMeasure)
+                    .Include(i => i.PriceItem.Remainders)
+                    .Include(i => i.PriceItem.Prices)
+                    .Include(i => i.PriceItem.PriceLists)
+                    .Include(i => i.SaleItem.SaleDocument)
+                        .Where(
+                            w =>
+                                w.RefundDocument.RefundDate >= startDate
+                                && w.RefundDocument.RefundDate <= endDate
+                                //&& !closedRefundPerDay.Contains(w.Id)
+                                && w.RefundDocument.Creator_Id == userName);
+
+
+            var refundItems = refundQuery.Where(w => !closedRefundPerDay.Contains(w.Id)).ToList();
+
+            //"SaleDocumentsPerDay,SaleItem"
+            var closedSalesPerDay =
+                context.SalesPerDayItems
+                .Include(i => i.SaleDocumentsPerDay)
+                .Include(i => i.SaleItem)
+                    .Where(
+                        w =>
+                            w.SaleDocumentsPerDay.SaleDocumentsDate >= startDate
+                            && w.SaleDocumentsPerDay.SaleDocumentsDate <= endDate
+                            && w.SaleDocumentsPerDay.IsClosed &&
+                            w.SaleDocumentsPerDay.Creator_Id == userName).Select(s => s.SaleItem.Id).ToList();
+
+            //"SaleDocument,PriceItem/PriceLists,PriceItem/Gear,PriceItem/UnitOfMeasure,PriceItem/Remainders,PriceItem/Prices"
+            var salesQuery =
+                context.SaleItems
+                    .Include(i => i.SaleDocument)
+                    .Include(i => i.PriceItem.PriceLists)
+                    .Include(i => i.PriceItem.Gear)
+                    .Include(i => i.PriceItem.UnitOfMeasure)
+                    .Include(i => i.PriceItem.Remainders)
+                    .Include(i => i.PriceItem.Prices)
+                    .Include(i => i.PriceItem.PriceLists)
+                    .Where(
+                        w =>
+                            w.SaleDocument.SaleDate >= startDate
+                            && w.SaleDocument.SaleDate <= endDate
+                            && !w.SaleDocument.IsOrder
+                            //&& !closedSalesPerDay.Contains(w.Id)
+                            && w.SaleDocument.Creator_Id == userName).ToList();
+
+            var salesItems = salesQuery.Where(w => !closedSalesPerDay.Contains(w.Id)).ToList();
+            var realization = new List<RealizationItem>();
+            salesItems.ForEach(s =>
+            {
+
+
+                var remainders = 0;
+                var rems =
+                    s.PriceItem.Remainders.Where(w => w.Warehouse_Id == warehouse)
+                        .FirstOrDefault();
+                if (rems != null)
+                    remainders = (int)rems.Amount;
+
+                var itemRefunds =
+                    refundItems.Where(wh => wh.SaleItem_Id == s.Id && wh.RefundDocument.SaleDocument.IsInDebt == true)
+                        .Sum(sum => sum.Count);
+
+
+                var count = s.Count - itemRefunds;
+                if (count != 0)
+                {
+                    realization.Add(new RealizationItem()
+                    {
+
+                        CatalogNumber = s.PriceItem.Gear.CatalogNumber,
+                        IsDuplicate = s.PriceItem.Gear.IsDuplicate ? "*" : "",
+                        Name = s.PriceItem.Gear.Name,
+                        Price = (int)s.Price,
+                        Remainders = remainders,
+                        SoldCount = (int)count,
+                        Uom = s.PriceItem.UnitOfMeasure.Name,
+                        WholePrice = (int)s.PriceItem.Prices.OrderByDescending(o => o.PriceDate).First().Price,
+                        //Amount = (int)((s.Price * count) - s.Discount),
+                        Amount = (int)((s.Price - (s.Discount / s.Count)) * count),
+                        //AmountWithoutDebt = amouuntWithoutDebt,
+                        //AmountWithoutDebtProfit = amouuntWithoutDebt - amountWholesalePriceWithoutDebt,
+                        Discount = (int)s.Discount,
+                        SaleItemData = s,
+                        Customer = s.SaleDocument.IsInDebt ? s.SaleDocument.Customer_Name : "",
+                        //DebtDischarge = s.SaleDocument.IsInDebt ? debtDisc : 0,
+                        IsInDebt = s.SaleDocument.IsInDebt,
+                        PriceListName = s.PriceItem.PriceLists.First().Name,
+                        SaledDate = s.SaleDocument.SaleDate.ToString("T"),
+                        SaledNumber = s.SaleDocument.Number,
+                        SaledCount = (int)s.Count,
+
+                    });
+                }
+            });
+
+            return realization;
+
+        }
+        
         [HttpGet]
         public IEnumerable<RefundItem> GetTodayRefundItems(string userName)
         {
@@ -3167,6 +3472,250 @@ sb.Append("LEFT JOIN  (  ");
             return refundItems;
         }
 
+        [HttpGet]
+        public TodayRefundsTotalItem GetTodayRefundTotals(string userName)
+        {
+            TodayRefundsTotalItem result = null;
+
+            using (var connection = GetConnection())
+            {
+                connection.Open();
+
+                var query = new StringBuilder();
+                query.Append("SELECT SUM([Total]) ");
+                query.Append(",SUM([TotalByBuy]) ");
+                query.Append("FROM [dbo].[TodayRefundsTotals] ");
+                query.Append("WHERE [UserName] = @UserName AND [Today] = @Today ");
+                query.Append("GROUP BY [UserName] ");
+
+                var command = connection.CreateCommand();
+                command.CommandText = query.ToString();
+                command.Parameters.AddWithValue("UserName", userName);
+                command.Parameters.AddWithValue("Today", DateTimeHelper.GetNowKz().Date);
+
+                var reader = command.ExecuteReader();
+                if (reader.HasRows)
+                { 
+                    reader.Read();
+                    result = new TodayRefundsTotalItem();
+                    result.Total = reader.GetDecimal(0);
+                    result.TotalByBuy = reader.GetDecimal(1);
+                }
+
+            }
+
+            return result;
+        }
+
+        [HttpGet]
+        public IEnumerable<TodayRefundsTotal> GetTodayRefundTotalsByPriceListName(string userName)
+        {
+            List<TodayRefundsTotal> result = new List<TodayRefundsTotal>();
+            using (var connection = GetConnection())
+            {
+                connection.Open();
+
+                var query = new StringBuilder();
+                query.Append("SELECT [Total]");
+                query.Append(",[TotalByBuy] ");
+                query.Append(",[PriceListName] ");
+                query.Append("FROM [dbo].[TodayRefundsTotals] ");
+                query.Append("WHERE [UserName] = @UserName AND [Today] = @Today ");
+
+                var command = connection.CreateCommand();
+                command.CommandText = query.ToString();
+                command.Parameters.AddWithValue("UserName", userName);
+                command.Parameters.AddWithValue("Today", DateTimeHelper.GetNowKz().Date);
+
+                var reader = command.ExecuteReader();
+                while (reader.Read())
+                {
+                    result.Add(new TodayRefundsTotal()
+                    {
+                        Total = reader.GetDecimal(0),
+                        TotalByBuy = reader.GetDecimal(1),
+                        PriceListName = reader.GetString(2)
+                    });
+                }
+            }
+
+            return result;
+        }
+        
+        [HttpGet]
+        public Dictionary<int, decimal> GetTodayRefundItemsDictionary(string userName)
+        {
+            Dictionary<int, decimal> result = new Dictionary<int, decimal>();
+
+            var now = DateTimeHelper.GetNowKz();
+            var startDate = new DateTime(now.Year, now.Month, now.Day, 0, 0, 0);
+            var endDate = new DateTime(now.Year, now.Month, now.Day, 23, 59, 59);
+
+            using (var connection = GetConnection())
+            {
+                connection.Open();
+
+                var query = new StringBuilder();
+                query.Append("SELECT [SaleItemId] ");
+                query.Append(",[Amount] ");
+                query.Append("FROM [dbo].[TodayRefundIds] ");
+                query.Append("WHERE [UserName] = @UserName AND [Today] BETWEEN @FromDate AND @EndDate ");
+
+                var command = connection.CreateCommand();
+                command.CommandText = query.ToString();
+                command.Parameters.AddWithValue("UserName", userName);
+                command.Parameters.AddWithValue("FromDate", startDate);
+                command.Parameters.AddWithValue("EndDate", endDate);
+
+                var reader = command.ExecuteReader();
+                while (reader.Read())
+                {
+                    result.Add(reader.GetInt32(0), reader.GetDecimal(1));
+                }
+            }
+
+            return result;
+        }
+
+        public Dictionary<int, decimal> GetTodayRefundInDebtsItemsDictionary(string userName)
+        {
+            Dictionary<int, decimal> result = new Dictionary<int, decimal>();
+
+            var now = DateTimeHelper.GetNowKz();
+            var startDate = new DateTime(now.Year, now.Month, now.Day, 0, 0, 0);
+            var endDate = new DateTime(now.Year, now.Month, now.Day, 23, 59, 59);
+
+            using (var connection = GetConnection())
+            {
+                connection.Open();
+
+                var query = new StringBuilder();
+                query.Append("SELECT [SaleItemId] ");
+                query.Append(",[Amount] ");
+                query.Append("FROM [dbo].[TodayRefundInDebtsIds] ");
+                query.Append("WHERE [UserName] = @UserName AND [Today] BETWEEN @FromDate AND @EndDate ");
+
+                var command = connection.CreateCommand();
+                command.CommandText = query.ToString();
+                command.Parameters.AddWithValue("UserName", userName);
+                command.Parameters.AddWithValue("FromDate", startDate);
+                command.Parameters.AddWithValue("EndDate", endDate);
+
+                var reader = command.ExecuteReader();
+                while (reader.Read())
+                {
+                    result.Add(reader.GetInt32(0), reader.GetDecimal(1));
+                }
+            }
+
+            return result;
+        }
+
+        [HttpGet]
+        public IEnumerable<int> GetTodayRefundedSalesItemIds(string userName)
+        {
+            var now = DateTimeHelper.GetNowKz();
+            var startDate = new DateTime(now.Year, now.Month, now.Day, 0, 0, 0);
+            var endDate = new DateTime(now.Year, now.Month, now.Day, 23, 59, 59);
+
+            //var closedRefundItems = GetClosedRefundItemsIds(startDate, endDate, userName);
+
+            List<int> result = new List<int>();
+
+            using (var connection = GetConnection())
+            {
+                connection.Open();
+
+                var query = new StringBuilder();
+                query.Append("SELECT SI.Id ");
+                query.Append("FROM [dbo].[RefundDocuments] RD ");
+                query.Append("RIGHT JOIN [dbo].[RefundItems] RI ON RD.Id = RI.RefundDocument_Id ");
+                query.Append("JOIN [dbo].[SaleItems] SI ON RI.SaleItem_Id = SI.Id ");
+                query.Append("WHERE RD.RefundDate BETWEEN @FromDate AND @EndDate AND RD.Creator_Id = @UserName ");
+
+                var command = connection.CreateCommand();
+                command.CommandText = query.ToString();
+                command.Parameters.AddWithValue("FromDate", startDate);
+                command.Parameters.AddWithValue("EndDate", endDate);
+                command.Parameters.AddWithValue("UserName", userName);
+
+                var reader = command.ExecuteReader();
+                while (reader.Read())
+                {
+                    result.Add(reader.GetInt32(0));
+                }
+            }
+
+            return result;
+
+        }
+
+        [HttpGet]
+        public IEnumerable<TodayRealizationsTotal> GetTodayRecipeTotalsByPriceListName(string userName)
+        {
+            List<TodayRealizationsTotal> result = new List<TodayRealizationsTotal>();
+            using (var connection = GetConnection())
+            {
+                connection.Open();
+
+                var query = new StringBuilder();
+                query.Append("SELECT [Total]");
+                query.Append(",[TotalByBuy] ");
+                query.Append(",[PriceListName] ");
+                query.Append("FROM [dbo].[TodayRealizationsTotals] ");
+                query.Append("WHERE [UserName] = @UserName AND [Today] = @Today ");
+
+                var command = connection.CreateCommand();
+                command.CommandText = query.ToString();
+                command.Parameters.AddWithValue("UserName", userName);
+                command.Parameters.AddWithValue("Today", DateTimeHelper.GetNowKz().Date);
+
+                var reader = command.ExecuteReader();
+                while (reader.Read())
+                {
+                    result.Add(new TodayRealizationsTotal()
+                    {
+                        Total = reader.GetDecimal(0),
+                        TotalByBuy = reader.GetDecimal(1),
+                        PriceListName = reader.GetString(2)
+                    });
+                }
+            }
+
+            return result;
+        }
+
+        private IEnumerable<int> GetClosedRefundItemsIds(DateTime fromDate, DateTime toDate, string userName)
+        {
+            List<int> result = new List<int>();
+
+            using (var connection = GetConnection())
+            {
+                connection.Open();
+
+                var query = new StringBuilder();
+                query.Append("SELECT [RefundItem_Id] ");
+                query.Append("FROM [dbo].[RefundsPerDayItems] RFDI ");
+                query.Append("JOIN [dbo].[RefundItems] RFI ON RFDI.RefundItem_Id = RFI.Id ");
+                query.Append("JOIN [dbo].[SaleDocumentsPerDays] SLDD ON RFDI.SaleDocumentsPerDay_Id = SLDD.Id ");
+                query.Append("WHERE SLDD.SaleDocumentsDate BETWEEN @FromDate AND @EndDate AND SLDD.IsClosed = 1 AND SLDD.Creator_Id = @UserName ");
+
+                var command = connection.CreateCommand();
+                command.CommandText = query.ToString();
+                command.Parameters.AddWithValue("FromDate", fromDate);
+                command.Parameters.AddWithValue("EndDate", toDate);
+                command.Parameters.AddWithValue("UserName", userName);
+
+                var reader = command.ExecuteReader();
+                while (reader.Read())
+                {
+                    result.Add(reader.GetInt32(0));
+                }
+            }
+
+            return result;
+        }
+            
         [HttpGet]
         public IEnumerable<RefundItem> GetRefundItemsByDate(string from, string to, string userName)
         {
@@ -3257,6 +3806,27 @@ sb.Append("LEFT JOIN  (  ");
                     }
                     context.SaveChanges();
                     tr.Commit();
+
+                    Task.Run(() =>
+                    {
+                        RemoveTodayRealizationItems(saleDocumentsPerDay.Creator_Id);
+                    });
+                    Task.Run(() =>
+                    {
+                        RemoveTodayRealizationTotal(saleDocumentsPerDay.Creator_Id);
+                    });
+                    Task.Run(() =>
+                    {
+                        RemoveTodayRefundsIds(saleDocumentsPerDay.Creator_Id);
+                    });
+                    Task.Run(() =>
+                    {
+                        RemoveTodayRefundInDebtsIds(saleDocumentsPerDay.Creator_Id);
+                    });
+                    Task.Run(() =>
+                    {
+                        RemoveTodayRefundTotal(saleDocumentsPerDay.Creator_Id);
+                    });
                 }
                 catch (Exception exception)
                 {
@@ -3270,6 +3840,137 @@ sb.Append("LEFT JOIN  (  ");
                 Content = new StringContent(saleDocumentsPerDay.Id.ToString())
             };
         }
+        private void RemoveTodayRealizationItems(string userName)
+        {
+            using (var connection = GetConnection())
+            {
+                try
+                {
+                    connection.Open();
+
+                    var removeQueryBuilder = new StringBuilder();
+                    removeQueryBuilder.Append("DELETE FROM [dbo].[TodayRealizationItems] ");
+                    removeQueryBuilder.Append("WHERE [UserName] = @UserName AND [Today] = @Today ");
+
+                    var removeQuery = connection.CreateCommand();
+                    removeQuery.CommandText = removeQueryBuilder.ToString();
+                    removeQuery.Parameters.AddWithValue("UserName", userName);
+                    removeQuery.Parameters.AddWithValue("Today", DateTimeHelper.GetNowKz().Date);
+
+                    removeQuery.ExecuteNonQuery();
+                }
+                catch (Exception exception)
+                {
+                    var logger = LogManager.GetLogger("*");
+                    logger.Error("Во время удаления таблицы TodayRealizationItems произошла ошибка\n" + exception.Message, exception);
+                }
+            }
+        }
+        private void RemoveTodayRealizationTotal(string userName)
+        {
+            using (var connection = GetConnection())
+            {
+                try
+                {
+                    connection.Open();
+
+                    var removeQueryBuilder = new StringBuilder();
+                    removeQueryBuilder.Append("DELETE FROM [dbo].[TodayRealizationsTotals] ");
+                    removeQueryBuilder.Append("WHERE [UserName] = @UserName AND [Today] = @Today ");
+
+                    var removeQuery = connection.CreateCommand();
+                    removeQuery.CommandText = removeQueryBuilder.ToString();
+                    removeQuery.Parameters.AddWithValue("UserName", userName);
+                    removeQuery.Parameters.AddWithValue("Today", DateTimeHelper.GetNowKz().Date);
+
+                    removeQuery.ExecuteNonQuery();
+                }
+                catch (Exception exception)
+                {
+                    var logger = LogManager.GetLogger("*");
+                    logger.Error("Во время удаления таблицы TodayRealizationsTotals произошла ошибка\n" + exception.Message, exception);
+                }
+            }
+        }
+        private void RemoveTodayRefundsIds(string userName)
+        {
+            using (var connection = GetConnection())
+            {
+                try
+                {
+                    connection.Open();
+
+                    var removeQueryBuilder = new StringBuilder();
+                    removeQueryBuilder.Append("DELETE FROM [dbo].[TodayRefundIds] ");
+                    removeQueryBuilder.Append("WHERE [UserName] = @UserName AND [Today] = @Today ");
+
+                    var removeQuery = connection.CreateCommand();
+                    removeQuery.CommandText = removeQueryBuilder.ToString();
+                    removeQuery.Parameters.AddWithValue("UserName", userName);
+                    removeQuery.Parameters.AddWithValue("Today", DateTimeHelper.GetNowKz().Date);
+
+                    removeQuery.ExecuteNonQuery();
+                }
+                catch (Exception exception)
+                {
+                    var logger = LogManager.GetLogger("*");
+                    logger.Error("Во время удаления таблицы TodayRefundIds произошла ошибка\n" + exception.Message, exception);
+                }
+            }
+        }
+        private void RemoveTodayRefundInDebtsIds(string userName)
+        {
+            using (var connection = GetConnection())
+            {
+                try
+                {
+                    connection.Open();
+
+                    var removeQueryBuilder = new StringBuilder();
+                    removeQueryBuilder.Append("DELETE FROM [dbo].[TodayRefundInDebtsIds] ");
+                    removeQueryBuilder.Append("WHERE [UserName] = @UserName AND [Today] = @Today ");
+
+                    var removeQuery = connection.CreateCommand();
+                    removeQuery.CommandText = removeQueryBuilder.ToString();
+                    removeQuery.Parameters.AddWithValue("UserName", userName);
+                    removeQuery.Parameters.AddWithValue("Today", DateTimeHelper.GetNowKz().Date);
+
+                    removeQuery.ExecuteNonQuery();
+                }
+                catch (Exception exception)
+                {
+                    var logger = LogManager.GetLogger("*");
+                    logger.Error("Во время удаления таблицы TodayRefundInDebtsIds произошла ошибка\n" + exception.Message, exception);
+                }
+            }
+        }
+        private void RemoveTodayRefundTotal(string userName)
+        {
+            using (var connection = GetConnection())
+            {
+                try
+                {
+                    connection.Open();
+
+                    var removeQueryBuilder = new StringBuilder();
+                    removeQueryBuilder.Append("DELETE FROM [dbo].[TodayRefundsTotals] ");
+                    removeQueryBuilder.Append("WHERE [UserName] = @UserName AND [Today] = @Today ");
+
+                    var removeQuery = connection.CreateCommand();
+                    removeQuery.CommandText = removeQueryBuilder.ToString();
+                    removeQuery.Parameters.AddWithValue("UserName", userName);
+                    removeQuery.Parameters.AddWithValue("Today", DateTimeHelper.GetNowKz().Date);
+
+                    removeQuery.ExecuteNonQuery();
+                }
+                catch (Exception exception)
+                {
+                    var logger = LogManager.GetLogger("*");
+                    logger.Error("Во время удаления таблицы TodayRefundsTotals произошла ошибка\n" + exception.Message, exception);
+                }
+            }
+        }
+
 
         [HttpGet]
         public IEnumerable<SaleDocumentsPerDay> GetSaleDocumentsPerDays(string from, string to, string userName = "")
@@ -3408,6 +4109,21 @@ sb.Append("LEFT JOIN  (  ");
                     tr.Commit();
                     logger.Info("-------------------------------------------------------------------------");
 
+                    if (!saleDocument.IsOrder)
+                    {
+                        Task.Run(() =>
+                        {
+                            SaveTodayRecipeItemsShadow(saleDocument);
+                        });
+                        if (!saleDocument.IsInDebt)
+                        {
+                            Task.Run(() =>
+                            {
+                                SaveTodayTotalRecipeShadow(saleDocument);
+                            });
+                        }
+                    }
+
                 }
                 catch (Exception exception)
                 {
@@ -3420,6 +4136,252 @@ sb.Append("LEFT JOIN  (  ");
             {
                 Content = new StringContent(saleDocument.Id.ToString())
             };
+        }
+        private void SaveTodayRecipeItemsShadow(SaleDocument saleDocument)
+        {
+            StoreDbContext context = new StoreDbContext(); 
+            var loadedDocument = context.SaleDocuments.Where(d => d.Id == saleDocument.Id)
+                .Include("SaleItems.PriceItem.PriceLists")
+                .Include("SaleItems.PriceItem.Prices")
+                .FirstOrDefault();
+
+            using (var connection = GetConnection())
+            {
+                //SqlTransaction transaction = null;
+                try
+                {
+                    connection.Open();
+
+                    //using (transaction = connection.BeginTransaction())
+                    //{
+
+                    foreach (var saleItem in loadedDocument.SaleItems)
+                    {
+                        var insertQueryBuilder = new StringBuilder();
+                        insertQueryBuilder.Append("INSERT INTO [dbo].[TodayRealizationItems] ");
+                        insertQueryBuilder.Append("([Today] ");
+                        insertQueryBuilder.Append(",[UserName] ");
+                        insertQueryBuilder.Append(",[CatalogNumber] ");
+                        insertQueryBuilder.Append(",[Name] ");
+                        insertQueryBuilder.Append(",[IsDuplicate] ");
+                        insertQueryBuilder.Append(",[UnitOfMeasure] ");
+                        insertQueryBuilder.Append(",[Price] ");
+                        insertQueryBuilder.Append(",[Discount] ");
+                        insertQueryBuilder.Append(",[Count] ");
+                        insertQueryBuilder.Append(",[Amount] ");
+                        insertQueryBuilder.Append(",[Remainders] ");
+                        insertQueryBuilder.Append(",[SaleItem_Id] ");
+                        insertQueryBuilder.Append(",[PriceItem_Id] ");
+                        insertQueryBuilder.Append(",[WholePrice] ");
+                        insertQueryBuilder.Append(",[SoldCount] ");
+                        insertQueryBuilder.Append(",[IsInDebt] ");
+                        insertQueryBuilder.Append(",[Customer] ");
+                        insertQueryBuilder.Append(",[PriceListName] ");
+                        insertQueryBuilder.Append(",[SaledTime] ");
+                        insertQueryBuilder.Append(",[SalesNumber]) ");
+                        insertQueryBuilder.Append("VALUES ");
+                        insertQueryBuilder.Append("(@Today ");
+                        insertQueryBuilder.Append(",@UserName ");
+                        insertQueryBuilder.Append(",@CatalogNumber ");
+                        insertQueryBuilder.Append(",@Name ");
+                        insertQueryBuilder.Append(",@IsDuplicate ");
+                        insertQueryBuilder.Append(",@UnitOfMeasure ");
+                        insertQueryBuilder.Append(",@Price ");
+                        insertQueryBuilder.Append(",@Discount ");
+                        insertQueryBuilder.Append(",@Count ");
+                        insertQueryBuilder.Append(",@Amount ");
+                        insertQueryBuilder.Append(",@Remainders ");
+                        insertQueryBuilder.Append(",@SaleItem_Id ");
+                        insertQueryBuilder.Append(",@PriceItem_Id ");
+                        insertQueryBuilder.Append(",@WholePrice ");
+                        insertQueryBuilder.Append(",@SoldCount ");
+                        insertQueryBuilder.Append(",@IsInDebt ");
+                        insertQueryBuilder.Append(",@Customer ");
+                        insertQueryBuilder.Append(",@PriceListName ");
+                        insertQueryBuilder.Append(",@SaledTime ");
+                        insertQueryBuilder.Append(",@SalesNumber) ");
+
+                        var insertCommand = connection.CreateCommand();
+                        insertCommand.CommandText = insertQueryBuilder.ToString();
+                        insertCommand.Parameters.AddWithValue("Today", DateTimeHelper.GetNowKz().Date);
+                        insertCommand.Parameters.AddWithValue("UserName", saleDocument.Creator_Id);
+                        insertCommand.Parameters.AddWithValue("CatalogNumber", saleItem.CatalogNumber);
+                        insertCommand.Parameters.AddWithValue("Name", saleItem.Name);
+                        insertCommand.Parameters.AddWithValue("IsDuplicate", saleItem.IsDuplicate);
+                        insertCommand.Parameters.AddWithValue("UnitOfMeasure", saleItem.PriceItem.Uom_Id);
+                        insertCommand.Parameters.AddWithValue("Price", saleItem.Price);
+                        insertCommand.Parameters.AddWithValue("Discount", saleItem.Discount);
+                        insertCommand.Parameters.AddWithValue("Count", saleItem.Count);
+                        insertCommand.Parameters.AddWithValue("Amount", saleItem.Amount);
+                        insertCommand.Parameters.AddWithValue("Remainders", 0);
+                        insertCommand.Parameters.AddWithValue("SaleItem_Id", saleItem.Id);
+                        insertCommand.Parameters.AddWithValue("PriceItem_Id", saleItem.PriceItem_Id);
+                        insertCommand.Parameters.AddWithValue("WholePrice", saleItem.PriceItem.Prices.OrderByDescending(o => o.PriceDate).First().Price);
+                        insertCommand.Parameters.AddWithValue("SoldCount", saleItem.Count);
+                        insertCommand.Parameters.AddWithValue("IsInDebt", saleDocument.IsInDebt);
+                        insertCommand.Parameters.AddWithValue("Customer", saleDocument.Customer_Name);
+                        insertCommand.Parameters.AddWithValue("PriceListName", saleItem.PriceItem.PriceLists.First().Name);
+                        insertCommand.Parameters.AddWithValue("SaledTime", saleDocument.SaleDate.ToString("T"));
+                        insertCommand.Parameters.AddWithValue("SalesNumber", saleDocument.Number);
+
+                        insertCommand.ExecuteNonQuery();
+                    }
+
+                    //    transaction.Commit();
+                    //}
+                }
+                catch (Exception exception)
+                {
+                    //if(transaction != null) transaction.Rollback();
+
+                    var logger = LogManager.GetLogger("*");
+                    logger.Error("Во время записи в TodayRealizationItems произошла ошибка:\n" + exception.Message, exception);
+                }
+
+            }
+        }
+        private void SaveTodayTotalRecipeShadow(SaleDocument document)
+        {
+            StoreDbContext context = new StoreDbContext();
+            var loadedDocument = context.SaleDocuments.Where(d => d.Id == document.Id)
+                .Include("SaleItems.PriceItem.PriceLists")
+                .Include("SaleItems.PriceItem.Prices")
+                .FirstOrDefault();
+
+            using (var connection = GetConnection())
+            {
+                try
+                {
+
+                    connection.Open();
+
+                    var saleItems = loadedDocument.SaleItems.Select(s => s);
+                    var groupedPriceLists = saleItems.GroupBy(g => g.PriceItem.PriceLists.First().Name);
+
+                    foreach (var groupedItem in groupedPriceLists)
+                    {
+
+                        var queryBuilder = new StringBuilder();
+                        queryBuilder.Append("SELECT Count([UserName]) ");
+                        queryBuilder.Append("FROM [dbo].[TodayRealizationsTotals] ");
+                        queryBuilder.Append(
+                            "WHERE [UserName] = @UserName AND [Today] = @Today AND [PriceListName] = @PriceListName");
+
+                        var command = connection.CreateCommand();
+                        command.CommandText = queryBuilder.ToString();
+                        command.Parameters.AddWithValue("UserName", loadedDocument.Creator_Id);
+                        command.Parameters.AddWithValue("Today", DateTimeHelper.GetNowKz().Date);
+                        command.Parameters.AddWithValue("PriceListName", groupedItem.Key);
+
+                        if (Convert.ToInt32(command.ExecuteScalar()) == 0)
+                        {
+                            var insertQueryBuilder = new StringBuilder();
+                            insertQueryBuilder.Append("INSERT INTO [dbo].[TodayRealizationsTotals] ");
+                            insertQueryBuilder.Append("([UserName] ");
+                            insertQueryBuilder.Append(",[Today] ");
+                            insertQueryBuilder.Append(",[Total] ");
+                            insertQueryBuilder.Append(",[TotalByBuy] ");
+                            insertQueryBuilder.Append(",[PriceListName]) ");
+                            insertQueryBuilder.Append("VALUES ");
+                            insertQueryBuilder.Append("(@UserName ");
+                            insertQueryBuilder.Append(",@Today ");
+                            insertQueryBuilder.Append(",@Total ");
+                            insertQueryBuilder.Append(",@TotalByBuy ");
+                            insertQueryBuilder.Append(",@PriceListName) ");
+
+                            var insertCommand = connection.CreateCommand();
+                            insertCommand.CommandText = insertQueryBuilder.ToString();
+                            insertCommand.Parameters.AddWithValue("UserName", loadedDocument.Creator_Id);
+                            insertCommand.Parameters.AddWithValue("Today", DateTimeHelper.GetNowKz().Date);
+                            insertCommand.Parameters.AddWithValue("PriceListName", groupedItem.Key);
+                            insertCommand.Parameters.AddWithValue("Total", groupedItem.Sum(a => a.Amount));
+                            insertCommand.Parameters.AddWithValue("TotalByBuy", groupedItem.Sum(s =>
+                            {
+                                //context.Entry(s).Reference(r => r.PriceItem).Load();
+                                //context.Entry(s.PriceItem).Collection(c => c.Prices).Load();
+
+                                var firstOrDefault =
+                                    s.PriceItem.Prices.Where(p => p.PriceDate <= loadedDocument.SaleDate)
+                                        .OrderByDescending(o => o.PriceDate)
+                                        .FirstOrDefault();
+                                if (firstOrDefault != null)
+                                    return s.Count *
+                                           (firstOrDefault.Price);
+                                return s.Amount;
+                            }));
+
+                            insertCommand.ExecuteNonQuery();
+                        }
+                        else
+                        {
+
+                            var selectTotalQueryBuilder = new StringBuilder();
+                            selectTotalQueryBuilder.Append("SELECT [Total] ");
+                            selectTotalQueryBuilder.Append(",[TotalByBuy] ");
+                            selectTotalQueryBuilder.Append("FROM [dbo].[TodayRealizationsTotals] ");
+                            selectTotalQueryBuilder.Append("WHERE [UserName] = @UserName AND [Today] = @Today AND [PriceListName] = @PriceListName");
+
+                            var selectTotalCommand = connection.CreateCommand();
+                            selectTotalCommand.CommandText = selectTotalQueryBuilder.ToString();
+                            selectTotalCommand.Parameters.AddWithValue("UserName", loadedDocument.Creator_Id);
+                            selectTotalCommand.Parameters.AddWithValue("Today", DateTimeHelper.GetNowKz().Date);
+                            selectTotalCommand.Parameters.AddWithValue("PriceListName", groupedItem.Key);
+
+
+                            var totalReader = selectTotalCommand.ExecuteReader();
+                            totalReader.Read();
+
+                            var updateQueryBuilder = new StringBuilder();
+                            updateQueryBuilder.Append("UPDATE [dbo].[TodayRealizationsTotals] ");
+                            updateQueryBuilder.Append("SET [Total] = @Total ");
+                            updateQueryBuilder.Append(",[TotalByBuy] = @TotalByBuy ");
+                            updateQueryBuilder.Append("WHERE [UserName] = @UserName AND [Today] = @Today AND [PriceListName] = @PriceListName ");
+
+                            var updateCommand = connection.CreateCommand();
+                            updateCommand.CommandText = updateQueryBuilder.ToString();
+                            updateCommand.Parameters.AddWithValue("UserName", loadedDocument.Creator_Id);
+                            updateCommand.Parameters.AddWithValue("Today", DateTimeHelper.GetNowKz().Date);
+                            updateCommand.Parameters.AddWithValue("PriceListName", groupedItem.Key);
+
+                            updateCommand.Parameters.AddWithValue("Total", Convert.ToDecimal(totalReader[0]) +
+                                                                           groupedItem.Sum(a => a.Amount));
+
+                            updateCommand.Parameters.AddWithValue("TotalByBuy", Convert.ToDecimal(totalReader[1]) +
+                                                                                groupedItem.Sum(s =>
+                                                                                {
+                                                                                    //context.Entry(s)
+                                                                                    //    .Reference(r => r.PriceItem)
+                                                                                    //    .Load();
+                                                                                    //context.Entry(s.PriceItem)
+                                                                                    //    .Collection(c => c.Prices)
+                                                                                    //    .Load();
+
+                                                                                    var firstOrDefault =
+                                                                                        s.PriceItem.Prices.Where(
+                                                                                            p =>
+                                                                                                p.PriceDate <=
+                                                                                                loadedDocument
+                                                                                                    .SaleDate)
+                                                                                            .OrderByDescending(
+                                                                                                o => o.PriceDate)
+                                                                                            .FirstOrDefault();
+                                                                                    if (firstOrDefault != null)
+                                                                                        return s.Count *
+                                                                                               (firstOrDefault.Price);
+                                                                                    return s.Amount;
+                                                                                }));
+
+                            updateCommand.ExecuteNonQuery();
+
+                        }
+                    }
+                }
+                catch (Exception exception)
+                {
+                    var logger = LogManager.GetLogger("*");
+                    logger.Error("Во время записи в TodayRealizationsTotals произошла ошибка:\n" + exception.Message, exception);
+                }
+            }
         }
 
         [HttpGet]
@@ -3502,11 +4464,11 @@ sb.Append("LEFT JOIN  (  ");
                                                           && w.PriceItem_Id == item.PriceItem_Id)
                                 .FirstOrDefault();
 
-                        if (rem != null)
-                        {
+                        //if (rem != null)
+                        //{
                             rem.Amount += item.Count;
                             rem.RemainderDate = DateTimeHelper.GetNowKz();
-                        }
+                        //}
                         rems.Add(rem);
 
                         context.RefundItems.Add(item);
@@ -3530,14 +4492,379 @@ sb.Append("LEFT JOIN  (  ");
                 }
                 catch (Exception exception)
                 {
+                    var logger = LogManager.GetLogger("*");
+                    logger.Error("Во время записи в RefundDocument произошла ошибка:\n" + exception.Message, exception);
+
                     tr.Rollback();
                     throw;
+                }
+                context.Entry(document).Reference("SaleDocument").Load();
+                if (!document.SaleDocument.IsInDebt)
+                {
+                    Task.Run(() =>
+                    {
+                        SaveTodayRefundTotalShadow(context, document);
+                    });
+                    Task.Run(() =>
+                    {
+                        SaveTodayRefundIdsShadow(document);
+                    });
+                }
+                else
+                {
+                    Task.Run(() =>
+                    {
+                        SaveTodayRefundInDebtsIdsShadow(document);
+                    });
                 }
             }
             return new HttpResponseMessage(HttpStatusCode.OK)
             {
                 Content = new StringContent(document.Id.ToString())
             };
+        }
+
+        private void SaveTodayRefundTotalShadow(StoreDbContext context, RefundDocument document)
+        {
+            var loadedDocument = context.RefundDocuments.Where(d => d.Id == document.Id)
+                .Include("RefundItems.PriceItem.PriceLists")
+                .Include("RefundItems.PriceItem.Prices")
+                .FirstOrDefault();
+
+            using (var connection = GetConnection())
+            {
+                try
+                {
+                
+                    connection.Open();
+
+                    var refundItems = loadedDocument.RefundItems.Select(s => s);
+                    var groupedPriceLists = refundItems.GroupBy(g => g.PriceItem.PriceLists.First().Name);
+
+                    foreach (var groupedItem in groupedPriceLists)
+                    {
+
+                        var queryBuilder = new StringBuilder();
+                        queryBuilder.Append("SELECT Count([UserName]) ");
+                        queryBuilder.Append("FROM [dbo].[TodayRefundsTotals] ");
+                        queryBuilder.Append(
+                            "WHERE [UserName] = @UserName AND [Today] = @Today AND [PriceListName] = @PriceListName");
+
+                        var command = connection.CreateCommand();
+                        command.CommandText = queryBuilder.ToString();
+                        command.Parameters.AddWithValue("UserName", loadedDocument.Creator_Id);
+                        command.Parameters.AddWithValue("Today", DateTimeHelper.GetNowKz().Date);
+                        command.Parameters.AddWithValue("PriceListName", groupedItem.Key);
+
+                        if (Convert.ToInt32(command.ExecuteScalar()) == 0)
+                        {
+                            var insertQueryBuilder = new StringBuilder();
+                            insertQueryBuilder.Append("INSERT INTO [dbo].[TodayRefundsTotals] ");
+                            insertQueryBuilder.Append("([UserName] ");
+                            insertQueryBuilder.Append(",[Today] ");
+                            insertQueryBuilder.Append(",[Total] ");
+                            insertQueryBuilder.Append(",[TotalByBuy] ");
+                            insertQueryBuilder.Append(",[PriceListName]) ");
+                            insertQueryBuilder.Append("VALUES ");
+                            insertQueryBuilder.Append("(@UserName ");
+                            insertQueryBuilder.Append(",@Today ");
+                            insertQueryBuilder.Append(",@Total ");
+                            insertQueryBuilder.Append(",@TotalByBuy ");
+                            insertQueryBuilder.Append(",@PriceListName) ");
+
+                            var insertCommand = connection.CreateCommand();
+                            insertCommand.CommandText = insertQueryBuilder.ToString();
+                            insertCommand.Parameters.AddWithValue("UserName", loadedDocument.Creator_Id);
+                            insertCommand.Parameters.AddWithValue("Today", DateTimeHelper.GetNowKz().Date);
+                            insertCommand.Parameters.AddWithValue("PriceListName", groupedItem.Key);
+                            insertCommand.Parameters.AddWithValue("Total", groupedItem.Sum(a => a.Amount));
+                            insertCommand.Parameters.AddWithValue("TotalByBuy", groupedItem.Sum(s =>
+                            {
+                                //context.Entry(s).Reference(r => r.PriceItem).Load();
+                                //context.Entry(s.PriceItem).Collection(c => c.Prices).Load();
+
+                                var firstOrDefault =
+                                    s.PriceItem.Prices.Where(p => p.PriceDate <= loadedDocument.RefundDate)
+                                        .OrderByDescending(o => o.PriceDate)
+                                        .FirstOrDefault();
+                                if (firstOrDefault != null)
+                                    return s.Count*
+                                           (firstOrDefault.Price);
+                                return s.Amount;
+                            }));
+
+                            insertCommand.ExecuteNonQuery();
+                        }
+                        else
+                        {
+
+                            var selectTotalQueryBuilder = new StringBuilder();
+                            selectTotalQueryBuilder.Append("SELECT [Total] ");
+                            selectTotalQueryBuilder.Append(",[TotalByBuy] ");
+                            selectTotalQueryBuilder.Append("FROM [dbo].[TodayRefundsTotals] ");
+                            selectTotalQueryBuilder.Append("WHERE [UserName] = @UserName AND [Today] = @Today AND [PriceListName] = @PriceListName");
+
+                            var selectTotalCommand = connection.CreateCommand();
+                            selectTotalCommand.CommandText = selectTotalQueryBuilder.ToString();
+                            selectTotalCommand.Parameters.AddWithValue("UserName", loadedDocument.Creator_Id);
+                            selectTotalCommand.Parameters.AddWithValue("Today", DateTimeHelper.GetNowKz().Date);
+                            selectTotalCommand.Parameters.AddWithValue("PriceListName", groupedItem.Key);
+
+
+                            var totalReader = selectTotalCommand.ExecuteReader();
+                            totalReader.Read();
+
+                            var updateQueryBuilder = new StringBuilder();
+                            updateQueryBuilder.Append("UPDATE [dbo].[TodayRefundsTotals] ");
+                            updateQueryBuilder.Append("SET [Total] = @Total ");
+                            updateQueryBuilder.Append(",[TotalByBuy] = @TotalByBuy ");
+                            updateQueryBuilder.Append("WHERE [UserName] = @UserName AND [Today] = @Today AND [PriceListName] = @PriceListName ");
+
+                            var updateCommand = connection.CreateCommand();
+                            updateCommand.CommandText = updateQueryBuilder.ToString();
+                            updateCommand.Parameters.AddWithValue("UserName", loadedDocument.Creator_Id);
+                            updateCommand.Parameters.AddWithValue("Today", DateTimeHelper.GetNowKz().Date);
+                            updateCommand.Parameters.AddWithValue("PriceListName", groupedItem.Key);
+
+                            updateCommand.Parameters.AddWithValue("Total", Convert.ToDecimal(totalReader[0]) +
+                                                                           groupedItem.Sum(a => a.Amount));
+
+                            updateCommand.Parameters.AddWithValue("TotalByBuy", Convert.ToDecimal(totalReader[1]) +
+                                                                                groupedItem.Sum(s =>
+                                                                                {
+                                                                                    //context.Entry(s)
+                                                                                    //    .Reference(r => r.PriceItem)
+                                                                                    //    .Load();
+                                                                                    //context.Entry(s.PriceItem)
+                                                                                    //    .Collection(c => c.Prices)
+                                                                                    //    .Load();
+
+                                                                                    var firstOrDefault =
+                                                                                        s.PriceItem.Prices.Where(
+                                                                                            p =>
+                                                                                                p.PriceDate <=
+                                                                                                loadedDocument
+                                                                                                    .RefundDate)
+                                                                                            .OrderByDescending(
+                                                                                                o => o.PriceDate)
+                                                                                            .FirstOrDefault();
+                                                                                    if (firstOrDefault != null)
+                                                                                        return s.Count*
+                                                                                               (firstOrDefault.Price);
+                                                                                    return s.Amount;
+                                                                                }));
+
+                            updateCommand.ExecuteNonQuery();
+
+                        }
+                    }
+                }
+                catch (Exception exception)
+                {
+                    var logger = LogManager.GetLogger("*");
+                    logger.Error("Во время записи в TodayRefundsTotals произошла ошибка:\n" + exception.Message, exception);
+                }
+            }
+        }
+
+        private void SaveTodayRefundIdsShadow(RefundDocument document)
+        {
+            using (var connection = GetConnection())
+            {
+                //SqlTransaction transaction = null;
+                try
+                {
+
+                    connection.Open();
+
+                    //using (transaction = connection.BeginTransaction())
+                    //{
+                        foreach (var refundItem in document.RefundItems)
+                        {
+                            var queryBuilder = new StringBuilder();
+                            queryBuilder.Append("SELECT COUNT([Id]) ");
+                            queryBuilder.Append("FROM [dbo].[TodayRefundIds] ");
+                            queryBuilder.Append("WHERE [SaleItemId] = @SaleItemId AND [Today] = @Today AND [UserName] = @UserName ");
+
+                            var command = connection.CreateCommand();
+                            command.CommandText = queryBuilder.ToString();
+                            command.Parameters.AddWithValue("SaleItemId", refundItem.SaleItem_Id);
+                            command.Parameters.AddWithValue("Today", DateTimeHelper.GetNowKz().Date);
+                            command.Parameters.AddWithValue("UserName", document.Creator_Id);
+
+                            //command.Transaction = transaction;
+
+                            if (Convert.ToInt32(command.ExecuteScalar()) == 0)
+                            {
+                                var insertQueryBuilder = new StringBuilder();
+                                insertQueryBuilder.Append("INSERT INTO [dbo].[TodayRefundIds] ");
+                                insertQueryBuilder.Append("([SaleItemId] ");
+                                insertQueryBuilder.Append(",[Today] ");
+                                insertQueryBuilder.Append(",[UserName] ");
+                                insertQueryBuilder.Append(",[Amount]) ");
+                                insertQueryBuilder.Append("VALUES ");
+                                insertQueryBuilder.Append("(@SaleItemId ");
+                                insertQueryBuilder.Append(",@Today ");
+                                insertQueryBuilder.Append(",@UserName ");
+                                insertQueryBuilder.Append(",@Amount) ");
+
+                                var insertCommand = connection.CreateCommand();
+                                insertCommand.CommandText = insertQueryBuilder.ToString();
+                                insertCommand.Parameters.AddWithValue("SaleItemId", refundItem.SaleItem_Id);
+                                insertCommand.Parameters.AddWithValue("Today", DateTimeHelper.GetNowKz().Date);
+                                insertCommand.Parameters.AddWithValue("UserName", document.Creator_Id);
+                                insertCommand.Parameters.AddWithValue("Amount", refundItem.Count);
+
+                                //insertCommand.Transaction = transaction;
+                                
+                                insertCommand.ExecuteNonQuery();
+                            }
+                            else
+                            {
+                                var selectTotalQueryBuilder = new StringBuilder();
+                                selectTotalQueryBuilder.Append("SELECT [Amount] ");
+                                selectTotalQueryBuilder.Append(",[Id] ");
+                                selectTotalQueryBuilder.Append("FROM [dbo].[TodayRefundIds] ");
+                                selectTotalQueryBuilder.Append("WHERE [SaleItemId] = @SaleItemId AND [Today] = @Today AND [UserName] = @UserName ");
+
+                                var selectTotalCommand = connection.CreateCommand();
+                                selectTotalCommand.CommandText = selectTotalQueryBuilder.ToString();
+                                selectTotalCommand.Parameters.AddWithValue("SaleItemId", refundItem.SaleItem_Id);
+                                selectTotalCommand.Parameters.AddWithValue("Today", DateTimeHelper.GetNowKz().Date);
+                                selectTotalCommand.Parameters.AddWithValue("UserName", document.Creator_Id);
+
+                                //selectTotalCommand.Transaction = transaction;
+
+                                var totalReader = selectTotalCommand.ExecuteReader();
+                                totalReader.Read();
+
+                                var updateQueryBuilder = new StringBuilder();
+                                updateQueryBuilder.Append("UPDATE [dbo].[TodayRefundIds] ");
+                                updateQueryBuilder.Append("SET [Amount] = @Amount ");
+                                updateQueryBuilder.Append("WHERE [Id] = @Id ");
+
+                                var updateCommand = connection.CreateCommand();
+                                updateCommand.CommandText = updateQueryBuilder.ToString();
+                                updateCommand.Parameters.AddWithValue("Id", totalReader.GetInt32(1));
+                                updateCommand.Parameters.AddWithValue("Amount", totalReader.GetDecimal(0) + refundItem.Count);
+
+                                //updateCommand.Transaction = transaction;
+
+                                updateCommand.ExecuteNonQuery();
+                            }
+                        }
+                    //    transaction.Commit();
+                    //}
+                }
+                catch (Exception exception)
+                {
+                    //if(transaction != null) transaction.Rollback();
+
+                    var logger = LogManager.GetLogger("*");
+                    logger.Error("Во время записи в TodayRefundsIds произошла ошибка:\n" + exception.Message, exception);
+                }
+
+            }
+        }
+
+        private void SaveTodayRefundInDebtsIdsShadow(RefundDocument document)
+        {
+            using (var connection = GetConnection())
+            {
+                //SqlTransaction transaction = null;
+                try
+                {
+
+                    connection.Open();
+
+                    //using (transaction = connection.BeginTransaction())
+                    //{
+                    foreach (var refundItem in document.RefundItems)
+                    {
+                        var queryBuilder = new StringBuilder();
+                        queryBuilder.Append("SELECT COUNT([Id]) ");
+                        queryBuilder.Append("FROM [dbo].[TodayRefundInDebtsIds] ");
+                        queryBuilder.Append("WHERE [SaleItemId] = @SaleItemId AND [Today] = @Today AND [UserName] = @UserName ");
+
+                        var command = connection.CreateCommand();
+                        command.CommandText = queryBuilder.ToString();
+                        command.Parameters.AddWithValue("SaleItemId", refundItem.SaleItem_Id);
+                        command.Parameters.AddWithValue("Today", DateTimeHelper.GetNowKz().Date);
+                        command.Parameters.AddWithValue("UserName", document.Creator_Id);
+
+                        //command.Transaction = transaction;
+
+                        if (Convert.ToInt32(command.ExecuteScalar()) == 0)
+                        {
+                            var insertQueryBuilder = new StringBuilder();
+                            insertQueryBuilder.Append("INSERT INTO [dbo].[TodayRefundInDebtsIds] ");
+                            insertQueryBuilder.Append("([SaleItemId] ");
+                            insertQueryBuilder.Append(",[Today] ");
+                            insertQueryBuilder.Append(",[UserName] ");
+                            insertQueryBuilder.Append(",[Amount]) ");
+                            insertQueryBuilder.Append("VALUES ");
+                            insertQueryBuilder.Append("(@SaleItemId ");
+                            insertQueryBuilder.Append(",@Today ");
+                            insertQueryBuilder.Append(",@UserName ");
+                            insertQueryBuilder.Append(",@Amount) ");
+
+                            var insertCommand = connection.CreateCommand();
+                            insertCommand.CommandText = insertQueryBuilder.ToString();
+                            insertCommand.Parameters.AddWithValue("SaleItemId", refundItem.SaleItem_Id);
+                            insertCommand.Parameters.AddWithValue("Today", DateTimeHelper.GetNowKz().Date);
+                            insertCommand.Parameters.AddWithValue("UserName", document.Creator_Id);
+                            insertCommand.Parameters.AddWithValue("Amount", refundItem.Count);
+
+                            //insertCommand.Transaction = transaction;
+
+                            insertCommand.ExecuteNonQuery();
+                        }
+                        else
+                        {
+                            var selectTotalQueryBuilder = new StringBuilder();
+                            selectTotalQueryBuilder.Append("SELECT [Amount] ");
+                            selectTotalQueryBuilder.Append(",[Id] ");
+                            selectTotalQueryBuilder.Append("FROM [dbo].[TodayRefundInDebtsIds] ");
+                            selectTotalQueryBuilder.Append("WHERE [SaleItemId] = @SaleItemId AND [Today] = @Today AND [UserName] = @UserName ");
+
+                            var selectTotalCommand = connection.CreateCommand();
+                            selectTotalCommand.CommandText = selectTotalQueryBuilder.ToString();
+                            selectTotalCommand.Parameters.AddWithValue("SaleItemId", refundItem.SaleItem_Id);
+                            selectTotalCommand.Parameters.AddWithValue("Today", DateTimeHelper.GetNowKz().Date);
+                            selectTotalCommand.Parameters.AddWithValue("UserName", document.Creator_Id);
+
+                            //selectTotalCommand.Transaction = transaction;
+
+                            var totalReader = selectTotalCommand.ExecuteReader();
+                            totalReader.Read();
+
+                            var updateQueryBuilder = new StringBuilder();
+                            updateQueryBuilder.Append("UPDATE [dbo].[TodayRefundInDebtsIds] ");
+                            updateQueryBuilder.Append("SET [Amount] = @Amount ");
+                            updateQueryBuilder.Append("WHERE [Id] = @Id ");
+
+                            var updateCommand = connection.CreateCommand();
+                            updateCommand.CommandText = updateQueryBuilder.ToString();
+                            updateCommand.Parameters.AddWithValue("Id", totalReader.GetInt32(1));
+                            updateCommand.Parameters.AddWithValue("Amount", totalReader.GetDecimal(0) + refundItem.Count);
+
+                            //updateCommand.Transaction = transaction;
+
+                            updateCommand.ExecuteNonQuery();
+                        }
+                    }
+                    //    transaction.Commit();
+                    //}
+                }
+                catch (Exception exception)
+                {
+                    //if(transaction != null) transaction.Rollback();
+
+                    var logger = LogManager.GetLogger("*");
+                    logger.Error("Во время записи в TodayRefundInDebtsIds произошла ошибка:\n" + exception.Message, exception);
+                }
+
+            }
         }
 
         [HttpPost]
@@ -4563,6 +5890,15 @@ sb.Append("LEFT JOIN  (  ");
         public string Additional { get; set; }
     }
 
+    [DataContract]
+    public class TodayRefundsTotalItem
+    {
+        [DataMember]
+        public decimal Total { get; set; }
+
+        [DataMember]
+        public decimal TotalByBuy { get; set; }
+    }
 
     #region Temp cashflow classes
 

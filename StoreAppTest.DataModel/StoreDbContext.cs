@@ -2,6 +2,7 @@ namespace StoreAppTest.Web.DataModel
 {
     //extern alias ef;
     using System;
+    using System.ComponentModel.DataAnnotations.Schema;
     using System.Data.Entity;
     using System.Text;
     //using ef::System.Data.Entity;
@@ -58,6 +59,12 @@ namespace StoreAppTest.Web.DataModel
         public DbSet<PriceChangeReport> PriceChangeReports { get; set; }
 
         public DbSet<Resource> Resources { get; set; }
+
+        public DbSet<TodayRefundsTotal> TodayRefundsTotals { get; set; }
+        public DbSet<TodayRefundIds> TodayRefundIdss { get; set; }
+        public DbSet<TodayRealizationItem> TodayRealizationItems { get; set; }
+        public DbSet<TodayRefundInDebtsIds> TodayRefundInDebtsIdses { get; set; }
+        public DbSet<TodayRealizationsTotal> TodayRealizationsTotals { get; set; } 
 
         //public DbSet<PriceListPriceItem> PriceListPriceItems { get; set; }
 
@@ -398,6 +405,22 @@ namespace StoreAppTest.Web.DataModel
                 .WithMany(m => m.Users)
                 .Map(m => m.ToTable("UsersPriceLists")
                     .MapLeftKey("User_UserName").MapRightKey("PriceList_Name"));
+
+
+            modelBuilder.Entity<TodayRefundsTotal>()
+                .HasKey(k => new {k.UserName, k.Today, k.PriceListName});
+
+            modelBuilder.Entity<TodayRefundIds>()
+                .HasKey(k => k.Id);
+
+            modelBuilder.Entity<TodayRealizationItem>()
+                .HasKey(k => k.Id);
+
+            modelBuilder.Entity<TodayRealizationsTotal>()
+                .HasKey(k => new {k.UserName, k.Today, k.PriceListName});
+
+            modelBuilder.Entity<TodayRefundInDebtsIds>()
+                .HasKey(k => k.Id);
         }
     }
 

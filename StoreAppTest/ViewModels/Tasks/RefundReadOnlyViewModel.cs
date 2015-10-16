@@ -62,7 +62,7 @@ namespace StoreAppTest.ViewModels
         {
             get
             {
-                return RefundItems.Sum(s => s.Amount);
+                return RefundItems.Sum(s => s.Amount + s.Discount);
             }
 
         }

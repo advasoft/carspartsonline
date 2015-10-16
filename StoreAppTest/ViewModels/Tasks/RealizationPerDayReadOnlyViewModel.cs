@@ -235,17 +235,18 @@ namespace StoreAppTest.ViewModels
                         //    ctx.DebtDischargeDocuments.Expand("Debtor")
                         //        .Where(w => w.DischargeDate >= startDate && w.DischargeDate <= endDate && w.IsDischarge && w.Creator_Id == App.CurrentUser.UserName)).ToList();
                         client.GetUserDebtDischargeDocumentsByDate(startDate, endDate, App.CurrentUser.UserName);
-                    discharges = (from d in dischargesSource
-                                  group d by new
-                                  {
-                                      Debtor = d.Debtor_Id
-                                  }
-                                      into ds
-                                      select new DebtDischargeDocument()
-                                      {
-                                          Amount = ds.Sum(s => s.Amount),
-                                          Debtor_Id = ds.Key.Debtor
-                                      }).ToList();
+                    //discharges = (from d in dischargesSource
+                    //              group d by new
+                    //              {
+                    //                  Debtor = d.Debtor_Id
+                    //              }
+                    //                  into ds
+                    //                  select new DebtDischargeDocument()
+                    //                  {
+                    //                      Amount = ds.Sum(s => s.Amount),
+                    //                      Debtor_Id = ds.Key.Debtor
+                    //                  }).ToList();
+                    discharges = dischargesSource.ToList();
 
                     var refundItems = client.GetRefundItemsByDate(startDate, endDate, App.CurrentUser.UserName).ToList();
 
@@ -377,7 +378,8 @@ namespace StoreAppTest.ViewModels
                             {
                                 Number = index++,
                                 Name = "Погашение " + debtDischargeDocument.Debtor_Id,
-                                Price = (int)debtDischargeDocument.Amount,
+                                Amount = (int)debtDischargeDocument.Amount,
+                                AmountWithoutDebt = (int)debtDischargeDocument.Amount,
                                 IsInDebt = true
                             });
                         });

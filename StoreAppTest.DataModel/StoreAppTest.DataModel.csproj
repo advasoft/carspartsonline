@@ -68,6 +68,50 @@
     <Compile Include="Migrations\201509191207007_Add_remainders_to_PriceChangeReport.Designer.cs">
       <DependentUpon>201509191207007_Add_remainders_to_PriceChangeReport.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201510141655083_TodayRefundTotal_added.cs" />
+    <Compile Include="Migrations\201510141655083_TodayRefundTotal_added.Designer.cs">
+      <DependentUpon>201510141655083_TodayRefundTotal_added.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201510150837557_TodayRefundIds_added.cs" />
+    <Compile Include="Migrations\201510150837557_TodayRefundIds_added.Designer.cs">
+      <DependentUpon>201510150837557_TodayRefundIds_added.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201510150925349_TodayRefundIds_update_1.cs" />
+    <Compile Include="Migrations\201510150925349_TodayRefundIds_update_1.Designer.cs">
+      <DependentUpon>201510150925349_TodayRefundIds_update_1.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201510150950036_TodayRefundIds_update_2.cs" />
+    <Compile Include="Migrations\201510150950036_TodayRefundIds_update_2.Designer.cs">
+      <DependentUpon>201510150950036_TodayRefundIds_update_2.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201510151038163_TodayRefundIds_update_3.cs" />
+    <Compile Include="Migrations\201510151038163_TodayRefundIds_update_3.Designer.cs">
+      <DependentUpon>201510151038163_TodayRefundIds_update_3.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201510151115117_TodayRefundIds_update_4.cs" />
+    <Compile Include="Migrations\201510151115117_TodayRefundIds_update_4.Designer.cs">
+      <DependentUpon>201510151115117_TodayRefundIds_update_4.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201510160000489_TodayRefundIds_update_5.cs" />
+    <Compile Include="Migrations\201510160000489_TodayRefundIds_update_5.Designer.cs">
+      <DependentUpon>201510160000489_TodayRefundIds_update_5.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201510160303122_Something_01.cs" />
+    <Compile Include="Migrations\201510160303122_Something_01.Designer.cs">
+      <DependentUpon>201510160303122_Something_01.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201510160323063_Something_02.cs" />
+    <Compile Include="Migrations\201510160323063_Something_02.Designer.cs">
+      <DependentUpon>201510160323063_Something_02.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201510160422547_Something_03.cs" />
+    <Compile Include="Migrations\201510160422547_Something_03.Designer.cs">
+      <DependentUpon>201510160422547_Something_03.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201510160440496_Something_04.cs" />
+    <Compile Include="Migrations\201510160440496_Something_04.Designer.cs">
+      <DependentUpon>201510160440496_Something_04.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="RemainderChanges.cs" />
     <Compile Include="GearChanges.cs" />
@@ -97,6 +141,11 @@
     <Compile Include="SalesPerDayItem.cs" />
     <Compile Include="StoreDbContext.cs" />
     <Compile Include="Supplier.cs" />
+    <Compile Include="TodayRealizationItem.cs" />
+    <Compile Include="TodayRealizationsTotal.cs" />
+    <Compile Include="TodayRefundIds.cs" />
+    <Compile Include="TodayRefundInDebtsIds.cs" />
+    <Compile Include="TodayRefundsTotal.cs" />
     <Compile Include="UnitOfMeasure.cs" />
     <Compile Include="User.cs" />
     <Compile Include="UsersPriceLists.cs" />
@@ -129,6 +178,39 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201509191207007_Add_remainders_to_PriceChangeReport.resx">
       <DependentUpon>201509191207007_Add_remainders_to_PriceChangeReport.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201510141655083_TodayRefundTotal_added.resx">
+      <DependentUpon>201510141655083_TodayRefundTotal_added.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201510150837557_TodayRefundIds_added.resx">
+      <DependentUpon>201510150837557_TodayRefundIds_added.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201510150925349_TodayRefundIds_update_1.resx">
+      <DependentUpon>201510150925349_TodayRefundIds_update_1.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201510150950036_TodayRefundIds_update_2.resx">
+      <DependentUpon>201510150950036_TodayRefundIds_update_2.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201510151038163_TodayRefundIds_update_3.resx">
+      <DependentUpon>201510151038163_TodayRefundIds_update_3.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201510151115117_TodayRefundIds_update_4.resx">
+      <DependentUpon>201510151115117_TodayRefundIds_update_4.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201510160000489_TodayRefundIds_update_5.resx">
+      <DependentUpon>201510160000489_TodayRefundIds_update_5.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201510160303122_Something_01.resx">
+      <DependentUpon>201510160303122_Something_01.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201510160323063_Something_02.resx">
+      <DependentUpon>201510160323063_Something_02.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201510160422547_Something_03.resx">
+      <DependentUpon>201510160422547_Something_03.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201510160440496_Something_04.resx">
+      <DependentUpon>201510160440496_Something_04.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
